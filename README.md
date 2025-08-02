@@ -113,7 +113,7 @@ Maven
 
 ```xml
    <dependency>
-      <groupId>org.springdoc</groupId>
+      <groupId>org.springdoc.gopirathnam</groupId>
       <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
       <version>last-release-version</version>
    </dependency>
@@ -167,7 +167,7 @@ Maven
 
 ```xml
    <dependency>
-      <groupId>org.springdoc</groupId>
+      <groupId>org.springdoc.gopirathnam</groupId>
       <artifactId>springdoc-openapi-starter-webmvc-api</artifactId>
       <version>last-release-version</version>
    </dependency>
@@ -220,7 +220,7 @@ Maven
 
 ```xml
    <dependency>
-      <groupId>org.springdoc</groupId>
+      <groupId>org.springdoc.gopirathnam</groupId>
       <artifactId>springdoc-openapi-starter-webflux-ui</artifactId>
       <version>last-release-version</version>
    </dependency>
