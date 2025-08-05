@@ -26,14 +26,6 @@
 
 package org.springdoc.ui;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.stream.Collectors;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.StringUtils;
@@ -42,8 +34,15 @@ import org.springdoc.core.properties.SwaggerUiConfigProperties;
 import org.springdoc.core.properties.SwaggerUiOAuthProperties;
 import org.springdoc.core.providers.ObjectMapperProvider;
 import org.springdoc.core.utils.Constants;
-
 import org.springframework.util.CollectionUtils;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import static org.springdoc.core.properties.SwaggerUiConfigParameters.QUERY_CONFIG_ENABLED_PROPERTY;
 
@@ -81,7 +80,9 @@ public class AbstractSwaggerIndexTransformer {
 	 * @param swaggerUiOAuthProperties the swagger ui o auth properties
 	 * @param objectMapperProvider     the object mapper provider
 	 */
-	public AbstractSwaggerIndexTransformer(SwaggerUiConfigProperties swaggerUiConfig, SwaggerUiOAuthProperties swaggerUiOAuthProperties, ObjectMapperProvider objectMapperProvider) {
+	public AbstractSwaggerIndexTransformer(SwaggerUiConfigProperties swaggerUiConfig,
+	                                       SwaggerUiOAuthProperties swaggerUiOAuthProperties,
+	                                       ObjectMapperProvider objectMapperProvider) {
 		this.swaggerUiConfig = swaggerUiConfig;
 		this.swaggerUiOAuthProperties = swaggerUiOAuthProperties;
 		this.objectMapper = objectMapperProvider.jsonMapper();
@@ -149,7 +150,8 @@ public class AbstractSwaggerIndexTransformer {
 	 * @return the string
 	 * @throws IOException the io exception
 	 */
-	protected String defaultTransformations(SwaggerUiConfigParameters swaggerUiConfigParameters, InputStream inputStream) throws IOException {
+	protected String defaultTransformations(SwaggerUiConfigParameters swaggerUiConfigParameters,
+	                                        InputStream inputStream) throws IOException {
 		String html = readFullyAsString(inputStream);
 		if (!CollectionUtils.isEmpty(swaggerUiOAuthProperties.getConfigParameters()))
 			html = addInitOauth(html);
@@ -169,7 +171,8 @@ public class AbstractSwaggerIndexTransformer {
 		if (swaggerUiConfig.getQueryConfigEnabled() == null || !swaggerUiConfig.getQueryConfigEnabled())
 			html = addParameters(html, swaggerUiConfigParameters);
 		else
-			html = addParameter(html, QUERY_CONFIG_ENABLED_PROPERTY, swaggerUiConfig.getQueryConfigEnabled().toString());
+			html = addParameter(html, QUERY_CONFIG_ENABLED_PROPERTY,
+			                    swaggerUiConfig.getQueryConfigEnabled().toString());
 
 		if (swaggerUiConfig.isDisableSwaggerDefaultUrl())
 			html = overwriteSwaggerDefaultUrl(html);
@@ -189,18 +192,31 @@ public class AbstractSwaggerIndexTransformer {
 	 * @return the string
 	 * @throws JsonProcessingException the json processing exception
 	 */
-	protected String addParameters(String html, SwaggerUiConfigParameters swaggerUiConfigParameters) throws JsonProcessingException {
-		String layout = swaggerUiConfigParameters.getLayout() != null ? swaggerUiConfigParameters.getLayout() : "StandaloneLayout";
+	protected String addParameters(String html, SwaggerUiConfigParameters swaggerUiConfigParameters) throws
+			JsonProcessingException {
+		String layout = swaggerUiConfigParameters.getLayout() !=
+				null ? swaggerUiConfigParameters.getLayout() : "StandaloneLayout";
 		StringBuilder stringBuilder = new StringBuilder("layout: \"" + layout + "\" ,\n");
 
 		Map<String, Object> parametersObjectMap = swaggerUiConfigParameters.getConfigParameters().entrySet().stream()
-				.filter(entry -> !SwaggerUiConfigParameters.OAUTH2_REDIRECT_URL_PROPERTY.equals(entry.getKey()))
-				.filter(entry -> !SwaggerUiConfigParameters.URL_PROPERTY.equals(entry.getKey()))
-				.filter(entry -> !SwaggerUiConfigParameters.URLS_PROPERTY.equals(entry.getKey()))
-				.filter(entry -> SwaggerUiConfigParameters.VALIDATOR_URL_PROPERTY.equals(entry.getKey())
-						|| ((entry.getValue() instanceof String) ? StringUtils.isNotEmpty((String) entry.getValue()) : entry.getValue() != null))
-				.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e2,
-						LinkedHashMap::new));
+		                                                                   .filter(entry -> !SwaggerUiConfigParameters.OAUTH2_REDIRECT_URL_PROPERTY.equals(
+				                                                                   entry.getKey()))
+		                                                                   .filter(entry -> !SwaggerUiConfigParameters.URL_PROPERTY.equals(
+				                                                                   entry.getKey()))
+		                                                                   .filter(entry -> !SwaggerUiConfigParameters.URLS_PROPERTY.equals(
+				                                                                   entry.getKey()))
+		                                                                   .filter(entry ->
+				                                                                           SwaggerUiConfigParameters.VALIDATOR_URL_PROPERTY.equals(
+						                                                                           entry.getKey())
+						                                                                           ||
+						                                                                           ((entry.getValue() instanceof String) ? StringUtils.isNotEmpty(
+								                                                                           (String) entry.getValue()) :
+								                                                                           entry.getValue() !=
+										                                                                           null))
+		                                                                   .collect(Collectors.toMap(Map.Entry::getKey,
+		                                                                                             Map.Entry::getValue,
+		                                                                                             (e1, e2) -> e2,
+		                                                                                             LinkedHashMap::new));
 
 		if (!CollectionUtils.isEmpty(parametersObjectMap)) {
 			String result = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(parametersObjectMap);
@@ -241,7 +257,8 @@ public class AbstractSwaggerIndexTransformer {
 		stringBuilder.append("=`);\n");
 		stringBuilder.append("\t\t\tconst currentURL = new URL(document.URL);\n");
 		stringBuilder.append("\t\t\tconst requestURL = new URL(request.url, document.location.origin);\n");
-		stringBuilder.append("\t\t\tconst isSameOrigin = (currentURL.protocol === requestURL.protocol && currentURL.host === requestURL.host);\n");
+		stringBuilder.append(
+				"\t\t\tconst isSameOrigin = (currentURL.protocol === requestURL.protocol && currentURL.host === requestURL.host);\n");
 		stringBuilder.append("\t\t\tif (isSameOrigin && parts.length === 2) ");
 		stringBuilder.append("request.headers['");
 		stringBuilder.append(swaggerUiConfig.getCsrf().getHeaderName());
@@ -265,7 +282,8 @@ public class AbstractSwaggerIndexTransformer {
 		stringBuilder.append(swaggerUiConfig.getCsrf().getLocalStorageKey() + "');\n");
 		stringBuilder.append("\t\t\tconst currentURL = new URL(document.URL);\n");
 		stringBuilder.append("\t\t\tconst requestURL = new URL(request.url, document.location.origin);\n");
-		stringBuilder.append("\t\t\tconst isSameOrigin = (currentURL.protocol === requestURL.protocol && currentURL.host === requestURL.host);\n");
+		stringBuilder.append(
+				"\t\t\tconst isSameOrigin = (currentURL.protocol === requestURL.protocol && currentURL.host === requestURL.host);\n");
 		stringBuilder.append("\t\t\tif (isSameOrigin) ");
 		stringBuilder.append("request.headers['");
 		stringBuilder.append(swaggerUiConfig.getCsrf().getHeaderName());
@@ -289,7 +307,8 @@ public class AbstractSwaggerIndexTransformer {
 		stringBuilder.append(swaggerUiConfig.getCsrf().getSessionStorageKey() + "');\n");
 		stringBuilder.append("\t\t\tconst currentURL = new URL(document.URL);\n");
 		stringBuilder.append("\t\t\tconst requestURL = new URL(request.url, document.location.origin);\n");
-		stringBuilder.append("\t\t\tconst isSameOrigin = (currentURL.protocol === requestURL.protocol && currentURL.host === requestURL.host);\n");
+		stringBuilder.append(
+				"\t\t\tconst isSameOrigin = (currentURL.protocol === requestURL.protocol && currentURL.host === requestURL.host);\n");
 		stringBuilder.append("\t\t\tif (isSameOrigin) ");
 		stringBuilder.append("request.headers['");
 		stringBuilder.append(swaggerUiConfig.getCsrf().getHeaderName());

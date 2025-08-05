@@ -26,10 +26,9 @@ package test.org.springdoc.api.v31.app4;
 
 import io.swagger.v3.core.jackson.TypeNameResolver;
 import org.junit.jupiter.api.AfterAll;
-import test.org.springdoc.api.v31.AbstractSpringDocTest;
-
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.test.context.TestPropertySource;
+import test.org.springdoc.api.v31.AbstractSpringDocTest;
 
 @TestPropertySource(properties = "springdoc.use-fqn=true")
 public class SpringDocApp4Test extends AbstractSpringDocTest {
@@ -40,5 +39,6 @@ public class SpringDocApp4Test extends AbstractSpringDocTest {
 	}
 
 	@SpringBootApplication
-	static class SpringDocTestApp {}
+	static class SpringDocTestApp {
+	}
 }

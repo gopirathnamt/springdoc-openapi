@@ -26,19 +26,6 @@
 
 package org.springdoc.core.customizers;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
-import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
-
 import com.querydsl.core.types.Path;
 import io.swagger.v3.core.converter.ModelConverters;
 import io.swagger.v3.core.converter.ResolvedSchema;
@@ -51,7 +38,6 @@ import org.apache.commons.lang3.reflect.FieldUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springdoc.core.properties.SpringDocConfigProperties;
-
 import org.springframework.core.MethodParameter;
 import org.springframework.data.querydsl.binding.QuerydslBinderCustomizer;
 import org.springframework.data.querydsl.binding.QuerydslBindings;
@@ -62,6 +48,19 @@ import org.springframework.data.util.ClassTypeInformation;
 import org.springframework.data.util.TypeInformation;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.method.HandlerMethod;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * The type Querydsl predicate operation customizer.
@@ -92,7 +91,8 @@ public class QuerydslPredicateOperationCustomizer implements GlobalOperationCust
 	 * @param querydslBindingsFactory   the querydsl bindings factory
 	 * @param springDocConfigProperties the spring doc config properties
 	 */
-	public QuerydslPredicateOperationCustomizer(QuerydslBindingsFactory querydslBindingsFactory, SpringDocConfigProperties springDocConfigProperties) {
+	public QuerydslPredicateOperationCustomizer(QuerydslBindingsFactory querydslBindingsFactory,
+	                                            SpringDocConfigProperties springDocConfigProperties) {
 		this.querydslBindingsFactory = querydslBindingsFactory;
 		this.springDocConfigProperties = springDocConfigProperties;
 
@@ -113,7 +113,9 @@ public class QuerydslPredicateOperationCustomizer implements GlobalOperationCust
 
 			QuerydslBindings bindings = extractQdslBindings(predicate);
 
-			Set<String> fieldsToAdd = Arrays.stream(predicate.root().getDeclaredFields()).filter(field -> !Modifier.isStatic(field.getModifiers())).map(Field::getName).collect(Collectors.toCollection(LinkedHashSet::new));
+			Set<String> fieldsToAdd = Arrays.stream(predicate.root().getDeclaredFields())
+			                                .filter(field -> !Modifier.isStatic(field.getModifiers()))
+			                                .map(Field::getName).collect(Collectors.toCollection(LinkedHashSet::new));
 
 			Map<String, Object> pathSpecMap = getPathSpec(bindings, "pathSpecs");
 			//remove blacklisted fields
@@ -160,8 +162,7 @@ public class QuerydslPredicateOperationCustomizer implements GlobalOperationCust
 	private boolean getFieldValueOfBoolean(QuerydslBindings instance, String fieldName) {
 		try {
 			return (boolean) FieldUtils.readDeclaredField(instance, fieldName, true);
-		}
-		catch (IllegalAccessException e) {
+		} catch (IllegalAccessException e) {
 			LOGGER.warn(e.getMessage());
 		}
 		return false;
@@ -178,8 +179,8 @@ public class QuerydslPredicateOperationCustomizer implements GlobalOperationCust
 		TypeInformation<?> domainType = classTypeInformation.getRequiredActualType();
 
 		Optional<Class<? extends QuerydslBinderCustomizer<?>>> bindingsAnnotation = Optional.of(predicate)
-				.map(QuerydslPredicate::bindings)
-				.map(CastUtils::cast);
+		                                                                                    .map(QuerydslPredicate::bindings)
+		                                                                                    .map(CastUtils::cast);
 
 		return bindingsAnnotation
 				.map(it -> querydslBindingsFactory.createBindingsFor(domainType, it))
@@ -201,8 +202,7 @@ public class QuerydslPredicateOperationCustomizer implements GlobalOperationCust
 				field = FieldUtils.getDeclaredField(instance.getClass(), alternativeFieldName, true);
 			if (field != null)
 				return (Set<String>) field.get(instance);
-		}
-		catch (IllegalAccessException e) {
+		} catch (IllegalAccessException e) {
 			LOGGER.warn(e.getMessage());
 		}
 		return Collections.emptySet();
@@ -218,8 +218,7 @@ public class QuerydslPredicateOperationCustomizer implements GlobalOperationCust
 	private Map<String, Object> getPathSpec(QuerydslBindings instance, String fieldName) {
 		try {
 			return (Map<String, Object>) FieldUtils.readDeclaredField(instance, fieldName, true);
-		}
-		catch (IllegalAccessException e) {
+		} catch (IllegalAccessException e) {
 			LOGGER.warn(e.getMessage());
 		}
 		return Collections.emptyMap();
@@ -237,8 +236,7 @@ public class QuerydslPredicateOperationCustomizer implements GlobalOperationCust
 				return Optional.empty();
 			}
 			return (Optional<Path<?>>) FieldUtils.readDeclaredField(instance, "path", true);
-		}
-		catch (IllegalAccessException e) {
+		} catch (IllegalAccessException e) {
 			LOGGER.warn(e.getMessage());
 		}
 		return Optional.empty();
@@ -259,13 +257,11 @@ public class QuerydslPredicateOperationCustomizer implements GlobalOperationCust
 			Field declaredField;
 			if (path.isPresent()) {
 				genericType = path.get().getType();
-			}
-			else {
+			} else {
 				declaredField = root.getDeclaredField(fieldName);
 				genericType = declaredField.getGenericType();
 			}
-		}
-		catch (NoSuchFieldException e) {
+		} catch (NoSuchFieldException e) {
 			LOGGER.warn("Field {} not found on {} : {}", fieldName, root.getName(), e.getMessage());
 		}
 		return genericType;
@@ -293,18 +289,17 @@ public class QuerydslPredicateOperationCustomizer implements GlobalOperationCust
 			PrimitiveType primitiveType = PrimitiveType.fromType(type);
 			if (primitiveType != null) {
 				schema = primitiveType.createProperty();
-			}
-			else {
+			} else {
 				ResolvedSchema resolvedSchema = ModelConverters.getInstance(springDocConfigProperties.isOpenapi31())
-						.resolveAsResolvedSchema(
-								new io.swagger.v3.core.converter.AnnotatedType(type).resolveAsRef(true));
+				                                               .resolveAsResolvedSchema(
+						                                               new io.swagger.v3.core.converter.AnnotatedType(
+								                                               type).resolveAsRef(true));
 				// could not resolve the schema or this schema references other schema
 				// we dont want this since there's no reference to the components in order to register a new schema if it doesnt already exist
 				// defaulting to string
 				if (resolvedSchema == null || !resolvedSchema.referencedSchemas.isEmpty()) {
 					schema = PrimitiveType.fromType(String.class).createProperty();
-				}
-				else {
+				} else {
 					schema = resolvedSchema.schema;
 				}
 			}

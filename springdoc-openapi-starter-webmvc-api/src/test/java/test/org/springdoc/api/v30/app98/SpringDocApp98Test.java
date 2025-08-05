@@ -26,9 +26,8 @@ package test.org.springdoc.api.v30.app98;
 
 
 import org.springdoc.core.utils.SpringDocUtils;
-import test.org.springdoc.api.v30.AbstractSpringDocV30Test;
-
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import test.org.springdoc.api.v30.AbstractSpringDocV30Test;
 
 public class SpringDocApp98Test extends AbstractSpringDocV30Test {
 
@@ -37,5 +36,6 @@ public class SpringDocApp98Test extends AbstractSpringDocV30Test {
 	}
 
 	@SpringBootApplication
-	static class SpringDocTestApp {}
+	static class SpringDocTestApp {
+	}
 }

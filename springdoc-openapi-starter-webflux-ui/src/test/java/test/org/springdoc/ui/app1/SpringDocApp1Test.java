@@ -19,9 +19,8 @@
 package test.org.springdoc.ui.app1;
 
 import org.junit.jupiter.api.Test;
-import test.org.springdoc.ui.AbstractSpringDocTest;
-
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import test.org.springdoc.ui.AbstractSpringDocTest;
 
 
 public class SpringDocApp1Test extends AbstractSpringDocTest {
@@ -29,10 +28,11 @@ public class SpringDocApp1Test extends AbstractSpringDocTest {
 	@Test
 	void shouldDisplaySwaggerUiPage() {
 		webTestClient.get().uri("/swagger-ui.html").exchange()
-				.expectStatus().isFound();
+		             .expectStatus().isFound();
 	}
 
 	@SpringBootApplication
-	static class SpringDocTestApp {}
+	static class SpringDocTestApp {
+	}
 
 }

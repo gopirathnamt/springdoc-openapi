@@ -26,11 +26,11 @@
 
 package test.org.springdoc.api.v30.app3.dto;
 
-import java.util.Date;
-
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+
+import java.util.Date;
 
 
 /**

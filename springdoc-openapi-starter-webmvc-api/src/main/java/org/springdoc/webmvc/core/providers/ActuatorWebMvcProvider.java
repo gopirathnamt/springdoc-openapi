@@ -26,14 +26,9 @@
 
 package org.springdoc.webmvc.core.providers;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-
 import org.apache.commons.lang3.StringUtils;
 import org.springdoc.core.properties.SpringDocConfigProperties;
 import org.springdoc.core.providers.ActuatorProvider;
-
 import org.springframework.boot.actuate.autoconfigure.endpoint.web.WebEndpointProperties;
 import org.springframework.boot.actuate.autoconfigure.web.server.ManagementServerProperties;
 import org.springframework.boot.actuate.endpoint.web.servlet.ControllerEndpointHandlerMapping;
@@ -41,6 +36,10 @@ import org.springframework.boot.actuate.endpoint.web.servlet.WebMvcEndpointHandl
 import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 
@@ -60,9 +59,9 @@ public class ActuatorWebMvcProvider extends ActuatorProvider {
 	 * @param webEndpointProperties      the web endpoint properties
 	 */
 	public ActuatorWebMvcProvider(ServerProperties serverProperties,
-			SpringDocConfigProperties springDocConfigProperties,
-			Optional<ManagementServerProperties> managementServerProperties,
-			Optional<WebEndpointProperties> webEndpointProperties) {
+	                              SpringDocConfigProperties springDocConfigProperties,
+	                              Optional<ManagementServerProperties> managementServerProperties,
+	                              Optional<WebEndpointProperties> webEndpointProperties) {
 		super(managementServerProperties, webEndpointProperties, serverProperties, springDocConfigProperties);
 	}
 
@@ -70,14 +69,19 @@ public class ActuatorWebMvcProvider extends ActuatorProvider {
 	public Map<RequestMappingInfo, HandlerMethod> getMethods() {
 		Map<RequestMappingInfo, HandlerMethod> mappingInfoHandlerMethodMap = new HashMap<>();
 
-		WebMvcEndpointHandlerMapping webMvcEndpointHandlerMapping = applicationContext.getBeansOfType(WebMvcEndpointHandlerMapping.class).values().stream().findFirst().orElse(null);
+		WebMvcEndpointHandlerMapping webMvcEndpointHandlerMapping =
+				applicationContext.getBeansOfType(WebMvcEndpointHandlerMapping.class).values().stream().findFirst()
+				                  .orElse(null);
 		if (webMvcEndpointHandlerMapping == null)
 			webMvcEndpointHandlerMapping = managementApplicationContext.getBean(WebMvcEndpointHandlerMapping.class);
 		mappingInfoHandlerMethodMap.putAll(webMvcEndpointHandlerMapping.getHandlerMethods());
 
-		ControllerEndpointHandlerMapping controllerEndpointHandlerMapping = applicationContext.getBeansOfType(ControllerEndpointHandlerMapping.class).values().stream().findFirst().orElse(null);
+		ControllerEndpointHandlerMapping controllerEndpointHandlerMapping =
+				applicationContext.getBeansOfType(ControllerEndpointHandlerMapping.class).values().stream().findFirst()
+				                  .orElse(null);
 		if (controllerEndpointHandlerMapping == null)
-			controllerEndpointHandlerMapping = managementApplicationContext.getBean(ControllerEndpointHandlerMapping.class);
+			controllerEndpointHandlerMapping =
+					managementApplicationContext.getBean(ControllerEndpointHandlerMapping.class);
 		mappingInfoHandlerMethodMap.putAll(controllerEndpointHandlerMapping.getHandlerMethods());
 
 		return mappingInfoHandlerMethodMap;

@@ -26,12 +26,6 @@
 
 package test.org.springdoc.api.v30.app162.rest;
 
-import java.util.List;
-
-import test.org.springdoc.api.v30.app162.exception.NoResultException;
-import test.org.springdoc.api.v30.app162.exception.NonUniqueResultException;
-import test.org.springdoc.api.v30.app162.rest.dto.JavadocOnlyRestDto;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -43,6 +37,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import test.org.springdoc.api.v30.app162.exception.NoResultException;
+import test.org.springdoc.api.v30.app162.exception.NonUniqueResultException;
+import test.org.springdoc.api.v30.app162.rest.dto.JavadocOnlyRestDto;
+
+import java.util.List;
 
 /**
  * This is the {@code JavadocOnlyRestController} class javadoc.
@@ -72,7 +71,8 @@ class JavadocOnlyRestController {
 	 */
 	@PutMapping(path = "{guid}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.OK)
-	public ResponseEntity<JavadocOnlyRestDto> update(@PathVariable String guid, @RequestBody JavadocOnlyRestDto input) throws NoResultException {
+	public ResponseEntity<JavadocOnlyRestDto> update(@PathVariable String guid,
+	                                                 @RequestBody JavadocOnlyRestDto input) throws NoResultException {
 		return new ResponseEntity<>(HttpStatus.CREATED);
 	}
 
@@ -110,7 +110,8 @@ class JavadocOnlyRestController {
 	 * @throws NonUniqueResultException the {@code @throws NonUniqueResultException} javadoc for the {@code #findStartsBy(String)} method
 	 */
 	@GetMapping(path = "startsBy/{prefix}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<JavadocOnlyRestDto> findStartsBy(@PathVariable String prefix) throws NoResultException, NonUniqueResultException {
+	public ResponseEntity<JavadocOnlyRestDto> findStartsBy(@PathVariable String prefix) throws NoResultException,
+			NonUniqueResultException {
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 }

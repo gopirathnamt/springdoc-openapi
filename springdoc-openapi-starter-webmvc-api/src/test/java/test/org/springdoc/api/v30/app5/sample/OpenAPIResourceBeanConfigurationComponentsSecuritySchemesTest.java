@@ -24,8 +24,6 @@
 
 package test.org.springdoc.api.v30.app5.sample;
 
-import java.util.ArrayList;
-
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.security.OAuthFlow;
@@ -34,12 +32,13 @@ import io.swagger.v3.oas.models.security.Scopes;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
 import org.junit.jupiter.api.Test;
-import test.org.springdoc.api.v30.AbstractSpringDocV30Test;
-
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.TestPropertySource;
+import test.org.springdoc.api.v30.AbstractSpringDocV30Test;
+
+import java.util.ArrayList;
 
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -93,15 +92,20 @@ public class OpenAPIResourceBeanConfigurationComponentsSecuritySchemesTest exten
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$.security[2].oAuthScheme", is(new ArrayList<String>())))
 				.andExpect(jsonPath("$.components.securitySchemes.oAuthScheme.type", is("oauth2")))
-				.andExpect(jsonPath("$.components.securitySchemes.oAuthScheme.description", is("This API uses OAuth 2 with the implicit grant flow. [More info](https://api.example.com/docs/auth)")))
-				.andExpect(jsonPath("$.components.securitySchemes.oAuthScheme.flows.implicit.authorizationUrl", is("https://api.example.com/oauth2/authorize")))
-				.andExpect(jsonPath("$.components.securitySchemes.oAuthScheme.flows.implicit.scopes.read_pets", is("read your pets")))
-				.andExpect(jsonPath("$.components.securitySchemes.oAuthScheme.flows.implicit.scopes.write_pets", is("modify pets in your account")))
+				.andExpect(jsonPath("$.components.securitySchemes.oAuthScheme.description",
+				                    is("This API uses OAuth 2 with the implicit grant flow. [More info](https://api.example.com/docs/auth)")))
+				.andExpect(jsonPath("$.components.securitySchemes.oAuthScheme.flows.implicit.authorizationUrl",
+				                    is("https://api.example.com/oauth2/authorize")))
+				.andExpect(jsonPath("$.components.securitySchemes.oAuthScheme.flows.implicit.scopes.read_pets",
+				                    is("read your pets")))
+				.andExpect(jsonPath("$.components.securitySchemes.oAuthScheme.flows.implicit.scopes.write_pets",
+				                    is("modify pets in your account")))
 		;
 	}
 
 	@SpringBootApplication
-	static class SpringDocTestApp {}
+	static class SpringDocTestApp {
+	}
 
 	@TestConfiguration
 	static class Config {
@@ -111,43 +115,48 @@ public class OpenAPIResourceBeanConfigurationComponentsSecuritySchemesTest exten
 			return new OpenAPI()
 					.components(new Components()
 
-							//HTTP Basic, see: https://swagger.io/docs/specification/authentication/basic-authentication/
-							.addSecuritySchemes("basicScheme", new SecurityScheme()
-									.type(SecurityScheme.Type.HTTP)
-									.scheme("basic")
-							)
+							            //HTTP Basic, see: https://swagger.io/docs/specification/authentication/basic-authentication/
+							            .addSecuritySchemes("basicScheme", new SecurityScheme()
+									                                .type(SecurityScheme.Type.HTTP)
+									                                .scheme("basic")
+							                               )
 
-							//API Key, see: https://swagger.io/docs/specification/authentication/api-keys/
-							.addSecuritySchemes("apiKeyScheme", new SecurityScheme()
-									.type(SecurityScheme.Type.APIKEY)
-									.in(SecurityScheme.In.HEADER)
-									.name("X-API-KEY")
-							)
+							            //API Key, see: https://swagger.io/docs/specification/authentication/api-keys/
+							            .addSecuritySchemes("apiKeyScheme", new SecurityScheme()
+									                                .type(SecurityScheme.Type.APIKEY)
+									                                .in(SecurityScheme.In.HEADER)
+									                                .name("X-API-KEY")
+							                               )
 
-							//OAuth 2.0, see: https://swagger.io/docs/specification/authentication/oauth2/
-							.addSecuritySchemes("oAuthScheme", new SecurityScheme()
-									.type(SecurityScheme.Type.OAUTH2)
-									.description("This API uses OAuth 2 with the implicit grant flow. [More info](https://api.example.com/docs/auth)")
-									.flows(new OAuthFlows()
-											.implicit(new OAuthFlow()
-													.authorizationUrl("https://api.example.com/oauth2/authorize")
-													.scopes(new Scopes()
-															.addString("read_pets", "read your pets")
-															.addString("write_pets", "modify pets in your account")
-													)
-											)
-									)
-							)
-					)
+							            //OAuth 2.0, see: https://swagger.io/docs/specification/authentication/oauth2/
+							            .addSecuritySchemes("oAuthScheme", new SecurityScheme()
+									                                .type(SecurityScheme.Type.OAUTH2)
+									                                .description(
+											                                "This API uses OAuth 2 with the implicit grant flow. [More info](https://api.example.com/docs/auth)")
+									                                .flows(new OAuthFlows()
+											                                       .implicit(new OAuthFlow()
+													                                                 .authorizationUrl(
+															                                                 "https://api.example.com/oauth2/authorize")
+													                                                 .scopes(new Scopes()
+															                                                         .addString("read_pets",
+															                                                                    "read your pets")
+															                                                         .addString(
+																	                                                         "write_pets",
+																	                                                         "modify pets in your account")
+													                                                        )
+											                                                )
+									                                      )
+							                               )
+					           )
 					.addSecurityItem(new SecurityRequirement()
-							.addList("basicScheme")
-					)
+							                 .addList("basicScheme")
+					                )
 					.addSecurityItem(new SecurityRequirement()
-							.addList("apiKeyScheme")
-					)
+							                 .addList("apiKeyScheme")
+					                )
 					.addSecurityItem(new SecurityRequirement()
-							.addList("oAuthScheme")
-					)
+							                 .addList("oAuthScheme")
+					                )
 					;
 		}
 	}

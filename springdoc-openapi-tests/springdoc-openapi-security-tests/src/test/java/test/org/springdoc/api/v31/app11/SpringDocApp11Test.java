@@ -26,26 +26,27 @@
 
 package test.org.springdoc.api.v31.app11;
 
-import java.util.Optional;
-
 import io.swagger.v3.core.converter.ModelConverter;
 import io.swagger.v3.core.converter.ModelConverters;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.springdoc.core.converters.SchemaPropertyDeprecatingConverter;
-import test.org.springdoc.api.v31.AbstractSpringDocTest;
-
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.test.context.TestPropertySource;
+import test.org.springdoc.api.v31.AbstractSpringDocTest;
 
-@TestPropertySource(properties = { "springdoc.show-oauth2-endpoints=true", "springdoc.model-converters.deprecating-converter.enabled=false" })
+import java.util.Optional;
+
+@TestPropertySource(properties = {"springdoc.show-oauth2-endpoints=true", "springdoc.model-converters.deprecating-converter.enabled=false"})
 public class SpringDocApp11Test extends AbstractSpringDocTest {
 
 	@BeforeAll
 	public static void init() {
 		Optional<ModelConverter> deprecatingConverterOptional =
 				ModelConverters.getInstance().getConverters()
-						.stream().filter(modelConverter -> modelConverter instanceof SchemaPropertyDeprecatingConverter).findAny();
+				               .stream()
+				               .filter(modelConverter -> modelConverter instanceof SchemaPropertyDeprecatingConverter)
+				               .findAny();
 		deprecatingConverterOptional.ifPresent(ModelConverters.getInstance()::removeConverter);
 	}
 
@@ -53,7 +54,9 @@ public class SpringDocApp11Test extends AbstractSpringDocTest {
 	public static void clean() {
 		Optional<ModelConverter> deprecatingConverterOptional =
 				ModelConverters.getInstance().getConverters()
-						.stream().filter(modelConverter -> modelConverter instanceof SchemaPropertyDeprecatingConverter).findAny();
+				               .stream()
+				               .filter(modelConverter -> modelConverter instanceof SchemaPropertyDeprecatingConverter)
+				               .findAny();
 		deprecatingConverterOptional.ifPresent(ModelConverters.getInstance()::addConverter);
 	}
 

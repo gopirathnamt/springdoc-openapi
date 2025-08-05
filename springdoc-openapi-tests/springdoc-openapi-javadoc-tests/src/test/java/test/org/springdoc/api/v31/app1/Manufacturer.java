@@ -26,13 +26,12 @@
 
 package test.org.springdoc.api.v31.app1;
 
-import java.util.Objects;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
-
 import org.springframework.validation.annotation.Validated;
+
+import java.util.Objects;
 
 
 /**

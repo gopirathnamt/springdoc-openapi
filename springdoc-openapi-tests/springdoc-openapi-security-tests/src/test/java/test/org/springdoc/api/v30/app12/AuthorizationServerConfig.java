@@ -26,13 +26,10 @@
 
 package test.org.springdoc.api.v30.app12;
 
-import java.util.UUID;
-
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
@@ -50,6 +47,8 @@ import org.springframework.security.oauth2.server.authorization.settings.Authori
 import org.springframework.security.oauth2.server.authorization.settings.ClientSettings;
 import org.springframework.security.web.SecurityFilterChain;
 
+import java.util.UUID;
+
 /*
  * @author yuta.saito
  */
@@ -59,20 +58,23 @@ public class AuthorizationServerConfig {
 	public SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http) throws Exception {
 		OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(http);
 		http.getConfigurer(OAuth2AuthorizationServerConfigurer.class)
-				.oidc(oidc -> oidc.clientRegistrationEndpoint(Customizer.withDefaults()));
+		    .oidc(oidc -> oidc.clientRegistrationEndpoint(Customizer.withDefaults()));
 		return http.build();
 	}
 
 	@Bean
 	public RegisteredClientRepository registeredClientRepository() {
 		RegisteredClient registeredClient = RegisteredClient.withId(UUID.randomUUID().toString())
-				.clientId("messaging-client")
-				.clientSecret("{noop}secret")
-				.authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS)
-				.scope("message.read")
-				.scope("message.write")
-				.clientSettings(ClientSettings.builder().requireAuthorizationConsent(true).build())
-				.build();
+		                                                    .clientId("messaging-client")
+		                                                    .clientSecret("{noop}secret")
+		                                                    .authorizationGrantType(
+				                                                    AuthorizationGrantType.CLIENT_CREDENTIALS)
+		                                                    .scope("message.read")
+		                                                    .scope("message.write")
+		                                                    .clientSettings(ClientSettings.builder()
+		                                                                                  .requireAuthorizationConsent(
+				                                                                                  true).build())
+		                                                    .build();
 
 		return new InMemoryRegisteredClientRepository(registeredClient);
 	}

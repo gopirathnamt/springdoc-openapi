@@ -27,7 +27,6 @@ package test.org.springdoc.api.v31.app160;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.springdoc.core.models.GroupedOpenApi;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
@@ -46,9 +45,9 @@ public class HelloController {
 	@Bean
 	public GroupedOpenApi bundleApi() {
 		return GroupedOpenApi.builder()
-				.group("test")
-				.pathsToMatch("/**")
-				.build();
+		                     .group("test")
+		                     .pathsToMatch("/**")
+		                     .build();
 	}
 
 	@Bean
@@ -62,7 +61,8 @@ public class HelloController {
 
 	@PropertySource("classpath:swagger-message-160.properties")
 	@Configuration
-	public class SwaggerMessage {}
+	public class SwaggerMessage {
+	}
 
 	@Schema(description = "${ErrorResponse}")
 	public class ErrorResponse {

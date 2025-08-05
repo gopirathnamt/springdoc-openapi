@@ -24,19 +24,18 @@
 
 package test.org.springdoc.api.v30.app177;
 
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.util.Arrays;
-import java.util.List;
-
 import org.springdoc.core.filters.OpenApiMethodFilter;
 import org.springdoc.core.models.GroupedOpenApi;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.util.Arrays;
+import java.util.List;
 
 @RestController
 public class AnnotatedController {
@@ -69,19 +68,23 @@ public class AnnotatedController {
 	@Bean
 	public List<GroupedOpenApi> apis() {
 		GroupedOpenApi group1OpenApi = GroupedOpenApi.builder()
-				.group("annotatedGroup1")
-				.addOpenApiMethodFilter(method -> method.isAnnotationPresent(Group1.class))
-				.build();
+		                                             .group("annotatedGroup1")
+		                                             .addOpenApiMethodFilter(
+				                                             method -> method.isAnnotationPresent(Group1.class))
+		                                             .build();
 
 		GroupedOpenApi group2OpenApi = GroupedOpenApi.builder()
-				.group("annotatedGroup2")
-				.addOpenApiMethodFilter(method -> method.isAnnotationPresent(Group2.class))
-				.build();
+		                                             .group("annotatedGroup2")
+		                                             .addOpenApiMethodFilter(
+				                                             method -> method.isAnnotationPresent(Group2.class))
+		                                             .build();
 
 		GroupedOpenApi group3OpenApi = GroupedOpenApi.builder()
-				.group("annotatedCombinedGroup")
-				.addOpenApiMethodFilter(method -> method.isAnnotationPresent(Group1.class) || method.isAnnotationPresent(Group2.class))
-				.build();
+		                                             .group("annotatedCombinedGroup")
+		                                             .addOpenApiMethodFilter(
+				                                             method -> method.isAnnotationPresent(Group1.class) ||
+						                                             method.isAnnotationPresent(Group2.class))
+		                                             .build();
 
 		return Arrays.asList(group1OpenApi, group2OpenApi, group3OpenApi);
 	}
@@ -92,11 +95,14 @@ public class AnnotatedController {
 	}
 
 	@Retention(RetentionPolicy.RUNTIME)
-	@interface Group1 {}
+	@interface Group1 {
+	}
 
 	@Retention(RetentionPolicy.RUNTIME)
-	@interface Group2 {}
+	@interface Group2 {
+	}
 
 	@Retention(RetentionPolicy.RUNTIME)
-	@interface Group3 {}
+	@interface Group3 {
+	}
 }

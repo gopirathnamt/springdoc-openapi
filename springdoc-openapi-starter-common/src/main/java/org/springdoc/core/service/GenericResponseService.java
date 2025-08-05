@@ -26,6 +26,48 @@
 
 package org.springdoc.core.service;
 
+import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import io.swagger.v3.core.util.AnnotationsUtils;
+import io.swagger.v3.oas.models.Components;
+import io.swagger.v3.oas.models.Operation;
+import io.swagger.v3.oas.models.media.Content;
+import io.swagger.v3.oas.models.media.Schema;
+import io.swagger.v3.oas.models.responses.ApiResponse;
+import io.swagger.v3.oas.models.responses.ApiResponses;
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springdoc.core.models.ControllerAdviceInfo;
+import org.springdoc.core.models.MethodAdviceInfo;
+import org.springdoc.core.models.MethodAttributes;
+import org.springdoc.core.properties.SpringDocConfigProperties;
+import org.springdoc.core.providers.JavadocProvider;
+import org.springdoc.core.providers.ObjectMapperProvider;
+import org.springdoc.core.utils.PropertyResolverUtils;
+import org.springdoc.core.utils.SpringDocAnnotationsUtils;
+import org.springframework.aop.support.AopUtils;
+import org.springframework.beans.BeansException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+import org.springframework.core.GenericTypeResolver;
+import org.springframework.core.MethodParameter;
+import org.springframework.core.ResolvableType;
+import org.springframework.core.annotation.AnnotatedElementUtils;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ProblemDetail;
+import org.springframework.util.CollectionUtils;
+import org.springframework.util.ReflectionUtils;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.method.ControllerAdviceBean;
+import org.springframework.web.method.HandlerMethod;
+
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
@@ -49,49 +91,6 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import com.fasterxml.jackson.annotation.JsonView;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import io.swagger.v3.core.util.AnnotationsUtils;
-import io.swagger.v3.oas.models.Components;
-import io.swagger.v3.oas.models.Operation;
-import io.swagger.v3.oas.models.media.Content;
-import io.swagger.v3.oas.models.media.Schema;
-import io.swagger.v3.oas.models.responses.ApiResponse;
-import io.swagger.v3.oas.models.responses.ApiResponses;
-import org.apache.commons.lang3.ArrayUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springdoc.core.models.ControllerAdviceInfo;
-import org.springdoc.core.models.MethodAdviceInfo;
-import org.springdoc.core.models.MethodAttributes;
-import org.springdoc.core.properties.SpringDocConfigProperties;
-import org.springdoc.core.providers.JavadocProvider;
-import org.springdoc.core.providers.ObjectMapperProvider;
-import org.springdoc.core.utils.PropertyResolverUtils;
-import org.springdoc.core.utils.SpringDocAnnotationsUtils;
-
-import org.springframework.aop.support.AopUtils;
-import org.springframework.beans.BeansException;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
-import org.springframework.core.GenericTypeResolver;
-import org.springframework.core.MethodParameter;
-import org.springframework.core.ResolvableType;
-import org.springframework.core.annotation.AnnotatedElementUtils;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ProblemDetail;
-import org.springframework.util.CollectionUtils;
-import org.springframework.util.ReflectionUtils;
-import org.springframework.web.bind.annotation.ControllerAdvice;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.method.ControllerAdviceBean;
-import org.springframework.web.method.HandlerMethod;
 
 import static java.util.Arrays.asList;
 import static org.springdoc.core.converters.ConverterUtils.isResponseTypeWrapper;
@@ -167,8 +166,8 @@ public class GenericResponseService implements ApplicationContextAware {
 	 * @param propertyResolverUtils     the property resolver utils
 	 */
 	public GenericResponseService(OperationService operationService,
-			SpringDocConfigProperties springDocConfigProperties,
-			PropertyResolverUtils propertyResolverUtils) {
+	                              SpringDocConfigProperties springDocConfigProperties,
+	                              PropertyResolverUtils propertyResolverUtils) {
 		super();
 		this.operationService = operationService;
 		this.springDocConfigProperties = springDocConfigProperties;
@@ -186,34 +185,33 @@ public class GenericResponseService implements ApplicationContextAware {
 	 * @param openapi31              the openapi 31
 	 */
 	public static void buildContentFromDoc(Components components, ApiResponses apiResponsesOp,
-			MethodAttributes methodAttributes,
-			io.swagger.v3.oas.annotations.responses.ApiResponse apiResponseAnnotations,
-			ApiResponse apiResponse, boolean openapi31) {
+	                                       MethodAttributes methodAttributes,
+	                                       io.swagger.v3.oas.annotations.responses.ApiResponse apiResponseAnnotations,
+	                                       ApiResponse apiResponse, boolean openapi31) {
 
 		methodAttributes.setUseReturnTypeSchema(apiResponseAnnotations.useReturnTypeSchema());
 		io.swagger.v3.oas.annotations.media.Content[] contentdoc = apiResponseAnnotations.content();
 		Optional<Content> optionalContent = getContent(contentdoc, new String[0],
-				methodAttributes.getMethodProduces(), null, components, methodAttributes.getJsonViewAnnotation(), openapi31);
+		                                               methodAttributes.getMethodProduces(), null, components,
+		                                               methodAttributes.getJsonViewAnnotation(), openapi31);
 		if (apiResponsesOp.containsKey(apiResponseAnnotations.responseCode())) {
 			// Merge with the existing content
 			Content existingContent = apiResponsesOp.get(apiResponseAnnotations.responseCode()).getContent();
 			if (optionalContent.isPresent()) {
 				Content newContent = optionalContent.get();
 				if (methodAttributes.isMethodOverloaded() && existingContent != null) {
-					Arrays.stream(methodAttributes.getMethodProduces()).filter(mediaTypeStr -> (newContent.get(mediaTypeStr) != null)).forEach(mediaTypeStr -> {
-						if (newContent.get(mediaTypeStr).getSchema() != null)
-							mergeSchema(existingContent, newContent.get(mediaTypeStr).getSchema(), mediaTypeStr);
-					});
+					Arrays.stream(methodAttributes.getMethodProduces())
+					      .filter(mediaTypeStr -> (newContent.get(mediaTypeStr) != null)).forEach(mediaTypeStr -> {
+						      if (newContent.get(mediaTypeStr).getSchema() != null)
+							      mergeSchema(existingContent, newContent.get(mediaTypeStr).getSchema(), mediaTypeStr);
+					      });
 					apiResponse.content(existingContent);
-				}
-				else
+				} else
 					apiResponse.content(newContent);
-			}
-			else {
+			} else {
 				apiResponse.content(existingContent);
 			}
-		}
-		else {
+		} else {
 			optionalContent.ifPresent(apiResponse::content);
 		}
 	}
@@ -228,8 +226,7 @@ public class GenericResponseService implements ApplicationContextAware {
 		try {
 			HttpStatus httpStatus = HttpStatus.valueOf(Integer.parseInt(httpCode));
 			apiResponse.setDescription(httpStatus.getReasonPhrase());
-		}
-		catch (IllegalArgumentException e) {
+		} catch (IllegalArgumentException e) {
 			apiResponse.setDescription(DEFAULT_DESCRIPTION);
 		}
 	}
@@ -253,7 +250,7 @@ public class GenericResponseService implements ApplicationContextAware {
 	 * @return the api responses
 	 */
 	public ApiResponses build(Components components, HandlerMethod handlerMethod, Operation operation,
-			MethodAttributes methodAttributes) {
+	                          MethodAttributes methodAttributes) {
 		Map<String, ApiResponse> genericMapResponse = getGenericMapResponse(handlerMethod);
 		if (springDocConfigProperties.isOverrideWithGenericResponse()) {
 			genericMapResponse = filterAndEnrichGenericMapResponseByDeclarations(handlerMethod, genericMapResponse);
@@ -265,7 +262,8 @@ public class GenericResponseService implements ApplicationContextAware {
 			apiResponsesFromDoc.forEach(apiResponses::addApiResponse);
 		// for each one build ApiResponse and add it to existing responses
 		// Fill api Responses
-		computeResponseFromDoc(components, handlerMethod.getReturnType(), apiResponses, methodAttributes, springDocConfigProperties.isOpenapi31(), methodAttributes.getLocale());
+		computeResponseFromDoc(components, handlerMethod.getReturnType(), apiResponses, methodAttributes,
+		                       springDocConfigProperties.isOpenapi31(), methodAttributes.getLocale());
 		buildApiResponses(components, handlerMethod.getReturnType(), apiResponses, methodAttributes);
 		return apiResponses;
 	}
@@ -278,7 +276,8 @@ public class GenericResponseService implements ApplicationContextAware {
 	 * @param genericMapResponse the default generic API responses
 	 * @return the filtered and enriched responses
 	 */
-	private Map<String, ApiResponse> filterAndEnrichGenericMapResponseByDeclarations(HandlerMethod handlerMethod, Map<String, ApiResponse> genericMapResponse) {
+	private Map<String, ApiResponse> filterAndEnrichGenericMapResponseByDeclarations(HandlerMethod handlerMethod,
+	                                                                                 Map<String, ApiResponse> genericMapResponse) {
 		if (operationService.getJavadocProvider() != null) {
 			JavadocProvider javadocProvider = operationService.getJavadocProvider();
 			for (Entry<String, ApiResponse> genericResponse : genericMapResponse.entrySet()) {
@@ -286,7 +285,8 @@ public class GenericResponseService implements ApplicationContextAware {
 				Collection<String> genericExceptions = (Collection<String>) extensions.get(EXTENSION_EXCEPTION_CLASSES);
 				for (Class<?> declaredException : handlerMethod.getMethod().getExceptionTypes()) {
 					if (genericExceptions.contains(declaredException.getName())) {
-						Map<String, String> javadocThrows = javadocProvider.getMethodJavadocThrows(handlerMethod.getMethod());
+						Map<String, String> javadocThrows =
+								javadocProvider.getMethodJavadocThrows(handlerMethod.getMethod());
 						String description = javadocThrows.get(declaredException.getName());
 						if (description == null)
 							description = javadocThrows.get(declaredException.getSimpleName());
@@ -318,14 +318,15 @@ public class GenericResponseService implements ApplicationContextAware {
 				objClz = AopUtils.getTargetClass(controllerAdvice);
 			ControllerAdviceInfo controllerAdviceInfo = new ControllerAdviceInfo(controllerAdvice);
 			Arrays.stream(ReflectionUtils.getAllDeclaredMethods(objClz))
-					.filter(m -> m.isAnnotationPresent(ExceptionHandler.class)
-							|| isResponseEntityExceptionHandlerMethod(m)
-					).forEach(methods::add);
+			      .filter(m -> m.isAnnotationPresent(ExceptionHandler.class)
+					      || isResponseEntityExceptionHandlerMethod(m)
+			             ).forEach(methods::add);
 			// for each one build ApiResponse and add it to existing responses
 			for (Method method : methods) {
 				if (!operationService.isHidden(method)) {
-					RequestMapping reqMappingMethod = AnnotatedElementUtils.findMergedAnnotation(method, RequestMapping.class);
-					String[] methodProduces = { springDocConfigProperties.getDefaultProducesMediaType() };
+					RequestMapping reqMappingMethod =
+							AnnotatedElementUtils.findMergedAnnotation(method, RequestMapping.class);
+					String[] methodProduces = {springDocConfigProperties.getDefaultProducesMediaType()};
 					if (reqMappingMethod != null)
 						methodProduces = reqMappingMethod.produces();
 					MethodParameter methodParameter = new MethodParameter(method, -1);
@@ -334,26 +335,32 @@ public class GenericResponseService implements ApplicationContextAware {
 					// get exceptions lists
 					Set<Class<?>> exceptions = getExceptionsFromExceptionHandler(methodParameter);
 					methodAdviceInfo.setExceptions(exceptions);
-					Map<String, ApiResponse> controllerAdviceInfoApiResponseMap = controllerAdviceInfo.getApiResponseMap();
+					Map<String, ApiResponse> controllerAdviceInfoApiResponseMap =
+							controllerAdviceInfo.getApiResponseMap();
 					ApiResponses apiResponsesOp = new ApiResponses();
-					MethodAttributes methodAttributes = new MethodAttributes(methodProduces, springDocConfigProperties.getDefaultConsumesMediaType(),
-							springDocConfigProperties.getDefaultProducesMediaType(), controllerAdviceInfoApiResponseMap, locale);
+					MethodAttributes methodAttributes = new MethodAttributes(methodProduces,
+					                                                         springDocConfigProperties.getDefaultConsumesMediaType(),
+					                                                         springDocConfigProperties.getDefaultProducesMediaType(),
+					                                                         controllerAdviceInfoApiResponseMap,
+					                                                         locale);
 					//calculate JsonView Annotation
-					methodAttributes.setJsonViewAnnotation(AnnotatedElementUtils.findMergedAnnotation(method, JsonView.class));
+					methodAttributes.setJsonViewAnnotation(
+							AnnotatedElementUtils.findMergedAnnotation(method, JsonView.class));
 					//use the javadoc return if present
 					if (operationService.getJavadocProvider() != null) {
 						JavadocProvider javadocProvider = operationService.getJavadocProvider();
-						methodAttributes.setJavadocReturn(javadocProvider.getMethodJavadocReturn(methodParameter.getMethod()));
+						methodAttributes.setJavadocReturn(
+								javadocProvider.getMethodJavadocReturn(methodParameter.getMethod()));
 					}
-					computeResponseFromDoc(components, methodParameter, apiResponsesOp, methodAttributes, springDocConfigProperties.isOpenapi31(), locale);
+					computeResponseFromDoc(components, methodParameter, apiResponsesOp, methodAttributes,
+					                       springDocConfigProperties.isOpenapi31(), locale);
 					buildGenericApiResponses(components, methodParameter, apiResponsesOp, methodAttributes);
 					methodAdviceInfo.setApiResponses(apiResponsesOp);
 				}
 			}
 			if (AnnotatedElementUtils.hasAnnotation(objClz, ControllerAdvice.class)) {
 				controllerAdviceInfos.add(controllerAdviceInfo);
-			}
-			else {
+			} else {
 				localExceptionHandlers.add(controllerAdviceInfo);
 			}
 		}
@@ -367,7 +374,10 @@ public class GenericResponseService implements ApplicationContextAware {
 	 */
 	private boolean isResponseEntityExceptionHandlerMethod(Method m) {
 		if (AnnotatedElementUtils.hasAnnotation(m.getDeclaringClass(), ControllerAdvice.class))
-			return responseEntityExceptionHandlerClass != null && (responseEntityExceptionHandlerClass.isAssignableFrom(m.getDeclaringClass()) && ReflectionUtils.findMethod(responseEntityExceptionHandlerClass, m.getName(), m.getParameterTypes()) != null);
+			return responseEntityExceptionHandlerClass != null &&
+					(responseEntityExceptionHandlerClass.isAssignableFrom(m.getDeclaringClass()) &&
+							ReflectionUtils.findMethod(responseEntityExceptionHandlerClass, m.getName(),
+							                           m.getParameterTypes()) != null);
 		return false;
 	}
 
@@ -382,10 +392,13 @@ public class GenericResponseService implements ApplicationContextAware {
 	 * @param locale           the locale
 	 * @return the map
 	 */
-	private Map<String, ApiResponse> computeResponseFromDoc(Components components, MethodParameter methodParameter, ApiResponses apiResponsesOp,
-			MethodAttributes methodAttributes, boolean openapi31, Locale locale) {
+	private Map<String, ApiResponse> computeResponseFromDoc(Components components, MethodParameter methodParameter,
+	                                                        ApiResponses apiResponsesOp,
+	                                                        MethodAttributes methodAttributes, boolean openapi31,
+	                                                        Locale locale) {
 		// Parsing documentation, if present
-		Set<io.swagger.v3.oas.annotations.responses.ApiResponse> responsesArray = getApiResponses(Objects.requireNonNull(methodParameter.getMethod()));
+		Set<io.swagger.v3.oas.annotations.responses.ApiResponse> responsesArray =
+				getApiResponses(Objects.requireNonNull(methodParameter.getMethod()));
 		if (!responsesArray.isEmpty()) {
 			methodAttributes.setWithApiResponseDoc(true);
 			for (io.swagger.v3.oas.annotations.responses.ApiResponse apiResponseAnnotations : responsesArray) {
@@ -396,20 +409,24 @@ public class GenericResponseService implements ApplicationContextAware {
 					apiResponsesOp.addApiResponse(apiResponseAnnotations.responseCode(), apiResponse);
 					continue;
 				}
-				apiResponse.setDescription(propertyResolverUtils.resolve(apiResponseAnnotations.description(), methodAttributes.getLocale()));
-				buildContentFromDoc(components, apiResponsesOp, methodAttributes, apiResponseAnnotations, apiResponse, openapi31);
-				Map<String, Object> extensions = AnnotationsUtils.getExtensions(propertyResolverUtils.isOpenapi31(), apiResponseAnnotations.extensions());
+				apiResponse.setDescription(propertyResolverUtils.resolve(apiResponseAnnotations.description(),
+				                                                         methodAttributes.getLocale()));
+				buildContentFromDoc(components, apiResponsesOp, methodAttributes, apiResponseAnnotations, apiResponse,
+				                    openapi31);
+				Map<String, Object> extensions = AnnotationsUtils.getExtensions(propertyResolverUtils.isOpenapi31(),
+				                                                                apiResponseAnnotations.extensions());
 				if (!CollectionUtils.isEmpty(extensions)) {
 					if (propertyResolverUtils.isResolveExtensionsProperties()) {
-						Map<String, Object> extensionsResolved = propertyResolverUtils.resolveExtensions(locale, extensions);
+						Map<String, Object> extensionsResolved =
+								propertyResolverUtils.resolveExtensions(locale, extensions);
 						extensionsResolved.forEach(apiResponse::addExtension);
-					}
-					else {
+					} else {
 						apiResponse.extensions(extensions);
 					}
 				}
-				SpringDocAnnotationsUtils.getHeaders(apiResponseAnnotations.headers(), components, methodAttributes.getJsonViewAnnotation(), openapi31)
-						.ifPresent(apiResponse::headers);
+				SpringDocAnnotationsUtils.getHeaders(apiResponseAnnotations.headers(), components,
+				                                     methodAttributes.getJsonViewAnnotation(), openapi31)
+				                         .ifPresent(apiResponse::headers);
 				apiResponsesOp.addApiResponse(httpCode, apiResponse);
 			}
 		}
@@ -424,25 +441,31 @@ public class GenericResponseService implements ApplicationContextAware {
 	 * @param apiResponsesOp   the api responses op
 	 * @param methodAttributes the method attributes
 	 */
-	private void buildGenericApiResponses(Components components, MethodParameter methodParameter, ApiResponses apiResponsesOp,
-			MethodAttributes methodAttributes) {
+	private void buildGenericApiResponses(Components components, MethodParameter methodParameter,
+	                                      ApiResponses apiResponsesOp,
+	                                      MethodAttributes methodAttributes) {
 		ApiResponse apiResponse = null;
 		if (!CollectionUtils.isEmpty(apiResponsesOp)) {
 			// API Responses at operation and @ApiResponse annotation
 			for (Entry<String, ApiResponse> entry : apiResponsesOp.entrySet()) {
 				String httpCode = entry.getKey();
 				apiResponse = entry.getValue();
-				buildApiResponses(components, methodParameter, apiResponsesOp, methodAttributes, httpCode, apiResponse, true);
+				buildApiResponses(components, methodParameter, apiResponsesOp, methodAttributes, httpCode, apiResponse,
+				                  true);
 			}
-		}
-		else {
+		} else {
 			// Use response parameters with no description filled - No documentation
 			// available
-			String httpCode = evaluateResponseStatus(methodParameter.getMethod(), Objects.requireNonNull(methodParameter.getMethod()).getClass(), true);
+			String httpCode = evaluateResponseStatus(methodParameter.getMethod(),
+			                                         Objects.requireNonNull(methodParameter.getMethod()).getClass(),
+			                                         true);
 			if (Objects.nonNull(httpCode)) {
-				apiResponse = methodAttributes.getGenericMapResponse().containsKey(httpCode) ? methodAttributes.getGenericMapResponse().get(httpCode)
+				apiResponse = methodAttributes.getGenericMapResponse()
+				                              .containsKey(httpCode) ? methodAttributes.getGenericMapResponse()
+				                                                                       .get(httpCode)
 						: new ApiResponse();
-				buildApiResponses(components, methodParameter, apiResponsesOp, methodAttributes, httpCode, apiResponse, true);
+				buildApiResponses(components, methodParameter, apiResponsesOp, methodAttributes, httpCode, apiResponse,
+				                  true);
 			}
 		}
 		if (apiResponse != null) {
@@ -467,30 +490,38 @@ public class GenericResponseService implements ApplicationContextAware {
 	 * @param methodAttributes the method attributes
 	 */
 	private void buildApiResponses(Components components, MethodParameter methodParameter, ApiResponses apiResponsesOp,
-			MethodAttributes methodAttributes) {
+	                               MethodAttributes methodAttributes) {
 		Map<String, ApiResponse> genericMapResponse = methodAttributes.getGenericMapResponse();
 		if (!CollectionUtils.isEmpty(apiResponsesOp) && apiResponsesOp.size() > genericMapResponse.size()) {
 			// API Responses at operation and @ApiResponse annotation
 			for (Entry<String, ApiResponse> entry : apiResponsesOp.entrySet()) {
 				String httpCode = entry.getKey();
-				boolean methodAttributesCondition = !methodAttributes.isMethodOverloaded() || (methodAttributes.isMethodOverloaded() && isValidHttpCode(httpCode, methodParameter));
+				boolean methodAttributesCondition = !methodAttributes.isMethodOverloaded() ||
+						(methodAttributes.isMethodOverloaded() && isValidHttpCode(httpCode, methodParameter));
 				if (!genericMapResponse.containsKey(httpCode) && methodAttributesCondition) {
 					ApiResponse apiResponse = entry.getValue();
-					buildApiResponses(components, methodParameter, apiResponsesOp, methodAttributes, httpCode, apiResponse, false);
+					buildApiResponses(components, methodParameter, apiResponsesOp, methodAttributes, httpCode,
+					                  apiResponse, false);
 				}
 			}
 			if (AnnotatedElementUtils.hasAnnotation(methodParameter.getMethod(), ResponseStatus.class)) {
 				// Handles the case with @ResponseStatus, if the specified response is not already handled explicitly
-				String httpCode = evaluateResponseStatus(methodParameter.getMethod(), Objects.requireNonNull(methodParameter.getMethod()).getClass(), false);
-				if (Objects.nonNull(httpCode) && !apiResponsesOp.containsKey(httpCode) && !apiResponsesOp.containsKey(ApiResponses.DEFAULT)) {
-					buildApiResponses(components, methodParameter, apiResponsesOp, methodAttributes, httpCode, new ApiResponse(), false);
+				String httpCode = evaluateResponseStatus(methodParameter.getMethod(),
+				                                         Objects.requireNonNull(methodParameter.getMethod()).getClass(),
+				                                         false);
+				if (Objects.nonNull(httpCode) && !apiResponsesOp.containsKey(httpCode) &&
+						!apiResponsesOp.containsKey(ApiResponses.DEFAULT)) {
+					buildApiResponses(components, methodParameter, apiResponsesOp, methodAttributes, httpCode,
+					                  new ApiResponse(), false);
 				}
 			}
-		}
-		else {
-			String httpCode = evaluateResponseStatus(methodParameter.getMethod(), Objects.requireNonNull(methodParameter.getMethod()).getClass(), false);
+		} else {
+			String httpCode = evaluateResponseStatus(methodParameter.getMethod(),
+			                                         Objects.requireNonNull(methodParameter.getMethod()).getClass(),
+			                                         false);
 			if (Objects.nonNull(httpCode))
-				buildApiResponses(components, methodParameter, apiResponsesOp, methodAttributes, httpCode, new ApiResponse(), false);
+				buildApiResponses(components, methodParameter, apiResponsesOp, methodAttributes, httpCode,
+				                  new ApiResponse(), false);
 		}
 	}
 
@@ -506,12 +537,15 @@ public class GenericResponseService implements ApplicationContextAware {
 		Set<io.swagger.v3.oas.annotations.responses.ApiResponses> apiResponsesDoc = AnnotatedElementUtils
 				.findAllMergedAnnotations(method, io.swagger.v3.oas.annotations.responses.ApiResponses.class);
 		Set<io.swagger.v3.oas.annotations.responses.ApiResponse> responses = apiResponsesDoc.stream()
-				.flatMap(x -> Stream.of(x.value())).collect(Collectors.toCollection(LinkedHashSet::new));
+		                                                                                    .flatMap(x -> Stream.of(
+				                                                                                    x.value())).collect(
+						Collectors.toCollection(LinkedHashSet::new));
 
 		Set<io.swagger.v3.oas.annotations.responses.ApiResponses> apiResponsesDocDeclaringClass = AnnotatedElementUtils
 				.findAllMergedAnnotations(declaringClass, io.swagger.v3.oas.annotations.responses.ApiResponses.class);
 		responses.addAll(
-				apiResponsesDocDeclaringClass.stream().flatMap(x -> Stream.of(x.value())).collect(Collectors.toCollection(LinkedHashSet::new)));
+				apiResponsesDocDeclaringClass.stream().flatMap(x -> Stream.of(x.value()))
+				                             .collect(Collectors.toCollection(LinkedHashSet::new)));
 
 		Set<io.swagger.v3.oas.annotations.responses.ApiResponse> apiResponseDoc = AnnotatedElementUtils
 				.findMergedRepeatableAnnotations(method, io.swagger.v3.oas.annotations.responses.ApiResponse.class);
@@ -519,7 +553,7 @@ public class GenericResponseService implements ApplicationContextAware {
 
 		Set<io.swagger.v3.oas.annotations.responses.ApiResponse> apiResponseDocDeclaringClass = AnnotatedElementUtils
 				.findMergedRepeatableAnnotations(declaringClass,
-						io.swagger.v3.oas.annotations.responses.ApiResponse.class);
+				                                 io.swagger.v3.oas.annotations.responses.ApiResponse.class);
 		responses.addAll(apiResponseDocDeclaringClass);
 
 		return responses;
@@ -534,8 +568,10 @@ public class GenericResponseService implements ApplicationContextAware {
 	 * @param jsonView        the json view
 	 * @return the content
 	 */
-	private Content buildContent(Components components, MethodParameter methodParameter, String[] methodProduces, JsonView jsonView) {
-		Type returnType = GenericTypeResolver.resolveType(methodParameter.getGenericParameterType(), methodParameter.getContainingClass());
+	private Content buildContent(Components components, MethodParameter methodParameter, String[] methodProduces,
+	                             JsonView jsonView) {
+		Type returnType = GenericTypeResolver.resolveType(methodParameter.getGenericParameterType(),
+		                                                  methodParameter.getContainingClass());
 		return buildContent(components, getParameterAnnotations(methodParameter), methodProduces, jsonView, returnType);
 	}
 
@@ -549,7 +585,8 @@ public class GenericResponseService implements ApplicationContextAware {
 	 * @param returnType     the return type
 	 * @return the content
 	 */
-	public Content buildContent(Components components, Annotation[] annotations, String[] methodProduces, JsonView jsonView, Type returnType) {
+	public Content buildContent(Components components, Annotation[] annotations, String[] methodProduces,
+	                            JsonView jsonView, Type returnType) {
 		Content content = new Content();
 		// if void, no content
 		if (isVoid(returnType))
@@ -575,7 +612,8 @@ public class GenericResponseService implements ApplicationContextAware {
 	 * @param annotations the annotations
 	 * @return the schema
 	 */
-	private Schema<?> calculateSchema(Components components, Type returnType, JsonView jsonView, Annotation[] annotations) {
+	private Schema<?> calculateSchema(Components components, Type returnType, JsonView jsonView,
+	                                  Annotation[] annotations) {
 		if (!isVoid(returnType) && !SpringDocAnnotationsUtils.isAnnotationToIgnore(returnType))
 			return extractSchema(components, returnType, jsonView, annotations, propertyResolverUtils.getSpecVersion());
 		return null;
@@ -589,7 +627,7 @@ public class GenericResponseService implements ApplicationContextAware {
 	 * @param mediaType      the media type
 	 */
 	private void setContent(String[] methodProduces, Content content,
-			io.swagger.v3.oas.models.media.MediaType mediaType) {
+	                        io.swagger.v3.oas.models.media.MediaType mediaType) {
 		Arrays.stream(methodProduces).forEach(mediaTypeStr -> content.addMediaType(mediaTypeStr, mediaType));
 	}
 
@@ -605,15 +643,15 @@ public class GenericResponseService implements ApplicationContextAware {
 	 * @param isGeneric        the is generic
 	 */
 	private void buildApiResponses(Components components, MethodParameter methodParameter, ApiResponses apiResponsesOp,
-			MethodAttributes methodAttributes, String httpCode, ApiResponse apiResponse, boolean isGeneric) {
+	                               MethodAttributes methodAttributes, String httpCode, ApiResponse apiResponse,
+	                               boolean isGeneric) {
 		// No documentation
 		if (StringUtils.isBlank(apiResponse.get$ref())) {
 			if (apiResponse.getContent() == null) {
 				Content content = buildContent(components, methodParameter, methodAttributes.getMethodProduces(),
-						methodAttributes.getJsonViewAnnotation());
+				                               methodAttributes.getJsonViewAnnotation());
 				apiResponse.setContent(content);
-			}
-			else if (CollectionUtils.isEmpty(apiResponse.getContent()))
+			} else if (CollectionUtils.isEmpty(apiResponse.getContent()))
 				apiResponse.setContent(null);
 			if (StringUtils.isBlank(apiResponse.getDescription())) {
 				// use javadoc
@@ -627,11 +665,14 @@ public class GenericResponseService implements ApplicationContextAware {
 				((isGeneric || methodAttributes.isMethodOverloaded()) && methodAttributes.isNoApiResponseDoc()))) {
 			// Merge with existing schema
 			Content existingContent = apiResponse.getContent();
-			Type type = GenericTypeResolver.resolveType(methodParameter.getGenericParameterType(), methodParameter.getContainingClass());
+			Type type = GenericTypeResolver.resolveType(methodParameter.getGenericParameterType(),
+			                                            methodParameter.getContainingClass());
 			Schema<?> schemaN = calculateSchema(components, type,
-					methodAttributes.getJsonViewAnnotation(), getParameterAnnotations(methodParameter));
+			                                    methodAttributes.getJsonViewAnnotation(),
+			                                    getParameterAnnotations(methodParameter));
 			if (schemaN != null && ArrayUtils.isNotEmpty(methodAttributes.getMethodProduces()))
-				Arrays.stream(methodAttributes.getMethodProduces()).forEach(mediaTypeStr -> mergeSchema(existingContent, schemaN, mediaTypeStr));
+				Arrays.stream(methodAttributes.getMethodProduces())
+				      .forEach(mediaTypeStr -> mergeSchema(existingContent, schemaN, mediaTypeStr));
 		}
 		if (springDocConfigProperties.isOverrideWithGenericResponse()
 				&& methodParameter.getExecutable().isAnnotationPresent(ExceptionHandler.class)) {
@@ -689,11 +730,14 @@ public class GenericResponseService implements ApplicationContextAware {
 	 * @param controllerAdvice      the controller advice
 	 * @return the controller advice bean
 	 */
-	private ControllerAdviceBean getControllerAdviceBean(List<ControllerAdviceBean> controllerAdviceBeans, Object controllerAdvice) {
+	private ControllerAdviceBean getControllerAdviceBean(List<ControllerAdviceBean> controllerAdviceBeans,
+	                                                     Object controllerAdvice) {
 		return controllerAdviceBeans.stream()
-				.filter(controllerAdviceBean -> (controllerAdviceBean.getBeanType() != null && controllerAdviceBean.getBeanType().isAssignableFrom(controllerAdvice.getClass())))
-				.findFirst()
-				.orElse(null);
+		                            .filter(controllerAdviceBean -> (controllerAdviceBean.getBeanType() != null &&
+				                            controllerAdviceBean.getBeanType()
+				                                                .isAssignableFrom(controllerAdvice.getClass())))
+		                            .findFirst()
+		                            .orElse(null);
 	}
 
 	/**
@@ -707,24 +751,37 @@ public class GenericResponseService implements ApplicationContextAware {
 		try {
 			Class<?> beanType = handlerMethod.getBeanType();
 			List<ControllerAdviceInfo> controllerAdviceInfosInThisBean = localExceptionHandlers.stream()
-					.filter(controllerInfo -> {
-						Class<?> objClz = controllerInfo.getControllerAdvice().getClass();
-						if (AopUtils.isAopProxy(controllerInfo.getControllerAdvice()))
-							objClz = AopUtils.getTargetClass(controllerInfo.getControllerAdvice());
-						return beanType.equals(objClz);
-					})
-					.toList();
+			                                                                                   .filter(controllerInfo -> {
+				                                                                                   Class<?> objClz =
+						                                                                                   controllerInfo.getControllerAdvice()
+						                                                                                                 .getClass();
+				                                                                                   if (AopUtils.isAopProxy(
+						                                                                                   controllerInfo.getControllerAdvice()))
+					                                                                                   objClz =
+							                                                                                   AopUtils.getTargetClass(
+									                                                                                   controllerInfo.getControllerAdvice());
+				                                                                                   return beanType.equals(
+						                                                                                   objClz);
+			                                                                                   })
+			                                                                                   .toList();
 
 			Map<String, ApiResponse> genericApiResponseMap = controllerAdviceInfosInThisBean.stream()
-					.map(ControllerAdviceInfo::getApiResponseMap)
-					.collect(LinkedHashMap::new, Map::putAll, Map::putAll);
+			                                                                                .map(ControllerAdviceInfo::getApiResponseMap)
+			                                                                                .collect(LinkedHashMap::new,
+			                                                                                         Map::putAll,
+			                                                                                         Map::putAll);
 
 			List<ControllerAdviceInfo> controllerAdviceInfosNotInThisBean = controllerAdviceInfos.stream()
-					.filter(controllerAdviceInfo ->
-							getControllerAdviceBean(controllerAdviceBeans, controllerAdviceInfo.getControllerAdvice())
-									.isApplicableToBeanType(beanType))
-					.filter(controllerAdviceInfo -> !beanType.equals(controllerAdviceInfo.getControllerAdvice().getClass()))
-					.toList();
+			                                                                                     .filter(controllerAdviceInfo ->
+					                                                                                             getControllerAdviceBean(
+							                                                                                             controllerAdviceBeans,
+							                                                                                             controllerAdviceInfo.getControllerAdvice())
+							                                                                                             .isApplicableToBeanType(
+									                                                                                             beanType))
+			                                                                                     .filter(controllerAdviceInfo -> !beanType.equals(
+					                                                                                     controllerAdviceInfo.getControllerAdvice()
+					                                                                                                         .getClass()))
+			                                                                                     .toList();
 
 			Class<?>[] methodExceptions = handlerMethod.getMethod().getExceptionTypes();
 
@@ -737,8 +794,10 @@ public class GenericResponseService implements ApplicationContextAware {
 					for (Class<?> exception : exceptions) {
 						if (isGlobalException(exception) ||
 								Arrays.stream(methodExceptions).anyMatch(methodException ->
-										methodException.isAssignableFrom(exception) ||
-												exception.isAssignableFrom(methodException))) {
+										                                         methodException.isAssignableFrom(
+												                                         exception) ||
+												                                         exception.isAssignableFrom(
+														                                         methodException))) {
 
 							addToGenericMap = true;
 							break;
@@ -757,15 +816,15 @@ public class GenericResponseService implements ApplicationContextAware {
 			LinkedHashMap<String, ApiResponse> genericApiResponsesClone;
 			try {
 				ObjectMapper objectMapper = ObjectMapperProvider.createJson(springDocConfigProperties);
-				genericApiResponsesClone = objectMapper.readValue(objectMapper.writeValueAsString(genericApiResponseMap), ApiResponses.class);
+				genericApiResponsesClone =
+						objectMapper.readValue(objectMapper.writeValueAsString(genericApiResponseMap),
+						                       ApiResponses.class);
 				return genericApiResponsesClone;
-			}
-			catch (JsonProcessingException e) {
+			} catch (JsonProcessingException e) {
 				LOGGER.warn("Json Processing Exception occurred: {}", e.getMessage());
 				return genericApiResponseMap;
 			}
-		}
-		finally {
+		} finally {
 			reentrantLock.unlock();
 		}
 	}
@@ -785,8 +844,9 @@ public class GenericResponseService implements ApplicationContextAware {
 			if (isHttpCodePresent(httpCode, responseSet))
 				result = true;
 			else {
-				final io.swagger.v3.oas.annotations.Operation apiOperation = AnnotatedElementUtils.findMergedAnnotation(method,
-						io.swagger.v3.oas.annotations.Operation.class);
+				final io.swagger.v3.oas.annotations.Operation apiOperation =
+						AnnotatedElementUtils.findMergedAnnotation(method,
+						                                           io.swagger.v3.oas.annotations.Operation.class);
 				if (apiOperation != null) {
 					responseSet = new HashSet<>(asList(apiOperation.responses()));
 					if (isHttpCodePresent(httpCode, responseSet))
@@ -806,8 +866,10 @@ public class GenericResponseService implements ApplicationContextAware {
 	 * @param responseSet the response set
 	 * @return the boolean
 	 */
-	private boolean isHttpCodePresent(String httpCode, Set<io.swagger.v3.oas.annotations.responses.ApiResponse> responseSet) {
-		return !responseSet.isEmpty() && responseSet.stream().anyMatch(apiResponseAnnotations -> httpCode.equals(apiResponseAnnotations.responseCode()));
+	private boolean isHttpCodePresent(String httpCode,
+	                                  Set<io.swagger.v3.oas.annotations.responses.ApiResponse> responseSet) {
+		return !responseSet.isEmpty() && responseSet.stream().anyMatch(
+				apiResponseAnnotations -> httpCode.equals(apiResponseAnnotations.responseCode()));
 	}
 
 	/**
@@ -826,8 +888,7 @@ public class GenericResponseService implements ApplicationContextAware {
 						exceptions.add(parameter.getType());
 					}
 				}
-			}
-			else {
+			} else {
 				exceptions.addAll(asList(exceptionHandler.value()));
 			}
 		}

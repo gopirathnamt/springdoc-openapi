@@ -33,4 +33,5 @@ import io.swagger.v3.oas.models.security.SecurityScheme;
  *
  * @author bnasslahsen
  */
-record SecuritySchemePair(String key, SecurityScheme securityScheme) {}
+record SecuritySchemePair(String key, SecurityScheme securityScheme) {
+}

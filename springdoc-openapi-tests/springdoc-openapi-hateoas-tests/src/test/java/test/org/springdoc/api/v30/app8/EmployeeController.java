@@ -25,11 +25,6 @@
  */
 package test.org.springdoc.api.v30.app8;
 
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.List;
-import java.util.stream.StreamSupport;
-
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.IanaLinkRelations;
@@ -43,6 +38,11 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.List;
+import java.util.stream.StreamSupport;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
@@ -69,14 +69,20 @@ class EmployeeController {
 	ResponseEntity<CollectionModel<EntityModel<Employee>>> findAll() {
 
 		List<EntityModel<Employee>> employees = StreamSupport.stream(repository.findAll().spliterator(), false)
-				.map(employee -> EntityModel.of(employee, //
-						linkTo(methodOn(EmployeeController.class).findOne(employee.getId())).withSelfRel(), //
-						linkTo(methodOn(EmployeeController.class).findAll()).withRel("employees"))) //
-				.toList();
+		                                                     .map(employee -> EntityModel.of(employee, //
+		                                                                                     linkTo(methodOn(
+				                                                                                     EmployeeController.class).findOne(
+				                                                                                     employee.getId())).withSelfRel(),
+		                                                                                     //
+		                                                                                     linkTo(methodOn(
+				                                                                                     EmployeeController.class).findAll()).withRel(
+				                                                                                     "employees"))) //
+		                                                     .toList();
 
 		return ResponseEntity.ok( //
-				CollectionModel.of(employees, //
-						linkTo(methodOn(EmployeeController.class).findAll()).withSelfRel()));
+		                          CollectionModel.of(employees, //
+		                                             linkTo(methodOn(
+				                                             EmployeeController.class).findAll()).withSelfRel()));
 	}
 
 	@PostMapping("/employees")
@@ -87,13 +93,14 @@ class EmployeeController {
 			Employee savedEmployee = repository.save(employee);
 
 			EntityModel<Employee> employeeResource = EntityModel.of(savedEmployee, //
-					linkTo(methodOn(EmployeeController.class).findOne(savedEmployee.getId())).withSelfRel());
+			                                                        linkTo(methodOn(EmployeeController.class).findOne(
+					                                                        savedEmployee.getId())).withSelfRel());
 
 			return ResponseEntity //
-					.created(new URI(employeeResource.getRequiredLink(IanaLinkRelations.SELF).getHref())) //
-					.body(employeeResource);
-		}
-		catch (URISyntaxException e) {
+			                      .created(new URI(employeeResource.getRequiredLink(IanaLinkRelations.SELF)
+			                                                       .getHref())) //
+			                      .body(employeeResource);
+		} catch (URISyntaxException e) {
 			return ResponseEntity.badRequest().body(null);
 		}
 	}
@@ -108,11 +115,13 @@ class EmployeeController {
 	ResponseEntity<EntityModel<Employee>> findOne(@PathVariable long id) {
 
 		return repository.findById(id) //
-				.map(employee -> EntityModel.of(employee, //
-						linkTo(methodOn(EmployeeController.class).findOne(employee.getId())).withSelfRel(), //
-						linkTo(methodOn(EmployeeController.class).findAll()).withRel("employees"))) //
-				.map(ResponseEntity::ok) //
-				.orElse(ResponseEntity.notFound().build());
+		                 .map(employee -> EntityModel.of(employee, //
+		                                                 linkTo(methodOn(EmployeeController.class).findOne(
+				                                                 employee.getId())).withSelfRel(), //
+		                                                 linkTo(methodOn(EmployeeController.class).findAll()).withRel(
+				                                                 "employees"))) //
+		                 .map(ResponseEntity::ok) //
+		                 .orElse(ResponseEntity.notFound().build());
 	}
 
 	/**
@@ -124,7 +133,8 @@ class EmployeeController {
 	 */
 	@PutMapping("/employees/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	ResponseEntity<Void> updateEmployee(@RequestBody Employee employee, @PathVariable long id) throws URISyntaxException {
+	ResponseEntity<Void> updateEmployee(@RequestBody Employee employee, @PathVariable long id) throws
+			URISyntaxException {
 
 		Employee employeeToUpdate = employee;
 		employeeToUpdate.setId(id);

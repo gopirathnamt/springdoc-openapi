@@ -26,13 +26,12 @@
 
 package org.springdoc.core.configuration.oauth2;
 
-import java.util.List;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
-
 import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationServerMetadataClaimNames;
 import org.springframework.security.oauth2.server.authorization.oidc.OidcProviderMetadataClaimNames;
+
+import java.util.List;
 
 /**
  * The type Spring doc OpenID Provider Configuration

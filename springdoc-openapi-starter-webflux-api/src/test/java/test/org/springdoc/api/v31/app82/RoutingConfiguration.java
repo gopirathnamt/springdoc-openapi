@@ -47,19 +47,24 @@ public class RoutingConfiguration {
 	@Bean
 	public RouterFunction<ServerResponse> monoRouterFunction(UserHandler userHandler) {
 		return route(GET("/api/user/index").and(accept(APPLICATION_JSON)), userHandler::getAll)
-				.withAttribute(OPERATION_ATTRIBUTE, operationBuilder().beanClass(UserRepository.class).beanMethod("getAllUsers"))
+				.withAttribute(OPERATION_ATTRIBUTE,
+				               operationBuilder().beanClass(UserRepository.class).beanMethod("getAllUsers"))
 
 				.and(route(GET("/api/user/{id}").and(accept(APPLICATION_JSON)), userHandler::getUser)
-						.withAttribute(OPERATION_ATTRIBUTE, operationBuilder().beanClass(UserRepository.class).beanMethod("getUserById")))
+						     .withAttribute(OPERATION_ATTRIBUTE, operationBuilder().beanClass(UserRepository.class)
+						                                                           .beanMethod("getUserById")))
 
 				.and(route(POST("/api/user/post").and(accept(APPLICATION_JSON)), userHandler::postUser)
-						.withAttribute(OPERATION_ATTRIBUTE, operationBuilder().beanClass(UserRepository.class).beanMethod("saveUser")))
+						     .withAttribute(OPERATION_ATTRIBUTE,
+						                    operationBuilder().beanClass(UserRepository.class).beanMethod("saveUser")))
 
 				.and(route(PUT("/api/user/put").and(accept(APPLICATION_JSON)), userHandler::putUser)
-						.withAttribute(OPERATION_ATTRIBUTE, operationBuilder().beanClass(UserRepository.class).beanMethod("putUser")))
+						     .withAttribute(OPERATION_ATTRIBUTE,
+						                    operationBuilder().beanClass(UserRepository.class).beanMethod("putUser")))
 
 				.and(route(DELETE("/api/user/delete/{id}").and(accept(APPLICATION_JSON)), userHandler::deleteUser)
-						.withAttribute(OPERATION_ATTRIBUTE, operationBuilder().beanClass(UserRepository.class).beanMethod("deleteUser")));
+						     .withAttribute(OPERATION_ATTRIBUTE, operationBuilder().beanClass(UserRepository.class)
+						                                                           .beanMethod("deleteUser")));
 	}
 
 }

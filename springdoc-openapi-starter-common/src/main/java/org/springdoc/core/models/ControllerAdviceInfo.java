@@ -25,14 +25,13 @@
  */
 package org.springdoc.core.models;
 
+import io.swagger.v3.oas.models.responses.ApiResponse;
+import org.springframework.util.CollectionUtils;
+
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-
-import io.swagger.v3.oas.models.responses.ApiResponse;
-
-import org.springframework.util.CollectionUtils;
 
 /**
  * The type Controller advice info.

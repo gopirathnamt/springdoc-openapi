@@ -27,31 +27,31 @@ package test.org.springdoc.api.v30.app110;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
-import test.org.springdoc.api.v30.AbstractSpringDocV30Test;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.TestPropertySource;
+import test.org.springdoc.api.v30.AbstractSpringDocV30Test;
 
 @TestPropertySource(properties = {
 		"application-description=description",
-		"application-version=v1" })
+		"application-version=v1"})
 public class SpringDocApp110Test extends AbstractSpringDocV30Test {
 
 	@SpringBootApplication
 	static class SpringDocTestApp {
 
 		@Bean
-		public OpenAPI customOpenAPI(@Value("${application-description}") String appDescription, @Value("${application-version}") String appVersion) {
+		public OpenAPI customOpenAPI(@Value("${application-description}") String appDescription,
+		                             @Value("${application-version}") String appVersion) {
 
 			return new OpenAPI()
 					.info(new Info()
-							.title("sample application API")
-							.version(appVersion)
-							.description(appDescription)
-							.termsOfService("http://swagger.io/terms/")
-							.license(new License().name("Apache 2.0").url("http://springdoc.org")));
+							      .title("sample application API")
+							      .version(appVersion)
+							      .description(appDescription)
+							      .termsOfService("http://swagger.io/terms/")
+							      .license(new License().name("Apache 2.0").url("http://springdoc.org")));
 		}
 	}
 }

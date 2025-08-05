@@ -29,10 +29,9 @@ package test.org.springdoc.api.v30.app42;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.media.StringSchema;
-import test.org.springdoc.api.v30.AbstractSpringDocTest;
-
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import test.org.springdoc.api.v30.AbstractSpringDocTest;
 
 /**
  * The type Spring doc app 42 test.

@@ -26,9 +26,8 @@ package test.org.springdoc.api.v30.app81;
 
 import org.junit.jupiter.api.Test;
 import org.springdoc.core.utils.Constants;
-import test.org.springdoc.api.v30.AbstractSpringDocV30Test;
-
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import test.org.springdoc.api.v30.AbstractSpringDocV30Test;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.is;
@@ -42,30 +41,31 @@ public class SpringDocApp81Test extends AbstractSpringDocV30Test {
 	@Test
 	protected void testApp() throws Exception {
 		mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL)).andExpect(status().isOk())
-				.andExpect(jsonPath("$.openapi", is("3.0.1")))
-				.andExpect(jsonPath("$.paths./api.get.tags[0]", containsString("hello-controller")))
-				.andExpect(jsonPath("$.paths./api.get.operationId", startsWith("test")))
-				.andExpect(jsonPath("$.paths./api.get.responses.200.content.['*/*'].schema.type", is("string")))
-				.andExpect(jsonPath("$.paths./api.post.tags[0]", containsString("hello-controller")))
-				.andExpect(jsonPath("$.paths./api.post.operationId", startsWith("test")))
-				.andExpect(jsonPath("$.paths./api.post.responses.200.content.['*/*'].schema.type", is("string")))
-				.andExpect(jsonPath("$.paths./api.put.tags[0]", containsString("hello-controller")))
-				.andExpect(jsonPath("$.paths./api.put.operationId", startsWith("test")))
-				.andExpect(jsonPath("$.paths./api.put.responses.200.content.['*/*'].schema.type", is("string")))
-				.andExpect(jsonPath("$.paths./api.patch.tags[0]", containsString("hello-controller")))
-				.andExpect(jsonPath("$.paths./api.patch.operationId", startsWith("test")))
-				.andExpect(jsonPath("$.paths./api.patch.responses.200.content.['*/*'].schema.type", is("string")))
-				.andExpect(jsonPath("$.paths./api.delete.tags[0]", containsString("hello-controller")))
-				.andExpect(jsonPath("$.paths./api.delete.operationId", startsWith("test")))
-				.andExpect(jsonPath("$.paths./api.delete.responses.200.content.['*/*'].schema.type", is("string")))
-				.andExpect(jsonPath("$.paths./api.options.tags[0]", containsString("hello-controller")))
-				.andExpect(jsonPath("$.paths./api.options.operationId", startsWith("test")))
-				.andExpect(jsonPath("$.paths./api.options.responses.200.content.['*/*'].schema.type", is("string")))
-				.andExpect(jsonPath("$.paths./api.head.tags[0]", containsString("hello-controller")))
-				.andExpect(jsonPath("$.paths./api.head.operationId", startsWith("test")))
-				.andExpect(jsonPath("$.paths./api.head.responses.200.content.['*/*'].schema.type", is("string")));
+		       .andExpect(jsonPath("$.openapi", is("3.0.1")))
+		       .andExpect(jsonPath("$.paths./api.get.tags[0]", containsString("hello-controller")))
+		       .andExpect(jsonPath("$.paths./api.get.operationId", startsWith("test")))
+		       .andExpect(jsonPath("$.paths./api.get.responses.200.content.['*/*'].schema.type", is("string")))
+		       .andExpect(jsonPath("$.paths./api.post.tags[0]", containsString("hello-controller")))
+		       .andExpect(jsonPath("$.paths./api.post.operationId", startsWith("test")))
+		       .andExpect(jsonPath("$.paths./api.post.responses.200.content.['*/*'].schema.type", is("string")))
+		       .andExpect(jsonPath("$.paths./api.put.tags[0]", containsString("hello-controller")))
+		       .andExpect(jsonPath("$.paths./api.put.operationId", startsWith("test")))
+		       .andExpect(jsonPath("$.paths./api.put.responses.200.content.['*/*'].schema.type", is("string")))
+		       .andExpect(jsonPath("$.paths./api.patch.tags[0]", containsString("hello-controller")))
+		       .andExpect(jsonPath("$.paths./api.patch.operationId", startsWith("test")))
+		       .andExpect(jsonPath("$.paths./api.patch.responses.200.content.['*/*'].schema.type", is("string")))
+		       .andExpect(jsonPath("$.paths./api.delete.tags[0]", containsString("hello-controller")))
+		       .andExpect(jsonPath("$.paths./api.delete.operationId", startsWith("test")))
+		       .andExpect(jsonPath("$.paths./api.delete.responses.200.content.['*/*'].schema.type", is("string")))
+		       .andExpect(jsonPath("$.paths./api.options.tags[0]", containsString("hello-controller")))
+		       .andExpect(jsonPath("$.paths./api.options.operationId", startsWith("test")))
+		       .andExpect(jsonPath("$.paths./api.options.responses.200.content.['*/*'].schema.type", is("string")))
+		       .andExpect(jsonPath("$.paths./api.head.tags[0]", containsString("hello-controller")))
+		       .andExpect(jsonPath("$.paths./api.head.operationId", startsWith("test")))
+		       .andExpect(jsonPath("$.paths./api.head.responses.200.content.['*/*'].schema.type", is("string")));
 	}
 
 	@SpringBootApplication
-	static class SpringDocTestApp {}
+	static class SpringDocTestApp {
+	}
 }

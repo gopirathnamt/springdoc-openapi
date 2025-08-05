@@ -26,10 +26,9 @@
 
 package test.org.springdoc.api.v31.app173;
 
-import test.org.springdoc.api.v31.AbstractSpringDocTest;
-
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.test.context.TestPropertySource;
+import test.org.springdoc.api.v31.AbstractSpringDocTest;
 
 /**
  * The type Spring doc app 173 test.

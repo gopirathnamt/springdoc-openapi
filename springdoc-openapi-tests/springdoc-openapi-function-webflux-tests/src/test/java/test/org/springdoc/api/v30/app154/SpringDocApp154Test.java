@@ -20,12 +20,6 @@
 
 package test.org.springdoc.api.v30.app154;
 
-import java.util.function.Function;
-import java.util.function.Supplier;
-
-import reactor.core.publisher.Flux;
-import test.org.springdoc.api.v30.AbstractSpringDocFunctionTest;
-
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.function.context.config.ContextFunctionCatalogAutoConfiguration;
 import org.springframework.cloud.function.web.mvc.ReactorAutoConfiguration;
@@ -34,13 +28,18 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.TestPropertySource;
+import reactor.core.publisher.Flux;
+import test.org.springdoc.api.v30.AbstractSpringDocFunctionTest;
 
-@Import({ ReactorAutoConfiguration.class, FunctionExporterAutoConfiguration.class, ContextFunctionCatalogAutoConfiguration.class })
+import java.util.function.Function;
+import java.util.function.Supplier;
+
+@Import({ReactorAutoConfiguration.class, FunctionExporterAutoConfiguration.class, ContextFunctionCatalogAutoConfiguration.class})
 @TestPropertySource(properties = "spring.cloud.function.web.path=/toto")
 public class SpringDocApp154Test extends AbstractSpringDocFunctionTest {
 
 	@SpringBootApplication
-	@ComponentScan(basePackages = { "org.springdoc", "test.org.springdoc.api.v30.app154" })
+	@ComponentScan(basePackages = {"org.springdoc", "test.org.springdoc.api.v30.app154"})
 	static class SpringDocTestApp {
 		@Bean
 		public Function<String, String> reverseString() {
@@ -64,7 +63,7 @@ public class SpringDocApp154Test extends AbstractSpringDocFunctionTest {
 
 		@Bean
 		public Supplier<Flux<String>> words() {
-			return () -> Flux.fromArray(new String[] { "foo", "bar" });
+			return () -> Flux.fromArray(new String[]{"foo", "bar"});
 		}
 	}
 

@@ -24,24 +24,24 @@
 
 package test.org.springdoc.api.v31.app114;
 
-import java.math.BigDecimal;
-
-import javax.money.MonetaryAmount;
-
 import org.springdoc.core.utils.SpringDocUtils;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import test.org.springdoc.api.v31.AbstractSpringDocTest;
 
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import javax.money.MonetaryAmount;
+import java.math.BigDecimal;
 
 
 public class SpringDocApp114Test extends AbstractSpringDocTest {
 
 	static {
 		SpringDocUtils.getConfig()
-				.removeFromSchemaMap(BigDecimal.class)
-				.replaceWithClass(MonetaryAmount.class, org.springdoc.core.converters.models.MonetaryAmount.class);
+		              .removeFromSchemaMap(BigDecimal.class)
+		              .replaceWithClass(MonetaryAmount.class,
+		                                org.springdoc.core.converters.models.MonetaryAmount.class);
 	}
 
 	@SpringBootApplication
-	static class SpringDocTestApp {}
+	static class SpringDocTestApp {
+	}
 }

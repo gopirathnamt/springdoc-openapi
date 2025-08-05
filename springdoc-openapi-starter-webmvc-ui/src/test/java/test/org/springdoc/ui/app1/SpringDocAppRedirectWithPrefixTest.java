@@ -21,10 +21,9 @@ package test.org.springdoc.ui.app1;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.Test;
 import org.springdoc.core.utils.Constants;
-import test.org.springdoc.ui.AbstractSpringDocTest;
-
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.test.context.TestPropertySource;
+import test.org.springdoc.ui.AbstractSpringDocTest;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -41,14 +40,16 @@ public class SpringDocAppRedirectWithPrefixTest extends AbstractSpringDocTest {
 	void shouldRedirectWithPrefix() throws Exception {
 
 		mockMvc.perform(get("/documentation/v3/api-docs/swagger-config"))
-				.andExpect(status().isOk())
-				.andExpect(jsonPath("validatorUrl", equalTo("")))
-				.andExpect(jsonPath("oauth2RedirectUrl", equalTo("http://localhost/documentation/swagger-ui/oauth2-redirect.html")));
+		       .andExpect(status().isOk())
+		       .andExpect(jsonPath("validatorUrl", equalTo("")))
+		       .andExpect(jsonPath("oauth2RedirectUrl",
+		                           equalTo("http://localhost/documentation/swagger-ui/oauth2-redirect.html")));
 
 		super.checkJS("results/app1-prefix", "/documentation" + Constants.SWAGGER_INITIALIZER_URL, StringUtils.EMPTY);
 	}
 
 	@SpringBootApplication
-	static class SpringDocTestApp {}
+	static class SpringDocTestApp {
+	}
 
 }

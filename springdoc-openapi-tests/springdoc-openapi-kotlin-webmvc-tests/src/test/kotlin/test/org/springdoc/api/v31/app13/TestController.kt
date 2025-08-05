@@ -27,23 +27,23 @@ import org.springframework.web.bind.annotation.RestController
 
 @Schema(description = "Generic description")
 data class KeyValue(
-	val key: String,
-	val value: String,
+    val key: String,
+    val value: String,
 )
 
 @Schema
 data class SomeDTO(
-	@Schema(description = "Description A") val fieldA: KeyValue,
-	@Schema(description = "Description B") val fieldB: KeyValue,
+    @Schema(description = "Description A") val fieldA: KeyValue,
+    @Schema(description = "Description B") val fieldB: KeyValue,
 )
 
 
 @RestController
 @RequestMapping("/test")
 class TestController {
-	@PostMapping("/test")
-	fun create(@RequestBody some: SomeDTO) {
+    @PostMapping("/test")
+    fun create(@RequestBody some: SomeDTO) {
 
-	}
+    }
 }
 

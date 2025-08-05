@@ -23,19 +23,19 @@
  */
 package test.org.springdoc.api.v31.app137;
 
-import test.org.springdoc.api.v31.AbstractSpringDocTest;
-
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.test.context.TestPropertySource;
+import test.org.springdoc.api.v31.AbstractSpringDocTest;
 
 
 /**
  * Tests Spring meta-annotations as method parameters
  */
-@TestPropertySource(properties = { "test.server=http://test.toto.com", "test.desc=toto desc" })
+@TestPropertySource(properties = {"test.server=http://test.toto.com", "test.desc=toto desc"})
 public class SpringDocApp137Test extends AbstractSpringDocTest {
 
 	@SpringBootApplication
-	static class SpringDocTestApp {}
+	static class SpringDocTestApp {
+	}
 
 }

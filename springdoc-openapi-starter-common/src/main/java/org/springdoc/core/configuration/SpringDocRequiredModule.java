@@ -56,8 +56,8 @@ public class SpringDocRequiredModule extends SimpleModule {
 				Schema.RequiredMode requiredMode = schemaAnnotation.requiredMode();
 				if (schemaAnnotation.required() || requiredMode == Schema.RequiredMode.REQUIRED) {
 					return true;
-				}
-				else if (requiredMode == Schema.RequiredMode.NOT_REQUIRED || StringUtils.isNotEmpty(schemaAnnotation.defaultValue())) {
+				} else if (requiredMode == Schema.RequiredMode.NOT_REQUIRED ||
+						StringUtils.isNotEmpty(schemaAnnotation.defaultValue())) {
 					return false;
 				}
 			}

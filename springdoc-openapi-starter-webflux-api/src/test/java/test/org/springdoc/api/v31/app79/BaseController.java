@@ -26,12 +26,11 @@
 
 package test.org.springdoc.api.v31.app79;
 
-import java.util.List;
-
-import reactor.core.publisher.Mono;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import reactor.core.publisher.Mono;
+
+import java.util.List;
 
 public abstract class BaseController<TClientModel extends BaseClientModel> {
 	@GetMapping("/test1")

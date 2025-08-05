@@ -26,10 +26,10 @@
 
 package test.org.springdoc.api.v31.app7.application;
 
+import org.springframework.stereotype.Service;
+
 import java.util.Optional;
 import java.util.UUID;
-
-import org.springframework.stereotype.Service;
 
 @Service
 public class FooService {

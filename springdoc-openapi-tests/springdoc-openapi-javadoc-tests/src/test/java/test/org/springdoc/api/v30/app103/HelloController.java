@@ -30,7 +30,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Encoding;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
-
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -62,7 +61,7 @@ class HelloController {
 	public String postMyRequestBody(
 			@RequestPart("body") ExampleBody body,
 			@RequestParam("file") MultipartFile file
-	) {
+	                               ) {
 		return null;
 	}
 

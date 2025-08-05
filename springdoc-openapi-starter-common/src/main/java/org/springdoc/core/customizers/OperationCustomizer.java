@@ -27,7 +27,6 @@
 package org.springdoc.core.customizers;
 
 import io.swagger.v3.oas.models.Operation;
-
 import org.springframework.web.method.HandlerMethod;
 
 /**

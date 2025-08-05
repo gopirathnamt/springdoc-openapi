@@ -19,10 +19,9 @@
 package test.org.springdoc.ui.app32;
 
 import org.junit.jupiter.api.Test;
-import test.org.springdoc.ui.AbstractSpringDocTest;
-
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.test.context.TestPropertySource;
+import test.org.springdoc.ui.AbstractSpringDocTest;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.Matchers.containsString;
@@ -43,35 +42,36 @@ public class SpringDocBehindProxyWithCustomUIPathTest extends AbstractSpringDocT
 	@Test
 	void shouldRedirectSwaggerUIFromCustomPath() throws Exception {
 		mockMvc.perform(get("/foo/documentation/swagger.html")
-						.header("X-Forwarded-Prefix", X_FORWARD_PREFIX))
-				.andExpect(status().isFound())
-				.andExpect(header().string("Location", "/path/prefix/foo/documentation/swagger-ui/index.html"));
+				                .header("X-Forwarded-Prefix", X_FORWARD_PREFIX))
+		       .andExpect(status().isFound())
+		       .andExpect(header().string("Location", "/path/prefix/foo/documentation/swagger-ui/index.html"));
 	}
 
 	@Test
 	void shouldReturnCorrectInitializerJS() throws Exception {
 		mockMvc.perform(get("/foo/documentation/swagger-ui/swagger-initializer.js")
-						.header("X-Forwarded-Prefix", X_FORWARD_PREFIX))
-				.andExpect(status().isOk())
-				.andExpect(content().string(
-						containsString("\"configUrl\" : \"/path/prefix/v3/api-docs/swagger-config\",")
-				));
+				                .header("X-Forwarded-Prefix", X_FORWARD_PREFIX))
+		       .andExpect(status().isOk())
+		       .andExpect(content().string(
+				       containsString("\"configUrl\" : \"/path/prefix/v3/api-docs/swagger-config\",")
+		                                  ));
 	}
 
 	@Test
 	void shouldCalculateUrlsBehindProxy() throws Exception {
 		mockMvc.perform(get("/v3/api-docs/swagger-config")
-						.header("X-Forwarded-Prefix", X_FORWARD_PREFIX))
-				.andExpect(status().isOk())
-				.andExpect(jsonPath("url",
-						equalTo("/path/prefix/v3/api-docs")
-				))
-				.andExpect(jsonPath("configUrl",
-						equalTo("/path/prefix/v3/api-docs/swagger-config")
-				));
+				                .header("X-Forwarded-Prefix", X_FORWARD_PREFIX))
+		       .andExpect(status().isOk())
+		       .andExpect(jsonPath("url",
+		                           equalTo("/path/prefix/v3/api-docs")
+		                          ))
+		       .andExpect(jsonPath("configUrl",
+		                           equalTo("/path/prefix/v3/api-docs/swagger-config")
+		                          ));
 	}
 
 	@SpringBootApplication
-	static class SpringDocTestApp {}
+	static class SpringDocTestApp {
+	}
 
 }

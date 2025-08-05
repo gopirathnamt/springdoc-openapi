@@ -1,14 +1,13 @@
 package test.org.springdoc.api.v30.app221;
 
-import java.io.IOException;
-
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import test.org.springdoc.api.v30.app221.HomeController.HelloDto;
 import test.org.springdoc.api.v30.app221.HomeController.HelloUploadDto;
 
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import java.io.IOException;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;

@@ -26,14 +26,14 @@
 
 package org.springdoc.core.fn.builders.apiresponse;
 
-import java.lang.annotation.Annotation;
-
 import io.swagger.v3.oas.annotations.extensions.Extension;
 import io.swagger.v3.oas.annotations.headers.Header;
 import io.swagger.v3.oas.annotations.links.Link;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.apache.commons.lang3.ArrayUtils;
+
+import java.lang.annotation.Annotation;
 
 /**
  * The type Api response builder.
@@ -161,7 +161,11 @@ public class Builder {
 	 * @return the api response builder
 	 */
 	public Builder implementation(Class clazz) {
-		this.content = ArrayUtils.add(this.content, org.springdoc.core.fn.builders.content.Builder.contentBuilder().schema(org.springdoc.core.fn.builders.schema.Builder.schemaBuilder().implementation(clazz)).build());
+		this.content = ArrayUtils.add(this.content, org.springdoc.core.fn.builders.content.Builder.contentBuilder()
+		                                                                                          .schema(org.springdoc.core.fn.builders.schema.Builder.schemaBuilder()
+		                                                                                                                                               .implementation(
+				                                                                                                                                               clazz))
+		                                                                                          .build());
 		return this;
 	}
 
@@ -172,7 +176,12 @@ public class Builder {
 	 * @return the api response builder
 	 */
 	public Builder implementationArray(Class clazz) {
-		this.content = ArrayUtils.add(this.content, org.springdoc.core.fn.builders.content.Builder.contentBuilder().array(org.springdoc.core.fn.builders.arrayschema.Builder.arraySchemaBuilder().schema(org.springdoc.core.fn.builders.schema.Builder.schemaBuilder().implementation(clazz))).build());
+		this.content = ArrayUtils.add(this.content, org.springdoc.core.fn.builders.content.Builder.contentBuilder()
+		                                                                                          .array(org.springdoc.core.fn.builders.arrayschema.Builder.arraySchemaBuilder()
+		                                                                                                                                                   .schema(org.springdoc.core.fn.builders.schema.Builder.schemaBuilder()
+		                                                                                                                                                                                                        .implementation(
+				                                                                                                                                                                                                        clazz)))
+		                                                                                          .build());
 		return this;
 	}
 

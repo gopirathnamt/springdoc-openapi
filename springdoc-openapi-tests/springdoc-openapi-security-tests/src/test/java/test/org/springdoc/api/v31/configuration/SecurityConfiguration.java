@@ -43,7 +43,7 @@ class SecurityConfiguration {
 	@Lazy(false)
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		http.securityMatcher("/**")
-				.authorizeHttpRequests((requests) -> requests.requestMatchers("/**").permitAll());
+		    .authorizeHttpRequests((requests) -> requests.requestMatchers("/**").permitAll());
 		return http.build();
 	}
 

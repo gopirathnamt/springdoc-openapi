@@ -26,10 +26,10 @@
 
 package test.org.springdoc.api.v31.app141;
 
+import org.springframework.stereotype.Component;
+
 import java.util.Arrays;
 import java.util.List;
-
-import org.springframework.stereotype.Component;
 
 /**
  * The type Book repository.
@@ -44,7 +44,7 @@ class BookRepository {
 	 * @return the list
 	 */
 	List<Book> findByAuthor(String author) {
-		Book[] books = { new Book("1", "title1", "author1") };
+		Book[] books = {new Book("1", "title1", "author1")};
 		return Arrays.asList(books);
 	}
 
@@ -54,7 +54,7 @@ class BookRepository {
 	 * @return the list
 	 */
 	List<Book> findAll() {
-		Book[] books = { new Book("2", "title2", "author2") };
+		Book[] books = {new Book("2", "title2", "author2")};
 		return Arrays.asList(books);
 	}
 }

@@ -19,10 +19,9 @@
 package test.org.springdoc.ui.app25;
 
 import org.junit.jupiter.api.Test;
-import test.org.springdoc.ui.AbstractSpringDocTest;
-
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.test.context.TestPropertySource;
+import test.org.springdoc.ui.AbstractSpringDocTest;
 
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -39,16 +38,17 @@ public class SpringDocApp25Test extends AbstractSpringDocTest {
 	@Test
 	void shouldRedirectWithConfiguredParams() throws Exception {
 		mockMvc.perform(get("/swagger-ui.html"))
-				.andExpect(status().isFound())
-				.andExpect(header().string("Location", "/swagger-ui/index.html"));
+		       .andExpect(status().isFound())
+		       .andExpect(header().string("Location", "/swagger-ui/index.html"));
 
 		mockMvc.perform(get("/baf/batz/swagger-config"))
-				.andExpect(status().isOk()).andExpect(jsonPath("$.validatorUrl", is("/foo/validate")));
+		       .andExpect(status().isOk()).andExpect(jsonPath("$.validatorUrl", is("/foo/validate")));
 
 		super.chekJS();
 	}
 
 	@SpringBootApplication
-	static class SpringDocTestApp {}
+	static class SpringDocTestApp {
+	}
 
 }

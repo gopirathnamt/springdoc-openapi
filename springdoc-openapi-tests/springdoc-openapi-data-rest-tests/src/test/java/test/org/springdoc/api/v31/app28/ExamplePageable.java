@@ -28,7 +28,6 @@ package test.org.springdoc.api.v31.app28;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.Parameter;
-
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 

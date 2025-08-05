@@ -26,8 +26,6 @@
 
 package test.org.springdoc.api.v30.app11;
 
-import java.util.List;
-
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -38,6 +36,8 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 /**
  * The type Hello controller.
@@ -62,7 +62,7 @@ class HelloController {
 	 * @param file the file
 	 * @return the string
 	 */
-	@RequestMapping(value = "/tracks", method = RequestMethod.POST, consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
+	@RequestMapping(value = "/tracks", method = RequestMethod.POST, consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
 	public @ResponseBody
 	String postTrack(@RequestParam("file") MultipartFile file) {
 		return "redirect:/";

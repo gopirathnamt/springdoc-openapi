@@ -26,15 +26,14 @@
 
 package test.org.springdoc.api.v30.app85.service;
 
-import java.util.Objects;
-
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import test.org.springdoc.api.v30.app85.entity.Person;
 
-import org.springframework.stereotype.Service;
+import java.util.Objects;
 
 @Service
 public class PersonService {

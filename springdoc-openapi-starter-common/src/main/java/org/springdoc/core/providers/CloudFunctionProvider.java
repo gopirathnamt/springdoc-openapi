@@ -25,10 +25,10 @@
  */
 package org.springdoc.core.providers;
 
-import java.util.List;
-
 import io.swagger.v3.oas.models.OpenAPI;
 import org.springdoc.core.fn.RouterOperation;
+
+import java.util.List;
 
 /**
  * The interface Spring cloud function provider.

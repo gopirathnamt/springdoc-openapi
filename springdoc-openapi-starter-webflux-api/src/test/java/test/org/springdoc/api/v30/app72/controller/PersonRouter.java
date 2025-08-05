@@ -28,15 +28,14 @@ package test.org.springdoc.api.v30.app72.controller;
 
 import org.springdoc.core.annotations.RouterOperation;
 import org.springdoc.core.annotations.RouterOperations;
-import test.org.springdoc.api.v30.app72.handler.PersonHandler;
-import test.org.springdoc.api.v30.app72.service.PersonService;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
 import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.function.server.RouterFunctions;
 import org.springframework.web.reactive.function.server.ServerResponse;
+import test.org.springdoc.api.v30.app72.handler.PersonHandler;
+import test.org.springdoc.api.v30.app72.service.PersonService;
 
 import static org.springframework.web.reactive.function.server.RequestPredicates.DELETE;
 import static org.springframework.web.reactive.function.server.RequestPredicates.GET;
@@ -46,10 +45,10 @@ import static org.springframework.web.reactive.function.server.RequestPredicates
 @Configuration
 public class PersonRouter {
 
-	@RouterOperations({ @RouterOperation(path = "/getAllPersons", beanClass = PersonService.class, beanMethod = "getAll"),
+	@RouterOperations({@RouterOperation(path = "/getAllPersons", beanClass = PersonService.class, beanMethod = "getAll"),
 			@RouterOperation(path = "/getPerson/{id}", beanClass = PersonService.class, beanMethod = "getById"),
 			@RouterOperation(path = "/createPerson", beanClass = PersonService.class, beanMethod = "save"),
-			@RouterOperation(path = "/deletePerson/{id}", beanClass = PersonService.class, beanMethod = "delete") })
+			@RouterOperation(path = "/deletePerson/{id}", beanClass = PersonService.class, beanMethod = "delete")})
 	@Bean
 	public RouterFunction<ServerResponse> personRoute(PersonHandler handler) {
 		return RouterFunctions

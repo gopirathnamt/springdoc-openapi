@@ -26,15 +26,15 @@
 
 package test.org.springdoc.api.v31.app15;
 
-import test.org.springdoc.api.v31.AbstractSpringDocTest;
-
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.test.context.TestPropertySource;
+import test.org.springdoc.api.v31.AbstractSpringDocTest;
 
 @TestPropertySource(properties = "spring.data.rest.default-page-size=50")
 public class SpringDocApp15Test extends AbstractSpringDocTest {
 
 	@SpringBootApplication
-	static class SpringDocTestApp {}
+	static class SpringDocTestApp {
+	}
 
 }

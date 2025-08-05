@@ -26,11 +26,10 @@ package test.org.springdoc.api.v30.app193;
 import org.apache.commons.lang3.JavaVersion;
 import org.junit.jupiter.api.Test;
 import org.springdoc.core.utils.Constants;
-import test.org.springdoc.api.AbstractCommonTest;
-
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MvcResult;
+import test.org.springdoc.api.AbstractCommonTest;
 
 import static org.apache.commons.lang3.SystemUtils.isJavaVersionAtLeast;
 import static org.hamcrest.Matchers.is;
@@ -39,13 +38,13 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest(properties = { "springdoc.api-docs.version=openapi_3_0" })
+@SpringBootTest(properties = {"springdoc.api-docs.version=openapi_3_0"})
 public class SpringDocApp193Test extends AbstractCommonTest {
 
 	@Test
 	protected void testApp() throws Exception {
 		final MvcResult mockMvcResult = mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL)).andExpect(status().isOk())
-				.andExpect(jsonPath("$.openapi", is("3.0.1"))).andReturn();
+		                                       .andExpect(jsonPath("$.openapi", is("3.0.1"))).andReturn();
 		final String result = mockMvcResult.getResponse().getContentAsString();
 		// In Java 21 the getFirst() and getLast() methods were added to the List interface.
 		// Those are the POJO getters, therefore Jackson will add them during serialization.
@@ -56,6 +55,7 @@ public class SpringDocApp193Test extends AbstractCommonTest {
 	}
 
 	@SpringBootApplication
-	static class SpringDocTestApp {}
+	static class SpringDocTestApp {
+	}
 
 }

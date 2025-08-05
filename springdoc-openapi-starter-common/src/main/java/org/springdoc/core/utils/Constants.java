@@ -60,7 +60,8 @@ public final class Constants {
 	/**
 	 * The constant API_DOCS_URL.
 	 */
-	public static final String API_DOCS_URL = "${springdoc.api-docs.path:#{T(org.springdoc.core.utils.Constants).DEFAULT_API_DOCS_URL}}";
+	public static final String API_DOCS_URL =
+			"${springdoc.api-docs.path:#{T(org.springdoc.core.utils.Constants).DEFAULT_API_DOCS_URL}}";
 
 	/**
 	 * The constant SWAGGER_CONFIG_FILE.
@@ -95,17 +96,20 @@ public final class Constants {
 	/**
 	 * The constant SPRINGDOC_DEPRECATING_CONVERTER_ENABLED.
 	 */
-	public static final String SPRINGDOC_DEPRECATING_CONVERTER_ENABLED = "springdoc.model-converters.deprecating-converter.enabled";
+	public static final String SPRINGDOC_DEPRECATING_CONVERTER_ENABLED =
+			"springdoc.model-converters.deprecating-converter.enabled";
 
 	/**
 	 * The constant SPRINGDOC_PAGEABLE_CONVERTER_ENABLED.
 	 */
-	public static final String SPRINGDOC_PAGEABLE_CONVERTER_ENABLED = "springdoc.model-converters.pageable-converter.enabled";
+	public static final String SPRINGDOC_PAGEABLE_CONVERTER_ENABLED =
+			"springdoc.model-converters.pageable-converter.enabled";
 
 	/**
 	 * The constant SPRINGDOC_POLYMORPHIC_CONVERTER_ENABLED.
 	 */
-	public static final String SPRINGDOC_POLYMORPHIC_CONVERTER_ENABLED = "springdoc.model-converters.polymorphic-converter.enabled";
+	public static final String SPRINGDOC_POLYMORPHIC_CONVERTER_ENABLED =
+			"springdoc.model-converters.polymorphic-converter.enabled";
 
 	/**
 	 * The constant SPRINGDOC_SCHEMA_RESOLVE_PROPERTIES.
@@ -170,7 +174,8 @@ public final class Constants {
 	/**
 	 * The constant SPRINGDOC_ACTUATOR_DOC_URL.
 	 */
-	public static final String SPRINGDOC_ACTUATOR_DOC_URL = "https://docs.spring.io/spring-boot/docs/current/actuator-api/html/";
+	public static final String SPRINGDOC_ACTUATOR_DOC_URL =
+			"https://docs.spring.io/spring-boot/docs/current/actuator-api/html/";
 
 	/**
 	 * The constant SPRINGDOC_ACTUATOR_DOC_DESCRIPTION.
@@ -236,7 +241,8 @@ public final class Constants {
 	/**
 	 * The constant SWAGGER_UI_PATH.
 	 */
-	public static final String SWAGGER_UI_PATH = "${springdoc.swagger-ui.path:#{T(org.springdoc.core.utils.Constants).DEFAULT_SWAGGER_UI_PATH}}";
+	public static final String SWAGGER_UI_PATH =
+			"${springdoc.swagger-ui.path:#{T(org.springdoc.core.utils.Constants).DEFAULT_SWAGGER_UI_PATH}}";
 
 	/**
 	 * The constant DEFAULT_GROUP_NAME.
@@ -423,7 +429,8 @@ public final class Constants {
 	 * The constant SPRINGDOC_NULLABLE_REQUEST_PARAMETER_ENABLED.
 	 */
 	@Deprecated(since = "2.8.7")
-	public static final String SPRINGDOC_NULLABLE_REQUEST_PARAMETER_ENABLED = "springdoc.nullable-request-parameter-enabled";
+	public static final String SPRINGDOC_NULLABLE_REQUEST_PARAMETER_ENABLED =
+			"springdoc.nullable-request-parameter-enabled";
 
 	/**
 	 * The constant SPRINGDOC_DEFAULT_FLAT_PARAM_OBJECT.

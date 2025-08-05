@@ -24,13 +24,9 @@
 
 package test.org.springdoc.api.v31.app238;
 
-import java.util.Locale;
-
 import org.junit.jupiter.api.Test;
 import org.springdoc.core.customizers.OpenApiLocaleCustomizer;
 import org.springdoc.core.utils.Constants;
-import test.org.springdoc.api.v31.AbstractSpringDocTest;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -38,6 +34,9 @@ import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MvcResult;
+import test.org.springdoc.api.v31.AbstractSpringDocTest;
+
+import java.util.Locale;
 
 import static org.hamcrest.Matchers.is;
 import static org.skyscreamer.jsonassert.JSONAssert.assertEquals;
@@ -61,8 +60,10 @@ public class SpringDocApp238Test extends AbstractSpringDocTest {
 		className = getClass().getSimpleName();
 		String testNumber = className.replaceAll("[^0-9]", "");
 		MvcResult mockMvcResult =
-				mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL).locale(locale).header(HttpHeaders.ACCEPT_LANGUAGE, locale.toLanguageTag())).andExpect(status().isOk())
-						.andExpect(jsonPath("$.openapi", is("3.1.0"))).andReturn();
+				mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL).locale(locale).header(HttpHeaders.ACCEPT_LANGUAGE,
+				                                                                          locale.toLanguageTag()))
+				       .andExpect(status().isOk())
+				       .andExpect(jsonPath("$.openapi", is("3.1.0"))).andReturn();
 		String result = mockMvcResult.getResponse().getContentAsString();
 		String expected = getContent("results/3.1.0/app" + testNumber + "-" + locale.toLanguageTag() + ".json");
 		assertEquals(expected, result, true);

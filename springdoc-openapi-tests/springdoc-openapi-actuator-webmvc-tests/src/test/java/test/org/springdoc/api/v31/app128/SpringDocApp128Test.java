@@ -28,11 +28,10 @@ package test.org.springdoc.api.v31.app128;
 import org.junit.jupiter.api.Test;
 import org.springdoc.core.utils.Constants;
 import org.springdoc.core.utils.SpringDocUtils;
-import test.org.springdoc.api.v31.AbstractSpringDocTest;
-
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController;
 import org.springframework.test.context.TestPropertySource;
+import test.org.springdoc.api.v31.AbstractSpringDocTest;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.is;
@@ -44,9 +43,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 /**
  * Tests Spring meta-annotations as method parameters
  */
-@TestPropertySource(properties = { "springdoc.show-actuator=true",
+@TestPropertySource(properties = {"springdoc.show-actuator=true",
 		"management.endpoints.enabled-by-default=true",
-		"management.endpoints.web.exposure.include = tenant" })
+		"management.endpoints.web.exposure.include = tenant"})
 public class SpringDocApp128Test extends AbstractSpringDocTest {
 
 	static {
@@ -56,13 +55,15 @@ public class SpringDocApp128Test extends AbstractSpringDocTest {
 	@Test
 	protected void testApp() throws Exception {
 		mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL)).andExpect(status().isOk())
-				.andExpect(jsonPath("$.openapi", is("3.1.0")))
-				.andExpect(jsonPath("$.paths./actuator/tenant/customer/{id}.get.operationId", containsString("getTenantById")))
-				.andExpect(jsonPath("$.paths./actuator/tenant/customer/{id}.get.parameters[0].in", is("path")))
-				.andExpect(jsonPath("$.paths./actuator/tenant/customer/{id}.get.parameters[0].name", is("id")));
+		       .andExpect(jsonPath("$.openapi", is("3.1.0")))
+		       .andExpect(jsonPath("$.paths./actuator/tenant/customer/{id}.get.operationId",
+		                           containsString("getTenantById")))
+		       .andExpect(jsonPath("$.paths./actuator/tenant/customer/{id}.get.parameters[0].in", is("path")))
+		       .andExpect(jsonPath("$.paths./actuator/tenant/customer/{id}.get.parameters[0].name", is("id")));
 	}
 
 	@SpringBootApplication
-	static class SpringDocTestApp {}
+	static class SpringDocTestApp {
+	}
 
 }

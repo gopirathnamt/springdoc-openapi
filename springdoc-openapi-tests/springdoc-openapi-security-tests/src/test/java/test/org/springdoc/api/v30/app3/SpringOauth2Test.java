@@ -27,7 +27,6 @@
 package test.org.springdoc.api.v30.app3;
 
 import org.junit.jupiter.api.Test;
-
 import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.boot.test.context.runner.WebApplicationContextRunner;
 
@@ -44,7 +43,7 @@ public class SpringOauth2Test {
 				.run(context -> assertThat(context)
 						.hasNotFailed()
 						.doesNotHaveBean("springSecurityOAuth2Provider")
-				);
+				    );
 	}
 
 	@SpringBootConfiguration

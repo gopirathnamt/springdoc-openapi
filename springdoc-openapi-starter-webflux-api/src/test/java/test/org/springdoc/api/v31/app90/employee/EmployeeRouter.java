@@ -27,12 +27,11 @@
 package test.org.springdoc.api.v31.app90.employee;
 
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
-import test.org.springdoc.api.v31.app84.Employee;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.function.server.ServerResponse;
+import test.org.springdoc.api.v31.app84.Employee;
 
 import static org.springdoc.core.fn.builders.apiresponse.Builder.responseBuilder;
 import static org.springdoc.core.fn.builders.parameter.Builder.parameterBuilder;
@@ -45,11 +44,28 @@ class EmployeeRouter {
 	@Bean
 	RouterFunction<ServerResponse> getEmployeeByIdRoute() {
 		return route().GET("/employees/{id}", HANDLER_FUNCTION, ops -> ops.tag("employee")
-				.operationId("findEmployeeById").summary("Find purchase order by ID").tags(new String[] { "MyEmployee" })
-				.parameter(parameterBuilder().in(ParameterIn.PATH).name("id").description("Employee Id"))
-				.response(responseBuilder().responseCode("200").description("successful operation").implementation(Employee.class))
-				.response(responseBuilder().responseCode("400").description("Invalid Employee ID supplied"))
-				.response(responseBuilder().responseCode("404").description("Employee not found"))).build();
+		                                                                  .operationId("findEmployeeById")
+		                                                                  .summary("Find purchase order by ID")
+		                                                                  .tags(new String[]{"MyEmployee"})
+		                                                                  .parameter(parameterBuilder().in(
+				                                                                                               ParameterIn.PATH).name("id")
+		                                                                                               .description(
+				                                                                                               "Employee Id"))
+		                                                                  .response(
+				                                                                  responseBuilder().responseCode("200")
+				                                                                                   .description(
+						                                                                                   "successful operation")
+				                                                                                   .implementation(
+						                                                                                   Employee.class))
+		                                                                  .response(
+				                                                                  responseBuilder().responseCode("400")
+				                                                                                   .description(
+						                                                                                   "Invalid Employee ID supplied"))
+		                                                                  .response(
+				                                                                  responseBuilder().responseCode("404")
+				                                                                                   .description(
+						                                                                                   "Employee not found")))
+		              .build();
 	}
 
 }

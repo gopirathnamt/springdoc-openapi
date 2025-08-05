@@ -30,7 +30,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.SchemaProperty;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -56,7 +55,9 @@ public class HelloController {
 		return null;
 	}
 
-	record PagedObject(long id, String name) {}
+	record PagedObject(long id, String name) {
+	}
 
-	record Paging(int page, int total, int lastPage) {}
+	record Paging(int page, int total, int lastPage) {
+	}
 }

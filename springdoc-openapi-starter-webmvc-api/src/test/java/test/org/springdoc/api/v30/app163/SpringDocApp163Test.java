@@ -24,15 +24,14 @@
 
 package test.org.springdoc.api.v30.app163;
 
-import test.org.springdoc.api.v30.AbstractSpringDocV30Test;
-
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Import;
+import test.org.springdoc.api.v30.AbstractSpringDocV30Test;
 
 public class SpringDocApp163Test extends AbstractSpringDocV30Test {
 
 	@SpringBootApplication
-	@Import({ Examples.class, ExampleRegistrationCustomizer.class })
+	@Import({Examples.class, ExampleRegistrationCustomizer.class})
 	static class SpringDocTestApp {
 
 	}

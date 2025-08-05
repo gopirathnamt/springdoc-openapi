@@ -26,12 +26,12 @@
 
 package org.springdoc.core.fn.builders.arrayschema;
 
-import java.lang.annotation.Annotation;
-
 import io.swagger.v3.oas.annotations.extensions.Extension;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.ArrayUtils;
+
+import java.lang.annotation.Annotation;
 
 /**
  * The type Array schema builder.

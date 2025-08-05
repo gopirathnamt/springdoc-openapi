@@ -26,13 +26,12 @@
 
 package test.org.springdoc.api.v31.app25.repo;
 
-import java.util.UUID;
-
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import test.org.springdoc.api.v31.app25.model.Clinic;
 import test.org.springdoc.api.v31.app25.model.Doctor;
 
-import org.springframework.data.repository.CrudRepository;
-import org.springframework.web.bind.annotation.CrossOrigin;
+import java.util.UUID;
 
 @CrossOrigin
 public interface DoctorRepo extends CrudRepository<Doctor, UUID> {

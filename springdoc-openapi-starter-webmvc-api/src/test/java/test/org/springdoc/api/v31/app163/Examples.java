@@ -24,13 +24,12 @@
 
 package test.org.springdoc.api.v31.app163;
 
-import java.util.AbstractMap;
-import java.util.Map;
-
 import io.swagger.v3.oas.models.examples.Example;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import java.util.AbstractMap;
+import java.util.Map;
 
 /**
  * This class contributes OpenAPI <a href=
@@ -56,12 +55,12 @@ public class Examples {
 	public Map.Entry<String, Example> httpPutCommissionRequestBodyExample() {
 		Example httpPutCommissionRequestBodyExample = new Example();
 		Map.Entry<String, Example> entry = new AbstractMap.SimpleEntry<>(PUT_COMMISSION_REQUEST_BODY_EXAMPLE_KEY,
-				httpPutCommissionRequestBodyExample);
+		                                                                 httpPutCommissionRequestBodyExample);
 		httpPutCommissionRequestBodyExample
 				.setSummary("HTTP 202 JSON Body request example for updateCommission operation");
 
 		CommissionDto commission = new CommissionDto("esteban@dugueperoux.com", "Esteban",
-				"DUGUEPEROUX");
+		                                             "DUGUEPEROUX");
 
 		httpPutCommissionRequestBodyExample.setValue(commission);
 
@@ -72,12 +71,12 @@ public class Examples {
 	public Map.Entry<String, Example> httpPutCommissionResponseBodyExample() {
 		Example httpPutCommissionResponseBodyExample = new Example();
 		Map.Entry<String, Example> entry = new AbstractMap.SimpleEntry<>(PUT_COMMISSION_RESPONSE_BODY_EXAMPLE_KEY,
-				httpPutCommissionResponseBodyExample);
+		                                                                 httpPutCommissionResponseBodyExample);
 		httpPutCommissionResponseBodyExample
 				.setSummary("HTTP 202 JSON Body response example for updateCommission operation");
 
 		CommissionDto commission = new CommissionDto("esteban@dugueperoux.com", "Esteban",
-				"DUGUEPEROUX");
+		                                             "DUGUEPEROUX");
 
 		httpPutCommissionResponseBodyExample.setValue(commission);
 

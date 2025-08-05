@@ -19,15 +19,14 @@
 package test.org.springdoc.ui.app7;
 
 import org.junit.jupiter.api.Test;
-import test.org.springdoc.ui.AbstractSpringDocTest;
-
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.test.context.TestPropertySource;
+import test.org.springdoc.ui.AbstractSpringDocTest;
 
-@TestPropertySource(properties = { "springdoc.swagger-ui.oauth.clientId=myClientId",
+@TestPropertySource(properties = {"springdoc.swagger-ui.oauth.clientId=myClientId",
 		"springdoc.swagger-ui.oauth.additionalQueryStringParams.test1=test1",
 		"springdoc.swagger-ui.oauth.additionalQueryStringParams.test2=test2",
-		"springdoc.swagger-ui.oauth.scopes=scope1,scope2" })
+		"springdoc.swagger-ui.oauth.scopes=scope1,scope2"})
 public class SpringDocApp7Test extends AbstractSpringDocTest {
 
 	@Test
@@ -36,6 +35,7 @@ public class SpringDocApp7Test extends AbstractSpringDocTest {
 	}
 
 	@SpringBootApplication
-	static class SpringDocTestApp {}
+	static class SpringDocTestApp {
+	}
 
 }

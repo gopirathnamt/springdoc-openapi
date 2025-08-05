@@ -26,16 +26,15 @@
 
 package test.org.springdoc.api.v30.app68.api.user;
 
-import java.util.List;
-import java.util.Optional;
-
-import test.org.springdoc.api.v30.app68.api.ApiUtil;
-import test.org.springdoc.api.v30.app68.model.User;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.context.request.NativeWebRequest;
+import test.org.springdoc.api.v30.app68.api.ApiUtil;
+import test.org.springdoc.api.v30.app68.model.User;
+
+import java.util.List;
+import java.util.Optional;
 
 /**
  * A delegate to be called by the {@link UserApiController}}.
@@ -88,11 +87,13 @@ public interface UserApiDelegate {
 		getRequest().ifPresent(request -> {
 			for (MediaType mediaType : MediaType.parseMediaTypes(request.getHeader("Accept"))) {
 				if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-					ApiUtil.setExampleResponse(request, "application/json", "{  \"firstName\" : \"firstName\",  \"lastName\" : \"lastName\",  \"password\" : \"password\",  \"userStatus\" : 6,  \"phone\" : \"phone\",  \"id\" : 0,  \"email\" : \"email\",  \"username\" : \"username\"}");
+					ApiUtil.setExampleResponse(request, "application/json",
+					                           "{  \"firstName\" : \"firstName\",  \"lastName\" : \"lastName\",  \"password\" : \"password\",  \"userStatus\" : 6,  \"phone\" : \"phone\",  \"id\" : 0,  \"email\" : \"email\",  \"username\" : \"username\"}");
 					break;
 				}
 				if (mediaType.isCompatibleWith(MediaType.valueOf("application/xml"))) {
-					ApiUtil.setExampleResponse(request, "application/xml", "<User>  <id>123456789</id>  <username>aeiou</username>  <firstName>aeiou</firstName>  <lastName>aeiou</lastName>  <email>aeiou</email>  <password>aeiou</password>  <phone>aeiou</phone>  <userStatus>123</userStatus></User>");
+					ApiUtil.setExampleResponse(request, "application/xml",
+					                           "<User>  <id>123456789</id>  <username>aeiou</username>  <firstName>aeiou</firstName>  <lastName>aeiou</lastName>  <email>aeiou</email>  <password>aeiou</password>  <phone>aeiou</phone>  <userStatus>123</userStatus></User>");
 					break;
 				}
 			}
@@ -105,7 +106,7 @@ public interface UserApiDelegate {
 	 * @see UserApi#loginUser
 	 */
 	default ResponseEntity<String> loginUser(String username,
-			String password) {
+	                                         String password) {
 		return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
 
 	}
@@ -122,7 +123,7 @@ public interface UserApiDelegate {
 	 * @see UserApi#updateUser
 	 */
 	default ResponseEntity<Void> updateUser(String username,
-			User user) {
+	                                        User user) {
 		return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
 
 	}

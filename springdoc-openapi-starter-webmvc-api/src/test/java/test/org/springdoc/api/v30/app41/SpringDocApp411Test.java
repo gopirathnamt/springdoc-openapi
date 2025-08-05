@@ -24,16 +24,15 @@
 
 package test.org.springdoc.api.v30.app41;
 
+import org.junit.jupiter.api.Test;
+import org.springdoc.core.utils.Constants;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.test.web.servlet.MvcResult;
+import test.org.springdoc.api.v30.AbstractSpringDocV30Test;
+
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-
-import org.junit.jupiter.api.Test;
-import org.springdoc.core.utils.Constants;
-import test.org.springdoc.api.v30.AbstractSpringDocV30Test;
-
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.test.web.servlet.MvcResult;
 
 import static org.hamcrest.Matchers.is;
 import static org.skyscreamer.jsonassert.JSONAssert.assertEquals;
@@ -48,10 +47,10 @@ public class SpringDocApp411Test extends AbstractSpringDocV30Test {
 		String className = getClass().getSimpleName();
 		String testNumber = className.replaceAll("[^0-9]", "");
 		MvcResult mockMvcResult = mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL)).andExpect(status().isOk())
-				.andExpect(jsonPath("$.openapi", is("3.0.1"))).andReturn();
+		                                 .andExpect(jsonPath("$.openapi", is("3.0.1"))).andReturn();
 		// Test result consistency
 		mockMvcResult = mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL)).andExpect(status().isOk())
-				.andExpect(jsonPath("$.openapi", is("3.0.1"))).andReturn();
+		                       .andExpect(jsonPath("$.openapi", is("3.0.1"))).andReturn();
 		String result = mockMvcResult.getResponse().getContentAsString();
 		Path path = Paths.get(getClass().getClassLoader().getResource("results/3.0.1/app41.json").toURI());
 		byte[] fileBytes = Files.readAllBytes(path);
@@ -60,6 +59,7 @@ public class SpringDocApp411Test extends AbstractSpringDocV30Test {
 	}
 
 	@SpringBootApplication
-	static class SpringDocTestApp {}
+	static class SpringDocTestApp {
+	}
 
 }

@@ -27,16 +27,6 @@
 package org.springdoc.webmvc.api;
 
 
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
-import java.util.TreeMap;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.v3.core.util.PathUtils;
 import io.swagger.v3.oas.models.OpenAPI;
@@ -54,7 +44,6 @@ import org.springdoc.core.service.AbstractRequestService;
 import org.springdoc.core.service.GenericResponseService;
 import org.springdoc.core.service.OpenAPIService;
 import org.springdoc.core.service.OperationService;
-
 import org.springframework.aop.support.AopUtils;
 import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.http.server.ServletServerHttpRequest;
@@ -63,6 +52,16 @@ import org.springframework.util.MimeType;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
+
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
+import java.util.TreeMap;
 
 import static org.springdoc.core.providers.ActuatorProvider.getTag;
 import static org.springdoc.core.utils.Constants.DEFAULT_GROUP_NAME;
@@ -86,11 +85,13 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 	 * @param springDocProviders          the spring doc providers
 	 * @param springDocCustomizers        the spring doc customizers
 	 */
-	protected OpenApiResource(String groupName, ObjectFactory<OpenAPIService> openAPIBuilderObjectFactory, AbstractRequestService requestBuilder,
-			GenericResponseService responseBuilder, OperationService operationParser,
-			SpringDocConfigProperties springDocConfigProperties,
-			SpringDocProviders springDocProviders, SpringDocCustomizers springDocCustomizers) {
-		super(groupName, openAPIBuilderObjectFactory, requestBuilder, responseBuilder, operationParser, springDocConfigProperties, springDocProviders, springDocCustomizers);
+	protected OpenApiResource(String groupName, ObjectFactory<OpenAPIService> openAPIBuilderObjectFactory,
+	                          AbstractRequestService requestBuilder,
+	                          GenericResponseService responseBuilder, OperationService operationParser,
+	                          SpringDocConfigProperties springDocConfigProperties,
+	                          SpringDocProviders springDocProviders, SpringDocCustomizers springDocCustomizers) {
+		super(groupName, openAPIBuilderObjectFactory, requestBuilder, responseBuilder, operationParser,
+		      springDocConfigProperties, springDocProviders, springDocCustomizers);
 	}
 
 	/**
@@ -104,11 +105,13 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 	 * @param springDocProviders          the spring doc providers
 	 * @param springDocCustomizers        the spring doc customizers
 	 */
-	protected OpenApiResource(ObjectFactory<OpenAPIService> openAPIBuilderObjectFactory, AbstractRequestService requestBuilder,
-			GenericResponseService responseBuilder, OperationService operationParser,
-			SpringDocConfigProperties springDocConfigProperties,
-			SpringDocProviders springDocProviders, SpringDocCustomizers springDocCustomizers) {
-		super(DEFAULT_GROUP_NAME, openAPIBuilderObjectFactory, requestBuilder, responseBuilder, operationParser, springDocConfigProperties, springDocProviders, springDocCustomizers);
+	protected OpenApiResource(ObjectFactory<OpenAPIService> openAPIBuilderObjectFactory,
+	                          AbstractRequestService requestBuilder,
+	                          GenericResponseService responseBuilder, OperationService operationParser,
+	                          SpringDocConfigProperties springDocConfigProperties,
+	                          SpringDocProviders springDocProviders, SpringDocCustomizers springDocCustomizers) {
+		super(DEFAULT_GROUP_NAME, openAPIBuilderObjectFactory, requestBuilder, responseBuilder, operationParser,
+		      springDocConfigProperties, springDocProviders, springDocCustomizers);
 	}
 
 	/**
@@ -121,7 +124,7 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 	 * @throws JsonProcessingException the json processing exception
 	 */
 	public byte[] openapiJson(HttpServletRequest request,
-			String apiDocsUrl, Locale locale)
+	                          String apiDocsUrl, Locale locale)
 			throws JsonProcessingException {
 		String serverBaseUrl = calculateServerUrl(request, apiDocsUrl, locale);
 		OpenAPI openAPI = this.getOpenApi(serverBaseUrl, locale);
@@ -138,7 +141,7 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 	 * @throws JsonProcessingException the json processing exception
 	 */
 	public byte[] openapiYaml(HttpServletRequest request,
-			String apiDocsUrl, Locale locale)
+	                          String apiDocsUrl, Locale locale)
 			throws JsonProcessingException {
 		String serverBaseUrl = calculateServerUrl(request, apiDocsUrl, locale);
 		OpenAPI openAPI = this.getOpenApi(serverBaseUrl, locale);
@@ -152,14 +155,16 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 		springWebProviderOptional.ifPresent(springWebProvider -> {
 			Map<RequestMappingInfo, HandlerMethod> map = springWebProvider.getHandlerMethods();
 
-			Optional<RepositoryRestResourceProvider> repositoryRestResourceProviderOptional = springDocProviders.getRepositoryRestResourceProvider();
+			Optional<RepositoryRestResourceProvider> repositoryRestResourceProviderOptional =
+					springDocProviders.getRepositoryRestResourceProvider();
 			repositoryRestResourceProviderOptional.ifPresent(restResourceProvider -> {
 				List<RouterOperation> operationList = restResourceProvider.getRouterOperations(openAPI, locale);
 				calculatePath(operationList, locale, openAPI);
 				restResourceProvider.customize(openAPI);
 				Map<RequestMappingInfo, HandlerMethod> mapDataRest = restResourceProvider.getHandlerMethods();
 				Map<String, Object> requestMappingMap = restResourceProvider.getBasePathAwareControllerEndpoints();
-				Class[] additionalRestClasses = requestMappingMap.values().stream().map(AopUtils::getTargetClass).toArray(Class[]::new);
+				Class[] additionalRestClasses =
+						requestMappingMap.values().stream().map(AopUtils::getTargetClass).toArray(Class[]::new);
 				AbstractOpenApiResource.addRestControllers(additionalRestClasses);
 				map.putAll(mapDataRest);
 			});
@@ -168,9 +173,12 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 			if (actuatorProviderOptional.isPresent() && springDocConfigProperties.isShowActuator()) {
 				Map<RequestMappingInfo, HandlerMethod> actuatorMap = actuatorProviderOptional.get().getMethods();
 				List<RequestMappingInfo> globMatchActuators = actuatorMap.keySet().stream()
-						.filter(requestMappingInfo -> requestMappingInfo.getPatternValues().stream()
-								.anyMatch(patternValues -> patternValues.contains("**")))
-						.toList();
+				                                                         .filter(requestMappingInfo -> requestMappingInfo.getPatternValues()
+				                                                                                                         .stream()
+				                                                                                                         .anyMatch(
+						                                                                                                         patternValues -> patternValues.contains(
+								                                                                                                         "**")))
+				                                                         .toList();
 				globMatchActuators.forEach(actuatorMap::remove);
 				this.openAPIService.addTag(new HashSet<>(actuatorMap.values()), getTag());
 				map.putAll(actuatorMap);
@@ -178,18 +186,24 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 			calculatePath(restControllers, map, locale, openAPI);
 		});
 
-		Optional<SecurityOAuth2Provider> securityOAuth2ProviderOptional = springDocProviders.getSpringSecurityOAuth2Provider();
+		Optional<SecurityOAuth2Provider> securityOAuth2ProviderOptional =
+				springDocProviders.getSpringSecurityOAuth2Provider();
 		if (securityOAuth2ProviderOptional.isPresent()) {
 			SecurityOAuth2Provider securityOAuth2Provider = securityOAuth2ProviderOptional.get();
 			Map<RequestMappingInfo, HandlerMethod> mapOauth = securityOAuth2Provider.getHandlerMethods();
 			Map<String, Object> requestMappingMapSec = securityOAuth2Provider.getFrameworkEndpoints();
-			Class[] additionalRestClasses = requestMappingMapSec.values().stream().map(AopUtils::getTargetClass).toArray(Class[]::new);
+			Class[] additionalRestClasses =
+					requestMappingMapSec.values().stream().map(AopUtils::getTargetClass).toArray(Class[]::new);
 			AbstractOpenApiResource.addRestControllers(additionalRestClasses);
 			calculatePath(requestMappingMapSec, mapOauth, locale, openAPI);
 		}
 
-		springDocProviders.getRouterFunctionProvider().ifPresent(routerFunctions -> routerFunctions.getRouterFunctionPaths()
-				.ifPresent(routerBeans -> routerBeans.forEach((beanName, routerFunctionVisitor) -> getRouterFunctionPaths(beanName, routerFunctionVisitor, locale, openAPI))));
+		springDocProviders.getRouterFunctionProvider()
+		                  .ifPresent(routerFunctions -> routerFunctions.getRouterFunctionPaths()
+		                                                               .ifPresent(routerBeans -> routerBeans.forEach(
+				                                                               (beanName, routerFunctionVisitor) -> getRouterFunctionPaths(
+						                                                               beanName, routerFunctionVisitor,
+						                                                               locale, openAPI))));
 
 	}
 
@@ -201,7 +215,8 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 	 * @param locale          the locale
 	 * @param openAPI         the open api
 	 */
-	protected void calculatePath(Map<String, Object> restControllers, Map<RequestMappingInfo, HandlerMethod> map, Locale locale, OpenAPI openAPI) {
+	protected void calculatePath(Map<String, Object> restControllers, Map<RequestMappingInfo, HandlerMethod> map,
+	                             Locale locale, OpenAPI openAPI) {
 		TreeMap<RequestMappingInfo, HandlerMethod> methodTreeMap = new TreeMap<>(byReversedRequestMappingInfos());
 		methodTreeMap.putAll(map);
 		Optional<SpringWebProvider> springWebProviderOptional = springDocProviders.getSpringWebProvider();
@@ -214,17 +229,25 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 					Map<String, String> regexMap = new LinkedHashMap<>();
 					for (String pattern : patterns) {
 						String operationPath = PathUtils.parsePath(pattern, regexMap);
-						String[] produces = requestMappingInfo.getProducesCondition().getProducibleMediaTypes().stream().map(MimeType::toString).toArray(String[]::new);
-						String[] consumes = requestMappingInfo.getConsumesCondition().getConsumableMediaTypes().stream().map(MimeType::toString).toArray(String[]::new);
-						String[] headers = requestMappingInfo.getHeadersCondition().getExpressions().stream().map(Object::toString).toArray(String[]::new);
-						String[] params = requestMappingInfo.getParamsCondition().getExpressions().stream().map(Object::toString).toArray(String[]::new);
-						if ((isRestController(restControllers, handlerMethod, operationPath) || isActuatorRestController(operationPath, handlerMethod))
+						String[] produces = requestMappingInfo.getProducesCondition().getProducibleMediaTypes().stream()
+						                                      .map(MimeType::toString).toArray(String[]::new);
+						String[] consumes = requestMappingInfo.getConsumesCondition().getConsumableMediaTypes().stream()
+						                                      .map(MimeType::toString).toArray(String[]::new);
+						String[] headers =
+								requestMappingInfo.getHeadersCondition().getExpressions().stream().map(Object::toString)
+								                  .toArray(String[]::new);
+						String[] params =
+								requestMappingInfo.getParamsCondition().getExpressions().stream().map(Object::toString)
+								                  .toArray(String[]::new);
+						if ((isRestController(restControllers, handlerMethod, operationPath) ||
+								isActuatorRestController(operationPath, handlerMethod))
 								&& isFilterCondition(handlerMethod, operationPath, produces, consumes, headers)) {
 							Set<RequestMethod> requestMethods = requestMappingInfo.getMethodsCondition().getMethods();
 							// default allowed requestmethods
 							if (requestMethods.isEmpty())
 								requestMethods = this.getDefaultAllowedHttpMethods();
-							calculatePath(handlerMethod, operationPath, requestMethods, consumes, produces, headers, params, locale, openAPI);
+							calculatePath(handlerMethod, operationPath, requestMethods, consumes, produces, headers,
+							              params, locale, openAPI);
 						}
 					}
 				}

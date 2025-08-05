@@ -26,16 +26,6 @@
 
 package org.springdoc.webflux.api;
 
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Set;
-import java.util.TreeMap;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.v3.core.util.PathUtils;
 import io.swagger.v3.oas.models.OpenAPI;
@@ -50,8 +40,6 @@ import org.springdoc.core.service.GenericResponseService;
 import org.springdoc.core.service.OpenAPIService;
 import org.springdoc.core.service.OperationService;
 import org.springdoc.webflux.core.visitor.RouterFunctionVisitor;
-import reactor.core.publisher.Mono;
-
 import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.util.MimeType;
@@ -59,6 +47,17 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.result.method.RequestMappingInfo;
+import reactor.core.publisher.Mono;
+
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
+import java.util.TreeMap;
 
 import static org.springdoc.core.providers.ActuatorProvider.getTag;
 import static org.springdoc.core.utils.Constants.DEFAULT_GROUP_NAME;
@@ -82,11 +81,13 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 	 * @param springDocProviders          the spring doc providers
 	 * @param springDocCustomizers        the spring doc customizers
 	 */
-	protected OpenApiResource(String groupName, ObjectFactory<OpenAPIService> openAPIBuilderObjectFactory, AbstractRequestService requestBuilder,
-			GenericResponseService responseBuilder, OperationService operationParser,
-			SpringDocConfigProperties springDocConfigProperties,
-			SpringDocProviders springDocProviders, SpringDocCustomizers springDocCustomizers) {
-		super(groupName, openAPIBuilderObjectFactory, requestBuilder, responseBuilder, operationParser, springDocConfigProperties, springDocProviders, springDocCustomizers);
+	protected OpenApiResource(String groupName, ObjectFactory<OpenAPIService> openAPIBuilderObjectFactory,
+	                          AbstractRequestService requestBuilder,
+	                          GenericResponseService responseBuilder, OperationService operationParser,
+	                          SpringDocConfigProperties springDocConfigProperties,
+	                          SpringDocProviders springDocProviders, SpringDocCustomizers springDocCustomizers) {
+		super(groupName, openAPIBuilderObjectFactory, requestBuilder, responseBuilder, operationParser,
+		      springDocConfigProperties, springDocProviders, springDocCustomizers);
 	}
 
 	/**
@@ -100,11 +101,13 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 	 * @param springDocProviders          the spring doc providers
 	 * @param springDocCustomizers        the spring doc customizers
 	 */
-	protected OpenApiResource(ObjectFactory<OpenAPIService> openAPIBuilderObjectFactory, AbstractRequestService requestBuilder,
-			GenericResponseService responseBuilder, OperationService operationParser,
-			SpringDocConfigProperties springDocConfigProperties,
-			SpringDocProviders springDocProviders, SpringDocCustomizers springDocCustomizers) {
-		super(DEFAULT_GROUP_NAME, openAPIBuilderObjectFactory, requestBuilder, responseBuilder, operationParser, springDocConfigProperties, springDocProviders, springDocCustomizers);
+	protected OpenApiResource(ObjectFactory<OpenAPIService> openAPIBuilderObjectFactory,
+	                          AbstractRequestService requestBuilder,
+	                          GenericResponseService responseBuilder, OperationService operationParser,
+	                          SpringDocConfigProperties springDocConfigProperties,
+	                          SpringDocProviders springDocProviders, SpringDocCustomizers springDocCustomizers) {
+		super(DEFAULT_GROUP_NAME, openAPIBuilderObjectFactory, requestBuilder, responseBuilder, operationParser,
+		      springDocConfigProperties, springDocProviders, springDocCustomizers);
 	}
 
 
@@ -171,7 +174,8 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 	 * @param locale          the locale
 	 * @param openAPI         the open api
 	 */
-	protected void calculatePath(Map<String, Object> restControllers, Map<RequestMappingInfo, HandlerMethod> map, Locale locale, OpenAPI openAPI) {
+	protected void calculatePath(Map<String, Object> restControllers, Map<RequestMappingInfo, HandlerMethod> map,
+	                             Locale locale, OpenAPI openAPI) {
 		TreeMap<RequestMappingInfo, HandlerMethod> methodTreeMap = new TreeMap<>(byReversedRequestMappingInfos());
 		methodTreeMap.putAll(map);
 		Optional<SpringWebProvider> springWebProviderOptional = springDocProviders.getSpringWebProvider();
@@ -183,17 +187,25 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 				for (String operationPath : patterns) {
 					Map<String, String> regexMap = new LinkedHashMap<>();
 					operationPath = PathUtils.parsePath(operationPath, regexMap);
-					String[] produces = requestMappingInfo.getProducesCondition().getProducibleMediaTypes().stream().map(MimeType::toString).toArray(String[]::new);
-					String[] consumes = requestMappingInfo.getConsumesCondition().getConsumableMediaTypes().stream().map(MimeType::toString).toArray(String[]::new);
-					String[] headers = requestMappingInfo.getHeadersCondition().getExpressions().stream().map(Object::toString).toArray(String[]::new);
-					String[] params = requestMappingInfo.getParamsCondition().getExpressions().stream().map(Object::toString).toArray(String[]::new);
-					if ((isRestController(restControllers, handlerMethod, operationPath) || isActuatorRestController(operationPath, handlerMethod))
+					String[] produces = requestMappingInfo.getProducesCondition().getProducibleMediaTypes().stream()
+					                                      .map(MimeType::toString).toArray(String[]::new);
+					String[] consumes = requestMappingInfo.getConsumesCondition().getConsumableMediaTypes().stream()
+					                                      .map(MimeType::toString).toArray(String[]::new);
+					String[] headers =
+							requestMappingInfo.getHeadersCondition().getExpressions().stream().map(Object::toString)
+							                  .toArray(String[]::new);
+					String[] params =
+							requestMappingInfo.getParamsCondition().getExpressions().stream().map(Object::toString)
+							                  .toArray(String[]::new);
+					if ((isRestController(restControllers, handlerMethod, operationPath) ||
+							isActuatorRestController(operationPath, handlerMethod))
 							&& isFilterCondition(handlerMethod, operationPath, produces, consumes, headers)) {
 						Set<RequestMethod> requestMethods = requestMappingInfo.getMethodsCondition().getMethods();
 						// default allowed requestmethods
 						if (requestMethods.isEmpty())
 							requestMethods = this.getDefaultAllowedHttpMethods();
-						calculatePath(handlerMethod, operationPath, requestMethods, consumes, produces, headers, params, locale, openAPI);
+						calculatePath(handlerMethod, operationPath, requestMethods, consumes, produces, headers, params,
+						              locale, openAPI);
 					}
 				}
 			}
@@ -216,7 +228,8 @@ public abstract class OpenApiResource extends AbstractOpenApiResource {
 	 * @param openAPI the open api
 	 */
 	protected void getWebFluxRouterFunctionPaths(Locale locale, OpenAPI openAPI) {
-		Map<String, RouterFunction> routerBeans = Objects.requireNonNull(openAPIService.getContext()).getBeansOfType(RouterFunction.class);
+		Map<String, RouterFunction> routerBeans =
+				Objects.requireNonNull(openAPIService.getContext()).getBeansOfType(RouterFunction.class);
 		for (Map.Entry<String, RouterFunction> entry : routerBeans.entrySet()) {
 			RouterFunction routerFunction = entry.getValue();
 			RouterFunctionVisitor routerFunctionVisitor = new RouterFunctionVisitor();

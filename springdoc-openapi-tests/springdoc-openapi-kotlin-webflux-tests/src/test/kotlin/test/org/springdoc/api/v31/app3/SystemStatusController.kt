@@ -24,22 +24,22 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 enum class SystemStatus(val status: String) {
-	OK("OK")
+    OK("OK")
 }
 
 data class SystemStatusResponse(
-	val status: SystemStatus
+    val status: SystemStatus
 )
 
 @RestController
 @RequestMapping("/status")
 class SystemStatusController {
-	@GetMapping
-	suspend fun index() = SystemStatusResponse(SystemStatus.OK)
+    @GetMapping
+    suspend fun index() = SystemStatusResponse(SystemStatus.OK)
 
-	@GetMapping("/foo")
-	@Deprecated("")
-	fun foo() = mono {
-		SystemStatusResponse(SystemStatus.OK)
-	}
+    @GetMapping("/foo")
+    @Deprecated("")
+    fun foo() = mono {
+        SystemStatusResponse(SystemStatus.OK)
+    }
 }

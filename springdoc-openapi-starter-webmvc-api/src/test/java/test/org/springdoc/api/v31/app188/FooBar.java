@@ -26,7 +26,7 @@ package test.org.springdoc.api.v31.app188;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
-@Schema(type = "String", allowableValues = { "foo", "bar" })
+@Schema(type = "String", allowableValues = {"foo", "bar"})
 public enum FooBar {
 	FOO,
 	BAR;

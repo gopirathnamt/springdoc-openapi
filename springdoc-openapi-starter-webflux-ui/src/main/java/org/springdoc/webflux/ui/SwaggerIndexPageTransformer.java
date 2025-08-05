@@ -26,21 +26,20 @@
 
 package org.springdoc.webflux.ui;
 
-import java.nio.charset.StandardCharsets;
-
 import org.springdoc.core.properties.SwaggerUiConfigParameters;
 import org.springdoc.core.properties.SwaggerUiConfigProperties;
 import org.springdoc.core.properties.SwaggerUiOAuthProperties;
 import org.springdoc.core.providers.ObjectMapperProvider;
 import org.springdoc.ui.AbstractSwaggerIndexTransformer;
 import org.springdoc.ui.SpringDocUIException;
-import reactor.core.publisher.Mono;
-
 import org.springframework.core.io.Resource;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.web.reactive.resource.ResourceTransformerChain;
 import org.springframework.web.reactive.resource.TransformedResource;
 import org.springframework.web.server.ServerWebExchange;
+import reactor.core.publisher.Mono;
+
+import java.nio.charset.StandardCharsets;
 
 import static org.springdoc.core.utils.Constants.SWAGGER_INITIALIZER_JS;
 
@@ -64,29 +63,31 @@ public class SwaggerIndexPageTransformer extends AbstractSwaggerIndexTransformer
 	 * @param swaggerWelcomeCommon     the swagger welcome common
 	 * @param objectMapperProvider     the object mapper provider
 	 */
-	public SwaggerIndexPageTransformer(SwaggerUiConfigProperties swaggerUiConfig, SwaggerUiOAuthProperties swaggerUiOAuthProperties,
-			SwaggerWelcomeCommon swaggerWelcomeCommon, ObjectMapperProvider objectMapperProvider) {
+	public SwaggerIndexPageTransformer(SwaggerUiConfigProperties swaggerUiConfig,
+	                                   SwaggerUiOAuthProperties swaggerUiOAuthProperties,
+	                                   SwaggerWelcomeCommon swaggerWelcomeCommon,
+	                                   ObjectMapperProvider objectMapperProvider) {
 		super(swaggerUiConfig, swaggerUiOAuthProperties, objectMapperProvider);
 		this.swaggerWelcomeCommon = swaggerWelcomeCommon;
 	}
 
 	@Override
-	public Mono<Resource> transform(ServerWebExchange serverWebExchange, Resource resource, ResourceTransformerChain resourceTransformerChain) {
+	public Mono<Resource> transform(ServerWebExchange serverWebExchange, Resource resource,
+	                                ResourceTransformerChain resourceTransformerChain) {
 		SwaggerUiConfigParameters swaggerUiConfigParameters = new SwaggerUiConfigParameters(swaggerUiConfig);
 		swaggerWelcomeCommon.buildFromCurrentContextPath(swaggerUiConfigParameters, serverWebExchange.getRequest());
 
 		final AntPathMatcher antPathMatcher = new AntPathMatcher();
 		try {
-			boolean isIndexFound = antPathMatcher.match("**/swagger-ui/**/" + SWAGGER_INITIALIZER_JS, resource.getURL().toString());
+			boolean isIndexFound =
+					antPathMatcher.match("**/swagger-ui/**/" + SWAGGER_INITIALIZER_JS, resource.getURL().toString());
 			if (isIndexFound) {
 				String html = defaultTransformations(swaggerUiConfigParameters, resource.getInputStream());
 				return Mono.just(new TransformedResource(resource, html.getBytes(StandardCharsets.UTF_8)));
-			}
-			else {
+			} else {
 				return Mono.just(resource);
 			}
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			throw new SpringDocUIException("Failed to transform Index", e);
 		}
 	}

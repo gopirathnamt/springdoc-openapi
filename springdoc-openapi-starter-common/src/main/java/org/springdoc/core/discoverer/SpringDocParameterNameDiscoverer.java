@@ -25,14 +25,13 @@
  */
 package org.springdoc.core.discoverer;
 
-import java.lang.reflect.Method;
-import java.util.Objects;
-
 import org.apache.commons.lang3.ArrayUtils;
-
 import org.springframework.core.DefaultParameterNameDiscoverer;
 import org.springframework.core.StandardReflectionParameterNameDiscoverer;
 import org.springframework.lang.Nullable;
+
+import java.lang.reflect.Method;
+import java.util.Objects;
 
 /**
  * The type Spring doc parameter name discoverer.
@@ -44,7 +43,8 @@ public class SpringDocParameterNameDiscoverer extends DefaultParameterNameDiscov
 	/**
 	 * The Standard reflection parameter name discoverer.
 	 */
-	private final StandardReflectionParameterNameDiscoverer standardReflectionParameterNameDiscoverer = new StandardReflectionParameterNameDiscoverer();
+	private final StandardReflectionParameterNameDiscoverer standardReflectionParameterNameDiscoverer =
+			new StandardReflectionParameterNameDiscoverer();
 
 	@Override
 	@Nullable

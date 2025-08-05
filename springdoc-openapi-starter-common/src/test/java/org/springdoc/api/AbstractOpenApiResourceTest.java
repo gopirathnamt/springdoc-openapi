@@ -24,13 +24,6 @@
 
 package org.springdoc.api;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Optional;
-
 import io.swagger.v3.core.util.Json;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.models.OpenAPI;
@@ -57,12 +50,18 @@ import org.springdoc.core.service.AbstractRequestService;
 import org.springdoc.core.service.GenericResponseService;
 import org.springdoc.core.service.OpenAPIService;
 import org.springdoc.core.service.OperationService;
-
 import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.mock.http.client.MockClientHttpRequest;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.bind.annotation.RequestMethod;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Optional;
 
 import static java.util.Arrays.asList;
 import static java.util.Collections.singleton;
@@ -140,7 +139,8 @@ class AbstractOpenApiResourceTest {
 				responseBuilder,
 				operationParser,
 				new SpringDocConfigProperties(),
-				springDocProviders, new SpringDocCustomizers(Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty())
+				springDocProviders,
+				new SpringDocCustomizers(Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty())
 		);
 
 		final Parameter refParameter = new Parameter().$ref(PARAMETER_REFERENCE);
@@ -158,16 +158,18 @@ class AbstractOpenApiResourceTest {
 				refParameter,
 				numberParameterInPath,
 				parameterWithoutSchema
-		));
+		                              ));
 
 		final RouterOperation routerOperation = new RouterOperation();
-		routerOperation.setMethods(new RequestMethod[] { GET });
+		routerOperation.setMethods(new RequestMethod[]{GET});
 		routerOperation.setOperationModel(operation);
 		routerOperation.setPath(PATH + "/{" + PARAMETER_WITH_NUMBER_SCHEMA_NAME + "}");
 
 		resource.calculatePath(routerOperation, Locale.getDefault(), this.openAPI);
 
-		final List<Parameter> parameters = resource.getOpenApi(null, Locale.getDefault()).getPaths().get(PATH + "/{" + PARAMETER_WITH_NUMBER_SCHEMA_NAME + "}").getGet().getParameters();
+		final List<Parameter> parameters = resource.getOpenApi(null, Locale.getDefault()).getPaths()
+		                                           .get(PATH + "/{" + PARAMETER_WITH_NUMBER_SCHEMA_NAME + "}").getGet()
+		                                           .getParameters();
 		assertThat(parameters.size(), is(3));
 		assertThat(parameters, containsInAnyOrder(refParameter, numberParameterInPath, parameterWithoutSchema));
 
@@ -207,7 +209,9 @@ class AbstractOpenApiResourceTest {
 				requestBuilder,
 				responseBuilder,
 				operationParser,
-				properties, springDocProviders, new SpringDocCustomizers(Optional.of(singleton(openApiCustomizer)), Optional.empty(), Optional.empty(), Optional.empty())
+				properties, springDocProviders,
+				new SpringDocCustomizers(Optional.of(singleton(openApiCustomizer)), Optional.empty(), Optional.empty(),
+				                         Optional.empty())
 		);
 
 		// wait for executor to be done
@@ -239,7 +243,8 @@ class AbstractOpenApiResourceTest {
 				responseBuilder,
 				operationParser,
 				properties,
-				springDocProviders, new SpringDocCustomizers(Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty())
+				springDocProviders,
+				new SpringDocCustomizers(Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty())
 		);
 
 		// wait for executor to be done
@@ -255,11 +260,13 @@ class AbstractOpenApiResourceTest {
 		assertThat(after.getServers().get(0).getUrl(), is(generatedUrl));
 
 		// Test that adding a serverBaseUrlCustomizer has the desired effect
-		ServerBaseUrlCustomizer serverBaseUrlCustomizer = (serverBaseUrl, request) -> serverBaseUrl.replace("/context-path", "");
+		ServerBaseUrlCustomizer serverBaseUrlCustomizer =
+				(serverBaseUrl, request) -> serverBaseUrl.replace("/context-path", "");
 		List<ServerBaseUrlCustomizer> serverBaseUrlCustomizerList = new ArrayList<>();
 		serverBaseUrlCustomizerList.add(serverBaseUrlCustomizer);
 
-		ReflectionTestUtils.setField(openAPIService, "serverBaseUrlCustomizers", Optional.of(serverBaseUrlCustomizerList));
+		ReflectionTestUtils.setField(openAPIService, "serverBaseUrlCustomizers",
+		                             Optional.of(serverBaseUrlCustomizerList));
 		serverUrl = openAPIService.calculateServerBaseUrl(generatedUrl, new MockClientHttpRequest());
 		openAPIService.updateServers(serverUrl, openAPI);
 		after = resource.getOpenApi(serverUrl, locale);
@@ -267,7 +274,8 @@ class AbstractOpenApiResourceTest {
 
 		// Test that serverBaseUrlCustomisers are performed in order
 		generatedUrl = "https://generated-url.com/context-path/second-path";
-		ServerBaseUrlCustomizer serverBaseUrlCustomiser2 = (serverBaseUrl, request) -> serverBaseUrl.replace("/context-path/second-path", "");
+		ServerBaseUrlCustomizer serverBaseUrlCustomiser2 =
+				(serverBaseUrl, request) -> serverBaseUrl.replace("/context-path/second-path", "");
 		serverBaseUrlCustomizerList.add(serverBaseUrlCustomiser2);
 
 		serverUrl = openAPIService.calculateServerBaseUrl(generatedUrl, new MockClientHttpRequest());
@@ -276,7 +284,8 @@ class AbstractOpenApiResourceTest {
 		assertThat(after.getServers().get(0).getUrl(), is("https://generated-url.com/second-path"));
 
 		// Test that all serverBaseUrlCustomisers in the List are performed
-		ServerBaseUrlCustomizer serverBaseUrlCustomiser3 = (serverBaseUrl, request) -> serverBaseUrl.replace("/second-path", "");
+		ServerBaseUrlCustomizer serverBaseUrlCustomiser3 =
+				(serverBaseUrl, request) -> serverBaseUrl.replace("/second-path", "");
 		serverBaseUrlCustomizerList.add(serverBaseUrlCustomiser3);
 
 		serverUrl = openAPIService.calculateServerBaseUrl(generatedUrl, new MockClientHttpRequest());
@@ -287,8 +296,12 @@ class AbstractOpenApiResourceTest {
 
 	private static class EmptyPathsOpenApiResource extends AbstractOpenApiResource {
 
-		EmptyPathsOpenApiResource(String groupName, ObjectFactory<OpenAPIService> openAPIBuilderObjectFactory, AbstractRequestService requestBuilder, GenericResponseService responseBuilder, OperationService operationParser, SpringDocConfigProperties springDocConfigProperties, SpringDocProviders springDocProviders, SpringDocCustomizers springDocCustomizers) {
-			super(groupName, openAPIBuilderObjectFactory, requestBuilder, responseBuilder, operationParser, springDocConfigProperties, springDocProviders, springDocCustomizers);
+		EmptyPathsOpenApiResource(String groupName, ObjectFactory<OpenAPIService> openAPIBuilderObjectFactory,
+		                          AbstractRequestService requestBuilder, GenericResponseService responseBuilder,
+		                          OperationService operationParser, SpringDocConfigProperties springDocConfigProperties,
+		                          SpringDocProviders springDocProviders, SpringDocCustomizers springDocCustomizers) {
+			super(groupName, openAPIBuilderObjectFactory, requestBuilder, responseBuilder, operationParser,
+			      springDocConfigProperties, springDocProviders, springDocCustomizers);
 		}
 
 		@Override

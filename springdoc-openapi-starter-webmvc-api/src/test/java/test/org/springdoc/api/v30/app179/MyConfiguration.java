@@ -24,11 +24,11 @@
 
 package test.org.springdoc.api.v30.app179;
 
-import java.util.List;
-
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+import java.util.List;
 
 @Configuration
 public class MyConfiguration implements WebMvcConfigurer {

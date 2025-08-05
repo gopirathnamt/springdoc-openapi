@@ -19,13 +19,12 @@
 package test.org.springdoc.api.v30.app227;
 
 
-import test.org.springdoc.api.v30.app227.model.Item;
-import test.org.springdoc.api.v30.app227.wrapper.NoGenericWrapper;
-import test.org.springdoc.api.v30.app227.wrapper.ResponseEntityWrapper;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+import test.org.springdoc.api.v30.app227.model.Item;
+import test.org.springdoc.api.v30.app227.wrapper.NoGenericWrapper;
+import test.org.springdoc.api.v30.app227.wrapper.ResponseEntityWrapper;
 
 @RestController
 public class HelloController {

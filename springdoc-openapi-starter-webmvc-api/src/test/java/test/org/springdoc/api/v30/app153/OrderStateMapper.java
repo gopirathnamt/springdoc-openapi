@@ -24,10 +24,10 @@
 
 package test.org.springdoc.api.v30.app153;
 
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+
 import java.beans.PropertyEditorSupport;
 import java.util.Arrays;
-
-import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 public class OrderStateMapper extends PropertyEditorSupport {
 
@@ -35,9 +35,9 @@ public class OrderStateMapper extends PropertyEditorSupport {
 	public void setAsText(String text) {
 		setValue(
 				Arrays.stream(OrderState.class.getEnumConstants())
-						.filter(e -> e.getValue().equals(text))
-						.findFirst()
-						.orElseThrow(() -> new MethodArgumentTypeMismatchException(
-								text, OrderState.class, "orderState", null, null)));
+				      .filter(e -> e.getValue().equals(text))
+				      .findFirst()
+				      .orElseThrow(() -> new MethodArgumentTypeMismatchException(
+						      text, OrderState.class, "orderState", null, null)));
 	}
 }

@@ -32,8 +32,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springdoc.core.annotations.RouterOperation;
 import org.springdoc.core.annotations.RouterOperations;
-import test.org.springdoc.api.v30.app191.Handler.GetNameHandler;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
@@ -42,6 +40,7 @@ import org.springframework.web.reactive.function.server.RequestPredicates;
 import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.function.server.RouterFunctions;
 import org.springframework.web.reactive.function.server.ServerResponse;
+import test.org.springdoc.api.v30.app191.Handler.GetNameHandler;
 
 
 @Configuration
@@ -50,9 +49,9 @@ public class GetNameRouter {
 	@Bean
 	@RouterOperations(
 			value = {
-					@RouterOperation(path = "/v1/name", produces = { MediaType.APPLICATION_JSON_VALUE }, method = RequestMethod.GET,
+					@RouterOperation(path = "/v1/name", produces = {MediaType.APPLICATION_JSON_VALUE}, method = RequestMethod.GET,
 							beanClass = GetNameHandler.class, beanMethod = "handle", operation = @Operation(operationId = "getName",
-							description = "get name", responses = { @ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(implementation = String.class))) })
+							description = "get name", responses = {@ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(implementation = String.class)))})
 					)
 			})
 

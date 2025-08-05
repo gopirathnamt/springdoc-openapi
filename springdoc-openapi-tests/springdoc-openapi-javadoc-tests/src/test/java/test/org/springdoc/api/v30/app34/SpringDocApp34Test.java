@@ -26,9 +26,8 @@
 
 package test.org.springdoc.api.v30.app34;
 
-import test.org.springdoc.api.v30.AbstractSpringDocTest;
-
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import test.org.springdoc.api.v30.AbstractSpringDocTest;
 
 /**
  * The type Spring doc app 34 test.
@@ -39,5 +38,6 @@ class SpringDocApp34Test extends AbstractSpringDocTest {
 	 * The type Spring doc test app.
 	 */
 	@SpringBootApplication
-	static class SpringDocTestApp {}
+	static class SpringDocTestApp {
+	}
 }

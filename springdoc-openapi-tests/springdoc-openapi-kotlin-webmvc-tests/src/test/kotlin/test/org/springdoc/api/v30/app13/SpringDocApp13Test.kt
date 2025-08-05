@@ -25,9 +25,9 @@ import test.org.springdoc.api.v30.AbstractKotlinSpringDocMVCTest
 @TestPropertySource(properties = ["springdoc.api-docs.version=openapi_3_1"])
 class SpringDocApp13Test : AbstractKotlinSpringDocMVCTest() {
 
-	@SpringBootApplication
-	class DemoApplication {
-	}
+    @SpringBootApplication
+    class DemoApplication {
+    }
 
 
 }

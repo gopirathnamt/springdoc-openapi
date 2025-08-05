@@ -26,6 +26,12 @@
 
 package org.springdoc.core.converters;
 
+import io.swagger.v3.core.converter.AnnotatedType;
+import io.swagger.v3.core.converter.ModelConverter;
+import io.swagger.v3.core.converter.ModelConverterContext;
+import io.swagger.v3.oas.models.media.Schema;
+import org.springframework.core.annotation.AnnotatedElementUtils;
+
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -33,13 +39,6 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Stream;
-
-import io.swagger.v3.core.converter.AnnotatedType;
-import io.swagger.v3.core.converter.ModelConverter;
-import io.swagger.v3.core.converter.ModelConverterContext;
-import io.swagger.v3.oas.models.media.Schema;
-
-import org.springframework.core.annotation.AnnotatedElementUtils;
 
 /**
  * The type Schema property deprecating converter.
@@ -51,7 +50,8 @@ public class SchemaPropertyDeprecatingConverter implements ModelConverter {
 	/**
 	 * The constant DEPRECATED_ANNOTATIONS.
 	 */
-	private static final List<Class<? extends Annotation>> DEPRECATED_ANNOTATIONS = Collections.synchronizedList(new ArrayList<>());
+	private static final List<Class<? extends Annotation>> DEPRECATED_ANNOTATIONS =
+			Collections.synchronizedList(new ArrayList<>());
 
 	static {
 		DEPRECATED_ANNOTATIONS.add(Deprecated.class);
@@ -64,7 +64,8 @@ public class SchemaPropertyDeprecatingConverter implements ModelConverter {
 	 * @return the boolean
 	 */
 	public static boolean containsDeprecatedAnnotation(Annotation[] annotations) {
-		return annotations != null && Stream.of(annotations).map(Annotation::annotationType).anyMatch(DEPRECATED_ANNOTATIONS::contains);
+		return annotations != null &&
+				Stream.of(annotations).map(Annotation::annotationType).anyMatch(DEPRECATED_ANNOTATIONS::contains);
 	}
 
 	/**
@@ -84,8 +85,10 @@ public class SchemaPropertyDeprecatingConverter implements ModelConverter {
 	 */
 	public static boolean isDeprecated(Method method) {
 		Class<?> declaringClass = method.getDeclaringClass();
-		boolean deprecatedMethod = DEPRECATED_ANNOTATIONS.stream().anyMatch(annoClass -> AnnotatedElementUtils.findMergedAnnotation(method, annoClass) != null);
-		boolean deprecatedClass = DEPRECATED_ANNOTATIONS.stream().anyMatch(annoClass -> AnnotatedElementUtils.findMergedAnnotation(declaringClass, annoClass) != null);
+		boolean deprecatedMethod = DEPRECATED_ANNOTATIONS.stream().anyMatch(
+				annoClass -> AnnotatedElementUtils.findMergedAnnotation(method, annoClass) != null);
+		boolean deprecatedClass = DEPRECATED_ANNOTATIONS.stream().anyMatch(
+				annoClass -> AnnotatedElementUtils.findMergedAnnotation(declaringClass, annoClass) != null);
 		return deprecatedClass || deprecatedMethod;
 	}
 

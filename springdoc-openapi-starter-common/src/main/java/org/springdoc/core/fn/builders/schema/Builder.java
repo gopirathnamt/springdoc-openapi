@@ -26,8 +26,6 @@
 
 package org.springdoc.core.fn.builders.schema;
 
-import java.lang.annotation.Annotation;
-
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.StringToClassMapItem;
 import io.swagger.v3.oas.annotations.extensions.Extension;
@@ -39,6 +37,8 @@ import io.swagger.v3.oas.annotations.media.Schema.AdditionalPropertiesValue;
 import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
 import io.swagger.v3.oas.annotations.media.Schema.SchemaResolution;
 import org.apache.commons.lang3.ArrayUtils;
+
+import java.lang.annotation.Annotation;
 
 /**
  * The type Schema builder.
@@ -177,7 +177,8 @@ public class Builder {
 	/**
 	 * Additional external documentation for this schema.
 	 */
-	private ExternalDocumentation externalDocs = org.springdoc.core.fn.builders.externaldocumentation.Builder.externalDocumentationBuilder().build();
+	private ExternalDocumentation externalDocs =
+			org.springdoc.core.fn.builders.externaldocumentation.Builder.externalDocumentationBuilder().build();
 
 	/**
 	 * Specifies that a schema is deprecated and should be transitioned out of usage.
@@ -242,7 +243,8 @@ public class Builder {
 	 * AdditionalPropertiesValue.FALSE: set to FALSE
 	 * AdditionalPropertiesValue.USE_ADDITIONAL_PROPERTIES_ANNOTATION: resolve from @Content.additionalPropertiesSchema
 	 */
-	private AdditionalPropertiesValue additionalProperties = AdditionalPropertiesValue.USE_ADDITIONAL_PROPERTIES_ANNOTATION;
+	private AdditionalPropertiesValue additionalProperties =
+			AdditionalPropertiesValue.USE_ADDITIONAL_PROPERTIES_ANNOTATION;
 
 	/**
 	 * The Required mode.
@@ -705,7 +707,8 @@ public class Builder {
 	 * @param externalDocumentationBuilder the external documentation builder
 	 * @return the schema builder
 	 */
-	public Builder externalDocs(org.springdoc.core.fn.builders.externaldocumentation.Builder externalDocumentationBuilder) {
+	public Builder externalDocs(
+			org.springdoc.core.fn.builders.externaldocumentation.Builder externalDocumentationBuilder) {
 		this.externalDocs = externalDocumentationBuilder.build();
 		return this;
 	}
@@ -771,7 +774,8 @@ public class Builder {
 	 * @param discriminatorMappingBuilder the discriminator mapping builder
 	 * @return the schema builder
 	 */
-	public Builder discriminatorMapping(org.springdoc.core.fn.builders.discriminatormapping.Builder discriminatorMappingBuilder) {
+	public Builder discriminatorMapping(
+			org.springdoc.core.fn.builders.discriminatormapping.Builder discriminatorMappingBuilder) {
 		this.discriminatorMapping = ArrayUtils.add(this.discriminatorMapping, discriminatorMappingBuilder.build());
 		return this;
 	}

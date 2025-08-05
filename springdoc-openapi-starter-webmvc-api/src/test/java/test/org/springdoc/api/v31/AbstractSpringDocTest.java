@@ -26,10 +26,9 @@ package test.org.springdoc.api.v31;
 
 import org.junit.jupiter.api.Test;
 import org.springdoc.core.utils.Constants;
-import test.org.springdoc.api.AbstractCommonTest;
-
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MvcResult;
+import test.org.springdoc.api.AbstractCommonTest;
 
 import static org.hamcrest.Matchers.is;
 import static org.skyscreamer.jsonassert.JSONAssert.assertEquals;
@@ -47,7 +46,7 @@ public abstract class AbstractSpringDocTest extends AbstractCommonTest {
 		className = getClass().getSimpleName();
 		String testNumber = className.replaceAll("[^0-9]", "");
 		MvcResult mockMvcResult = mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL)).andExpect(status().isOk())
-				.andExpect(jsonPath("$.openapi", is("3.1.0"))).andReturn();
+		                                 .andExpect(jsonPath("$.openapi", is("3.1.0"))).andReturn();
 		String result = mockMvcResult.getResponse().getContentAsString();
 		String expected = getContent("results/3.1.0/app" + testNumber + ".json");
 		assertEquals(expected, result, true);

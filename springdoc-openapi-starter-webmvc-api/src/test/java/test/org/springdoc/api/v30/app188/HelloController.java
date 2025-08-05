@@ -25,9 +25,6 @@
 package test.org.springdoc.api.v30.app188;
 
 
-import java.time.Instant;
-import java.util.Map;
-
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
@@ -37,13 +34,15 @@ import io.swagger.v3.oas.models.media.Content;
 import io.swagger.v3.oas.models.responses.ApiResponse;
 import org.springdoc.core.customizers.OperationCustomizer;
 import org.springdoc.core.utils.SpringDocAnnotationsUtils;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.method.HandlerMethod;
+
+import java.time.Instant;
+import java.util.Map;
 
 @RestController
 public class HelloController {
@@ -69,12 +68,12 @@ public class HelloController {
 				ErrorResponse.class,
 				null,
 				null, SpecVersion.V30
-		);
+		                                                                                                   );
 
 		ApiResponse errorApiResponse = new ApiResponse().content(new Content().addMediaType(
 				MediaType.APPLICATION_JSON_VALUE,
 				new io.swagger.v3.oas.models.media.MediaType().schema(errorResponseSchema)
-		));
+		                                                                                   ));
 
 		return (Operation operation, HandlerMethod handlerMethod) -> {
 			operation.getResponses().addApiResponse("5xx", errorApiResponse);

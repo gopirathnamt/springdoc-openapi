@@ -26,12 +26,7 @@
 
 package test.org.springdoc.api.v31.app241;
 
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
-
 import io.swagger.v3.oas.annotations.Parameter;
-
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -42,6 +37,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/demo")
@@ -66,8 +65,8 @@ public class DemoRestController {
 
 	@PatchMapping("/{vvpId}")
 	public ResponseEntity<?> patchDemo(@PathVariable("vvpId") final Long idVerfahren,
-			@RequestBody() final String jsonPatch,
-			final Optional<Boolean> statusKinderAendern) {
+	                                   @RequestBody() final String jsonPatch,
+	                                   final Optional<Boolean> statusKinderAendern) {
 		return ResponseEntity.noContent().build();
 	}
 

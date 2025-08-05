@@ -25,14 +25,13 @@
  */
 package org.springdoc.core.providers;
 
-import java.util.Map;
-import java.util.Set;
-
 import org.springdoc.core.properties.SpringDocConfigProperties;
-
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+
+import java.util.Map;
+import java.util.Set;
 
 /**
  * The type Spring web provider.

@@ -28,10 +28,9 @@ package test.org.springdoc.api.v31.app16;
 
 import org.junit.jupiter.api.Test;
 import org.springdoc.core.utils.Constants;
-import test.org.springdoc.api.v31.AbstractSpringDocTest;
-
 import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.test.context.TestPropertySource;
+import test.org.springdoc.api.v31.AbstractSpringDocTest;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -50,12 +49,13 @@ class SpringDocApp16Test extends AbstractSpringDocTest {
 	@Test
 	protected void testApp() throws Exception {
 		mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL))
-				.andExpect(status().isNotFound());
+		       .andExpect(status().isNotFound());
 	}
 
 	/**
 	 * The type Spring doc test app.
 	 */
 	@SpringBootConfiguration
-	static class SpringDocTestApp {}
+	static class SpringDocTestApp {
+	}
 }

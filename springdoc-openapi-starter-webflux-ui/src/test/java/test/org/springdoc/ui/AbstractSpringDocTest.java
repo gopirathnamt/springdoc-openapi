@@ -26,7 +26,6 @@ import org.springdoc.core.properties.SwaggerUiOAuthProperties;
 import org.springdoc.core.utils.Constants;
 import org.springdoc.webflux.core.configuration.SpringDocWebFluxConfiguration;
 import org.springdoc.webflux.ui.SwaggerConfig;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
 import org.springframework.test.context.ContextConfiguration;
@@ -38,9 +37,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 @WebFluxTest
-@ContextConfiguration(classes = { SpringDocConfiguration.class, SpringDocConfigProperties.class,
+@ContextConfiguration(classes = {SpringDocConfiguration.class, SpringDocConfigProperties.class,
 		SpringDocWebFluxConfiguration.class, SwaggerUiConfigParameters.class, SwaggerUiConfigProperties.class,
-		SwaggerConfig.class, SwaggerUiOAuthProperties.class })
+		SwaggerConfig.class, SwaggerUiOAuthProperties.class})
 public abstract class AbstractSpringDocTest extends AbstractCommonTest {
 
 	private static final String DEFAULT_SWAGGER_INITIALIZER_URL = Constants.SWAGGER_INITIALIZER_URL;
@@ -50,9 +49,9 @@ public abstract class AbstractSpringDocTest extends AbstractCommonTest {
 
 	protected void checkJS(String fileName, String uri) {
 		EntityExchangeResult<byte[]> getResult = webTestClient.get().uri(uri)
-				.exchange()
-				.expectStatus().isOk()
-				.expectBody().returnResult();
+		                                                      .exchange()
+		                                                      .expectStatus().isOk()
+		                                                      .expectBody().returnResult();
 		checkJSResult(fileName, new String(getResult.getResponseBody()));
 	}
 

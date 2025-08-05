@@ -27,7 +27,6 @@
 package test.org.springdoc.api.v31.app7;
 
 import org.springdoc.core.models.GroupedOpenApi;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -35,8 +34,8 @@ import org.springframework.context.annotation.Configuration;
 public class FooConfiguration {
 	@Bean
 	public GroupedOpenApi userOpenApi() {
-		String packagesToscan[] = { "test.org.springdoc.api.app7" };
+		String packagesToscan[] = {"test.org.springdoc.api.app7"};
 		return GroupedOpenApi.builder().group("foo-service").packagesToScan(packagesToscan)
-				.build();
+		                     .build();
 	}
 }

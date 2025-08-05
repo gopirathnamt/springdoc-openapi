@@ -26,10 +26,10 @@
 
 package test.org.springdoc.api.v31.app4;
 
-import java.time.Instant;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import java.time.Instant;
 
 /**
  * The type Tracker data.

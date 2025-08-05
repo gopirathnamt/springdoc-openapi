@@ -26,10 +26,9 @@ package test.org.springdoc.api.v31.app160;
 
 import org.junit.jupiter.api.Test;
 import org.springdoc.core.utils.Constants;
-import test.org.springdoc.api.v31.AbstractSpringDocTest;
-
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.test.context.TestPropertySource;
+import test.org.springdoc.api.v31.AbstractSpringDocTest;
 
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -43,9 +42,9 @@ public class SpringDocApp160Test extends AbstractSpringDocTest {
 	@Test
 	void testApp2() throws Exception {
 		mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL + "/test"))
-				.andExpect(status().isOk())
-				.andExpect(jsonPath("$.openapi", is("3.1.0")))
-				.andExpect(content().json(getContent("results/3.1.0/app160-1.json"), true));
+		       .andExpect(status().isOk())
+		       .andExpect(jsonPath("$.openapi", is("3.1.0")))
+		       .andExpect(content().json(getContent("results/3.1.0/app160-1.json"), true));
 	}
 
 	@SpringBootApplication

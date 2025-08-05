@@ -26,20 +26,19 @@
 
 package org.springdoc.webmvc.ui;
 
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-
 import jakarta.servlet.http.HttpServletRequest;
 import org.springdoc.core.properties.SwaggerUiConfigParameters;
 import org.springdoc.core.properties.SwaggerUiConfigProperties;
 import org.springdoc.core.properties.SwaggerUiOAuthProperties;
 import org.springdoc.core.providers.ObjectMapperProvider;
 import org.springdoc.ui.AbstractSwaggerIndexTransformer;
-
 import org.springframework.core.io.Resource;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.web.servlet.resource.ResourceTransformerChain;
 import org.springframework.web.servlet.resource.TransformedResource;
+
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 import static org.springdoc.core.utils.Constants.SWAGGER_INITIALIZER_JS;
 
@@ -63,26 +62,28 @@ public class SwaggerIndexPageTransformer extends AbstractSwaggerIndexTransformer
 	 * @param swaggerWelcomeCommon     the swagger welcome common
 	 * @param objectMapperProvider     the object mapper provider
 	 */
-	public SwaggerIndexPageTransformer(SwaggerUiConfigProperties swaggerUiConfig, SwaggerUiOAuthProperties swaggerUiOAuthProperties,
-			SwaggerWelcomeCommon swaggerWelcomeCommon, ObjectMapperProvider objectMapperProvider) {
+	public SwaggerIndexPageTransformer(SwaggerUiConfigProperties swaggerUiConfig,
+	                                   SwaggerUiOAuthProperties swaggerUiOAuthProperties,
+	                                   SwaggerWelcomeCommon swaggerWelcomeCommon,
+	                                   ObjectMapperProvider objectMapperProvider) {
 		super(swaggerUiConfig, swaggerUiOAuthProperties, objectMapperProvider);
 		this.swaggerWelcomeCommon = swaggerWelcomeCommon;
 	}
 
 	@Override
 	public Resource transform(HttpServletRequest request, Resource resource,
-			ResourceTransformerChain transformerChain) throws IOException {
+	                          ResourceTransformerChain transformerChain) throws IOException {
 		SwaggerUiConfigParameters swaggerUiConfigParameters = new SwaggerUiConfigParameters(swaggerUiConfig);
 		swaggerWelcomeCommon.buildFromCurrentContextPath(swaggerUiConfigParameters, request);
 
 		final AntPathMatcher antPathMatcher = new AntPathMatcher();
-		boolean isIndexFound = antPathMatcher.match("**/swagger-ui/**/" + SWAGGER_INITIALIZER_JS, resource.getURL().toString());
+		boolean isIndexFound =
+				antPathMatcher.match("**/swagger-ui/**/" + SWAGGER_INITIALIZER_JS, resource.getURL().toString());
 
 		if (isIndexFound) {
 			String html = defaultTransformations(swaggerUiConfigParameters, resource.getInputStream());
 			return new TransformedResource(resource, html.getBytes(StandardCharsets.UTF_8));
-		}
-		else
+		} else
 			return resource;
 	}
 

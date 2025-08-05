@@ -28,7 +28,6 @@ package test.org.springdoc.api.v30.app92;
 
 import io.swagger.v3.oas.models.parameters.Parameter;
 import jakarta.validation.constraints.NotNull;
-
 import org.springframework.core.MethodParameter;
 import org.springframework.stereotype.Component;
 

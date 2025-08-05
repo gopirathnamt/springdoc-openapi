@@ -26,10 +26,9 @@ package test.org.springdoc.api.v31.app127;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springdoc.core.utils.Constants;
-import test.org.springdoc.api.v31.AbstractSpringDocTest;
-
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.test.web.servlet.MvcResult;
+import test.org.springdoc.api.v31.AbstractSpringDocTest;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -44,11 +43,13 @@ public class SpringDocApp127Test extends AbstractSpringDocTest {
 	protected void testApp() throws Exception {
 		className = getClass().getSimpleName();
 		String testNumber = className.replaceAll("[^0-9]", "");
-		MvcResult mockMvcResult = mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL + ".yaml")).andExpect(status().isOk()).andReturn();
+		MvcResult mockMvcResult =
+				mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL + ".yaml")).andExpect(status().isOk()).andReturn();
 		String result = mockMvcResult.getResponse().getContentAsString();
 		Assertions.assertTrue(!result.contains("!<Type A>"));
 	}
 
 	@SpringBootApplication
-	static class SpringDocTestApp {}
+	static class SpringDocTestApp {
+	}
 }

@@ -30,9 +30,9 @@ package test.org.springdoc.api.v31.app11;
  *
  */
 
-import java.util.Map;
-
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import java.util.Map;
 
 public class TestRequest {
 	@Schema(description = "Joe was here with a tuna melt!")

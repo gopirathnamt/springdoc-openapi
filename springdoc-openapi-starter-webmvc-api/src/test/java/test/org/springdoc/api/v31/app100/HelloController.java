@@ -27,7 +27,6 @@ package test.org.springdoc.api.v31.app100;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.tags.Tags;
 import jakarta.validation.constraints.NotNull;
-
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -35,7 +34,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Tags(value = @Tag(name = "hello-ap1"))
 public class HelloController {
 
-	@GetMapping(value = "/search", produces = { "application/xml", "application/json" })
+	@GetMapping(value = "/search", produces = {"application/xml", "application/json"})
 	@Tags(value = @Tag(name = "hello-ap2"))
 	public PersonDTO getAllPets(@NotNull String toto) {
 		return null;

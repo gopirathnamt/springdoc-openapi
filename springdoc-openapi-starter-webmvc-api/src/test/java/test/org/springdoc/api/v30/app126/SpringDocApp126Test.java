@@ -23,18 +23,17 @@
  */
 package test.org.springdoc.api.v30.app126;
 
-import java.util.List;
-import java.util.Map;
-
 import io.swagger.v3.core.converter.AnnotatedType;
 import io.swagger.v3.core.converter.ModelConverters;
 import io.swagger.v3.core.converter.ResolvedSchema;
 import io.swagger.v3.oas.models.responses.ApiResponse;
 import org.springdoc.core.customizers.OpenApiCustomizer;
-import test.org.springdoc.api.v30.AbstractSpringDocV30Test;
-
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import test.org.springdoc.api.v30.AbstractSpringDocV30Test;
+
+import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -46,12 +45,14 @@ public class SpringDocApp126Test extends AbstractSpringDocV30Test {
 	static class SpringDocTestApp {
 
 		@Bean
-		public OpenApiCustomizer responseRegistrationCustomizer(List<Map.Entry<String, ApiResponse>> responsesToRegister) {
+		public OpenApiCustomizer responseRegistrationCustomizer(
+				List<Map.Entry<String, ApiResponse>> responsesToRegister) {
 			ResolvedSchema resolvedSchema = ModelConverters.getInstance()
-					.resolveAsResolvedSchema(new AnnotatedType(Problem.class));
+			                                               .resolveAsResolvedSchema(new AnnotatedType(Problem.class));
 			return openApi -> {
 				openApi.getComponents().addSchemas("Problem", resolvedSchema.schema);
-				responsesToRegister.forEach(entry -> openApi.getComponents().addResponses(entry.getKey(), entry.getValue()));
+				responsesToRegister.forEach(
+						entry -> openApi.getComponents().addResponses(entry.getKey(), entry.getValue()));
 			};
 		}
 

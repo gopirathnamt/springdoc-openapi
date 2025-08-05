@@ -28,11 +28,10 @@ package test.org.springdoc.api.v30.app190;
 
 import org.junit.jupiter.api.Test;
 import org.springdoc.core.utils.Constants;
-import test.org.springdoc.api.v30.AbstractCommonTest;
-
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
 import org.springframework.context.annotation.ComponentScan;
+import test.org.springdoc.api.v30.AbstractCommonTest;
 
 import static org.springdoc.core.utils.Constants.SPRINGDOC_ENABLE_DEFAULT_API_DOCS;
 
@@ -42,10 +41,11 @@ public class SpringDocApp190bisTest extends AbstractCommonTest {
 	@Test
 	void test_enable_default_api_docs() throws Exception {
 		webTestClient.get().uri(Constants.DEFAULT_API_DOCS_URL).exchange()
-				.expectStatus().isOk();
+		             .expectStatus().isOk();
 	}
 
 	@SpringBootApplication
-	@ComponentScan(basePackages = { "org.springdoc", "test.org.springdoc.api.v30.app190" })
-	static class SpringDocTestApp {}
+	@ComponentScan(basePackages = {"org.springdoc", "test.org.springdoc.api.v30.app190"})
+	static class SpringDocTestApp {
+	}
 }

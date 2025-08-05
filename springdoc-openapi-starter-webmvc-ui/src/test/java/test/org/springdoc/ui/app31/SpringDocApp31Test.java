@@ -19,10 +19,9 @@
 package test.org.springdoc.ui.app31;
 
 import org.junit.jupiter.api.Test;
-import test.org.springdoc.ui.AbstractSpringDocTest;
-
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.test.context.TestPropertySource;
+import test.org.springdoc.ui.AbstractSpringDocTest;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
@@ -38,10 +37,12 @@ public class SpringDocApp31Test extends AbstractSpringDocTest {
 	@Test
 	void test_query_config() throws Exception {
 		mockMvc.perform(get("/api/"))
-				.andExpect(status().isFound())
-				.andExpect(header().string("Location", "/api/swagger-ui/index.html?showExtensions=true&configUrl=/v3/api-docs/swagger-config"));
+		       .andExpect(status().isFound())
+		       .andExpect(header().string("Location",
+		                                  "/api/swagger-ui/index.html?showExtensions=true&configUrl=/v3/api-docs/swagger-config"));
 	}
 
 	@SpringBootApplication
-	static class SpringDocTestApp {}
+	static class SpringDocTestApp {
+	}
 }

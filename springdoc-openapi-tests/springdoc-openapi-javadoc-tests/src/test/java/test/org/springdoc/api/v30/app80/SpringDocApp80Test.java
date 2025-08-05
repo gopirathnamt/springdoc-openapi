@@ -26,10 +26,9 @@
 
 package test.org.springdoc.api.v30.app80;
 
-import test.org.springdoc.api.v30.AbstractSpringDocTest;
-
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.test.context.ActiveProfiles;
+import test.org.springdoc.api.v30.AbstractSpringDocTest;
 
 /**
  * The type Spring doc app 80 test.
@@ -41,5 +40,6 @@ class SpringDocApp80Test extends AbstractSpringDocTest {
 	 * The type Spring doc test app.
 	 */
 	@SpringBootApplication
-	static class SpringDocTestApp {}
+	static class SpringDocTestApp {
+	}
 }

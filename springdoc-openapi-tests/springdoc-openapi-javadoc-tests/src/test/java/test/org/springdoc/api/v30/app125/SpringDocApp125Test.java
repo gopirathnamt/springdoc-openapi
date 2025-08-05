@@ -25,15 +25,14 @@
  */
 package test.org.springdoc.api.v30.app125;
 
-import java.util.Optional;
-
 import io.swagger.v3.core.converter.ModelConverter;
 import io.swagger.v3.core.converter.ModelConverters;
 import org.springdoc.core.converters.SchemaPropertyDeprecatingConverter;
-import test.org.springdoc.api.v30.AbstractSpringDocTest;
-
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.test.context.TestPropertySource;
+import test.org.springdoc.api.v30.AbstractSpringDocTest;
+
+import java.util.Optional;
 
 
 /**
@@ -45,7 +44,9 @@ class SpringDocApp125Test extends AbstractSpringDocTest {
 	static {
 		Optional<ModelConverter> deprecatingConverterOptional =
 				ModelConverters.getInstance().getConverters()
-						.stream().filter(modelConverter -> modelConverter instanceof SchemaPropertyDeprecatingConverter).findAny();
+				               .stream()
+				               .filter(modelConverter -> modelConverter instanceof SchemaPropertyDeprecatingConverter)
+				               .findAny();
 		deprecatingConverterOptional.ifPresent(ModelConverters.getInstance()::removeConverter);
 	}
 
@@ -53,6 +54,7 @@ class SpringDocApp125Test extends AbstractSpringDocTest {
 	 * The type Spring doc test app.
 	 */
 	@SpringBootApplication
-	static class SpringDocTestApp {}
+	static class SpringDocTestApp {
+	}
 
 }

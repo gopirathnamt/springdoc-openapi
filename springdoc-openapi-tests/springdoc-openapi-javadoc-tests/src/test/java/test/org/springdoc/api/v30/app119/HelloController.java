@@ -29,7 +29,6 @@ package test.org.springdoc.api.v30.app119;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
-
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestPart;
@@ -60,8 +59,10 @@ class HelloController {
 			@Parameter(
 					description = "This is the configuration",
 					content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE)) final JsonRequest jsonRequest,
-			@RequestPart(value = "file1", required = false) @Parameter(description = "This is file1") final MultipartFile file1,
-			@RequestPart(value = "file2", required = false) @Parameter(description = "This is file2") final MultipartFile file2) {
+			@RequestPart(value = "file1", required = false) @Parameter(description = "This is file1")
+			final MultipartFile file1,
+			@RequestPart(value = "file2", required = false) @Parameter(description = "This is file2")
+			final MultipartFile file2) {
 		return "Hello World " + jsonRequest.getName();
 	}
 }

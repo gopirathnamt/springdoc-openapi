@@ -26,8 +26,6 @@
 
 package test.org.springdoc.api.v31.app37;
 
-import java.io.Serializable;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -38,6 +36,8 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
+
+import java.io.Serializable;
 
 /**
  * @author bnasslahsen

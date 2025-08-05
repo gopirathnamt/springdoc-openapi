@@ -26,8 +26,6 @@
 
 package org.springdoc.core.configuration.hints;
 
-import java.util.Arrays;
-
 import com.fasterxml.jackson.databind.BeanDescription;
 import io.swagger.v3.core.converter.ModelConverter;
 import io.swagger.v3.core.filter.SpecFilter;
@@ -80,10 +78,11 @@ import io.swagger.v3.oas.models.servers.ServerVariables;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.springdoc.core.properties.SpringDocConfigProperties.ModelConverters;
 import org.springdoc.core.properties.SwaggerUiConfigProperties;
-
 import org.springframework.aot.hint.MemberCategory;
 import org.springframework.aot.hint.RuntimeHints;
 import org.springframework.aot.hint.RuntimeHintsRegistrar;
+
+import java.util.Arrays;
 
 /**
  * The type Spring doc hints.
@@ -188,31 +187,33 @@ public class SpringDocHints implements RuntimeHintsRegistrar {
 	@Override
 	public void registerHints(RuntimeHints hints, ClassLoader classLoader) {
 		hints.proxies()
-				.registerJdkProxy(org.springframework.web.context.request.NativeWebRequest.class);
+		     .registerJdkProxy(org.springframework.web.context.request.NativeWebRequest.class);
 		hints.reflection()
-				.registerType(java.lang.Module.class,
-						hint -> hint.withMembers(MemberCategory.DECLARED_FIELDS,
-								MemberCategory.INVOKE_DECLARED_CONSTRUCTORS,
-								MemberCategory.INVOKE_DECLARED_METHODS))
-				.registerType(java.lang.ModuleLayer.class, MemberCategory.INVOKE_DECLARED_METHODS)
-				.registerType(java.lang.module.Configuration.class, MemberCategory.INVOKE_DECLARED_METHODS)
-				.registerType(java.lang.module.ResolvedModule.class, MemberCategory.INVOKE_DECLARED_METHODS)
-				.registerType(java.lang.invoke.MethodHandles.class, MemberCategory.DECLARED_CLASSES)
-				.registerType(java.lang.invoke.MethodHandles.Lookup.class);
+		     .registerType(java.lang.Module.class,
+		                   hint -> hint.withMembers(MemberCategory.DECLARED_FIELDS,
+		                                            MemberCategory.INVOKE_DECLARED_CONSTRUCTORS,
+		                                            MemberCategory.INVOKE_DECLARED_METHODS))
+		     .registerType(java.lang.ModuleLayer.class, MemberCategory.INVOKE_DECLARED_METHODS)
+		     .registerType(java.lang.module.Configuration.class, MemberCategory.INVOKE_DECLARED_METHODS)
+		     .registerType(java.lang.module.ResolvedModule.class, MemberCategory.INVOKE_DECLARED_METHODS)
+		     .registerType(java.lang.invoke.MethodHandles.class, MemberCategory.DECLARED_CLASSES)
+		     .registerType(java.lang.invoke.MethodHandles.Lookup.class);
 		//swagger-models
 		Arrays.stream(typesToRegister).forEach(aClass ->
-				hints.reflection().registerType(aClass,
-						hint -> hint.withMembers(
-								MemberCategory.DECLARED_FIELDS,
-								MemberCategory.INVOKE_DECLARED_CONSTRUCTORS,
-								MemberCategory.INVOKE_DECLARED_METHODS
-						)));
+				                                       hints.reflection().registerType(aClass,
+				                                                                       hint -> hint.withMembers(
+						                                                                       MemberCategory.DECLARED_FIELDS,
+						                                                                       MemberCategory.INVOKE_DECLARED_CONSTRUCTORS,
+						                                                                       MemberCategory.INVOKE_DECLARED_METHODS
+				                                                                                               )));
 
 		//springdoc
-		hints.reflection().registerField(FieldUtils.getDeclaredField(io.swagger.v3.core.converter.ModelConverters.class, "converters", true));
-		hints.reflection().registerType(org.springdoc.core.utils.Constants.class, hint -> hint.withMembers(MemberCategory.DECLARED_FIELDS));
+		hints.reflection().registerField(
+				FieldUtils.getDeclaredField(io.swagger.v3.core.converter.ModelConverters.class, "converters", true));
+		hints.reflection().registerType(org.springdoc.core.utils.Constants.class,
+		                                hint -> hint.withMembers(MemberCategory.DECLARED_FIELDS));
 		hints.resources().registerPattern(SwaggerUiConfigProperties.SPRINGDOC_CONFIG_PROPERTIES)
-				.registerResourceBundle("sun.util.resources.LocaleNames");
+		     .registerResourceBundle("sun.util.resources.LocaleNames");
 	}
 
 }

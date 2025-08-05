@@ -18,14 +18,13 @@
 
 package test.org.springdoc.ui.app32;
 
-import java.util.concurrent.CompletableFuture;
-import java.util.stream.IntStream;
-
 import org.junit.jupiter.api.Test;
-import test.org.springdoc.ui.AbstractSpringDocTest;
-
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.test.context.TestPropertySource;
+import test.org.springdoc.ui.AbstractSpringDocTest;
+
+import java.util.concurrent.CompletableFuture;
+import java.util.stream.IntStream;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.Matchers.containsString;
@@ -44,42 +43,42 @@ public class SpringDocBehindProxyTest extends AbstractSpringDocTest {
 	@Test
 	void shouldServeSwaggerUIAtDefaultPath() throws Exception {
 		mockMvc.perform(get("/swagger-ui/index.html"))
-				.andExpect(status().isOk());
+		       .andExpect(status().isOk());
 	}
 
 	@Test
 	void shouldReturnCorrectInitializerJS() throws Exception {
 		mockMvc.perform(get("/swagger-ui/swagger-initializer.js")
-						.header("X-Forwarded-Prefix", X_FORWARD_PREFIX))
-				.andExpect(status().isOk())
-				.andExpect(content().string(
-						containsString("\"configUrl\" : \"/path/prefix/v3/api-docs/swagger-config\",")
-				));
+				                .header("X-Forwarded-Prefix", X_FORWARD_PREFIX))
+		       .andExpect(status().isOk())
+		       .andExpect(content().string(
+				       containsString("\"configUrl\" : \"/path/prefix/v3/api-docs/swagger-config\",")
+		                                  ));
 	}
 
 	@Test
 	void shouldCalculateOauthRedirectBehindProxy() throws Exception {
 		mockMvc.perform(get("/v3/api-docs/swagger-config")
-						.header("X-Forwarded-Proto", "https")
-						.header("X-Forwarded-Host", "proxy-host")
-						.header("X-Forwarded-Prefix", X_FORWARD_PREFIX))
-				.andExpect(status().isOk())
-				.andExpect(jsonPath("oauth2RedirectUrl",
-						equalTo("https://proxy-host/path/prefix/swagger-ui/oauth2-redirect.html")
-				));
+				                .header("X-Forwarded-Proto", "https")
+				                .header("X-Forwarded-Host", "proxy-host")
+				                .header("X-Forwarded-Prefix", X_FORWARD_PREFIX))
+		       .andExpect(status().isOk())
+		       .andExpect(jsonPath("oauth2RedirectUrl",
+		                           equalTo("https://proxy-host/path/prefix/swagger-ui/oauth2-redirect.html")
+		                          ));
 	}
 
 	@Test
 	void shouldCalculateUrlsBehindProxy() throws Exception {
 		mockMvc.perform(get("/v3/api-docs/swagger-config")
-						.header("X-Forwarded-Prefix", X_FORWARD_PREFIX))
-				.andExpect(status().isOk())
-				.andExpect(jsonPath("url",
-						equalTo("/path/prefix/v3/api-docs")
-				))
-				.andExpect(jsonPath("configUrl",
-						equalTo("/path/prefix/v3/api-docs/swagger-config")
-				));
+				                .header("X-Forwarded-Prefix", X_FORWARD_PREFIX))
+		       .andExpect(status().isOk())
+		       .andExpect(jsonPath("url",
+		                           equalTo("/path/prefix/v3/api-docs")
+		                          ))
+		       .andExpect(jsonPath("configUrl",
+		                           equalTo("/path/prefix/v3/api-docs/swagger-config")
+		                          ));
 	}
 
 	@Test
@@ -87,13 +86,12 @@ public class SpringDocBehindProxyTest extends AbstractSpringDocTest {
 		var tasks = IntStream.range(0, 10).mapToObj(i -> CompletableFuture.runAsync(() -> {
 			try {
 				mockMvc.perform(get("/swagger-ui/swagger-initializer.js")
-								.header("X-Forwarded-Prefix", "/path/prefix" + i))
-						.andExpect(status().isOk())
-						.andExpect(content().string(
-								containsString("\"configUrl\" : \"/path/prefix" + i + "/v3/api-docs/swagger-config\",")
-						));
-			}
-			catch (Exception e) {
+						                .header("X-Forwarded-Prefix", "/path/prefix" + i))
+				       .andExpect(status().isOk())
+				       .andExpect(content().string(
+						       containsString("\"configUrl\" : \"/path/prefix" + i + "/v3/api-docs/swagger-config\",")
+				                                  ));
+			} catch (Exception e) {
 				throw new RuntimeException(e);
 			}
 		})).toArray(CompletableFuture<?>[]::new);
@@ -106,16 +104,15 @@ public class SpringDocBehindProxyTest extends AbstractSpringDocTest {
 		var tasks = IntStream.range(0, 10).mapToObj(i -> CompletableFuture.runAsync(() -> {
 			try {
 				mockMvc.perform(get("/v3/api-docs/swagger-config")
-								.header("X-Forwarded-Prefix", X_FORWARD_PREFIX + i))
-						.andExpect(status().isOk())
-						.andExpect(jsonPath("url",
-								equalTo("/path/prefix" + i + "/v3/api-docs")
-						))
-						.andExpect(jsonPath("configUrl",
-								equalTo("/path/prefix" + i + "/v3/api-docs/swagger-config")
-						));
-			}
-			catch (Exception e) {
+						                .header("X-Forwarded-Prefix", X_FORWARD_PREFIX + i))
+				       .andExpect(status().isOk())
+				       .andExpect(jsonPath("url",
+				                           equalTo("/path/prefix" + i + "/v3/api-docs")
+				                          ))
+				       .andExpect(jsonPath("configUrl",
+				                           equalTo("/path/prefix" + i + "/v3/api-docs/swagger-config")
+				                          ));
+			} catch (Exception e) {
 				throw new RuntimeException(e);
 			}
 		})).toArray(CompletableFuture<?>[]::new);
@@ -124,5 +121,6 @@ public class SpringDocBehindProxyTest extends AbstractSpringDocTest {
 	}
 
 	@SpringBootApplication
-	static class SpringDocTestApp {}
+	static class SpringDocTestApp {
+	}
 }

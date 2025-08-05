@@ -27,7 +27,6 @@
 package test.org.springdoc.api.v31.app86;
 
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.reactive.function.server.RouterFunction;
@@ -53,27 +52,53 @@ public class QuoteRouter {
 	@Bean
 	public RouterFunction<ServerResponse> myroute(QuoteHandler quoteHandler) {
 		return route(GET("/hello").and(accept(TEXT_PLAIN)), quoteHandler::hello)
-				.withAttribute(OPERATION_ATTRIBUTE, operationBuilder().operationId("hello").response(responseBuilder().responseCode("200")))
+				.withAttribute(OPERATION_ATTRIBUTE,
+				               operationBuilder().operationId("hello").response(responseBuilder().responseCode("200")))
 
 				.and(route(POST("/echo").and(accept(TEXT_PLAIN).and(contentType(TEXT_PLAIN))), quoteHandler::echo)
-						.withAttribute(OPERATION_ATTRIBUTE, operationBuilder().operationId("echo")
-								.requestBody(requestBodyBuilder().implementation(String.class))
-								.response(responseBuilder().responseCode("200").implementation(String.class))))
+						     .withAttribute(OPERATION_ATTRIBUTE, operationBuilder().operationId("echo")
+						                                                           .requestBody(
+								                                                           requestBodyBuilder().implementation(
+										                                                           String.class))
+						                                                           .response(
+								                                                           responseBuilder().responseCode(
+										                                                                            "200")
+								                                                                            .implementation(
+										                                                                            String.class))))
 
-				.and(route(POST("/echo").and(accept(APPLICATION_JSON).and(contentType(APPLICATION_JSON))), quoteHandler::echo)
-						.withAttribute(OPERATION_ATTRIBUTE, operationBuilder().operationId("echo")
-								.requestBody(requestBodyBuilder().implementation(String.class))
-								.response(responseBuilder().responseCode("200").implementation(String.class)))
-				)
+				.and(route(POST("/echo").and(accept(APPLICATION_JSON).and(contentType(APPLICATION_JSON))),
+				           quoteHandler::echo)
+						     .withAttribute(OPERATION_ATTRIBUTE, operationBuilder().operationId("echo")
+						                                                           .requestBody(
+								                                                           requestBodyBuilder().implementation(
+										                                                           String.class))
+						                                                           .response(
+								                                                           responseBuilder().responseCode(
+										                                                                            "200")
+								                                                                            .implementation(
+										                                                                            String.class)))
+				    )
 
 				.and(route(GET("/quotes").and(accept(APPLICATION_JSON)), quoteHandler::fetchQuotes)
-						.withAttribute(OPERATION_ATTRIBUTE, operationBuilder().operationId("fetchQuotes")
-								.parameter(parameterBuilder().in(ParameterIn.QUERY).name("size").implementation(String.class))
-								.response(responseBuilder().responseCode("200").implementationArray(Quote.class))))
+						     .withAttribute(OPERATION_ATTRIBUTE, operationBuilder().operationId("fetchQuotes")
+						                                                           .parameter(parameterBuilder().in(
+								                                                                                        ParameterIn.QUERY)
+						                                                                                        .name("size")
+						                                                                                        .implementation(
+								                                                                                        String.class))
+						                                                           .response(
+								                                                           responseBuilder().responseCode(
+										                                                                            "200")
+								                                                                            .implementationArray(
+										                                                                            Quote.class))))
 
 				.and(route(GET("/quotes").and(accept(APPLICATION_STREAM_JSON)), quoteHandler::streamQuotes)
-						.withAttribute(OPERATION_ATTRIBUTE, operationBuilder().operationId("fetchQuotes")
-								.response(responseBuilder().responseCode("200").implementation(Quote.class))));
+						     .withAttribute(OPERATION_ATTRIBUTE, operationBuilder().operationId("fetchQuotes")
+						                                                           .response(
+								                                                           responseBuilder().responseCode(
+										                                                                            "200")
+								                                                                            .implementation(
+										                                                                            Quote.class))));
 	}
 
 }

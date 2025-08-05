@@ -26,14 +26,14 @@
 
 package org.springdoc.core.properties;
 
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.apache.commons.lang3.StringUtils;
 import org.springdoc.core.utils.Constants;
+
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 
 import static org.springdoc.core.utils.Constants.GROUP_NAME_NOT_NULL_OR_EMPTY;
 import static org.springdoc.core.utils.Constants.SWAGGER_UI_OAUTH_REDIRECT_URL;

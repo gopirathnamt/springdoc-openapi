@@ -26,19 +26,18 @@
 
 package test.org.springdoc.api.v30.app32;
 
-import java.util.List;
-
 import org.springdoc.core.annotations.ParameterObject;
-
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 public class HelloController {
 
-	@GetMapping(value = "/search", produces = { "application/xml", "application/json" })
+	@GetMapping(value = "/search", produces = {"application/xml", "application/json"})
 	public ResponseEntity<List<PersonDTO>> getAllPets(@ParameterObject Sort sort) {
 		return null;
 	}

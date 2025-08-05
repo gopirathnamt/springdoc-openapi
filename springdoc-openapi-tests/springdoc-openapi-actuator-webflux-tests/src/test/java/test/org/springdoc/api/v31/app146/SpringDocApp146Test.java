@@ -20,19 +20,18 @@ package test.org.springdoc.api.v31.app146;
 
 import org.junit.jupiter.api.Test;
 import org.springdoc.core.utils.Constants;
-import test.org.springdoc.api.v31.AbstractSpringDocActuatorTest;
-
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.ComponentScan;
+import test.org.springdoc.api.v31.AbstractSpringDocActuatorTest;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
-		properties = { "management.endpoints.web.exposure.include=*",
+		properties = {"management.endpoints.web.exposure.include=*",
 				"springdoc.show-actuator=true",
 				"management.server.port=9386",
 				"management.endpoints.web.exposure.exclude=functions, shutdown",
 				"management.server.base-path=/test",
-				"management.endpoints.web.base-path=/application" })
+				"management.endpoints.web.base-path=/application"})
 public class SpringDocApp146Test extends AbstractSpringDocActuatorTest {
 
 	@Test
@@ -46,7 +45,8 @@ public class SpringDocApp146Test extends AbstractSpringDocActuatorTest {
 	}
 
 	@SpringBootApplication
-	@ComponentScan(basePackages = { "org.springdoc", "test.org.springdoc.api.v31.app146" })
-	static class SpringDocTestApp {}
+	@ComponentScan(basePackages = {"org.springdoc", "test.org.springdoc.api.v31.app146"})
+	static class SpringDocTestApp {
+	}
 
 }

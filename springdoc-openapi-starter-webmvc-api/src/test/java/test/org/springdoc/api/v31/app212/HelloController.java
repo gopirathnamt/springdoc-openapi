@@ -18,11 +18,10 @@
 
 package test.org.springdoc.api.v31.app212;
 
-import test.org.springdoc.api.v31.app217.PersonDTO;
-
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
+import test.org.springdoc.api.v31.app217.PersonDTO;
 
 @RestController
 public class HelloController {

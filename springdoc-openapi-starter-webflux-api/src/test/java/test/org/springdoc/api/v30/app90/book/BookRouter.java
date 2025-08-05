@@ -26,16 +26,15 @@
 
 package test.org.springdoc.api.v30.app90.book;
 
-import java.util.function.Consumer;
-
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
-import reactor.core.publisher.Flux;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.server.RouterFunction;
+import reactor.core.publisher.Flux;
+
+import java.util.function.Consumer;
 
 import static org.springdoc.core.fn.builders.parameter.Builder.parameterBuilder;
 import static org.springdoc.webflux.core.fn.SpringdocRouteBuilder.route;
@@ -50,23 +49,31 @@ class BookRouter {
 
 	@Bean
 	RouterFunction<?> bookRoute(BookRepository br) {
-		return route().GET("/books", accept(MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML), HANDLER_FUNCTION, ops -> ops.operationId("findAll").tag("book")
-						.beanClass(BookRepository.class).beanMethod("findAll")).build()
+		return route().GET("/books", accept(MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML), HANDLER_FUNCTION,
+		                   ops -> ops.operationId("findAll").tag("book")
+		                             .beanClass(BookRepository.class).beanMethod("findAll")).build()
 
-				.and(route().GET("/books", accept(MediaType.APPLICATION_XML, MediaType.TEXT_PLAIN), HANDLER_FUNCTION,
-						ops -> ops.operationId("findAll").tag("book").beanClass(BookRepository.class).beanMethod("findAll")).build())
+		              .and(route().GET("/books", accept(MediaType.APPLICATION_XML, MediaType.TEXT_PLAIN),
+		                               HANDLER_FUNCTION,
+		                               ops -> ops.operationId("findAll").tag("book").beanClass(BookRepository.class)
+		                                         .beanMethod("findAll")).build())
 
-				.and(route().GET("/books/{author}", HANDLER_FUNCTION, ops -> ops.tag("book")
-						.beanClass(BookRepository.class).beanMethod("findByAuthor")
-						.operationId("findByAuthor").tag("book").parameter(parameterBuilder().in(ParameterIn.PATH).name("author"))).build());
+		              .and(route().GET("/books/{author}", HANDLER_FUNCTION, ops -> ops.tag("book")
+		                                                                              .beanClass(BookRepository.class)
+		                                                                              .beanMethod("findByAuthor")
+		                                                                              .operationId("findByAuthor")
+		                                                                              .tag("book").parameter(
+						              parameterBuilder().in(ParameterIn.PATH).name("author"))).build());
 	}
 
 	@Bean
 	RouterFunction<?> routes2() {
 		return nest(path("/greeter").and(path("/greeter2")),
-				route().GET("/books", accept(MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML), HANDLER_FUNCTION, getOperation1()).build())
+		            route().GET("/books", accept(MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML),
+		                        HANDLER_FUNCTION, getOperation1()).build())
 
-				.and(route().GET("/books/nest", accept(MediaType.APPLICATION_XML, MediaType.TEXT_PLAIN), HANDLER_FUNCTION, getOperation1()).build())
+				.and(route().GET("/books/nest", accept(MediaType.APPLICATION_XML, MediaType.TEXT_PLAIN),
+				                 HANDLER_FUNCTION, getOperation1()).build())
 
 				.and(route().GET("/books/nest/{author}", HANDLER_FUNCTION, getOperation2()).build());
 	}
@@ -74,11 +81,16 @@ class BookRouter {
 	@Bean
 	RouterFunction<?> routes4() {
 		return nest(path("/test"), nest(path("/greeter").and(path("/greeter2")),
-				route().GET("/books", accept(MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML), HANDLER_FUNCTION, getOperation1()).build()
+		                                route().GET("/books",
+		                                            accept(MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML),
+		                                            HANDLER_FUNCTION, getOperation1()).build()
 
-						.and(route().GET("/books", accept(MediaType.APPLICATION_XML, MediaType.TEXT_PLAIN), HANDLER_FUNCTION, getOperation1()).build())
+		                                       .and(route().GET("/books",
+		                                                        accept(MediaType.APPLICATION_XML, MediaType.TEXT_PLAIN),
+		                                                        HANDLER_FUNCTION, getOperation1()).build())
 
-						.and(route().GET("/books/{author}", HANDLER_FUNCTION, getOperation2()).build())));
+		                                       .and(route().GET("/books/{author}", HANDLER_FUNCTION, getOperation2())
+		                                                   .build())));
 	}
 
 
@@ -88,8 +100,8 @@ class BookRouter {
 
 	private Consumer<org.springdoc.core.fn.builders.operation.Builder> getOperation2() {
 		return ops -> ops.operationId("findAll").tag("book")
-				.operationId("findByAuthor").parameter(parameterBuilder().name("author").in(ParameterIn.PATH))
-				.beanClass(BookRepository.class).beanMethod("findByAuthor");
+		                 .operationId("findByAuthor").parameter(parameterBuilder().name("author").in(ParameterIn.PATH))
+		                 .beanClass(BookRepository.class).beanMethod("findByAuthor");
 	}
 
 

@@ -80,8 +80,7 @@ public class ObjectMapperProvider extends ObjectMapperFactory {
 			if (springDocConfigProperties.isExplicitObjectSchema()) {
 				System.setProperty(Schema.EXPLICIT_OBJECT_SCHEMA_PROPERTY, "true");
 			}
-		}
-		else {
+		} else {
 			jsonMapper = Json.mapper();
 			yamlMapper = Yaml.mapper();
 		}
@@ -119,8 +118,7 @@ public class ObjectMapperProvider extends ObjectMapperFactory {
 		if (OpenApiVersion.OPENAPI_3_1 == springDocConfigProperties.getApiDocs().getVersion()) {
 			objectMapper.addMixIn(OpenAPI.class, SortedOpenAPIMixin31.class);
 			objectMapper.addMixIn(Schema.class, SortedSchemaMixin31.class);
-		}
-		else {
+		} else {
 			objectMapper.addMixIn(OpenAPI.class, SortedOpenAPIMixin.class);
 			objectMapper.addMixIn(Schema.class, SortedSchemaMixin.class);
 		}

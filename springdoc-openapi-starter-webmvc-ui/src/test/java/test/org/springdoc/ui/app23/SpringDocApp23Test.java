@@ -19,12 +19,11 @@
 package test.org.springdoc.ui.app23;
 
 import org.junit.jupiter.api.Test;
-import test.org.springdoc.ui.AbstractSpringDocTest;
-
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.test.context.TestPropertySource;
+import test.org.springdoc.ui.AbstractSpringDocTest;
 
-@TestPropertySource(properties = { "springdoc.swagger-ui.queryConfigEnabled=true" })
+@TestPropertySource(properties = {"springdoc.swagger-ui.queryConfigEnabled=true"})
 class SpringDocApp23Test extends AbstractSpringDocTest {
 
 	@Test
@@ -33,6 +32,7 @@ class SpringDocApp23Test extends AbstractSpringDocTest {
 	}
 
 	@SpringBootApplication
-	static class SpringDocTestApp {}
+	static class SpringDocTestApp {
+	}
 
 }

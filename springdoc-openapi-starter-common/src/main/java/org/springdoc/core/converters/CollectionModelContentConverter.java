@@ -26,9 +26,6 @@
 
 package org.springdoc.core.converters;
 
-import java.util.Collection;
-import java.util.Iterator;
-
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.type.CollectionType;
@@ -39,10 +36,12 @@ import io.swagger.v3.core.converter.ModelConverterContext;
 import io.swagger.v3.oas.models.media.ArraySchema;
 import io.swagger.v3.oas.models.media.ObjectSchema;
 import io.swagger.v3.oas.models.media.Schema;
-
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.LinkRelationProvider;
 import org.springframework.util.CollectionUtils;
+
+import java.util.Collection;
+import java.util.Iterator;
 
 /**
  * Override resolved schema as there is a custom serializer that converts the data to a map before serializing it.

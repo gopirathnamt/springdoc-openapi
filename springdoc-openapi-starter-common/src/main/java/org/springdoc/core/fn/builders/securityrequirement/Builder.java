@@ -26,9 +26,9 @@
 
 package org.springdoc.core.fn.builders.securityrequirement;
 
-import java.lang.annotation.Annotation;
-
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+
+import java.lang.annotation.Annotation;
 
 /**
  * The type Security requirement builder.

@@ -26,16 +26,12 @@
 
 package org.springdoc.core.configurer;
 
-import java.util.List;
-import java.util.Optional;
-
 import io.swagger.v3.oas.models.OpenAPI;
 import org.apache.commons.lang3.StringUtils;
 import org.springdoc.core.customizers.SpecPropertiesCustomizer;
 import org.springdoc.core.models.GroupedOpenApi;
 import org.springdoc.core.properties.SpringDocConfigProperties;
 import org.springdoc.core.service.OpenAPIService;
-
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.boot.context.properties.bind.BindResult;
@@ -44,6 +40,9 @@ import org.springframework.context.EnvironmentAware;
 import org.springframework.core.env.Environment;
 import org.springframework.lang.Nullable;
 import org.springframework.util.CollectionUtils;
+
+import java.util.List;
+import java.util.Optional;
 
 import static org.springdoc.core.utils.Constants.SPRINGDOC_PREFIX;
 import static org.springframework.beans.factory.config.BeanDefinition.SCOPE_PROTOTYPE;
@@ -81,34 +80,62 @@ public class SpringdocBeanFactoryConfigurer implements EnvironmentAware, BeanFac
 	@Override
 	public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) {
 		final BindResult<SpringDocConfigProperties> result = Binder.get(environment)
-				.bind(SPRINGDOC_PREFIX, SpringDocConfigProperties.class);
+		                                                           .bind(SPRINGDOC_PREFIX,
+		                                                                 SpringDocConfigProperties.class);
 		if (result.isBound()) {
 			SpringDocConfigProperties springDocGroupConfig = result.get();
 			List<GroupedOpenApi> groupedOpenApis = springDocGroupConfig.getGroupConfigs().stream()
-					.map(elt -> {
-						GroupedOpenApi.Builder builder = GroupedOpenApi.builder();
-						if (!CollectionUtils.isEmpty(elt.getPackagesToScan()))
-							builder.packagesToScan(elt.getPackagesToScan().toArray(new String[0]));
-						if (!CollectionUtils.isEmpty(elt.getPathsToMatch()))
-							builder.pathsToMatch(elt.getPathsToMatch().toArray(new String[0]));
-						if (!CollectionUtils.isEmpty(elt.getProducesToMatch()))
-							builder.producesToMatch(elt.getProducesToMatch().toArray(new String[0]));
-						if (!CollectionUtils.isEmpty(elt.getConsumesToMatch()))
-							builder.consumesToMatch(elt.getConsumesToMatch().toArray(new String[0]));
-						if (!CollectionUtils.isEmpty(elt.getHeadersToMatch()))
-							builder.headersToMatch(elt.getHeadersToMatch().toArray(new String[0]));
-						if (!CollectionUtils.isEmpty(elt.getPathsToExclude()))
-							builder.pathsToExclude(elt.getPathsToExclude().toArray(new String[0]));
-						if (!CollectionUtils.isEmpty(elt.getPackagesToExclude()))
-							builder.packagesToExclude(elt.getPackagesToExclude().toArray(new String[0]));
-						if (StringUtils.isNotEmpty(elt.getDisplayName()))
-							builder.displayName(elt.getDisplayName());
-						if (Optional.ofNullable(elt.getOpenApi()).isPresent()) {
-							builder.addOpenApiCustomizer(new SpecPropertiesCustomizer(elt.getOpenApi()));
-						}
-						return builder.group(elt.getGroup()).build();
-					})
-					.toList();
+			                                                           .map(elt -> {
+				                                                           GroupedOpenApi.Builder builder =
+						                                                           GroupedOpenApi.builder();
+				                                                           if (!CollectionUtils.isEmpty(
+						                                                           elt.getPackagesToScan()))
+					                                                           builder.packagesToScan(
+							                                                           elt.getPackagesToScan()
+							                                                              .toArray(new String[0]));
+				                                                           if (!CollectionUtils.isEmpty(
+						                                                           elt.getPathsToMatch()))
+					                                                           builder.pathsToMatch(
+							                                                           elt.getPathsToMatch()
+							                                                              .toArray(new String[0]));
+				                                                           if (!CollectionUtils.isEmpty(
+						                                                           elt.getProducesToMatch()))
+					                                                           builder.producesToMatch(
+							                                                           elt.getProducesToMatch()
+							                                                              .toArray(new String[0]));
+				                                                           if (!CollectionUtils.isEmpty(
+						                                                           elt.getConsumesToMatch()))
+					                                                           builder.consumesToMatch(
+							                                                           elt.getConsumesToMatch()
+							                                                              .toArray(new String[0]));
+				                                                           if (!CollectionUtils.isEmpty(
+						                                                           elt.getHeadersToMatch()))
+					                                                           builder.headersToMatch(
+							                                                           elt.getHeadersToMatch()
+							                                                              .toArray(new String[0]));
+				                                                           if (!CollectionUtils.isEmpty(
+						                                                           elt.getPathsToExclude()))
+					                                                           builder.pathsToExclude(
+							                                                           elt.getPathsToExclude()
+							                                                              .toArray(new String[0]));
+				                                                           if (!CollectionUtils.isEmpty(
+						                                                           elt.getPackagesToExclude()))
+					                                                           builder.packagesToExclude(
+							                                                           elt.getPackagesToExclude()
+							                                                              .toArray(new String[0]));
+				                                                           if (StringUtils.isNotEmpty(
+						                                                           elt.getDisplayName()))
+					                                                           builder.displayName(
+							                                                           elt.getDisplayName());
+				                                                           if (Optional.ofNullable(elt.getOpenApi())
+				                                                                       .isPresent()) {
+					                                                           builder.addOpenApiCustomizer(
+							                                                           new SpecPropertiesCustomizer(
+									                                                           elt.getOpenApi()));
+				                                                           }
+				                                                           return builder.group(elt.getGroup()).build();
+			                                                           })
+			                                                           .toList();
 			groupedOpenApis.forEach(elt -> beanFactory.registerSingleton(elt.getGroup(), elt));
 		}
 		initBeanFactoryPostProcessor(beanFactory);

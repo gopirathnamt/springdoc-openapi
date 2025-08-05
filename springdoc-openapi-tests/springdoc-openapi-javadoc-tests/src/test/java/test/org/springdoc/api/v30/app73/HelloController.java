@@ -28,7 +28,6 @@ package test.org.springdoc.api.v30.app73;
 
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -42,7 +41,7 @@ import org.springframework.web.bind.annotation.RestController;
  * The type Hello controller.
  */
 @RestController
-@RequestMapping({ "/{country_code}/persons/", "/persons" })
+@RequestMapping({"/{country_code}/persons/", "/persons"})
 class HelloController {
 
 	/**
@@ -53,7 +52,8 @@ class HelloController {
 	 */
 	@DeleteMapping("/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void delete(@Parameter(name = "country_code", in = ParameterIn.QUERY) String countryCode, @PathVariable("id") String id) {
+	public void delete(@Parameter(name = "country_code", in = ParameterIn.QUERY) String countryCode,
+	                   @PathVariable("id") String id) {
 
 	}
 
@@ -65,7 +65,8 @@ class HelloController {
 	 * @return the string
 	 */
 	@GetMapping("/{id}")
-	public String get(@Parameter(name = "country_code", in = ParameterIn.QUERY) String countryCode, @PathVariable("id") String id) {
+	public String get(@Parameter(name = "country_code", in = ParameterIn.QUERY) String countryCode,
+	                  @PathVariable("id") String id) {
 		return null;
 	}
 }

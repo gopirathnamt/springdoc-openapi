@@ -31,20 +31,20 @@ import org.springframework.stereotype.Service
 
 @Service
 class CarService {
-	List<test.org.springdoc.api.v30.app2.Car> getCars() {
-		return [
-				new test.org.springdoc.api.v30.app2.Car(id: 1L, name: 'Car 1'),
-				new test.org.springdoc.api.v30.app2.Car(id: 2L, name: 'Car 2'),
-				new test.org.springdoc.api.v30.app2.Car(id: 3L, name: 'Car 3'),
-				new test.org.springdoc.api.v30.app2.Car(id: 4L, name: 'Car 4'),
-				new test.org.springdoc.api.v30.app2.Car(id: 5L, name: 'Car 5'),
-		]
-	}
+    List<test.org.springdoc.api.v30.app2.Car> getCars() {
+        return [
+                new test.org.springdoc.api.v30.app2.Car(id: 1L, name: 'Car 1'),
+                new test.org.springdoc.api.v30.app2.Car(id: 2L, name: 'Car 2'),
+                new test.org.springdoc.api.v30.app2.Car(id: 3L, name: 'Car 3'),
+                new test.org.springdoc.api.v30.app2.Car(id: 4L, name: 'Car 4'),
+                new test.org.springdoc.api.v30.app2.Car(id: 5L, name: 'Car 5'),
+        ]
+    }
 
-	test.org.springdoc.api.v30.app2.Car getCar(Long carId) {
-		return new test.org.springdoc.api.v30.app2.Car(
-				id: carId,
-				name: "Car $carId"
-		)
-	}
+    test.org.springdoc.api.v30.app2.Car getCar(Long carId) {
+        return new test.org.springdoc.api.v30.app2.Car(
+                id: carId,
+                name: "Car $carId"
+        )
+    }
 }

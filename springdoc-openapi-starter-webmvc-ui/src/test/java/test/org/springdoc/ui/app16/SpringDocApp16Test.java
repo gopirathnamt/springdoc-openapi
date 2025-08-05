@@ -19,11 +19,10 @@
 package test.org.springdoc.ui.app16;
 
 import org.junit.jupiter.api.Test;
-import test.org.springdoc.ui.AbstractSpringDocActuatorTest;
-
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MvcResult;
+import test.org.springdoc.ui.AbstractSpringDocActuatorTest;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.skyscreamer.jsonassert.JSONAssert.assertEquals;
@@ -32,16 +31,17 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
-		properties = { "management.endpoints.web.exposure.include=*",
+		properties = {"management.endpoints.web.exposure.include=*",
 				"springdoc.use-management-port=true",
 				"management.server.port=9395",
 				"management.server.base-path=/test",
-				"management.endpoints.web.base-path=/application" })
+				"management.endpoints.web.base-path=/application"})
 class SpringDocApp16Test extends AbstractSpringDocActuatorTest {
 
 	@Test
 	void testIndex() throws Exception {
-		MvcResult mvcResult = mockMvc.perform(get("/application/swagger-ui/index.html")).andExpect(status().isOk()).andReturn();
+		MvcResult mvcResult =
+				mockMvc.perform(get("/application/swagger-ui/index.html")).andExpect(status().isOk()).andReturn();
 		String contentAsString = mvcResult.getResponse().getContentAsString();
 		assertTrue(contentAsString.contains("Swagger UI"));
 	}
@@ -54,12 +54,14 @@ class SpringDocApp16Test extends AbstractSpringDocActuatorTest {
 
 	@Test
 	void testIndexSwaggerConfig() throws Exception {
-		String contentAsString = actuatorRestTemplate.getForObject("/test/application/swagger-ui/swagger-config", String.class);
+		String contentAsString =
+				actuatorRestTemplate.getForObject("/test/application/swagger-ui/swagger-config", String.class);
 		String expected = getContent("results/app16-1.json");
 		assertEquals(expected, contentAsString, true);
 	}
 
 	@SpringBootApplication
-	static class SpringDocTestApp {}
+	static class SpringDocTestApp {
+	}
 
 }

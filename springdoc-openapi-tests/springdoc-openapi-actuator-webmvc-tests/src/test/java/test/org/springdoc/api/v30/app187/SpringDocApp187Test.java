@@ -25,15 +25,14 @@
 package test.org.springdoc.api.v30.app187;
 
 import org.junit.jupiter.api.AfterAll;
-import test.org.springdoc.api.v30.AbstractSpringDocTest;
-
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.test.context.TestPropertySource;
+import test.org.springdoc.api.v30.AbstractSpringDocTest;
 
-@TestPropertySource(properties = { "springdoc.show-actuator=true",
+@TestPropertySource(properties = {"springdoc.show-actuator=true",
 		"management.endpoints.web.exposure.include=*",
 		"management.endpoints.enabled-by-default=true",
-		"management.endpoints.web.exposure.exclude=functions, shutdown" })
+		"management.endpoints.web.exposure.exclude=functions, shutdown"})
 public class SpringDocApp187Test extends AbstractSpringDocTest {
 
 	static {
@@ -46,6 +45,7 @@ public class SpringDocApp187Test extends AbstractSpringDocTest {
 	}
 
 	@SpringBootApplication
-	static class SpringDocTestApp {}
+	static class SpringDocTestApp {
+	}
 
 }

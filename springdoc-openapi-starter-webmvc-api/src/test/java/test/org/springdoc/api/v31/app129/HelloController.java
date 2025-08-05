@@ -24,30 +24,29 @@
 
 package test.org.springdoc.api.v31.app129;
 
-import java.util.concurrent.CompletableFuture;
-
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.async.DeferredResult;
 
+import java.util.concurrent.CompletableFuture;
+
 @RestController
-@RequestMapping(path = "/api", headers = { "userId", "registrationId" })
+@RequestMapping(path = "/api", headers = {"userId", "registrationId"})
 public class HelloController {
 
 	@PostMapping("/test")
-	@ApiResponses({ @ApiResponse(responseCode = "200") })
+	@ApiResponses({@ApiResponse(responseCode = "200")})
 	public DeferredResult<OperationResponse<ActualReturnedEntity>> update(
 			@RequestBody ActualReturnedEntity entity) throws Exception {
 		return null;
 	}
 
 	@PostMapping("/test2")
-	@ApiResponses({ @ApiResponse(responseCode = "200") })
+	@ApiResponses({@ApiResponse(responseCode = "200")})
 	public CompletableFuture<OperationResponse<ActualReturnedEntity>> update2(
 			@RequestBody ActualReturnedEntity entity) throws Exception {
 		return null;

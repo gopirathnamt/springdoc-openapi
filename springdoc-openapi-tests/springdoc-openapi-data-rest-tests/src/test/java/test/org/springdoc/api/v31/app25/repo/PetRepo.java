@@ -26,12 +26,11 @@
 
 package test.org.springdoc.api.v31.app25.repo;
 
-import java.util.UUID;
-
-import test.org.springdoc.api.v31.app25.model.Pet;
-
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import test.org.springdoc.api.v31.app25.model.Pet;
+
+import java.util.UUID;
 
 @CrossOrigin
 public interface PetRepo extends JpaRepository<Pet, UUID> {

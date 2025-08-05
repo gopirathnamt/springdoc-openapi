@@ -26,12 +26,7 @@
 
 package org.springdoc.webflux.core.visitor;
 
-import java.util.ArrayList;
-import java.util.function.Function;
-
 import org.springdoc.core.fn.AbstractRouterFunctionVisitor;
-import reactor.core.publisher.Mono;
-
 import org.springframework.core.io.Resource;
 import org.springframework.web.reactive.function.server.HandlerFunction;
 import org.springframework.web.reactive.function.server.RequestPredicate;
@@ -39,13 +34,18 @@ import org.springframework.web.reactive.function.server.RequestPredicates;
 import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.function.server.RouterFunctions;
 import org.springframework.web.reactive.function.server.ServerRequest;
+import reactor.core.publisher.Mono;
+
+import java.util.ArrayList;
+import java.util.function.Function;
 
 /**
  * The type Router function visitor.
  *
  * @author bnasslahsen
  */
-public class RouterFunctionVisitor extends AbstractRouterFunctionVisitor implements RouterFunctions.Visitor, RequestPredicates.Visitor {
+public class RouterFunctionVisitor extends AbstractRouterFunctionVisitor implements RouterFunctions.Visitor,
+		RequestPredicates.Visitor {
 
 	@Override
 	public void route(RequestPredicate predicate, HandlerFunction<?> handlerFunction) {

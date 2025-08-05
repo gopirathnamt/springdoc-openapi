@@ -1,9 +1,9 @@
 package org.springdoc.ui;
 
+import org.junit.jupiter.api.Test;
+
 import java.io.File;
 import java.util.Objects;
-
-import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;

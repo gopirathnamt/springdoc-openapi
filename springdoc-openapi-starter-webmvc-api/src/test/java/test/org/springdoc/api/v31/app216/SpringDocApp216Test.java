@@ -19,10 +19,9 @@
 package test.org.springdoc.api.v31.app216;
 
 import org.springdoc.core.customizers.SpecPropertiesCustomizer;
-import test.org.springdoc.api.v31.AbstractSpringDocTest;
-
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
+import test.org.springdoc.api.v31.AbstractSpringDocTest;
 
 /**
  * <p>
@@ -32,6 +31,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 public class SpringDocApp216Test extends AbstractSpringDocTest {
 
 	@SpringBootApplication
-	static class SpringDocTestApp {}
+	static class SpringDocTestApp {
+	}
 
 }

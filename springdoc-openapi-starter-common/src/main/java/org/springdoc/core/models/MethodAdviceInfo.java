@@ -25,10 +25,10 @@
  */
 package org.springdoc.core.models;
 
+import io.swagger.v3.oas.models.responses.ApiResponses;
+
 import java.lang.reflect.Method;
 import java.util.Set;
-
-import io.swagger.v3.oas.models.responses.ApiResponses;
 
 /**
  * The type Method advice info.

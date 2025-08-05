@@ -24,15 +24,15 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 data class Foo(
-	@Schema(description = "Some description about a byte array.")
-	val data: ByteArray
+    @Schema(description = "Some description about a byte array.")
+    val data: ByteArray
 )
 
 @RestController
 @RequestMapping("/bytearray")
 class ByteArrayController {
 
-	@GetMapping("/")
-	fun getByteArray(): Foo = Foo(byteArrayOf(0))
+    @GetMapping("/")
+    fun getByteArray(): Foo = Foo(byteArrayOf(0))
 
 }

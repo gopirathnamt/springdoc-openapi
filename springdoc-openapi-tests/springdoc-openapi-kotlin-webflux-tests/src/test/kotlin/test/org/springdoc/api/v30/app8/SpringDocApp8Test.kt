@@ -30,20 +30,20 @@ import test.org.springdoc.api.v30.AbstractKotlinSpringDocTest
 @TestPropertySource(properties = [Constants.SPRINGDOC_NULLABLE_REQUEST_PARAMETER_ENABLED + "=false"])
 class SpringDocApp8Test : AbstractKotlinSpringDocTest() {
 
-	@SpringBootApplication
-	@ComponentScan(basePackages = ["org.springdoc", "test.org.springdoc.api.v30.app8"])
-	class DemoApplication {
-		@Bean
-		fun controller(applicationContext: GenericApplicationContext): ExampleController {
-			return createProxy(ExampleController::class.java)
-		}
+    @SpringBootApplication
+    @ComponentScan(basePackages = ["org.springdoc", "test.org.springdoc.api.v30.app8"])
+    class DemoApplication {
+        @Bean
+        fun controller(applicationContext: GenericApplicationContext): ExampleController {
+            return createProxy(ExampleController::class.java)
+        }
 
-		private fun <T> createProxy(clazz: Class<T>): T {
-			val proxyFactory = ProxyFactory(clazz)
-			proxyFactory.targetClass = clazz
-			@Suppress("UNCHECKED_CAST")
-			return proxyFactory.proxy as T
-		}
-	}
+        private fun <T> createProxy(clazz: Class<T>): T {
+            val proxyFactory = ProxyFactory(clazz)
+            proxyFactory.targetClass = clazz
+            @Suppress("UNCHECKED_CAST")
+            return proxyFactory.proxy as T
+        }
+    }
 
 }

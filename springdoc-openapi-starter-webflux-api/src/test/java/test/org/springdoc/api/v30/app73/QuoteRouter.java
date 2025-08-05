@@ -36,7 +36,6 @@ import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springdoc.core.annotations.RouterOperation;
 import org.springdoc.core.annotations.RouterOperations;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.reactive.function.server.RouterFunction;
@@ -66,13 +65,14 @@ public class QuoteRouter {
 			@RouterOperation(path = "/quotes", produces = APPLICATION_JSON_VALUE, operation = @Operation(operationId = "fetchQuotes", parameters = @Parameter(name = "size", in = ParameterIn.QUERY, schema = @Schema(type = "string")),
 					responses = @ApiResponse(responseCode = "200", content = @Content(array = @ArraySchema(schema = @Schema(implementation = Quote.class)))))),
 			@RouterOperation(path = "/quotes", produces = APPLICATION_STREAM_JSON_VALUE, operation = @Operation(operationId = "fetchQuotes",
-					responses = @ApiResponse(responseCode = "200", content = @Content(schema = @Schema(implementation = Quote.class))))) })
+					responses = @ApiResponse(responseCode = "200", content = @Content(schema = @Schema(implementation = Quote.class)))))})
 	@Bean
 	public RouterFunction<ServerResponse> route(QuoteHandler quoteHandler) {
 		return RouterFunctions
 				.route(GET("/hello").and(accept(TEXT_PLAIN)), quoteHandler::hello)
 				.andRoute(POST("/echo").and(accept(TEXT_PLAIN).and(contentType(TEXT_PLAIN))), quoteHandler::echo)
-				.andRoute(POST("/echo").and(accept(APPLICATION_JSON).and(contentType(APPLICATION_JSON))), quoteHandler::echo)
+				.andRoute(POST("/echo").and(accept(APPLICATION_JSON).and(contentType(APPLICATION_JSON))),
+				          quoteHandler::echo)
 				.andRoute(GET("/quotes").and(accept(APPLICATION_JSON)), quoteHandler::fetchQuotes)
 				.andRoute(GET("/quotes").and(accept(APPLICATION_STREAM_JSON)), quoteHandler::streamQuotes);
 	}

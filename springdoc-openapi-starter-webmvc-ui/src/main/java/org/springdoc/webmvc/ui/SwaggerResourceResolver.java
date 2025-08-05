@@ -27,7 +27,6 @@
 package org.springdoc.webmvc.ui;
 
 import org.springdoc.core.properties.SwaggerUiConfigProperties;
-
 import org.springframework.lang.Nullable;
 import org.springframework.web.servlet.resource.LiteWebJarsResourceResolver;
 

@@ -25,9 +25,9 @@
  */
 package org.springdoc.core.providers;
 
-import java.util.Optional;
-
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
+
+import java.util.Optional;
 
 /**
  * The type Repository rest configuration provider.
@@ -47,7 +47,8 @@ public class RepositoryRestConfigurationProvider {
 	 *
 	 * @param optionalRepositoryRestConfiguration the optional repository rest configuration
 	 */
-	public RepositoryRestConfigurationProvider(Optional<RepositoryRestConfiguration> optionalRepositoryRestConfiguration) {
+	public RepositoryRestConfigurationProvider(
+			Optional<RepositoryRestConfiguration> optionalRepositoryRestConfiguration) {
 		this.optionalRepositoryRestConfiguration = optionalRepositoryRestConfiguration;
 	}
 

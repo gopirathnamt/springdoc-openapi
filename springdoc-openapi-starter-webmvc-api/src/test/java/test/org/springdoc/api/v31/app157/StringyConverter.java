@@ -24,17 +24,16 @@
 
 package test.org.springdoc.api.v31.app157;
 
-import java.util.Iterator;
-
 import com.fasterxml.jackson.databind.JavaType;
 import io.swagger.v3.core.converter.AnnotatedType;
 import io.swagger.v3.core.converter.ModelConverter;
 import io.swagger.v3.core.converter.ModelConverterContext;
 import io.swagger.v3.oas.models.media.Schema;
 import org.springdoc.core.providers.ObjectMapperProvider;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.util.Iterator;
 
 @Component
 public class StringyConverter implements ModelConverter {
@@ -49,7 +48,7 @@ public class StringyConverter implements ModelConverter {
 
 	@Override
 	public Schema resolve(AnnotatedType type, ModelConverterContext context,
-			Iterator<ModelConverter> chain) {
+	                      Iterator<ModelConverter> chain) {
 
 		JavaType javaType = objectMapperProvider.jsonMapper().constructType(type.getType());
 

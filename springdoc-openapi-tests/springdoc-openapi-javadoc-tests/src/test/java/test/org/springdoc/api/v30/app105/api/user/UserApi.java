@@ -31,8 +31,6 @@
  */
 package test.org.springdoc.api.v30.app105.api.user;
 
-import java.util.List;
-
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -42,8 +40,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
-import test.org.springdoc.api.v30.app105.model.User;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -52,6 +48,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import test.org.springdoc.api.v30.app105.model.User;
+
+import java.util.List;
 
 /**
  * The interface User api.
@@ -77,11 +76,12 @@ public interface UserApi {
 	 * @param user the user
 	 * @return the response entity
 	 */
-	@Operation(summary = "Create user", tags = { "user" })
-	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "successful operation") })
-	@PostMapping(value = "/user", consumes = { "application/json" })
+	@Operation(summary = "Create user", tags = {"user"})
+	@ApiResponses(value = {@ApiResponse(responseCode = "200", description = "successful operation")})
+	@PostMapping(value = "/user", consumes = {"application/json"})
 	default ResponseEntity<Void> createUser(
-			@io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Created user object", required = true) @Valid @RequestBody User user) {
+			@io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Created user object", required = true)
+			@Valid @RequestBody User user) {
 		return getDelegate().createUser(user);
 	}
 
@@ -91,12 +91,13 @@ public interface UserApi {
 	 * @param user the user
 	 * @return the response entity
 	 */
-	@Operation(summary = "Creates list of users with given input array", tags = { "user" })
-	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "successful operation") })
+	@Operation(summary = "Creates list of users with given input array", tags = {"user"})
+	@ApiResponses(value = {@ApiResponse(responseCode = "200", description = "successful operation")})
 
-	@PostMapping(value = "/user/createWithArray", consumes = { "application/json" })
+	@PostMapping(value = "/user/createWithArray", consumes = {"application/json"})
 	default ResponseEntity<Void> createUsersWithArrayInput(
-			@io.swagger.v3.oas.annotations.parameters.RequestBody(description = "List of user object", required = true) @Valid @RequestBody List<User> user) {
+			@io.swagger.v3.oas.annotations.parameters.RequestBody(description = "List of user object", required = true)
+			@Valid @RequestBody List<User> user) {
 		return getDelegate().createUsersWithArrayInput(user);
 	}
 
@@ -106,11 +107,12 @@ public interface UserApi {
 	 * @param user the user
 	 * @return the response entity
 	 */
-	@Operation(summary = "Creates list of users with given input array", tags = { "user" })
-	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "successful operation") })
-	@PostMapping(value = "/user/createWithList", consumes = { "application/json" })
+	@Operation(summary = "Creates list of users with given input array", tags = {"user"})
+	@ApiResponses(value = {@ApiResponse(responseCode = "200", description = "successful operation")})
+	@PostMapping(value = "/user/createWithList", consumes = {"application/json"})
 	default ResponseEntity<Void> createUsersWithListInput(
-			@io.swagger.v3.oas.annotations.parameters.RequestBody(description = "List of user object", required = true) @Valid @RequestBody List<User> user) {
+			@io.swagger.v3.oas.annotations.parameters.RequestBody(description = "List of user object", required = true)
+			@Valid @RequestBody List<User> user) {
 		return getDelegate().createUsersWithListInput(user);
 	}
 
@@ -120,12 +122,13 @@ public interface UserApi {
 	 * @param username the username
 	 * @return the response entity
 	 */
-	@Operation(summary = "Creates list of users with given input array", tags = { "user" })
-	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "successful operation") })
+	@Operation(summary = "Creates list of users with given input array", tags = {"user"})
+	@ApiResponses(value = {@ApiResponse(responseCode = "200", description = "successful operation")})
 
 	@DeleteMapping(value = "/user/{username}")
 	default ResponseEntity<Void> deleteUser(
-			@io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The name that needs to be deleted", required = true) @PathVariable("username") String username) {
+			@io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The name that needs to be deleted", required = true)
+			@PathVariable("username") String username) {
 		return getDelegate().deleteUser(username);
 	}
 
@@ -135,15 +138,16 @@ public interface UserApi {
 	 * @param username the username
 	 * @return the user by name
 	 */
-	@Operation(summary = "Get user by user name", tags = { "user" })
+	@Operation(summary = "Get user by user name", tags = {"user"})
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "successful operation", content = @Content(schema = @Schema(implementation = User.class))),
 			@ApiResponse(responseCode = "400", description = "Invalid username supplied"),
-			@ApiResponse(responseCode = "404", description = "User not found") })
+			@ApiResponse(responseCode = "404", description = "User not found")})
 
-	@GetMapping(value = "/user/{username}", produces = { "application/xml", "application/json" })
+	@GetMapping(value = "/user/{username}", produces = {"application/xml", "application/json"})
 	default ResponseEntity<User> getUserByName(
-			@Parameter(description = "The name that needs to be fetched. Use user1 for testing.", required = true) @PathVariable("username") String username) {
+			@Parameter(description = "The name that needs to be fetched. Use user1 for testing.", required = true)
+			@PathVariable("username") String username) {
 		return getDelegate().getUserByName(username);
 	}
 
@@ -154,14 +158,16 @@ public interface UserApi {
 	 * @param password the password
 	 * @return the response entity
 	 */
-	@Operation(summary = "Logs user into the system", tags = { "user" })
+	@Operation(summary = "Logs user into the system", tags = {"user"})
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "successful operation", content = @Content(schema = @Schema(implementation = String.class))),
-			@ApiResponse(responseCode = "400", description = "Invalid username/password supplied") })
-	@GetMapping(value = "/user/login", produces = { "application/xml", "application/json" })
+			@ApiResponse(responseCode = "400", description = "Invalid username/password supplied")})
+	@GetMapping(value = "/user/login", produces = {"application/xml", "application/json"})
 	default ResponseEntity<String> loginUser(
-			@NotNull @Parameter(description = "The user name for login", required = true) @Valid @RequestParam(value = "username", required = true) String username,
-			@NotNull @Parameter(description = "The password for login in clear text", required = true) @Valid @RequestParam(value = "password", required = true) String password) {
+			@NotNull @Parameter(description = "The user name for login", required = true) @Valid
+			@RequestParam(value = "username", required = true) String username,
+			@NotNull @Parameter(description = "The password for login in clear text", required = true) @Valid
+			@RequestParam(value = "password", required = true) String password) {
 		return getDelegate().loginUser(username, password);
 	}
 
@@ -170,8 +176,8 @@ public interface UserApi {
 	 *
 	 * @return the response entity
 	 */
-	@Operation(summary = "Logs out current logged in user session", tags = { "user" })
-	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "successful operation") })
+	@Operation(summary = "Logs out current logged in user session", tags = {"user"})
+	@ApiResponses(value = {@ApiResponse(responseCode = "200", description = "successful operation")})
 	@GetMapping(value = "/user/logout")
 	default ResponseEntity<Void> logoutUser() {
 		return getDelegate().logoutUser();
@@ -184,13 +190,15 @@ public interface UserApi {
 	 * @param user     the user
 	 * @return the response entity
 	 */
-	@Operation(summary = "Updated user", tags = { "user" })
-	@ApiResponses(value = { @ApiResponse(responseCode = "400", description = "Invalid user supplied"),
-			@ApiResponse(responseCode = "404", description = "User not found") })
-	@PutMapping(value = "/user/{username}", consumes = { "application/json" })
+	@Operation(summary = "Updated user", tags = {"user"})
+	@ApiResponses(value = {@ApiResponse(responseCode = "400", description = "Invalid user supplied"),
+			@ApiResponse(responseCode = "404", description = "User not found")})
+	@PutMapping(value = "/user/{username}", consumes = {"application/json"})
 	default ResponseEntity<Void> updateUser(
-			@Parameter(description = "name that need to be deleted", required = true) @PathVariable("username") String username,
-			@io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Updated user object", required = true) @Valid @RequestBody User user) {
+			@Parameter(description = "name that need to be deleted", required = true) @PathVariable("username")
+			String username,
+			@io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Updated user object", required = true)
+			@Valid @RequestBody User user) {
 		return getDelegate().updateUser(username, user);
 	}
 

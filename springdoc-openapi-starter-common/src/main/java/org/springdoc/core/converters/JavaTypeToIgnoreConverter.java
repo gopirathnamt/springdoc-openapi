@@ -26,14 +26,14 @@
 
 package org.springdoc.core.converters;
 
-import java.util.Iterator;
-
 import com.fasterxml.jackson.databind.JavaType;
 import io.swagger.v3.core.converter.AnnotatedType;
 import io.swagger.v3.core.converter.ModelConverter;
 import io.swagger.v3.core.converter.ModelConverterContext;
 import io.swagger.v3.oas.models.media.Schema;
 import org.springdoc.core.providers.ObjectMapperProvider;
+
+import java.util.Iterator;
 
 /**
  * The type Request type to ignore converter.

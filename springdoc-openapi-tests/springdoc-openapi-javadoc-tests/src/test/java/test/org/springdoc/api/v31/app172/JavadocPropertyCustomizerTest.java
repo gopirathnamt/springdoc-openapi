@@ -26,23 +26,6 @@
 
 package test.org.springdoc.api.v31.app172;
 
-import java.beans.IntrospectionException;
-import java.beans.Introspector;
-import java.beans.PropertyDescriptor;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.lang.reflect.Field;
-import java.net.URL;
-import java.net.URLClassLoader;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-
-import javax.tools.JavaCompiler;
-import javax.tools.ToolProvider;
-
 import io.swagger.v3.oas.models.media.ObjectSchema;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.media.StringSchema;
@@ -58,6 +41,22 @@ import org.springdoc.core.customizers.JavadocPropertyCustomizer;
 import org.springdoc.core.providers.JavadocProvider;
 import org.springdoc.core.providers.ObjectMapperProvider;
 import org.springdoc.core.providers.SpringDocJavadocProvider;
+
+import javax.tools.JavaCompiler;
+import javax.tools.ToolProvider;
+import java.beans.IntrospectionException;
+import java.beans.Introspector;
+import java.beans.PropertyDescriptor;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.lang.reflect.Field;
+import java.net.URL;
+import java.net.URLClassLoader;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -120,7 +119,7 @@ class JavadocPropertyCustomizerTest {
 			if (r != 0) {
 				throw new IllegalStateException("Compilation failed");
 			}
-			URL[] urls = { tempDir.toURI().toURL() };
+			URL[] urls = {tempDir.toURI().toURL()};
 			ClassLoader loader = URLClassLoader.newInstance(urls);
 
 			Class<?> cls = loader.loadClass("RecordObject");
@@ -128,10 +127,11 @@ class JavadocPropertyCustomizerTest {
 			List<Field> fields = Arrays.asList(cls.getFields());
 
 			Schema existingSchema = new ObjectSchema().name("RecordObject")
-					.addProperty("id", new StringSchema().name("id"))
-					.addProperty("name", new StringSchema().name("name"));
+			                                          .addProperty("id", new StringSchema().name("id"))
+			                                          .addProperty("name", new StringSchema().name("name"));
 
-			List<PropertyDescriptor> propertyDescriptors = Arrays.asList(Introspector.getBeanInfo(cls).getPropertyDescriptors());
+			List<PropertyDescriptor> propertyDescriptors =
+					Arrays.asList(Introspector.getBeanInfo(cls).getPropertyDescriptors());
 			javadocPropertyCustomizer.setJavadocDescription(cls, fields, propertyDescriptors, existingSchema, false);
 
 			assertEquals("Record Object", existingSchema.getDescription());

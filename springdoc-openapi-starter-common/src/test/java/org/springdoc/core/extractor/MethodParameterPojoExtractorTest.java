@@ -23,13 +23,12 @@
  */
 package org.springdoc.core.extractor;
 
-import java.lang.reflect.Method;
-import java.util.stream.Stream;
-
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-
 import org.springframework.core.MethodParameter;
+
+import java.lang.reflect.Method;
+import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -69,7 +68,8 @@ class MethodParameterPojoExtractorTest {
 		/**
 		 * The type Record object.
 		 */
-		public record RecordObject(String email, String firstName, String lastName) {}
+		public record RecordObject(String email, String firstName, String lastName) {
+		}
 
 		/**
 		 * The type Class object.

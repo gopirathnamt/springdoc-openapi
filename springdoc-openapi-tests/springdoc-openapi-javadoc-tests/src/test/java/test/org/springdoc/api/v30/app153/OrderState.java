@@ -32,7 +32,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 /**
  * The enum Order state.
  */
-@Schema(type = "string", allowableValues = { "finished", "new" })
+@Schema(type = "string", allowableValues = {"finished", "new"})
 public enum OrderState {
 	/**
 	 * Finished order state.

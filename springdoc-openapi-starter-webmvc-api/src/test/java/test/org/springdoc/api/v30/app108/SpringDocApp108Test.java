@@ -24,11 +24,11 @@
 
 package test.org.springdoc.api.v30.app108;
 
-import test.org.springdoc.api.v30.AbstractSpringDocV30Test;
-
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import test.org.springdoc.api.v30.AbstractSpringDocV30Test;
 
 public class SpringDocApp108Test extends AbstractSpringDocV30Test {
 	@SpringBootApplication
-	static class SpringDocTestApp {}
+	static class SpringDocTestApp {
+	}
 }

@@ -24,14 +24,14 @@
 
 package test.org.springdoc.api.v30.app88;
 
-import test.org.springdoc.api.v30.AbstractSpringDocV30Test;
-
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.test.context.TestPropertySource;
+import test.org.springdoc.api.v30.AbstractSpringDocV30Test;
 
 @TestPropertySource(properties = "springdoc.auto-tag-classes=false")
 public class SpringDocApp88Test extends AbstractSpringDocV30Test {
 
 	@SpringBootApplication
-	static class SpringDocTestApp {}
+	static class SpringDocTestApp {
+	}
 }

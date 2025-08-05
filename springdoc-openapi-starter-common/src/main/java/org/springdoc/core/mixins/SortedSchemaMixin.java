@@ -26,10 +26,6 @@
 
 package org.springdoc.core.mixins;
 
-import java.math.BigDecimal;
-import java.util.Map;
-import java.util.Set;
-
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -37,12 +33,16 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import io.swagger.v3.oas.models.media.Schema;
 
+import java.math.BigDecimal;
+import java.util.Map;
+import java.util.Set;
+
 /**
  * The interface Sorted schema mixin.
  *
  * @author bnasslashen
  */
-@JsonPropertyOrder(value = { "type", "format" }, alphabetic = true)
+@JsonPropertyOrder(value = {"type", "format"}, alphabetic = true)
 public interface SortedSchemaMixin {
 
 	/**

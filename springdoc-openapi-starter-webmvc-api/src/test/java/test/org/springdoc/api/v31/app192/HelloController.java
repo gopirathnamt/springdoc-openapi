@@ -28,7 +28,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -72,13 +71,14 @@ public class HelloController {
 		return ResponseEntity.ok("hello");
 	}
 
-	@Operation(description = "Doesn't creates the default 200 Response, because there are explicit declared api responses." +
-			"This test ensures that the current default handling is not changed, because otherwise very many tests will fail.",
+	@Operation(description =
+			"Doesn't creates the default 200 Response, because there are explicit declared api responses." +
+					"This test ensures that the current default handling is not changed, because otherwise very many tests will fail.",
 			responses = {
 					@ApiResponse(responseCode = "422", description = "Test")
 			})
 	@ApiResponses({
-			@ApiResponse(responseCode = "409", description = "Test 2") })
+			@ApiResponse(responseCode = "409", description = "Test 2")})
 	@GetMapping(value = "/withoutResponseStatus", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> withoutResponseStatus() {
 		return ResponseEntity.ok("hello");

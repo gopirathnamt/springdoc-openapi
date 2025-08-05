@@ -28,10 +28,9 @@ import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.info.Contact;
 import io.swagger.v3.oas.annotations.info.Info;
 import io.swagger.v3.oas.annotations.info.License;
-import test.org.springdoc.api.v31.AbstractSpringDocTest;
-
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.test.context.TestPropertySource;
+import test.org.springdoc.api.v31.AbstractSpringDocTest;
 
 @TestPropertySource(properties = {
 		"springdoc.operation-descriptions.myOperation=My Desc",
@@ -63,5 +62,6 @@ public class SpringDocApp15Test extends AbstractSpringDocTest {
 					url = "${springdoc.openapidefinition.info.contact.url}"
 			)
 	))
-	static class SpringDocTestApp {}
+	static class SpringDocTestApp {
+	}
 }

@@ -22,13 +22,12 @@
 
 package test.org.springdoc.api.v30.app198;
 
-import java.math.BigDecimal;
-
 import io.swagger.v3.oas.models.media.Schema;
 import org.springdoc.core.utils.SpringDocUtils;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import test.org.springdoc.api.v30.AbstractSpringDocV30Test;
 
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import java.math.BigDecimal;
 
 public class SpringDocApp198Test extends AbstractSpringDocV30Test {
 
@@ -36,10 +35,11 @@ public class SpringDocApp198Test extends AbstractSpringDocV30Test {
 		SpringDocUtils.getConfig().replaceWithSchema(
 				BigDecimal.class,
 				new Schema<BigDecimal>().type("string").format("decimal")
-		);
+		                                            );
 	}
 
 	@SpringBootApplication
-	static class SpringDocTestApp {}
+	static class SpringDocTestApp {
+	}
 
 }

@@ -27,8 +27,6 @@
 package org.springdoc.core.converters;
 
 
-import java.util.Iterator;
-
 import com.fasterxml.jackson.databind.JavaType;
 import io.swagger.v3.core.converter.AnnotatedType;
 import io.swagger.v3.core.converter.ModelConverter;
@@ -37,8 +35,9 @@ import io.swagger.v3.oas.models.media.ObjectSchema;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.media.StringSchema;
 import org.springdoc.core.providers.ObjectMapperProvider;
-
 import org.springframework.http.ResponseEntity;
+
+import java.util.Iterator;
 
 import static org.springdoc.core.converters.ConverterUtils.isFluxTypeWrapper;
 import static org.springdoc.core.converters.ConverterUtils.isResponseTypeToIgnore;
@@ -77,11 +76,10 @@ public class ResponseSupportConverter implements ModelConverter {
 				if (Object.class.equals(innerType.getRawClass()))
 					return new ObjectSchema();
 				return context.resolve(new AnnotatedType(innerType)
-						.jsonViewAnnotation(type.getJsonViewAnnotation())
-						.ctxAnnotations((type.getCtxAnnotations()))
-						.resolveAsRef(true));
-			}
-			else if (isResponseTypeToIgnore(cls))
+						                       .jsonViewAnnotation(type.getJsonViewAnnotation())
+						                       .ctxAnnotations((type.getCtxAnnotations()))
+						                       .resolveAsRef(true));
+			} else if (isResponseTypeToIgnore(cls))
 				return null;
 		}
 		return (chain.hasNext()) ? chain.next().resolve(type, context, chain) : null;

@@ -2,7 +2,6 @@ package test.org.springdoc.api.v30.app195;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,7 +24,7 @@ public class ExampleController {
 
 	@GetMapping("/500")
 	@Operation(
-			tags = { "example" },
+			tags = {"example"},
 			summary = "Example method",
 			description = "This method is an example"
 	)

@@ -26,9 +26,6 @@
 
 package org.springdoc.webflux.api;
 
-import java.util.List;
-import java.util.Locale;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springdoc.core.customizers.SpringDocCustomizers;
@@ -39,8 +36,6 @@ import org.springdoc.core.service.AbstractRequestService;
 import org.springdoc.core.service.GenericResponseService;
 import org.springdoc.core.service.OpenAPIService;
 import org.springdoc.core.service.OperationService;
-import reactor.core.publisher.Mono;
-
 import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.actuate.endpoint.web.annotation.RestControllerEndpoint;
@@ -48,6 +43,10 @@ import org.springframework.http.MediaType;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import reactor.core.publisher.Mono;
+
+import java.util.List;
+import java.util.Locale;
 
 import static org.springdoc.core.utils.Constants.API_DOCS_URL;
 import static org.springdoc.core.utils.Constants.APPLICATION_OPENAPI_YAML;
@@ -75,10 +74,15 @@ public class MultipleOpenApiActuatorResource extends MultipleOpenApiResource {
 	 * @param springDocProviders        the spring doc providers
 	 * @param springDocCustomizers      the spring doc customizers
 	 */
-	public MultipleOpenApiActuatorResource(List<GroupedOpenApi> groupedOpenApis, ObjectFactory<OpenAPIService> defaultOpenAPIBuilder,
-			AbstractRequestService requestBuilder, GenericResponseService responseBuilder, OperationService operationParser,
-			SpringDocConfigProperties springDocConfigProperties, SpringDocProviders springDocProviders, SpringDocCustomizers springDocCustomizers) {
-		super(groupedOpenApis, defaultOpenAPIBuilder, requestBuilder, responseBuilder, operationParser, springDocConfigProperties, springDocProviders, springDocCustomizers);
+	public MultipleOpenApiActuatorResource(List<GroupedOpenApi> groupedOpenApis,
+	                                       ObjectFactory<OpenAPIService> defaultOpenAPIBuilder,
+	                                       AbstractRequestService requestBuilder,
+	                                       GenericResponseService responseBuilder, OperationService operationParser,
+	                                       SpringDocConfigProperties springDocConfigProperties,
+	                                       SpringDocProviders springDocProviders,
+	                                       SpringDocCustomizers springDocCustomizers) {
+		super(groupedOpenApis, defaultOpenAPIBuilder, requestBuilder, responseBuilder, operationParser,
+		      springDocConfigProperties, springDocProviders, springDocCustomizers);
 	}
 
 	/**
@@ -94,10 +98,11 @@ public class MultipleOpenApiActuatorResource extends MultipleOpenApiResource {
 	@Operation(hidden = true)
 	@GetMapping(value = "/{group}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public Mono<byte[]> openapiJson(ServerHttpRequest
-			serverHttpRequest, @Value(API_DOCS_URL) String apiDocsUrl,
-			@PathVariable String group, Locale locale)
+			                                serverHttpRequest, @Value(API_DOCS_URL) String apiDocsUrl,
+	                                @PathVariable String group, Locale locale)
 			throws JsonProcessingException {
-		return getOpenApiResourceOrThrow(group).openapiJson(serverHttpRequest, apiDocsUrl + DEFAULT_PATH_SEPARATOR + group, locale);
+		return getOpenApiResourceOrThrow(group).openapiJson(serverHttpRequest,
+		                                                    apiDocsUrl + DEFAULT_PATH_SEPARATOR + group, locale);
 	}
 
 	/**
@@ -113,9 +118,10 @@ public class MultipleOpenApiActuatorResource extends MultipleOpenApiResource {
 	@Operation(hidden = true)
 	@GetMapping(value = "/{group}/yaml", produces = APPLICATION_OPENAPI_YAML)
 	public Mono<byte[]> openapiYaml(ServerHttpRequest serverHttpRequest,
-			@Value(DEFAULT_API_DOCS_URL_YAML) String apiDocsUrl, @PathVariable String
-			group, Locale locale) throws JsonProcessingException {
-		return getOpenApiResourceOrThrow(group).openapiYaml(serverHttpRequest, apiDocsUrl + DEFAULT_PATH_SEPARATOR + group, locale);
+	                                @Value(DEFAULT_API_DOCS_URL_YAML) String apiDocsUrl, @PathVariable String
+			                                group, Locale locale) throws JsonProcessingException {
+		return getOpenApiResourceOrThrow(group).openapiYaml(serverHttpRequest,
+		                                                    apiDocsUrl + DEFAULT_PATH_SEPARATOR + group, locale);
 	}
 
 }

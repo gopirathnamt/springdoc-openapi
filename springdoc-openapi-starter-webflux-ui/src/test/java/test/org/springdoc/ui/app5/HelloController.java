@@ -20,7 +20,6 @@ package test.org.springdoc.ui.app5;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Size;
-
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;

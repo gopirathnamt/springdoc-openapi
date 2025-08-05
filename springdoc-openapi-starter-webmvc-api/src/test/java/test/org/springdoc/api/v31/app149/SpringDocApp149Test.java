@@ -26,10 +26,9 @@ package test.org.springdoc.api.v31.app149;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.springdoc.core.utils.SpringDocUtils;
-import test.org.springdoc.api.v31.AbstractSpringDocTest;
-
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.test.context.TestPropertySource;
+import test.org.springdoc.api.v31.AbstractSpringDocTest;
 
 @TestPropertySource(properties = "springdoc.model-and-view-allowed=true")
 public class SpringDocApp149Test extends AbstractSpringDocTest {
@@ -40,5 +39,6 @@ public class SpringDocApp149Test extends AbstractSpringDocTest {
 	}
 
 	@SpringBootApplication
-	static class SpringDocTestApp {}
+	static class SpringDocTestApp {
+	}
 }

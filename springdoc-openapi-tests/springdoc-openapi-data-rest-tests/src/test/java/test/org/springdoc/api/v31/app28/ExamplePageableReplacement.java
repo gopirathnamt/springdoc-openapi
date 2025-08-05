@@ -26,10 +26,10 @@
 
 package test.org.springdoc.api.v31.app28;
 
-import java.util.List;
-
 import io.swagger.v3.oas.annotations.Parameter;
 import org.springdoc.core.converters.models.Pageable;
+
+import java.util.List;
 
 public class ExamplePageableReplacement extends Pageable {
 

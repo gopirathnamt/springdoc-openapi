@@ -26,16 +26,15 @@
 
 package test.org.springdoc.api.v31.app75;
 
-import java.util.List;
-
 import jakarta.servlet.http.HttpServletRequest;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+
+import java.util.List;
 
 /**
  * The type Rest response entity exception handler.
@@ -51,7 +50,7 @@ class RestResponseEntityExceptionHandler
 	 * @return the response entity
 	 */
 	@ResponseStatus(value = HttpStatus.OK)
-	@ExceptionHandler({ Exception.class })
+	@ExceptionHandler({Exception.class})
 	public ResponseEntity<List<Object>> badRequest(HttpServletRequest req, Exception exception) {
 		return null;
 	}

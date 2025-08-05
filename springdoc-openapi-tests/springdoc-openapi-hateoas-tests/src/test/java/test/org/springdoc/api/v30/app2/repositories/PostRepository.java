@@ -27,10 +27,9 @@
 package test.org.springdoc.api.v30.app2.repositories;
 
 
-import test.org.springdoc.api.v30.app2.entities.Post;
-
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;
+import test.org.springdoc.api.v30.app2.entities.Post;
 
 /**
  * @author Davide Pedone

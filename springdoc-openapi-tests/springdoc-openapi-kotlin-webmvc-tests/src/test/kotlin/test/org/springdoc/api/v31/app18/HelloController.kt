@@ -28,14 +28,14 @@ import java.util.*
 value class CarId(val value: UUID)
 
 data class CarIdsDTO(
-	val singleId: CarId,
-	val ids: List<CarId>
+    val singleId: CarId,
+    val ids: List<CarId>
 )
 
 @RestController
 @RequestMapping("/test")
 class HelloController {
-	@GetMapping
-	suspend fun index(s: CarIdsDTO) = s
+    @GetMapping
+    suspend fun index(s: CarIdsDTO) = s
 
 }

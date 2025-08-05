@@ -26,11 +26,11 @@
 
 package org.springdoc.core.configuration.hints;
 
-import java.util.Arrays;
-
 import org.springframework.aot.hint.MemberCategory;
 import org.springframework.aot.hint.RuntimeHints;
 import org.springframework.aot.hint.RuntimeHintsRegistrar;
+
+import java.util.Arrays;
 
 /**
  * The type Spring doc DataRest hints.
@@ -43,22 +43,25 @@ public class SpringDocSecurityHints implements RuntimeHintsRegistrar {
 	 * The Spring security type names.
 	 */
 //spring-security
-	static String[] springSecurityTypeNames = { "org.springframework.security.web.authentication.ui.DefaultLoginPageGeneratingFilter",
-			"org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter",
-			"org.springframework.security.web.util.matcher.OrRequestMatcher"
-	};
+	static String[] springSecurityTypeNames =
+			{"org.springframework.security.web.authentication.ui.DefaultLoginPageGeneratingFilter",
+					"org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter",
+					"org.springframework.security.web.util.matcher.OrRequestMatcher"
+			};
 
 	@Override
 	public void registerHints(RuntimeHints hints, ClassLoader classLoader) {
 		//spring-security
 		Arrays.stream(springSecurityTypeNames).forEach(springDataRestTypeName ->
-				hints.reflection()
-						.registerTypeIfPresent(classLoader, springDataRestTypeName,
-								hint -> hint.withMembers(MemberCategory.DECLARED_FIELDS,
-										MemberCategory.INVOKE_DECLARED_CONSTRUCTORS,
-										MemberCategory.INVOKE_DECLARED_METHODS
-								))
-		);
+				                                               hints.reflection()
+				                                                    .registerTypeIfPresent(classLoader,
+				                                                                           springDataRestTypeName,
+				                                                                           hint -> hint.withMembers(
+						                                                                           MemberCategory.DECLARED_FIELDS,
+						                                                                           MemberCategory.INVOKE_DECLARED_CONSTRUCTORS,
+						                                                                           MemberCategory.INVOKE_DECLARED_METHODS
+				                                                                                                   ))
+		                                              );
 	}
 
 }

@@ -31,7 +31,6 @@ import org.springdoc.core.customizers.JavadocPropertyCustomizer;
 import org.springdoc.core.providers.JavadocProvider;
 import org.springdoc.core.providers.ObjectMapperProvider;
 import org.springdoc.core.providers.SpringDocJavadocProvider;
-
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
@@ -79,7 +78,8 @@ public class SpringDocJavadocConfiguration {
 	@ConditionalOnMissingBean
 	@Lazy(false)
 	@Order(Ordered.HIGHEST_PRECEDENCE)
-	JavadocPropertyCustomizer javadocPropertyCustomizer(JavadocProvider javadocProvider, ObjectMapperProvider objectMapperProvider) {
+	JavadocPropertyCustomizer javadocPropertyCustomizer(JavadocProvider javadocProvider,
+	                                                    ObjectMapperProvider objectMapperProvider) {
 		return new JavadocPropertyCustomizer(javadocProvider, objectMapperProvider);
 	}
 }

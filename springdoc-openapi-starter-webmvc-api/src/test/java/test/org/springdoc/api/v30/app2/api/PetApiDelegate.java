@@ -24,18 +24,17 @@
 
 package test.org.springdoc.api.v30.app2.api;
 
-import java.util.List;
-import java.util.Optional;
-
 import jakarta.validation.Valid;
-import test.org.springdoc.api.v30.app2.model.ModelApiResponse;
-import test.org.springdoc.api.v30.app2.model.Pet;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.multipart.MultipartFile;
+import test.org.springdoc.api.v30.app2.model.ModelApiResponse;
+import test.org.springdoc.api.v30.app2.model.Pet;
+
+import java.util.List;
+import java.util.Optional;
 
 /**
  * A delegate to be called by the {@link PetApiController}}.
@@ -60,7 +59,7 @@ public interface PetApiDelegate {
 	 * @see PetApi#deletePet
 	 */
 	default ResponseEntity<Void> deletePet(Long petId,
-			String apiKey) {
+	                                       String apiKey) {
 		return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
 
 	}
@@ -78,11 +77,13 @@ public interface PetApiDelegate {
 		getRequest().ifPresent(request -> {
 			for (MediaType mediaType : MediaType.parseMediaTypes(request.getHeader("Accept"))) {
 				if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-					ApiUtil.setExampleResponse(request, "application/json", "{  \"photoUrls\" : [ \"photoUrls\", \"photoUrls\" ],  \"name\" : \"doggie\",  \"id\" : 0,  \"category\" : {    \"name\" : \"name\",    \"id\" : 6  },  \"tags\" : [ {    \"name\" : \"name\",    \"id\" : 1  }, {    \"name\" : \"name\",    \"id\" : 1  } ],  \"status\" : \"available\"}");
+					ApiUtil.setExampleResponse(request, "application/json",
+					                           "{  \"photoUrls\" : [ \"photoUrls\", \"photoUrls\" ],  \"name\" : \"doggie\",  \"id\" : 0,  \"category\" : {    \"name\" : \"name\",    \"id\" : 6  },  \"tags\" : [ {    \"name\" : \"name\",    \"id\" : 1  }, {    \"name\" : \"name\",    \"id\" : 1  } ],  \"status\" : \"available\"}");
 					break;
 				}
 				if (mediaType.isCompatibleWith(MediaType.valueOf("application/xml"))) {
-					ApiUtil.setExampleResponse(request, "application/xml", "<Pet>  <id>123456789</id>  <name>doggie</name>  <photoUrls>    <photoUrls>aeiou</photoUrls>  </photoUrls>  <tags>  </tags>  <status>aeiou</status></Pet>");
+					ApiUtil.setExampleResponse(request, "application/xml",
+					                           "<Pet>  <id>123456789</id>  <name>doggie</name>  <photoUrls>    <photoUrls>aeiou</photoUrls>  </photoUrls>  <tags>  </tags>  <status>aeiou</status></Pet>");
 					break;
 				}
 			}
@@ -119,8 +120,8 @@ public interface PetApiDelegate {
 	 * @see PetApi#updatePetWithForm
 	 */
 	default ResponseEntity<Void> updatePetWithForm(Long petId,
-			String name,
-			String status) {
+	                                               String name,
+	                                               String status) {
 		return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
 
 	}
@@ -129,12 +130,13 @@ public interface PetApiDelegate {
 	 * @see PetApi#uploadFile
 	 */
 	default ResponseEntity<ModelApiResponse> uploadFile(Long petId,
-			String additionalMetadata,
-			@Valid MultipartFile file) {
+	                                                    String additionalMetadata,
+	                                                    @Valid MultipartFile file) {
 		getRequest().ifPresent(request -> {
 			for (MediaType mediaType : MediaType.parseMediaTypes(request.getHeader("Accept"))) {
 				if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-					ApiUtil.setExampleResponse(request, "application/json", "{  \"code\" : 0,  \"type\" : \"type\",  \"message\" : \"message\"}");
+					ApiUtil.setExampleResponse(request, "application/json",
+					                           "{  \"code\" : 0,  \"type\" : \"type\",  \"message\" : \"message\"}");
 					break;
 				}
 			}

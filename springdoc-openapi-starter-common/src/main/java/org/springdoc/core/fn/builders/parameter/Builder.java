@@ -26,8 +26,6 @@
 
 package org.springdoc.core.fn.builders.parameter;
 
-import java.lang.annotation.Annotation;
-
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.Explode;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -38,6 +36,8 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang3.ArrayUtils;
+
+import java.lang.annotation.Annotation;
 
 /**
  * The type Parameter builder.
@@ -281,7 +281,11 @@ public class Builder {
 	 * @return the parameter builder
 	 */
 	public Builder implementationArray(Class clazz) {
-		this.array = org.springdoc.core.fn.builders.arrayschema.Builder.arraySchemaBuilder().schema(org.springdoc.core.fn.builders.schema.Builder.schemaBuilder().implementation(clazz)).build();
+		this.array = org.springdoc.core.fn.builders.arrayschema.Builder.arraySchemaBuilder()
+		                                                               .schema(org.springdoc.core.fn.builders.schema.Builder.schemaBuilder()
+		                                                                                                                    .implementation(
+				                                                                                                                    clazz))
+		                                                               .build();
 		return this;
 	}
 

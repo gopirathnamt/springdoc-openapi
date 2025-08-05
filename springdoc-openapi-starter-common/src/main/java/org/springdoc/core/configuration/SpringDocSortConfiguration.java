@@ -26,14 +26,11 @@
 
 package org.springdoc.core.configuration;
 
-import java.util.Optional;
-
 import org.springdoc.core.converters.SortOpenAPIConverter;
 import org.springdoc.core.customizers.DataRestDelegatingMethodParameterCustomizer;
 import org.springdoc.core.providers.ObjectMapperProvider;
 import org.springdoc.core.providers.RepositoryRestConfigurationProvider;
 import org.springdoc.core.providers.SpringDataWebPropertiesProvider;
-
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -43,6 +40,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Sort;
+
+import java.util.Optional;
 
 import static org.springdoc.core.utils.Constants.SPRINGDOC_ENABLED;
 import static org.springdoc.core.utils.Constants.SPRINGDOC_SORT_CONVERTER_ENABLED;
@@ -72,7 +71,8 @@ public class SpringDocSortConfiguration {
 	@ConditionalOnProperty(name = SPRINGDOC_SORT_CONVERTER_ENABLED, matchIfMissing = true)
 	@Lazy(false)
 	SortOpenAPIConverter sortOpenAPIConverter(ObjectMapperProvider objectMapperProvider) {
-		getConfig().replaceParameterObjectWithClass(org.springframework.data.domain.Sort.class, org.springdoc.core.converters.models.Sort.class);
+		getConfig().replaceParameterObjectWithClass(org.springframework.data.domain.Sort.class,
+		                                            org.springdoc.core.converters.models.Sort.class);
 		return new SortOpenAPIConverter(objectMapperProvider);
 	}
 
@@ -86,7 +86,10 @@ public class SpringDocSortConfiguration {
 	@Bean
 	@ConditionalOnMissingBean
 	@Lazy(false)
-	DataRestDelegatingMethodParameterCustomizer dataRestDelegatingMethodParameterCustomizer(Optional<SpringDataWebPropertiesProvider> optionalSpringDataWebPropertiesProvider, Optional<RepositoryRestConfigurationProvider> optionalRepositoryRestConfiguration) {
-		return new DataRestDelegatingMethodParameterCustomizer(optionalSpringDataWebPropertiesProvider, optionalRepositoryRestConfiguration);
+	DataRestDelegatingMethodParameterCustomizer dataRestDelegatingMethodParameterCustomizer(
+			Optional<SpringDataWebPropertiesProvider> optionalSpringDataWebPropertiesProvider,
+			Optional<RepositoryRestConfigurationProvider> optionalRepositoryRestConfiguration) {
+		return new DataRestDelegatingMethodParameterCustomizer(optionalSpringDataWebPropertiesProvider,
+		                                                       optionalRepositoryRestConfiguration);
 	}
 }

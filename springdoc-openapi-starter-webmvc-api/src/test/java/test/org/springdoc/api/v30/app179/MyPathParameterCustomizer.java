@@ -28,7 +28,6 @@ import io.swagger.v3.oas.models.media.StringSchema;
 import io.swagger.v3.oas.models.parameters.Parameter;
 import io.swagger.v3.oas.models.parameters.PathParameter;
 import org.springdoc.core.customizers.ParameterCustomizer;
-
 import org.springframework.core.MethodParameter;
 import org.springframework.stereotype.Component;
 

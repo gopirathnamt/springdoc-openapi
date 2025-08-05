@@ -20,19 +20,18 @@ package test.org.springdoc.api.v31.app147;
 
 import org.junit.jupiter.api.Test;
 import org.springdoc.core.utils.Constants;
-import test.org.springdoc.api.v31.AbstractSpringDocActuatorTest;
-
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
+import test.org.springdoc.api.v31.AbstractSpringDocActuatorTest;
 
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
-		properties = { "management.endpoints.web.exposure.include=*",
+		properties = {"management.endpoints.web.exposure.include=*",
 				"springdoc.show-actuator=true",
 				"management.endpoints.web.exposure.exclude=functions, shutdown",
 				"management.server.port=9397",
 				"management.server.base-path=/test",
-				"management.endpoints.web.base-path=/application" })
+				"management.endpoints.web.base-path=/application"})
 public class SpringDocApp147Test extends AbstractSpringDocActuatorTest {
 
 	@Test
@@ -49,11 +48,12 @@ public class SpringDocApp147Test extends AbstractSpringDocActuatorTest {
 	@Test
 	void testApp2() throws Exception {
 		webTestClient.get().uri(Constants.DEFAULT_API_DOCS_URL + "/" + Constants.DEFAULT_GROUP_NAME)
-				.exchange()
-				.expectStatus().isNotFound();
+		             .exchange()
+		             .expectStatus().isNotFound();
 	}
 
 	@SpringBootApplication
-	static class SpringDocTestApp {}
+	static class SpringDocTestApp {
+	}
 
 }

@@ -27,7 +27,6 @@
 package test.org.springdoc.api.v30.app72;
 
 import org.junit.jupiter.api.Test;
-
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.runner.WebApplicationContextRunner;
 
@@ -46,7 +45,7 @@ public class CacheAutoConfigurationTest1 {
 						.hasBean("openApiResource")
 						.doesNotHaveBean("springdocBeanFactoryPostProcessor")
 						.doesNotHaveBean("multipleOpenApiResource")
-				);
+				    );
 	}
 
 	@Test
@@ -58,7 +57,7 @@ public class CacheAutoConfigurationTest1 {
 						.hasBean("openApiResource")
 						.doesNotHaveBean("springdocBeanFactoryPostProcessor")
 						.doesNotHaveBean("multipleOpenApiResource")
-				);
+				    );
 	}
 
 	@Test
@@ -70,19 +69,20 @@ public class CacheAutoConfigurationTest1 {
 						.hasBean("openApiResource")
 						.hasBean("springdocBeanFactoryPostProcessor")
 						.doesNotHaveBean("multipleOpenApiResource")
-				);
+				    );
 	}
 
 	@Test
 	void group_configuration_loaded() {
 		contextRunner
-				.withPropertyValues("springdoc.group-configs[0].group=stores", "springdoc.group-configs[0].paths-to-match=/store/**")
+				.withPropertyValues("springdoc.group-configs[0].group=stores",
+				                    "springdoc.group-configs[0].paths-to-match=/store/**")
 				.run(context -> assertThat(context)
 						.hasNotFailed()
 						.hasBean("openApiResource")
 						.hasBean("multipleOpenApiResource")
 						.hasBean("springdocBeanFactoryPostProcessor")
-				);
+				    );
 	}
 
 

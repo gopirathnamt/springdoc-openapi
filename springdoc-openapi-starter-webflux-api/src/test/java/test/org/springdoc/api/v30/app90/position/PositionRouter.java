@@ -27,13 +27,12 @@
 package test.org.springdoc.api.v30.app90.position;
 
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
-import test.org.springdoc.api.v30.app85.entity.Position;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
 import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.function.server.ServerResponse;
+import test.org.springdoc.api.v30.app85.entity.Position;
 
 import static org.springdoc.core.fn.builders.apiresponse.Builder.responseBuilder;
 import static org.springdoc.core.fn.builders.parameter.Builder.parameterBuilder;
@@ -48,22 +47,32 @@ class PositionRouter {
 	@Bean
 	public RouterFunction<ServerResponse> positionRoute() {
 		return route().GET("/getAllPositions", accept(MediaType.APPLICATION_JSON), HANDLER_FUNCTION, ops -> ops
-						.operationId("findAll").description("Get all positions").tags(new String[] { "positions" })
-						.response(responseBuilder().responseCode("200").implementationArray(Position.class))).build()
+				              .operationId("findAll").description("Get all positions").tags(new String[]{"positions"})
+				              .response(responseBuilder().responseCode("200").implementationArray(Position.class))).build()
 
-				.and(route().GET("/getPosition/{id}", accept(MediaType.APPLICATION_STREAM_JSON), HANDLER_FUNCTION, ops -> ops
-						.operationId("findById").description("Find all").tags(new String[] { "positions" })
-						.parameter(parameterBuilder().in(ParameterIn.PATH).name("id"))
-						.response(responseBuilder().responseCode("200").implementation(Position.class))).build())
+		              .and(route().GET("/getPosition/{id}", accept(MediaType.APPLICATION_STREAM_JSON), HANDLER_FUNCTION,
+		                               ops -> ops
+				                               .operationId("findById").description("Find all")
+				                               .tags(new String[]{"positions"})
+				                               .parameter(parameterBuilder().in(ParameterIn.PATH).name("id"))
+				                               .response(responseBuilder().responseCode("200")
+				                                                          .implementation(Position.class))).build())
 
-				.and(route().POST("/createPosition", accept(MediaType.APPLICATION_JSON), HANDLER_FUNCTION, ops -> ops
-						.operationId("save").description("Save position").tags(new String[] { "positions" })
-						.requestBody(requestBodyBuilder().implementation(Position.class))
-						.response(responseBuilder().responseCode("200").implementation(Position.class))).build())
+		              .and(route().POST("/createPosition", accept(MediaType.APPLICATION_JSON), HANDLER_FUNCTION,
+		                                ops -> ops
+				                                .operationId("save").description("Save position")
+				                                .tags(new String[]{"positions"})
+				                                .requestBody(requestBodyBuilder().implementation(Position.class))
+				                                .response(responseBuilder().responseCode("200")
+				                                                           .implementation(Position.class))).build())
 
-				.and(route().DELETE("/deletePosition/{id}", accept(MediaType.APPLICATION_JSON), HANDLER_FUNCTION, ops -> ops
-						.operationId("deleteBy").description("Delete By Id").tags(new String[] { "positions" })
-						.parameter(parameterBuilder().in(ParameterIn.PATH).name("id"))
-						.response(responseBuilder().responseCode("200").content(org.springdoc.core.fn.builders.content.Builder.contentBuilder()))).build());
+		              .and(route().DELETE("/deletePosition/{id}", accept(MediaType.APPLICATION_JSON), HANDLER_FUNCTION,
+		                                  ops -> ops
+				                                  .operationId("deleteBy").description("Delete By Id")
+				                                  .tags(new String[]{"positions"})
+				                                  .parameter(parameterBuilder().in(ParameterIn.PATH).name("id"))
+				                                  .response(responseBuilder().responseCode("200").content(
+						                                  org.springdoc.core.fn.builders.content.Builder.contentBuilder())))
+		                          .build());
 	}
 }

@@ -19,10 +19,9 @@
 package test.org.springdoc.ui.app32;
 
 import org.junit.jupiter.api.Test;
-import test.org.springdoc.ui.AbstractSpringDocTest;
-
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.test.context.TestPropertySource;
+import test.org.springdoc.ui.AbstractSpringDocTest;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.Matchers.containsString;
@@ -43,33 +42,34 @@ public class SpringDocBehindProxyWithCustomUIPathWithApiDocsTest extends Abstrac
 	@Test
 	void shouldServeOpenapiJsonUnderCustomPath() throws Exception {
 		mockMvc.perform(get("/bar/openapi/v3")
-						.header("X-Forwarded-Prefix", X_FORWARD_PREFIX))
-				.andExpect(status().isOk());
+				                .header("X-Forwarded-Prefix", X_FORWARD_PREFIX))
+		       .andExpect(status().isOk());
 	}
 
 	@Test
 	void shouldReturnCorrectInitializerJS() throws Exception {
 		mockMvc.perform(get("/foo/documentation/swagger-ui/swagger-initializer.js")
-						.header("X-Forwarded-Prefix", X_FORWARD_PREFIX))
-				.andExpect(status().isOk())
-				.andExpect(content().string(
-						containsString("\"configUrl\" : \"/path/prefix/bar/openapi/v3/swagger-config\",")
-				));
+				                .header("X-Forwarded-Prefix", X_FORWARD_PREFIX))
+		       .andExpect(status().isOk())
+		       .andExpect(content().string(
+				       containsString("\"configUrl\" : \"/path/prefix/bar/openapi/v3/swagger-config\",")
+		                                  ));
 	}
 
 	@Test
 	void shouldCalculateUrlsBehindProxy() throws Exception {
 		mockMvc.perform(get("/bar/openapi/v3/swagger-config")
-						.header("X-Forwarded-Prefix", X_FORWARD_PREFIX))
-				.andExpect(status().isOk())
-				.andExpect(jsonPath("url",
-						equalTo("/path/prefix/bar/openapi/v3")
-				))
-				.andExpect(jsonPath("configUrl",
-						equalTo("/path/prefix/bar/openapi/v3/swagger-config")
-				));
+				                .header("X-Forwarded-Prefix", X_FORWARD_PREFIX))
+		       .andExpect(status().isOk())
+		       .andExpect(jsonPath("url",
+		                           equalTo("/path/prefix/bar/openapi/v3")
+		                          ))
+		       .andExpect(jsonPath("configUrl",
+		                           equalTo("/path/prefix/bar/openapi/v3/swagger-config")
+		                          ));
 	}
 
 	@SpringBootApplication
-	static class SpringDocTestApp {}
+	static class SpringDocTestApp {
+	}
 }

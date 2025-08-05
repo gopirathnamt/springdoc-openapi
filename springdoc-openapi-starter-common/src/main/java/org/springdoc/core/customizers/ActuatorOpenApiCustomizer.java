@@ -26,18 +26,17 @@
 
 package org.springdoc.core.customizers;
 
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.PathItem;
+import io.swagger.v3.oas.models.Paths;
+import org.springframework.boot.actuate.autoconfigure.endpoint.web.WebEndpointProperties;
+
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
-
-import io.swagger.v3.oas.models.OpenAPI;
-import io.swagger.v3.oas.models.PathItem;
-import io.swagger.v3.oas.models.Paths;
-
-import org.springframework.boot.actuate.autoconfigure.endpoint.web.WebEndpointProperties;
 
 /**
  * The type Actuator open api customizer.
@@ -74,10 +73,10 @@ public class ActuatorOpenApiCustomizer implements GlobalOpenApiCustomizer {
 	private Stream<Entry<String, PathItem>> actuatorPathEntryStream(OpenAPI openApi, String relativeSubPath) {
 		String pathPrefix = webEndpointProperties.getBasePath() + Optional.ofNullable(relativeSubPath).orElse("");
 		return Optional.ofNullable(openApi.getPaths())
-				.map(Paths::entrySet)
-				.map(Set::stream)
-				.map(s -> s.filter(entry -> entry.getKey().startsWith(pathPrefix)))
-				.orElse(Stream.empty());
+		               .map(Paths::entrySet)
+		               .map(Set::stream)
+		               .map(s -> s.filter(entry -> entry.getKey().startsWith(pathPrefix)))
+		               .orElse(Stream.empty());
 	}
 
 	/**
@@ -90,16 +89,16 @@ public class ActuatorOpenApiCustomizer implements GlobalOpenApiCustomizer {
 		actuatorPathEntryStream(openApi, null)
 				.sorted(Comparator.comparing(Entry::getKey))
 				.forEachOrdered(stringPathItemEntry ->
-						stringPathItemEntry.getValue().readOperations().forEach(operation -> {
-							String initialOperationId = operation.getOperationId();
-							String uniqueOperationId = operation.getOperationId();
-							int counter = 1;
-							while (!usedOperationIds.add(uniqueOperationId)) {
-								uniqueOperationId = initialOperationId + "_" + ++counter;
-							}
-							operation.setOperationId(uniqueOperationId);
-						})
-				);
+						                stringPathItemEntry.getValue().readOperations().forEach(operation -> {
+							                String initialOperationId = operation.getOperationId();
+							                String uniqueOperationId = operation.getOperationId();
+							                int counter = 1;
+							                while (!usedOperationIds.add(uniqueOperationId)) {
+								                uniqueOperationId = initialOperationId + "_" + ++counter;
+							                }
+							                operation.setOperationId(uniqueOperationId);
+						                })
+				               );
 	}
 
 	@Override

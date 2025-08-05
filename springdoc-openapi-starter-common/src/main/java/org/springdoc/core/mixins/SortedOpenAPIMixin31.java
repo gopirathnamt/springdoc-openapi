@@ -26,8 +26,6 @@
 
 package org.springdoc.core.mixins;
 
-import java.util.Map;
-
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -37,12 +35,14 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.swagger.v3.core.jackson.PathsSerializer;
 import io.swagger.v3.oas.models.Paths;
 
+import java.util.Map;
+
 /**
  * The interface Sorted open api mixin 31.
  *
  * @author bnasslashen
  */
-@JsonPropertyOrder(value = { "openapi", "info", "externalDocs", "servers", "security", "tags", "paths", "components", "webhooks" }, alphabetic = true)
+@JsonPropertyOrder(value = {"openapi", "info", "externalDocs", "servers", "security", "tags", "paths", "components", "webhooks"}, alphabetic = true)
 public interface SortedOpenAPIMixin31 {
 
 	/**

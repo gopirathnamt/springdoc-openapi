@@ -24,14 +24,14 @@ import org.springframework.web.bind.annotation.RestController
 
 
 data class Person(
-	val name: String,
-	val nickname: String?
+    val name: String,
+    val nickname: String?
 )
 
 @RestController
 @RequestMapping("/test")
 class HelloController {
-	@GetMapping
-	suspend fun index(s: Person) = s
+    @GetMapping
+    suspend fun index(s: Person) = s
 
 }

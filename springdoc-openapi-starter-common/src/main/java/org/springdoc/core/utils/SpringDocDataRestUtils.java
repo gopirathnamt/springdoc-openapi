@@ -26,15 +26,6 @@
 
 package org.springdoc.core.utils;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Objects;
-import java.util.Set;
-
 import io.swagger.v3.core.converter.AnnotatedType;
 import io.swagger.v3.core.converter.ModelConverters;
 import io.swagger.v3.core.converter.ResolvedSchema;
@@ -51,7 +42,6 @@ import io.swagger.v3.oas.models.media.StringSchema;
 import io.swagger.v3.oas.models.parameters.RequestBody;
 import io.swagger.v3.oas.models.responses.ApiResponse;
 import io.swagger.v3.oas.models.responses.ApiResponses;
-
 import org.springframework.data.mapping.PersistentEntity;
 import org.springframework.data.mapping.PersistentProperty;
 import org.springframework.data.mapping.SimpleAssociationHandler;
@@ -64,6 +54,15 @@ import org.springframework.data.rest.webmvc.RestMediaTypes;
 import org.springframework.data.util.TypeInformation;
 import org.springframework.hateoas.server.LinkRelationProvider;
 import org.springframework.util.CollectionUtils;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Objects;
+import java.util.Set;
 
 import static org.springdoc.core.utils.SpringDocUtils.isComposedSchema;
 
@@ -110,7 +109,8 @@ public class SpringDocDataRestUtils {
 	 * @param linkRelationProvider        the link relation provider
 	 * @param repositoryRestConfiguration the repository rest configuration
 	 */
-	public SpringDocDataRestUtils(LinkRelationProvider linkRelationProvider, RepositoryRestConfiguration repositoryRestConfiguration) {
+	public SpringDocDataRestUtils(LinkRelationProvider linkRelationProvider,
+	                              RepositoryRestConfiguration repositoryRestConfiguration) {
 		this.linkRelationProvider = linkRelationProvider;
 		this.repositoryRestConfiguration = repositoryRestConfiguration;
 	}
@@ -140,17 +140,19 @@ public class SpringDocDataRestUtils {
 		}
 
 		openAPI.getPaths().entrySet().stream()
-				.forEach(stringPathItemEntry -> {
-					PathItem pathItem = stringPathItemEntry.getValue();
-					pathItem.readOperations().forEach(operation -> {
-						boolean openapi31 = SpecVersion.V31 == openAPI.getSpecVersion();
-						RequestBody requestBody = operation.getRequestBody();
-						updateRequestBody(openAPI, requestBody, openapi31);
-						ApiResponses apiResponses = operation.getResponses();
-						apiResponses.forEach((code, apiResponse) -> updateApiResponse(openAPI, openAPI.getComponents(), apiResponse, openapi31));
+		       .forEach(stringPathItemEntry -> {
+			       PathItem pathItem = stringPathItemEntry.getValue();
+			       pathItem.readOperations().forEach(operation -> {
+				       boolean openapi31 = SpecVersion.V31 == openAPI.getSpecVersion();
+				       RequestBody requestBody = operation.getRequestBody();
+				       updateRequestBody(openAPI, requestBody, openapi31);
+				       ApiResponses apiResponses = operation.getResponses();
+				       apiResponses.forEach(
+						       (code, apiResponse) -> updateApiResponse(openAPI, openAPI.getComponents(), apiResponse,
+						                                                openapi31));
 
-					});
-				});
+			       });
+		       });
 	}
 
 	/**
@@ -170,7 +172,8 @@ public class SpringDocDataRestUtils {
 					Set<String> entitiesNames = entityInoMap.keySet();
 					entitiesNames.forEach(entityName -> {
 						if (key.endsWith(entityName))
-							updateResponseSchema(entityName, components.getSchemas().get(key), openAPI.getComponents(), openapi31);
+							updateResponseSchema(entityName, components.getSchemas().get(key), openAPI.getComponents(),
+							                     openapi31);
 					});
 				}
 			});
@@ -192,9 +195,9 @@ public class SpringDocDataRestUtils {
 					String key = schema.get$ref().substring(Components.COMPONENTS_SCHEMAS_REF.length());
 					if (entityInoMap.containsKey(key))
 						updateRequestBodySchema(key, schema, openAPI.getComponents(), openapi31);
-				}
-				else if (isComposedSchema(schema)) {
-					updateComposedSchema(schema.getAllOf(), schema.getOneOf(), REQUEST_BODY, openAPI.getComponents(), openapi31);
+				} else if (isComposedSchema(schema)) {
+					updateComposedSchema(schema.getAllOf(), schema.getOneOf(), REQUEST_BODY, openAPI.getComponents(),
+					                     openapi31);
 				}
 			});
 		}
@@ -215,7 +218,8 @@ public class SpringDocDataRestUtils {
 		schema.set$ref(newKey);
 		//create new schema
 		Class schemaImplementation = entityInoMap.get(className).getDomainType();
-		ResolvedSchema resolvedSchema = ModelConverters.getInstance(openapi31).readAllAsResolvedSchema(new AnnotatedType().type(schemaImplementation));
+		ResolvedSchema resolvedSchema = ModelConverters.getInstance(openapi31).readAllAsResolvedSchema(
+				new AnnotatedType().type(schemaImplementation));
 		Map<String, Schema> schemaMap;
 		if (resolvedSchema != null) {
 			schemaMap = resolvedSchema.referencedSchemas;
@@ -226,7 +230,8 @@ public class SpringDocDataRestUtils {
 					Map properties = referencedSchema.getProperties();
 					updateRequestBodySchemaProperties(key, referencedSchema, properties);
 					if (isComposedSchema(referencedSchema))
-						updateComposedSchema(referencedSchema.getAllOf(), referencedSchema.getOneOf(), REQUEST_BODY, components, openapi31);
+						updateComposedSchema(referencedSchema.getAllOf(), referencedSchema.getOneOf(), REQUEST_BODY,
+						                     components, openapi31);
 				});
 			}
 		}
@@ -264,7 +269,8 @@ public class SpringDocDataRestUtils {
 	 * @param openapi31      the openapi 31
 	 * @return the schema
 	 */
-	private Schema updateResponseSchema(String className, Schema existingSchema, Components components, boolean openapi31) {
+	private Schema updateResponseSchema(String className, Schema existingSchema, Components components,
+	                                    boolean openapi31) {
 		Map<String, Schema> properties = existingSchema.getProperties();
 		EntityInfo entityInfo = entityInoMap.get(className);
 		if (!CollectionUtils.isEmpty(properties)) {
@@ -272,7 +278,8 @@ public class SpringDocDataRestUtils {
 			while (it.hasNext()) {
 				Entry<String, Schema> entry = it.next();
 				String propId = entry.getKey();
-				if (entityInfo.getIgnoredFields().contains(propId) || entityInfo.getAssociationsFields().contains(propId))
+				if (entityInfo.getIgnoredFields().contains(propId) ||
+						entityInfo.getAssociationsFields().contains(propId))
 					it.remove();
 				else if (EMBEDDED.equals(propId)) {
 					updateResponseSchemaEmbedded(components, entityInfo, entry, openapi31);
@@ -290,15 +297,15 @@ public class SpringDocDataRestUtils {
 	 * @param entry      the entry
 	 * @param openapi31  the openapi 31
 	 */
-	private void updateResponseSchemaEmbedded(Components components, EntityInfo entityInfo, Entry<String, Schema> entry, boolean openapi31) {
+	private void updateResponseSchemaEmbedded(Components components, EntityInfo entityInfo, Entry<String, Schema> entry,
+	                                          boolean openapi31) {
 		String entityClassName = linkRelationProvider.getCollectionResourceRelFor(entityInfo.getDomainType()).value();
 		Schema itemsSchema = null;
 		if (openapi31) {
 			JsonSchema jsonSchema = (JsonSchema) entry.getValue().getProperties().get(entityClassName);
 			if (jsonSchema != null)
 				itemsSchema = jsonSchema.getItems();
-		}
-		else {
+		} else {
 			ArraySchema arraySchema = (ArraySchema) entry.getValue().getProperties().get(entityClassName);
 			if (arraySchema != null)
 				itemsSchema = arraySchema.getItems();
@@ -313,8 +320,7 @@ public class SpringDocDataRestUtils {
 					itemsSchema.set$ref(newKey);
 					updateResponseSchema(key, components.getSchemas().get(key + RESPONSE), components, openapi31);
 				}
-			}
-			else if (isComposedSchema(itemsSchema)) {
+			} else if (isComposedSchema(itemsSchema)) {
 				updateComposedSchema(itemsSchema.getAllOf(), itemsSchema.getOneOf(), RESPONSE, components, openapi31);
 			}
 		}
@@ -331,13 +337,14 @@ public class SpringDocDataRestUtils {
 	private Schema createNewResponseSchema(String className, Components components, boolean openapi31) {
 		Class schemaImplementation = entityInoMap.get(className).getDomainType();
 		Schema schemaObject = new Schema();
-		ResolvedSchema resolvedSchema = ModelConverters.getInstance(openapi31).readAllAsResolvedSchema(new AnnotatedType().type(schemaImplementation));
+		ResolvedSchema resolvedSchema = ModelConverters.getInstance(openapi31).readAllAsResolvedSchema(
+				new AnnotatedType().type(schemaImplementation));
 		Map<String, Schema> schemaMap;
 		if (resolvedSchema != null) {
 			schemaMap = resolvedSchema.referencedSchemas;
 			if (schemaMap != null) {
 				schemaMap.forEach((key, referencedSchema) ->
-						addSchemas(components, key, referencedSchema, openapi31));
+						                  addSchemas(components, key, referencedSchema, openapi31));
 			}
 			schemaObject = resolvedSchema.schema;
 		}
@@ -380,7 +387,8 @@ public class SpringDocDataRestUtils {
 	 * @param components the components
 	 * @param openapi31  the openapi 31
 	 */
-	private void updateComposedSchema(List<Schema> allOf, List<Schema> oneOf, String suffix, Components components, boolean openapi31) {
+	private void updateComposedSchema(List<Schema> allOf, List<Schema> oneOf, String suffix, Components components,
+	                                  boolean openapi31) {
 		//Update the allOf
 		List<Schema> allOfSchemas = allOf;
 		updateKey(allOfSchemas, suffix, components, openapi31);
@@ -416,11 +424,13 @@ public class SpringDocDataRestUtils {
 	 * @param allKey     the all key
 	 * @param openapi31  the openapi 31
 	 */
-	private void updateSingleKey(String suffix, Components components, Schema allSchema, String allKey, boolean openapi31) {
+	private void updateSingleKey(String suffix, Components components, Schema allSchema, String allKey,
+	                             boolean openapi31) {
 		if (!allKey.endsWith(REQUEST_BODY) && !allKey.endsWith(RESPONSE)) {
 			String newAllKey = allKey + suffix;
 			allSchema.set$ref(newAllKey);
-			if (components != null && !components.getSchemas().containsKey(newAllKey) && entityInoMap.containsKey(allKey) && RESPONSE.equals(suffix)) {
+			if (components != null && !components.getSchemas().containsKey(newAllKey) &&
+					entityInoMap.containsKey(allKey) && RESPONSE.equals(suffix)) {
 				createNewResponseSchema(allKey, components, openapi31);
 			}
 		}
@@ -434,7 +444,7 @@ public class SpringDocDataRestUtils {
 	 * @return the associations fields
 	 */
 	private List<String> getAssociationsFields(ResourceMetadata
-			resourceMetadata, PersistentEntity<?, ?> entity) {
+			                                           resourceMetadata, PersistentEntity<?, ?> entity) {
 		List<String> associationsFields = new ArrayList<>();
 		entity.doWithAssociations((SimpleAssociationHandler) association -> {
 			PersistentProperty<?> property = association.getInverse();
@@ -455,7 +465,7 @@ public class SpringDocDataRestUtils {
 	 * @return the ignored fields
 	 */
 	private List<String> getIgnoredFields(ResourceMetadata
-			resourceMetadata, PersistentEntity<?, ?> entity) {
+			                                      resourceMetadata, PersistentEntity<?, ?> entity) {
 		List<String> ignoredFields = new ArrayList<>();
 		if (entity != null && entity.getIdProperty() != null) {
 			String idField = Objects.requireNonNull(entity.getIdProperty()).getName();
@@ -480,7 +490,7 @@ public class SpringDocDataRestUtils {
 	public void buildTextUriContent(Content content) {
 		if (content != null)
 			content.computeIfPresent(RestMediaTypes.TEXT_URI_LIST_VALUE,
-					(key, value) -> new MediaType().schema(new StringSchema()));
+			                         (key, value) -> new MediaType().schema(new StringSchema()));
 	}
 
 }

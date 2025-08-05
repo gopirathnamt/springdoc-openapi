@@ -44,14 +44,14 @@ public class HelloController {
 
 	@PostMapping(value = "/persons-with-user")
 	public String personsWithUser(@RequestBody() Person person,
-			@AuthenticationPrincipal User user) {
+	                              @AuthenticationPrincipal User user) {
 		return "OK";
 	}
 
 	@PostMapping(value = "/persons-with-oauth2-user")
 	public String personsWithUser(@RequestBody() Person person,
-			@RegisteredOAuth2AuthorizedClient OAuth2AuthorizedClient authorizedClient,
-			@AuthenticationPrincipal User user) {
+	                              @RegisteredOAuth2AuthorizedClient OAuth2AuthorizedClient authorizedClient,
+	                              @AuthenticationPrincipal User user) {
 		return "OK";
 	}
 

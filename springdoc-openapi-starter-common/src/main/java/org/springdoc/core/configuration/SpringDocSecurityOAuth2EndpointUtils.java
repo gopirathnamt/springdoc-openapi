@@ -26,9 +26,9 @@
 
 package org.springdoc.core.configuration;
 
-import java.util.Optional;
-
 import org.springframework.security.web.SecurityFilterChain;
+
+import java.util.Optional;
 
 /**
  * The type Spring doc security o auth 2 endpoint utils.
@@ -61,9 +61,9 @@ public final class SpringDocSecurityOAuth2EndpointUtils<T> {
 	public Object findEndpoint(SecurityFilterChain filterChain) {
 		Optional<?> oAuth2EndpointFilterOptional =
 				filterChain.getFilters().stream()
-						.filter(((Class<?>) oauth2EndpointFilter)::isInstance)
-						.map(((Class<?>) oauth2EndpointFilter)::cast)
-						.findAny();
+				           .filter(((Class<?>) oauth2EndpointFilter)::isInstance)
+				           .map(((Class<?>) oauth2EndpointFilter)::cast)
+				           .findAny();
 		return oAuth2EndpointFilterOptional.orElse(null);
 	}
 }

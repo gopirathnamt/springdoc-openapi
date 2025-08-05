@@ -31,7 +31,6 @@ import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -49,7 +48,8 @@ public class CommissionsResource {
 	@ApiResponse(responseCode = "202", description = "Commission updated", content = @Content(schema = @Schema(implementation = CommissionDto.class), examples = @ExampleObject(name = "202", ref = Examples.PUT_COMMISSION_RESPONSE_BODY_EXAMPLE_KEY)))
 	public ResponseEntity<CommissionDto> updateCommission(
 			@Parameter(description = "Commission's id", required = true) @PathVariable("id") String commissionId,
-			@io.swagger.v3.oas.annotations.parameters.RequestBody(description = "A commission to update", required = true, content = @Content(schema = @Schema(implementation = CommissionDto.class), examples = @ExampleObject(name = "requestExample", ref = Examples.PUT_COMMISSION_REQUEST_BODY_EXAMPLE_KEY))) @RequestBody(required = true) @Valid CommissionDto commission) {
+			@io.swagger.v3.oas.annotations.parameters.RequestBody(description = "A commission to update", required = true, content = @Content(schema = @Schema(implementation = CommissionDto.class), examples = @ExampleObject(name = "requestExample", ref = Examples.PUT_COMMISSION_REQUEST_BODY_EXAMPLE_KEY)))
+			@RequestBody(required = true) @Valid CommissionDto commission) {
 		return accepted().body(commission);
 	}
 

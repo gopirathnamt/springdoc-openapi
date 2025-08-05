@@ -24,16 +24,15 @@
 
 package test.org.springdoc.api.v30.app168;
 
-import java.util.Optional;
-
 import io.swagger.v3.core.converter.ModelConverter;
 import io.swagger.v3.core.converter.ModelConverters;
 import org.springdoc.core.converters.PolymorphicModelConverter;
 import org.springdoc.core.utils.Constants;
-import test.org.springdoc.api.v30.AbstractSpringDocV30Test;
-
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.test.context.TestPropertySource;
+import test.org.springdoc.api.v30.AbstractSpringDocV30Test;
+
+import java.util.Optional;
 
 
 @TestPropertySource(properties = Constants.SPRINGDOC_POLYMORPHIC_CONVERTER_ENABLED + "=false")
@@ -42,11 +41,13 @@ public class SpringDocApp168Test extends AbstractSpringDocV30Test {
 	static {
 		Optional<ModelConverter> modelConverterOptional =
 				ModelConverters.getInstance().getConverters()
-						.stream().filter(modelConverter -> modelConverter instanceof PolymorphicModelConverter).findAny();
+				               .stream().filter(modelConverter -> modelConverter instanceof PolymorphicModelConverter)
+				               .findAny();
 		modelConverterOptional.ifPresent(ModelConverters.getInstance()::removeConverter);
 	}
 
 	@SpringBootApplication
-	static class SpringDocTestApp {}
+	static class SpringDocTestApp {
+	}
 
 }

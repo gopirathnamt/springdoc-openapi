@@ -27,7 +27,6 @@
 package org.springdoc.core.customizers;
 
 import org.springdoc.core.fn.RouterOperation;
-
 import org.springframework.web.method.HandlerMethod;
 
 /**

@@ -26,15 +26,14 @@
 
 package org.springdoc.core.configuration.hints;
 
-import java.util.Arrays;
-
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.springdoc.core.extractor.DelegatingMethodParameter;
-
 import org.springframework.aot.hint.MemberCategory;
 import org.springframework.aot.hint.RuntimeHints;
 import org.springframework.aot.hint.RuntimeHintsRegistrar;
 import org.springframework.data.rest.core.mapping.TypedResourceDescription;
+
+import java.util.Arrays;
 
 /**
  * The type Spring doc DataRest hints.
@@ -47,7 +46,7 @@ public class SpringDocDataRestHints implements RuntimeHintsRegistrar {
 	 * The Spring data rest type names.
 	 */
 //spring-data-rest
-	static String[] springDataRestTypeNames = { "org.springframework.data.rest.webmvc.config.DelegatingHandlerMapping",
+	static String[] springDataRestTypeNames = {"org.springframework.data.rest.webmvc.config.DelegatingHandlerMapping",
 			"org.springframework.data.rest.webmvc.support.DelegatingHandlerMapping",
 			"org.springframework.data.rest.webmvc.RepositoryPropertyReferenceController",
 			"org.springframework.data.rest.webmvc.RepositorySearchController",
@@ -67,13 +66,15 @@ public class SpringDocDataRestHints implements RuntimeHintsRegistrar {
 
 		//spring-data-rest
 		Arrays.stream(springDataRestTypeNames).forEach(springDataRestTypeName ->
-				hints.reflection()
-						.registerTypeIfPresent(classLoader, springDataRestTypeName,
-								hint -> hint.withMembers(MemberCategory.DECLARED_FIELDS,
-										MemberCategory.INVOKE_DECLARED_CONSTRUCTORS,
-										MemberCategory.INVOKE_DECLARED_METHODS
-								))
-		);
+				                                               hints.reflection()
+				                                                    .registerTypeIfPresent(classLoader,
+				                                                                           springDataRestTypeName,
+				                                                                           hint -> hint.withMembers(
+						                                                                           MemberCategory.DECLARED_FIELDS,
+						                                                                           MemberCategory.INVOKE_DECLARED_CONSTRUCTORS,
+						                                                                           MemberCategory.INVOKE_DECLARED_METHODS
+				                                                                                                   ))
+		                                              );
 	}
 
 }

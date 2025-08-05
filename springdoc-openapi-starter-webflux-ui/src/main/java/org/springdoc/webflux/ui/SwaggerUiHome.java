@@ -26,13 +26,8 @@
 
 package org.springdoc.webflux.ui;
 
-import java.net.URI;
-import java.util.Optional;
-
 import io.swagger.v3.oas.annotations.Operation;
 import org.apache.commons.lang3.StringUtils;
-import reactor.core.publisher.Mono;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.web.reactive.WebFluxProperties;
 import org.springframework.http.HttpStatus;
@@ -40,6 +35,10 @@ import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.util.UriComponentsBuilder;
+import reactor.core.publisher.Mono;
+
+import java.net.URI;
+import java.util.Optional;
 
 import static org.springdoc.core.utils.Constants.SWAGGER_UI_PATH;
 import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;

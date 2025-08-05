@@ -28,7 +28,6 @@ package test.org.springdoc.api.v31.app14;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
-
 import org.springframework.http.HttpEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;

@@ -24,16 +24,15 @@
 
 package test.org.springdoc.api.v30.app157;
 
-import java.util.ArrayList;
-
 import io.swagger.v3.core.converter.ModelConverters;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springdoc.core.utils.Constants;
-import test.org.springdoc.api.v30.AbstractSpringDocV30Test;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import test.org.springdoc.api.v30.AbstractSpringDocV30Test;
+
+import java.util.ArrayList;
 
 import static org.hamcrest.Matchers.hasProperty;
 import static org.hamcrest.Matchers.is;
@@ -62,14 +61,15 @@ public class SpringDocApp157Test extends AbstractSpringDocV30Test {
 	@Test
 	protected void testApp() throws Exception {
 		mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL))
-				.andExpect(status().isOk())
-				.andExpect(jsonPath("$.openapi", is("3.0.1")))
-				.andExpect(jsonPath("$.components.schemas.Foo.required", is(new ArrayList<String>() {{
-					add("stringy");
-				}})))
-				.andExpect(jsonPath("$.components.schemas.Bar", not(hasProperty("required"))));
+		       .andExpect(status().isOk())
+		       .andExpect(jsonPath("$.openapi", is("3.0.1")))
+		       .andExpect(jsonPath("$.components.schemas.Foo.required", is(new ArrayList<String>() {{
+			       add("stringy");
+		       }})))
+		       .andExpect(jsonPath("$.components.schemas.Bar", not(hasProperty("required"))));
 	}
 
 	@SpringBootApplication
-	static class SpringBootApp {}
+	static class SpringBootApp {
+	}
 }

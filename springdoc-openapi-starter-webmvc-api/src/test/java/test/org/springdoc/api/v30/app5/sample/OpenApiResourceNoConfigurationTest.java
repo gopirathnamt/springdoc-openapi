@@ -25,10 +25,9 @@
 package test.org.springdoc.api.v30.app5.sample;
 
 import org.junit.jupiter.api.Test;
-import test.org.springdoc.api.v30.AbstractSpringDocV30Test;
-
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.test.context.TestPropertySource;
+import test.org.springdoc.api.v30.AbstractSpringDocV30Test;
 
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -55,5 +54,6 @@ public class OpenApiResourceNoConfigurationTest extends AbstractSpringDocV30Test
 	}
 
 	@SpringBootApplication
-	static class SpringDocTestApp {}
+	static class SpringDocTestApp {
+	}
 }

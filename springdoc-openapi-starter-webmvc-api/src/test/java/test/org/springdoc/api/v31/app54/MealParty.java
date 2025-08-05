@@ -24,10 +24,10 @@
 
 package test.org.springdoc.api.v31.app54;
 
+import com.fasterxml.jackson.annotation.JsonView;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import com.fasterxml.jackson.annotation.JsonView;
 
 public class MealParty {
 	@JsonView(Views.MealPartyAdmin.class)

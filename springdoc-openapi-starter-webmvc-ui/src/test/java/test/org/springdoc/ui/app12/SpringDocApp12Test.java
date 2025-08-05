@@ -19,13 +19,12 @@
 package test.org.springdoc.ui.app12;
 
 import org.junit.jupiter.api.Test;
-import test.org.springdoc.ui.AbstractSpringDocTest;
-
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.test.context.TestPropertySource;
+import test.org.springdoc.ui.AbstractSpringDocTest;
 
-@TestPropertySource(properties = { "springdoc.swagger-ui.syntaxHighlight.activated=false",
-		"springdoc.swagger-ui.syntaxHighlight.theme=monokai" })
+@TestPropertySource(properties = {"springdoc.swagger-ui.syntaxHighlight.activated=false",
+		"springdoc.swagger-ui.syntaxHighlight.theme=monokai"})
 class SpringDocApp12Test extends AbstractSpringDocTest {
 
 	@Test
@@ -34,6 +33,7 @@ class SpringDocApp12Test extends AbstractSpringDocTest {
 	}
 
 	@SpringBootApplication
-	static class SpringDocTestApp {}
+	static class SpringDocTestApp {
+	}
 
 }

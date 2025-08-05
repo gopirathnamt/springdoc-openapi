@@ -3,7 +3,6 @@ package test.org.springdoc.api.v31.app237;
 import io.swagger.v3.core.util.PrimitiveType;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -20,8 +19,8 @@ public class OpenApiConfiguration {
 		String version = getClass().getPackage().getImplementationVersion();
 		return new OpenAPI()
 				.info(new Info()
-						.title(title == null ? "DEV" : title)
-						.version(version == null ? "local" : version));
+						      .title(title == null ? "DEV" : title)
+						      .version(version == null ? "local" : version));
 	}
 
 	@Bean

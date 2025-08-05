@@ -28,10 +28,9 @@ package test.org.springdoc.api.v31.app36;
 
 import org.junit.jupiter.api.Test;
 import org.springdoc.core.utils.Constants;
-import test.org.springdoc.api.v31.AbstractSpringDocTest;
-
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.test.context.TestPropertySource;
+import test.org.springdoc.api.v31.AbstractSpringDocTest;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.is;
@@ -41,20 +40,22 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @TestPropertySource(properties = {
 		"springdoc.show-actuator=true", "management.endpoints.enabled-by-default=true",
-		"management.endpoints.web.exposure.include=*" })
+		"management.endpoints.web.exposure.include=*"})
 public class SpringDocApp36Test extends AbstractSpringDocTest {
 
 	@Test
 	protected void testApp() throws Exception {
 		mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL)).andExpect(status().isOk())
-				.andExpect(jsonPath("$.openapi", is("3.1.0")))
-				.andExpect(jsonPath("$.paths./actuator/info.get.operationId", containsString("info")))
-				.andExpect(jsonPath("$.paths./actuator/health.get.operationId", containsString("health")))
-				.andExpect(jsonPath("$.paths./actuator/metrics/{requiredMetricName}.get.parameters[0].in", is("path")))
-				.andExpect(jsonPath("$.paths./actuator/metrics/{requiredMetricName}.get.parameters[0].name", is("requiredMetricName")));
+		       .andExpect(jsonPath("$.openapi", is("3.1.0")))
+		       .andExpect(jsonPath("$.paths./actuator/info.get.operationId", containsString("info")))
+		       .andExpect(jsonPath("$.paths./actuator/health.get.operationId", containsString("health")))
+		       .andExpect(jsonPath("$.paths./actuator/metrics/{requiredMetricName}.get.parameters[0].in", is("path")))
+		       .andExpect(jsonPath("$.paths./actuator/metrics/{requiredMetricName}.get.parameters[0].name",
+		                           is("requiredMetricName")));
 	}
 
 	@SpringBootApplication
-	static class SpringDocTestApp {}
+	static class SpringDocTestApp {
+	}
 
 }

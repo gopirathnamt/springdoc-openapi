@@ -28,7 +28,6 @@ package test.org.springdoc.api.v31.app72;
 
 import org.junit.jupiter.api.Test;
 import org.springdoc.core.models.GroupedOpenApi;
-
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
@@ -51,7 +50,7 @@ class BlockingAutoConfigurationTest {
 						.hasBean("openApiResource")
 						.hasBean("actuatorProvider")
 						.hasBean("multipleOpenApiResource")
-				);
+				    );
 	}
 
 	@Test
@@ -63,7 +62,7 @@ class BlockingAutoConfigurationTest {
 						.doesNotHaveBean("openApiResource")
 						.doesNotHaveBean("actuatorProvider")
 						.doesNotHaveBean("multipleOpenApiResource")
-				);
+				    );
 	}
 
 	@Test
@@ -74,7 +73,7 @@ class BlockingAutoConfigurationTest {
 						.hasBean("openApiResource")
 						.doesNotHaveBean("actuatorPprrovider")
 						.hasBean("multipleOpenApiResource")
-				);
+				    );
 	}
 
 	@Test
@@ -86,19 +85,20 @@ class BlockingAutoConfigurationTest {
 						.doesNotHaveBean("openApiResource")
 						.doesNotHaveBean("actuatorProvider")
 						.doesNotHaveBean("multipleOpenApiResource")
-				);
+				    );
 	}
 
 	@Test
 	void configurations_not_loaded_when_mvc_is_not_on_class_path() {
 		contextRunner
-				.withClassLoader(new FilteredClassLoader("org.springframework.web.context.support.GenericWebApplicationContext"))
+				.withClassLoader(
+						new FilteredClassLoader("org.springframework.web.context.support.GenericWebApplicationContext"))
 				.run(context -> assertThat(context)
 						.hasNotFailed()
 						.doesNotHaveBean("openApiResource")
 						.doesNotHaveBean("actuatorProvider")
 						.doesNotHaveBean("multipleOpenApiResource")
-				);
+				    );
 
 	}
 
@@ -107,9 +107,9 @@ class BlockingAutoConfigurationTest {
 		@Bean
 		GroupedOpenApi testGroupedOpenApi() {
 			return GroupedOpenApi.builder()
-					.group("test-group")
-					.packagesToScan("org.test")
-					.build();
+			                     .group("test-group")
+			                     .packagesToScan("org.test")
+			                     .build();
 		}
 	}
 }

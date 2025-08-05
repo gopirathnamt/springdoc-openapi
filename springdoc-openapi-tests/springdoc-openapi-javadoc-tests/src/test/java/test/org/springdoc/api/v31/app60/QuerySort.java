@@ -26,18 +26,18 @@
 
 package test.org.springdoc.api.v31.app60;
 
+import io.swagger.v3.oas.annotations.Parameter;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import io.swagger.v3.oas.annotations.Parameter;
-
 /**
  * The interface Query sort.
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ ElementType.METHOD })
+@Target({ElementType.METHOD})
 @Parameter(name = "sort", description = "desc sort from Annotated interface")
 public @interface QuerySort {
 }

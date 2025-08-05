@@ -26,12 +26,6 @@
 
 package org.springdoc.core.providers;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-
 import com.github.therapi.runtimejavadoc.ClassJavadoc;
 import com.github.therapi.runtimejavadoc.CommentFormatter;
 import com.github.therapi.runtimejavadoc.FieldJavadoc;
@@ -40,6 +34,12 @@ import com.github.therapi.runtimejavadoc.ParamJavadoc;
 import com.github.therapi.runtimejavadoc.RuntimeJavadoc;
 import com.github.therapi.runtimejavadoc.ThrowsJavadoc;
 import org.apache.commons.lang3.StringUtils;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import static java.lang.Math.min;
 import static java.util.stream.Collectors.toMap;
@@ -79,7 +79,8 @@ public class SpringDocJavadocProvider implements JavadocProvider {
 	public Map<String, String> getRecordClassParamJavadoc(Class<?> cl) {
 		ClassJavadoc classJavadoc = RuntimeJavadoc.getJavadoc(cl);
 		return classJavadoc.getRecordComponents().stream()
-				.collect(Collectors.toMap(ParamJavadoc::getName, recordClass -> formatter.format(recordClass.getComment())));
+		                   .collect(Collectors.toMap(ParamJavadoc::getName,
+		                                             recordClass -> formatter.format(recordClass.getComment())));
 	}
 
 	/**
@@ -114,9 +115,9 @@ public class SpringDocJavadocProvider implements JavadocProvider {
 	 */
 	public Map<String, String> getMethodJavadocThrows(Method method) {
 		return RuntimeJavadoc.getJavadoc(method)
-				.getThrows()
-				.stream()
-				.collect(toMap(ThrowsJavadoc::getName, javadoc -> formatter.format(javadoc.getComment())));
+		                     .getThrows()
+		                     .stream()
+		                     .collect(toMap(ThrowsJavadoc::getName, javadoc -> formatter.format(javadoc.getComment())));
 	}
 
 	/**
@@ -131,7 +132,7 @@ public class SpringDocJavadocProvider implements JavadocProvider {
 		MethodJavadoc methodJavadoc = RuntimeJavadoc.getJavadoc(method);
 		List<ParamJavadoc> paramsDoc = methodJavadoc.getParams();
 		return paramsDoc.stream().filter(paramJavadoc1 -> name.equals(paramJavadoc1.getName())).findAny()
-				.map(paramJavadoc1 -> formatter.format(paramJavadoc1.getComment())).orElse(null);
+		                .map(paramJavadoc1 -> formatter.format(paramJavadoc1.getComment())).orElse(null);
 	}
 
 	/**

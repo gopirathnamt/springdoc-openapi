@@ -26,17 +26,6 @@
 
 package org.springdoc.core.converters;
 
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Modifier;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.introspect.BeanPropertyDefinition;
@@ -51,6 +40,17 @@ import io.swagger.v3.oas.models.media.ObjectSchema;
 import io.swagger.v3.oas.models.media.Schema;
 import org.apache.commons.lang3.ArrayUtils;
 import org.springdoc.core.providers.ObjectMapperProvider;
+
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Modifier;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import static java.util.function.Function.identity;
 import static java.util.stream.Collectors.toMap;
@@ -112,8 +112,7 @@ public class PolymorphicModelConverter implements ModelConverter {
 		if (resolvedSchema instanceof ObjectSchema && resolvedSchema.getProperties() != null) {
 			if (resolvedSchema.getProperties().containsKey(javaType.getRawClass().getName())) {
 				resolvedSchema = resolvedSchema.getProperties().get(javaType.getRawClass().getName());
-			}
-			else if (resolvedSchema.getProperties().containsKey(javaType.getRawClass().getSimpleName())) {
+			} else if (resolvedSchema.getProperties().containsKey(javaType.getRawClass().getSimpleName())) {
 				resolvedSchema = resolvedSchema.getProperties().get(javaType.getRawClass().getSimpleName());
 			}
 		}
@@ -130,11 +129,12 @@ public class PolymorphicModelConverter implements ModelConverter {
 						PARENT_TYPES_TO_IGNORE.add(javaType.getRawClass().getSimpleName());
 					else
 						PARENT_TYPES_TO_IGNORE.add(javaType.getRawClass().getName());
-				}
-				else {
-					io.swagger.v3.oas.annotations.media.Schema declaredSchema = propertyDef.getAnyAnnotation(io.swagger.v3.oas.annotations.media.Schema.class);
+				} else {
+					io.swagger.v3.oas.annotations.media.Schema declaredSchema =
+							propertyDef.getAnyAnnotation(io.swagger.v3.oas.annotations.media.Schema.class);
 					if (declaredSchema != null &&
-							(ArrayUtils.isNotEmpty(declaredSchema.oneOf()) || ArrayUtils.isNotEmpty(declaredSchema.allOf())) &&
+							(ArrayUtils.isNotEmpty(declaredSchema.oneOf()) ||
+									ArrayUtils.isNotEmpty(declaredSchema.allOf())) &&
 							propertyDef.getPrimaryType() != null &&
 							propertyDef.getPrimaryType().getRawClass() != null) {
 						TYPES_TO_SKIP.add(propertyDef.getPrimaryType().getRawClass().getSimpleName());
@@ -143,7 +143,8 @@ public class PolymorphicModelConverter implements ModelConverter {
 			}
 			if (chain.hasNext()) {
 				if (!type.isResolveAsRef() && type.getParent() != null
-						&& PARENT_TYPES_TO_IGNORE.stream().noneMatch(ignore -> type.getParent().getName().startsWith(ignore)))
+						&& PARENT_TYPES_TO_IGNORE.stream()
+						                         .noneMatch(ignore -> type.getParent().getName().startsWith(ignore)))
 					type.resolveAsRef(true);
 				Schema<?> resolvedSchema = chain.next().resolve(type, context, chain);
 				resolvedSchema = getResolvedSchema(javaType, resolvedSchema);
@@ -153,7 +154,8 @@ public class PolymorphicModelConverter implements ModelConverter {
 				if (resolvedSchema.get$ref().contains(Components.COMPONENTS_SCHEMAS_REF)) {
 					String schemaName = resolvedSchema.get$ref().substring(Components.COMPONENTS_SCHEMAS_REF.length());
 					Schema existingSchema = context.getDefinedModels().get(schemaName);
-					if (existingSchema != null && (existingSchema.getOneOf() != null || existingSchema.getAllOf() != null)) {
+					if (existingSchema != null &&
+							(existingSchema.getOneOf() != null || existingSchema.getAllOf() != null)) {
 						return resolvedSchema;
 					}
 				}
@@ -193,12 +195,14 @@ public class PolymorphicModelConverter implements ModelConverter {
 	 */
 	private List<Schema> findComposedSchemas(String ref, Collection<Schema> schemas) {
 		List<Schema> composedSchemas = schemas.stream()
-				.filter(ComposedSchema.class::isInstance)
-				.map(ComposedSchema.class::cast)
-				.filter(s -> s.getAllOf() != null)
-				.filter(s -> s.getAllOf().stream().anyMatch(s2 -> ref.equals(s2.get$ref())))
-				.map(s -> new Schema().$ref(AnnotationsUtils.COMPONENTS_REF + s.getName()))
-				.toList();
+		                                      .filter(ComposedSchema.class::isInstance)
+		                                      .map(ComposedSchema.class::cast)
+		                                      .filter(s -> s.getAllOf() != null)
+		                                      .filter(s -> s.getAllOf().stream()
+		                                                    .anyMatch(s2 -> ref.equals(s2.get$ref())))
+		                                      .map(s -> new Schema().$ref(
+				                                      AnnotationsUtils.COMPONENTS_REF + s.getName()))
+		                                      .toList();
 
 		List<Schema> resultSchemas = new ArrayList<>(composedSchemas);
 
@@ -230,22 +234,23 @@ public class PolymorphicModelConverter implements ModelConverter {
 	private List<BeanPropertyBiDefinition> introspectBeanProperties(JavaType javaType) {
 		Map<String, BeanPropertyDefinition> forSerializationProps =
 				springDocObjectMapper.jsonMapper()
-						.getSerializationConfig()
-						.introspect(javaType)
-						.findProperties()
-						.stream()
-						.collect(toMap(BeanPropertyDefinition::getName, identity()));
+				                     .getSerializationConfig()
+				                     .introspect(javaType)
+				                     .findProperties()
+				                     .stream()
+				                     .collect(toMap(BeanPropertyDefinition::getName, identity()));
 		Map<String, BeanPropertyDefinition> forDeserializationProps =
 				springDocObjectMapper.jsonMapper()
-						.getDeserializationConfig()
-						.introspect(javaType)
-						.findProperties()
-						.stream()
-						.collect(toMap(BeanPropertyDefinition::getName, identity()));
+				                     .getDeserializationConfig()
+				                     .introspect(javaType)
+				                     .findProperties()
+				                     .stream()
+				                     .collect(toMap(BeanPropertyDefinition::getName, identity()));
 
 		return forSerializationProps.keySet().stream()
-				.map(key -> new BeanPropertyBiDefinition(forSerializationProps.get(key), forDeserializationProps.get(key)))
-				.toList();
+		                            .map(key -> new BeanPropertyBiDefinition(forSerializationProps.get(key),
+		                                                                     forDeserializationProps.get(key)))
+		                            .toList();
 	}
 
 	/**
@@ -265,7 +270,8 @@ public class PolymorphicModelConverter implements ModelConverter {
 			A anyForSerializationAnnotation = getAnyAnnotation(forSerialization, acls);
 			A anyForDeserializationAnnotation = getAnyAnnotation(forDeserialization, acls);
 
-			return anyForSerializationAnnotation != null ? anyForSerializationAnnotation : anyForDeserializationAnnotation;
+			return anyForSerializationAnnotation !=
+					null ? anyForSerializationAnnotation : anyForDeserializationAnnotation;
 		}
 
 		/**
@@ -290,9 +296,11 @@ public class PolymorphicModelConverter implements ModelConverter {
 				forDeserializationType = forDeserialization.getPrimaryType();
 			}
 
-			if (forSerializationType != null && forDeserializationType != null && forSerializationType != forDeserializationType) {
-				throw new IllegalStateException("The property " + forSerialization.getName() + " has different types for serialization and deserialization: "
-						+ forSerializationType + " and " + forDeserializationType);
+			if (forSerializationType != null && forDeserializationType != null &&
+					forSerializationType != forDeserializationType) {
+				throw new IllegalStateException("The property " + forSerialization.getName() +
+						                                " has different types for serialization and deserialization: "
+						                                + forSerializationType + " and " + forDeserializationType);
 			}
 
 			return forSerializationType != null ? forSerializationType : forDeserializationType;

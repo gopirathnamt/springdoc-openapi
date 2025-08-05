@@ -27,16 +27,15 @@
 package org.springdoc.core.fn;
 
 
-import java.util.Arrays;
-import java.util.Map;
-import java.util.Objects;
-
 import io.swagger.v3.oas.annotations.Operation;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springdoc.core.fn.builders.operation.Builder;
-
 import org.springframework.web.bind.annotation.RequestMethod;
+
+import java.util.Arrays;
+import java.util.Map;
+import java.util.Objects;
 
 import static org.springdoc.core.utils.Constants.OPERATION_ATTRIBUTE;
 
@@ -137,16 +136,22 @@ public class RouterOperation implements Comparable<RouterOperation> {
 	 * @param routerOperationAnnotation the router operation annotation
 	 * @param routerFunctionData        the router function data
 	 */
-	public RouterOperation(org.springdoc.core.annotations.RouterOperation routerOperationAnnotation, RouterFunctionData routerFunctionData) {
-		this.path = StringUtils.isBlank(routerOperationAnnotation.path()) ? routerFunctionData.getPath() : routerOperationAnnotation.path();
-		this.methods = ArrayUtils.isEmpty(routerOperationAnnotation.method()) ? routerFunctionData.getMethods() : routerOperationAnnotation.method();
-		this.consumes = ArrayUtils.isEmpty(routerOperationAnnotation.consumes()) ? routerFunctionData.getConsumes() : routerOperationAnnotation.consumes();
-		this.produces = ArrayUtils.isEmpty(routerOperationAnnotation.produces()) ? routerFunctionData.getProduces() : routerOperationAnnotation.produces();
+	public RouterOperation(org.springdoc.core.annotations.RouterOperation routerOperationAnnotation,
+	                       RouterFunctionData routerFunctionData) {
+		this.path = StringUtils.isBlank(
+				routerOperationAnnotation.path()) ? routerFunctionData.getPath() : routerOperationAnnotation.path();
+		this.methods = ArrayUtils.isEmpty(
+				routerOperationAnnotation.method()) ? routerFunctionData.getMethods() : routerOperationAnnotation.method();
+		this.consumes = ArrayUtils.isEmpty(
+				routerOperationAnnotation.consumes()) ? routerFunctionData.getConsumes() : routerOperationAnnotation.consumes();
+		this.produces = ArrayUtils.isEmpty(
+				routerOperationAnnotation.produces()) ? routerFunctionData.getProduces() : routerOperationAnnotation.produces();
 		this.beanClass = routerOperationAnnotation.beanClass();
 		this.beanMethod = routerOperationAnnotation.beanMethod();
 		this.parameterTypes = routerOperationAnnotation.parameterTypes();
 		this.operation = routerOperationAnnotation.operation();
-		this.headers = ArrayUtils.isEmpty(routerOperationAnnotation.headers()) ? routerFunctionData.getHeaders() : routerOperationAnnotation.headers();
+		this.headers = ArrayUtils.isEmpty(
+				routerOperationAnnotation.headers()) ? routerFunctionData.getHeaders() : routerOperationAnnotation.headers();
 		this.params = routerOperationAnnotation.params();
 		this.queryParams = routerFunctionData.getQueryParams();
 	}
@@ -161,7 +166,8 @@ public class RouterOperation implements Comparable<RouterOperation> {
 	 * @param headers  the headers
 	 * @param params   the params
 	 */
-	public RouterOperation(String path, RequestMethod[] methods, String[] consumes, String[] produces, String[] headers, String[] params) {
+	public RouterOperation(String path, RequestMethod[] methods, String[] consumes, String[] produces, String[] headers,
+	                       String[] params) {
 		this.path = path;
 		this.methods = methods;
 		this.consumes = consumes;
@@ -201,9 +207,10 @@ public class RouterOperation implements Comparable<RouterOperation> {
 	 * @param routerOperation the router operation
 	 * @param requestMethod   the request method
 	 */
-	public RouterOperation(org.springdoc.core.annotations.RouterOperation routerOperation, RequestMethod requestMethod) {
+	public RouterOperation(org.springdoc.core.annotations.RouterOperation routerOperation,
+	                       RequestMethod requestMethod) {
 		this(routerOperation);
-		this.methods = new RequestMethod[] { requestMethod };
+		this.methods = new RequestMethod[]{requestMethod};
 	}
 
 	/**

@@ -26,9 +26,8 @@ package test.org.springdoc.api.v31.app177;
 
 import org.junit.jupiter.api.Test;
 import org.springdoc.core.utils.Constants;
-import test.org.springdoc.api.v31.AbstractSpringDocTest;
-
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import test.org.springdoc.api.v31.AbstractSpringDocTest;
 
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -41,28 +40,29 @@ class SpringDocApp177Test extends AbstractSpringDocTest {
 	@Test
 	void testFilterOnlyPicksUpMatchedMethods() throws Exception {
 		mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL + "/annotatedGroup1"))
-				.andExpect(status().isOk())
-				.andExpect(jsonPath("$.openapi", is("3.1.0")))
-				.andExpect(content().json(getContent("results/3.1.0/app177-1.json"), true));
+		       .andExpect(status().isOk())
+		       .andExpect(jsonPath("$.openapi", is("3.1.0")))
+		       .andExpect(content().json(getContent("results/3.1.0/app177-1.json"), true));
 	}
 
 	@Test
 	void testFilterOnlyPicksUpMatchedMethodsWithDifferentFilter() throws Exception {
 		mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL + "/annotatedGroup2"))
-				.andExpect(status().isOk())
-				.andExpect(jsonPath("$.openapi", is("3.1.0")))
-				.andExpect(content().json(getContent("results/3.1.0/app177-2.json"), true));
+		       .andExpect(status().isOk())
+		       .andExpect(jsonPath("$.openapi", is("3.1.0")))
+		       .andExpect(content().json(getContent("results/3.1.0/app177-2.json"), true));
 	}
 
 	@Test
 	void testFilterOnlyPicksUpCombinedMatchedMethods() throws Exception {
 		mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL + "/annotatedCombinedGroup"))
-				.andExpect(status().isOk())
-				.andExpect(jsonPath("$.openapi", is("3.1.0")))
-				.andExpect(content().json(getContent("results/3.1.0/app177-3.json"), true));
+		       .andExpect(status().isOk())
+		       .andExpect(jsonPath("$.openapi", is("3.1.0")))
+		       .andExpect(content().json(getContent("results/3.1.0/app177-3.json"), true));
 	}
 
 	@SpringBootApplication
-	static class SpringDocTestApp {}
+	static class SpringDocTestApp {
+	}
 
 }

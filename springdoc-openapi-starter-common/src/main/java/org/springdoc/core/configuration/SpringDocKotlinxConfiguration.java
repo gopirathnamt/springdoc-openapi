@@ -27,7 +27,6 @@
 package org.springdoc.core.configuration;
 
 import kotlinx.coroutines.flow.Flow;
-
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;

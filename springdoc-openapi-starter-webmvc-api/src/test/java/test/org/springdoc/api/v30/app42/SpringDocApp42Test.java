@@ -27,10 +27,9 @@ package test.org.springdoc.api.v30.app42;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.media.StringSchema;
-import test.org.springdoc.api.v30.AbstractSpringDocV30Test;
-
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import test.org.springdoc.api.v30.AbstractSpringDocV30Test;
 
 public class SpringDocApp42Test extends AbstractSpringDocV30Test {
 

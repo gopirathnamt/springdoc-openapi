@@ -20,11 +20,10 @@ package test.org.springdoc.ui.app3;
 
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
-import test.org.springdoc.ui.AbstractSpringDocTest;
-
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.reactive.server.WebTestClient;
+import test.org.springdoc.ui.AbstractSpringDocTest;
 
 @TestPropertySource(properties = {
 		"springdoc.swagger-ui.path=/documentation/swagger-ui.html",
@@ -36,16 +35,17 @@ public class SpringDocApp3RedirectWithPrefixTest extends AbstractSpringDocTest {
 	@Test
 	void shouldRedirectWithPrefix() {
 		WebTestClient.ResponseSpec responseSpec = webTestClient.get().uri("/documentation/swagger-ui.html").exchange()
-				.expectStatus().isFound();
+		                                                       .expectStatus().isFound();
 		responseSpec.expectHeader()
-				.value("Location", Matchers.is("/documentation/webjars-pref/swagger-ui/index.html"));
+		            .value("Location", Matchers.is("/documentation/webjars-pref/swagger-ui/index.html"));
 		webTestClient.get().uri("/documentation/webjars-pref/swagger-ui/index.html").exchange()
-				.expectStatus().isOk();
+		             .expectStatus().isOk();
 		webTestClient.get().uri("/documentation/v3/api-docs/swagger-config").exchange()
-				.expectStatus().isOk().expectBody().jsonPath("$.validatorUrl").isEqualTo("");
+		             .expectStatus().isOk().expectBody().jsonPath("$.validatorUrl").isEqualTo("");
 	}
 
 	@SpringBootApplication
-	static class SpringDocTestApp {}
+	static class SpringDocTestApp {
+	}
 
 }

@@ -27,7 +27,6 @@
 package test.org.springdoc.api.v30.app35;
 
 import io.swagger.v3.oas.annotations.Hidden;
-
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 @Hidden

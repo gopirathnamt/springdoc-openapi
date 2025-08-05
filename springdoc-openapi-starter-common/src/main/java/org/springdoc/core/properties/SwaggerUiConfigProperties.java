@@ -26,16 +26,9 @@
 
 package org.springdoc.core.properties;
 
-import java.io.IOException;
-import java.util.LinkedHashSet;
-import java.util.Properties;
-import java.util.Set;
-import java.util.stream.Collectors;
-
 import org.apache.commons.lang3.StringUtils;
 import org.springdoc.core.configuration.SpringDocConfiguration;
 import org.springdoc.core.utils.Constants;
-
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -45,6 +38,12 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PropertiesLoaderUtils;
+
+import java.io.IOException;
+import java.util.LinkedHashSet;
+import java.util.Properties;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import static org.springdoc.core.utils.Constants.SPRINGDOC_SWAGGER_PREFIX;
 import static org.springdoc.core.utils.Constants.SPRINGDOC_SWAGGER_UI_ENABLED;
@@ -110,8 +109,7 @@ public class SwaggerUiConfigProperties extends AbstractSwaggerUiConfigProperties
 				Resource resource = new ClassPathResource(DEFAULT_PATH_SEPARATOR + SPRINGDOC_CONFIG_PROPERTIES);
 				Properties props = PropertiesLoaderUtils.loadProperties(resource);
 				setVersion(props.getProperty(SPRINGDOC_SWAGGER_VERSION));
-			}
-			catch (IOException e) {
+			} catch (IOException e) {
 				throw new RuntimeException(e);
 			}
 		}
@@ -240,7 +238,9 @@ public class SwaggerUiConfigProperties extends AbstractSwaggerUiConfigProperties
 	 * @return the set
 	 */
 	public Set<SwaggerUrl> cloneUrls() {
-		return this.urls.stream().map(swaggerUrl -> new SwaggerUrl(swaggerUrl.getName(), swaggerUrl.getUrl(), swaggerUrl.getDisplayName())).collect(Collectors.toCollection(LinkedHashSet::new));
+		return this.urls.stream().map(swaggerUrl -> new SwaggerUrl(swaggerUrl.getName(), swaggerUrl.getUrl(),
+		                                                           swaggerUrl.getDisplayName()))
+		                .collect(Collectors.toCollection(LinkedHashSet::new));
 	}
 
 	/**

@@ -26,14 +26,6 @@
 
 package org.springdoc.core.providers;
 
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.models.OpenAPI;
@@ -45,7 +37,6 @@ import org.springdoc.core.data.DataRestRepository;
 import org.springdoc.core.data.DataRestRouterOperationService;
 import org.springdoc.core.fn.RouterOperation;
 import org.springdoc.core.utils.SpringDocDataRestUtils;
-
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -72,6 +63,14 @@ import org.springframework.web.servlet.HandlerMapping;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfoHandlerMapping;
 
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 /**
  * The type Spring repository rest resource provider.
  *
@@ -87,32 +86,38 @@ public class SpringRepositoryRestResourceProvider implements RepositoryRestResou
 	/**
 	 * The constant REPOSITORY_SCHEMA_CONTROLLER.
 	 */
-	public static final String REPOSITORY_SCHEMA_CONTROLLER = SPRING_DATA_REST_PACKAGE + ".webmvc.RepositorySchemaController";
+	public static final String REPOSITORY_SCHEMA_CONTROLLER =
+			SPRING_DATA_REST_PACKAGE + ".webmvc.RepositorySchemaController";
 
 	/**
 	 * The constant REPOSITORY_ENTITY_CONTROLLER.
 	 */
-	private static final String REPOSITORY_ENTITY_CONTROLLER = SPRING_DATA_REST_PACKAGE + ".webmvc.RepositoryEntityController";
+	private static final String REPOSITORY_ENTITY_CONTROLLER =
+			SPRING_DATA_REST_PACKAGE + ".webmvc.RepositoryEntityController";
 
 	/**
 	 * The constant REPOSITORY_SEARCH_CONTROLLER.
 	 */
-	private static final String REPOSITORY_SEARCH_CONTROLLER = SPRING_DATA_REST_PACKAGE + ".webmvc.RepositorySearchController";
+	private static final String REPOSITORY_SEARCH_CONTROLLER =
+			SPRING_DATA_REST_PACKAGE + ".webmvc.RepositorySearchController";
 
 	/**
 	 * The constant REPOSITORY_PROPERTY_CONTROLLER.
 	 */
-	private static final String REPOSITORY_PROPERTY_CONTROLLER = SPRING_DATA_REST_PACKAGE + ".webmvc.RepositoryPropertyReferenceController";
+	private static final String REPOSITORY_PROPERTY_CONTROLLER =
+			SPRING_DATA_REST_PACKAGE + ".webmvc.RepositoryPropertyReferenceController";
 
 	/**
 	 * The Delegating handler mapping class.
 	 */
-	private static final String DELEGATING_HANDLER_MAPPING_CLASS = SPRING_DATA_REST_PACKAGE + ".webmvc.config.DelegatingHandlerMapping";
+	private static final String DELEGATING_HANDLER_MAPPING_CLASS =
+			SPRING_DATA_REST_PACKAGE + ".webmvc.config.DelegatingHandlerMapping";
 
 	/**
 	 * The Delegating handler mapping interface.
 	 */
-	private static final String DELEGATING_HANDLER_MAPPING_INTERFACE = SPRING_DATA_REST_PACKAGE + ".webmvc.support.DelegatingHandlerMapping";
+	private static final String DELEGATING_HANDLER_MAPPING_INTERFACE =
+			SPRING_DATA_REST_PACKAGE + ".webmvc.support.DelegatingHandlerMapping";
 
 	/**
 	 * The constant LOGGER.
@@ -127,12 +132,10 @@ public class SpringRepositoryRestResourceProvider implements RepositoryRestResou
 	static {
 		try {
 			delegatingHandlerMappingClass = Class.forName(DELEGATING_HANDLER_MAPPING_CLASS);
-		}
-		catch (ClassNotFoundException e) {
+		} catch (ClassNotFoundException e) {
 			try {
 				delegatingHandlerMappingClass = Class.forName(DELEGATING_HANDLER_MAPPING_INTERFACE);
-			}
-			catch (ClassNotFoundException exception) {
+			} catch (ClassNotFoundException exception) {
 				LOGGER.trace(e.getMessage());
 			}
 		}
@@ -171,7 +174,7 @@ public class SpringRepositoryRestResourceProvider implements RepositoryRestResou
 	 * @param springDocDataRestUtils         the spring doc data rest utils
 	 */
 	public SpringRepositoryRestResourceProvider(DataRestRouterOperationService dataRestRouterOperationService,
-			ObjectMapper mapper, SpringDocDataRestUtils springDocDataRestUtils) {
+	                                            ObjectMapper mapper, SpringDocDataRestUtils springDocDataRestUtils) {
 		this.dataRestRouterOperationService = dataRestRouterOperationService;
 		this.mapper = mapper;
 		this.springDocDataRestUtils = springDocDataRestUtils;
@@ -204,52 +207,76 @@ public class SpringRepositoryRestResourceProvider implements RepositoryRestResou
 				if (resourceMetadata != null && resourceMetadata.isExported()) {
 					for (HandlerMapping handlerMapping : handlerMappingList) {
 						if (handlerMapping instanceof RepositoryRestHandlerMapping repositoryRestHandlerMapping) {
-							Map<RequestMappingInfo, HandlerMethod> handlerMethodMap = repositoryRestHandlerMapping.getHandlerMethods();
+							Map<RequestMappingInfo, HandlerMethod> handlerMethodMap =
+									repositoryRestHandlerMapping.getHandlerMethods();
 							// Entity controllers lookup first
-							Map<RequestMappingInfo, HandlerMethod> handlerMethodMapFiltered = handlerMethodMap.entrySet().stream()
-									.filter(requestMappingInfoHandlerMethodEntry -> REPOSITORY_ENTITY_CONTROLLER.equals(requestMappingInfoHandlerMethodEntry
-											.getValue().getBeanType().getName()))
-									.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (a1, a2) -> a1));
+							Map<RequestMappingInfo, HandlerMethod> handlerMethodMapFiltered =
+									handlerMethodMap.entrySet().stream()
+									                .filter(requestMappingInfoHandlerMethodEntry -> REPOSITORY_ENTITY_CONTROLLER.equals(
+											                requestMappingInfoHandlerMethodEntry
+													                .getValue().getBeanType().getName()))
+									                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue,
+									                                          (a1, a2) -> a1));
 							dataRestRepository.setControllerType(ControllerType.ENTITY);
-							findControllers(routerOperationList, handlerMethodMapFiltered, resourceMetadata, dataRestRepository, openAPI);
+							findControllers(routerOperationList, handlerMethodMapFiltered, resourceMetadata,
+							                dataRestRepository, openAPI);
 
-							Map<RequestMappingInfo, HandlerMethod> handlerMethodMapFilteredMethodMap = handlerMethodMap.entrySet().stream()
-									.filter(requestMappingInfoHandlerMethodEntry -> REPOSITORY_PROPERTY_CONTROLLER.equals(requestMappingInfoHandlerMethodEntry
-											.getValue().getBeanType().getName()))
-									.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (a1, a2) -> a1));
+							Map<RequestMappingInfo, HandlerMethod> handlerMethodMapFilteredMethodMap =
+									handlerMethodMap.entrySet().stream()
+									                .filter(requestMappingInfoHandlerMethodEntry -> REPOSITORY_PROPERTY_CONTROLLER.equals(
+											                requestMappingInfoHandlerMethodEntry
+													                .getValue().getBeanType().getName()))
+									                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue,
+									                                          (a1, a2) -> a1));
 
 							entity.doWithAssociations((SimpleAssociationHandler) association -> {
 								PersistentProperty<?> property = association.getInverse();
 								if (jackson.isExported(property) && associations.isLinkableAssociation(property)) {
-									dataRestRepository.setRelationName(resourceMetadata.getMappingFor(property).getRel().value());
+									dataRestRepository.setRelationName(
+											resourceMetadata.getMappingFor(property).getRel().value());
 									dataRestRepository.setControllerType(ControllerType.PROPERTY);
 									dataRestRepository.setCollectionLike(property.isCollectionLike());
 									dataRestRepository.setMap(property.isMap());
 									dataRestRepository.setPropertyType(property.getActualType());
-									findControllers(routerOperationList, handlerMethodMapFilteredMethodMap, resourceMetadata, dataRestRepository, openAPI);
+									findControllers(routerOperationList, handlerMethodMapFilteredMethodMap,
+									                resourceMetadata, dataRestRepository, openAPI);
 								}
 							});
-						}
-						else if (handlerMapping instanceof BasePathAwareHandlerMapping beanBasePathAwareHandlerMapping) {
-							Map<RequestMappingInfo, HandlerMethod> handlerMethodMap = beanBasePathAwareHandlerMapping.getHandlerMethods();
-							Map<RequestMappingInfo, HandlerMethod> handlerMethodMapFiltered = handlerMethodMap.entrySet().stream()
-									.filter(requestMappingInfoHandlerMethodEntry -> REPOSITORY_SCHEMA_CONTROLLER.equals(requestMappingInfoHandlerMethodEntry
-											.getValue().getBeanType().getName()))
-									.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (a1, a2) -> a1));
+						} else if (handlerMapping instanceof BasePathAwareHandlerMapping beanBasePathAwareHandlerMapping) {
+							Map<RequestMappingInfo, HandlerMethod> handlerMethodMap =
+									beanBasePathAwareHandlerMapping.getHandlerMethods();
+							Map<RequestMappingInfo, HandlerMethod> handlerMethodMapFiltered =
+									handlerMethodMap.entrySet().stream()
+									                .filter(requestMappingInfoHandlerMethodEntry -> REPOSITORY_SCHEMA_CONTROLLER.equals(
+											                requestMappingInfoHandlerMethodEntry
+													                .getValue().getBeanType().getName()))
+									                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue,
+									                                          (a1, a2) -> a1));
 							dataRestRepository.setControllerType(ControllerType.SCHEMA);
-							findControllers(routerOperationList, handlerMethodMapFiltered, resourceMetadata, dataRestRepository, openAPI);
+							findControllers(routerOperationList, handlerMethodMapFiltered, resourceMetadata,
+							                dataRestRepository, openAPI);
 							handlerMethodMapFiltered = handlerMethodMap.entrySet().stream()
-									.filter(requestMappingInfoHandlerMethodEntry -> ProfileController.class.equals(requestMappingInfoHandlerMethodEntry
-											.getValue().getBeanType()) || AlpsController.class.equals(requestMappingInfoHandlerMethodEntry
-											.getValue().getBeanType()))
-									.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (a1, a2) -> a1));
+							                                           .filter(requestMappingInfoHandlerMethodEntry ->
+									                                                   ProfileController.class.equals(
+											                                                   requestMappingInfoHandlerMethodEntry
+													                                                   .getValue()
+													                                                   .getBeanType()) ||
+											                                                   AlpsController.class.equals(
+													                                                   requestMappingInfoHandlerMethodEntry
+															                                                   .getValue()
+															                                                   .getBeanType()))
+							                                           .collect(Collectors.toMap(Map.Entry::getKey,
+							                                                                     Map.Entry::getValue,
+							                                                                     (a1, a2) -> a1));
 							dataRestRepository.setControllerType(ControllerType.GENERAL);
-							findControllers(routerOperationList, handlerMethodMapFiltered, resourceMetadata, dataRestRepository, openAPI);
+							findControllers(routerOperationList, handlerMethodMapFiltered, resourceMetadata,
+							                dataRestRepository, openAPI);
 						}
 					}
 				}
 				// search
-				findSearchResourceMappings(openAPI, routerOperationList, handlerMappingList, dataRestRepository, resourceMetadata, associations);
+				findSearchResourceMappings(openAPI, routerOperationList, handlerMappingList, dataRestRepository,
+				                           resourceMetadata, associations);
 			}
 		}
 		return routerOperationList;
@@ -274,10 +301,14 @@ public class SpringRepositoryRestResourceProvider implements RepositoryRestResou
 	public Map getHandlerMethods() {
 		handlerMappingList = getHandlerMappingList();
 		return handlerMappingList.stream().filter(RequestMappingInfoHandlerMapping.class::isInstance)
-				.flatMap(
-						handler -> ((RequestMappingInfoHandlerMapping) handler).getHandlerMethods().entrySet().stream())
-				.filter(entry -> !entry.getValue().getBeanType().getName().startsWith(SPRING_DATA_REST_PACKAGE) && AnnotatedElementUtils.hasAnnotation(entry.getValue().getBeanType(), BasePathAwareController.class))
-				.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+		                         .flatMap(
+				                         handler -> ((RequestMappingInfoHandlerMapping) handler).getHandlerMethods()
+				                                                                                .entrySet().stream())
+		                         .filter(entry -> !entry.getValue().getBeanType().getName()
+		                                                .startsWith(SPRING_DATA_REST_PACKAGE) &&
+				                         AnnotatedElementUtils.hasAnnotation(entry.getValue().getBeanType(),
+				                                                             BasePathAwareController.class))
+		                         .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 	}
 
 	/**
@@ -304,9 +335,8 @@ public class SpringRepositoryRestResourceProvider implements RepositoryRestResou
 				Object object = applicationContext.getBean(delegatingHandlerMappingClass);
 				try {
 					handlerMappingList = (List<HandlerMapping>) MethodUtils.invokeMethod(object, "getDelegates");
-				}
-				catch (NoSuchMethodException | IllegalAccessException |
-					   InvocationTargetException e) {
+				} catch (NoSuchMethodException | IllegalAccessException |
+				         InvocationTargetException e) {
 					LOGGER.warn(e.getMessage());
 				}
 			}
@@ -325,20 +355,31 @@ public class SpringRepositoryRestResourceProvider implements RepositoryRestResou
 	 * @param resourceMetadata    the resource metadata
 	 * @param associations        the associations
 	 */
-	private void findSearchResourceMappings(OpenAPI openAPI, List<RouterOperation> routerOperationList, List<HandlerMapping> handlerMappingList,
-			DataRestRepository dataRestRepository, ResourceMetadata resourceMetadata, Associations associations) {
+	private void findSearchResourceMappings(OpenAPI openAPI, List<RouterOperation> routerOperationList,
+	                                        List<HandlerMapping> handlerMappingList,
+	                                        DataRestRepository dataRestRepository, ResourceMetadata resourceMetadata,
+	                                        Associations associations) {
 		for (HandlerMapping handlerMapping : handlerMappingList) {
 			if (handlerMapping instanceof RepositoryRestHandlerMapping repositoryRestHandlerMapping) {
-				Map<RequestMappingInfo, HandlerMethod> handlerMethodMap = repositoryRestHandlerMapping.getHandlerMethods();
+				Map<RequestMappingInfo, HandlerMethod> handlerMethodMap =
+						repositoryRestHandlerMapping.getHandlerMethods();
 				Map<RequestMappingInfo, HandlerMethod> handlerMethodMapFiltered = handlerMethodMap.entrySet().stream()
-						.filter(requestMappingInfoHandlerMethodEntry -> REPOSITORY_SEARCH_CONTROLLER.equals(requestMappingInfoHandlerMethodEntry
-								.getValue().getBeanType().getName()))
-						.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (a1, a2) -> a1));
+				                                                                                  .filter(requestMappingInfoHandlerMethodEntry -> REPOSITORY_SEARCH_CONTROLLER.equals(
+						                                                                                  requestMappingInfoHandlerMethodEntry
+								                                                                                  .getValue()
+								                                                                                  .getBeanType()
+								                                                                                  .getName()))
+				                                                                                  .collect(
+						                                                                                  Collectors.toMap(
+								                                                                                  Map.Entry::getKey,
+								                                                                                  Map.Entry::getValue,
+								                                                                                  (a1, a2) -> a1));
 				ResourceMetadata metadata = associations.getMetadataFor(dataRestRepository.getDomainType());
 				if (metadata != null && metadata.isExported()) {
 					SearchResourceMappings searchResourceMappings = metadata.getSearchResourceMappings();
 					if (searchResourceMappings.isExported()) {
-						findSearchControllers(routerOperationList, handlerMethodMapFiltered, resourceMetadata, dataRestRepository, openAPI, searchResourceMappings);
+						findSearchControllers(routerOperationList, handlerMethodMapFiltered, resourceMetadata,
+						                      dataRestRepository, openAPI, searchResourceMappings);
 					}
 				}
 			}
@@ -357,11 +398,16 @@ public class SpringRepositoryRestResourceProvider implements RepositoryRestResou
 	 * @return the list
 	 */
 	private List<RouterOperation> findSearchControllers(List<RouterOperation> routerOperationList,
-			Map<RequestMappingInfo, HandlerMethod> handlerMethodMap, ResourceMetadata resourceMetadata, DataRestRepository dataRestRepository,
-			OpenAPI openAPI, SearchResourceMappings searchResourceMappings) {
+	                                                    Map<RequestMappingInfo, HandlerMethod> handlerMethodMap,
+	                                                    ResourceMetadata resourceMetadata,
+	                                                    DataRestRepository dataRestRepository,
+	                                                    OpenAPI openAPI,
+	                                                    SearchResourceMappings searchResourceMappings) {
 		Stream<MethodResourceMapping> methodResourceMappingStream = searchResourceMappings.getExportedMappings();
-		methodResourceMappingStream.forEach(methodResourceMapping -> dataRestRouterOperationService.buildSearchRouterOperationList(
-				routerOperationList, handlerMethodMap, resourceMetadata, dataRestRepository, openAPI, methodResourceMapping));
+		methodResourceMappingStream.forEach(
+				methodResourceMapping -> dataRestRouterOperationService.buildSearchRouterOperationList(
+						routerOperationList, handlerMethodMap, resourceMetadata, dataRestRepository, openAPI,
+						methodResourceMapping));
 		return routerOperationList;
 	}
 
@@ -377,10 +423,12 @@ public class SpringRepositoryRestResourceProvider implements RepositoryRestResou
 	 * @return the list
 	 */
 	private List<RouterOperation> findControllers(List<RouterOperation> routerOperationList,
-			Map<RequestMappingInfo, HandlerMethod> handlerMethodMap, ResourceMetadata resourceMetadata,
-			DataRestRepository dataRestRepository, OpenAPI openAPI) {
-		dataRestRouterOperationService.buildEntityRouterOperationList(routerOperationList, handlerMethodMap, resourceMetadata,
-				dataRestRepository, openAPI);
+	                                              Map<RequestMappingInfo, HandlerMethod> handlerMethodMap,
+	                                              ResourceMetadata resourceMetadata,
+	                                              DataRestRepository dataRestRepository, OpenAPI openAPI) {
+		dataRestRouterOperationService.buildEntityRouterOperationList(routerOperationList, handlerMethodMap,
+		                                                              resourceMetadata,
+		                                                              dataRestRepository, openAPI);
 		return routerOperationList;
 	}
 

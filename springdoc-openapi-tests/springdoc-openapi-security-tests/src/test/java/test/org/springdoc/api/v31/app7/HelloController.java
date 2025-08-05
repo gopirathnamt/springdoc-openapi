@@ -27,7 +27,6 @@
 package test.org.springdoc.api.v31.app7;
 
 import org.springdoc.core.annotations.ParameterObject;
-
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;

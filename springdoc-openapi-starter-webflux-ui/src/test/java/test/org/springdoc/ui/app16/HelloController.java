@@ -21,7 +21,6 @@ package test.org.springdoc.ui.app16;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Size;
 import org.springdoc.core.models.GroupedOpenApi;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -38,8 +37,8 @@ public class HelloController {
 	@Bean
 	public GroupedOpenApi userOpenApi() {
 		return GroupedOpenApi.builder()
-				.group("users")
-				.packagesToScan("test.org.springdoc.api.v30.app145")
-				.build();
+		                     .group("users")
+		                     .packagesToScan("test.org.springdoc.api.v30.app145")
+		                     .build();
 	}
 }

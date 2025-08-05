@@ -24,8 +24,8 @@ import test.org.springdoc.api.v31.AbstractKotlinSpringDocMVCTest
 
 class SpringDocApp3Test : AbstractKotlinSpringDocMVCTest() {
 
-	@SpringBootApplication
-	@ComponentScan(basePackages = ["org.springdoc", "test.org.springdoc.api.v31.app3"])
-	class DemoApplication
+    @SpringBootApplication
+    @ComponentScan(basePackages = ["org.springdoc", "test.org.springdoc.api.v31.app3"])
+    class DemoApplication
 
 }

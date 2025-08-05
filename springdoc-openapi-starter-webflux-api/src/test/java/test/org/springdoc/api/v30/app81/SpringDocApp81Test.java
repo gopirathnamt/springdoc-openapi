@@ -25,19 +25,8 @@
  */
 package test.org.springdoc.api.v30.app81;
 
-import java.net.URI;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.concurrent.ThreadLocalRandom;
-
 import org.junit.jupiter.api.RepeatedTest;
 import org.springdoc.webflux.api.OpenApiWebfluxResource;
-import test.org.springdoc.api.v30.AbstractCommonTest;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
@@ -46,6 +35,16 @@ import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.reactive.result.method.RequestMappingInfo;
 import org.springframework.web.reactive.result.method.RequestMappingInfoHandlerMapping;
+import test.org.springdoc.api.v30.AbstractCommonTest;
+
+import java.net.URI;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.concurrent.ThreadLocalRandom;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -74,7 +73,8 @@ public class SpringDocApp81Test extends AbstractCommonTest {
 
 		String expected = getContent("results/3.0.1/app81.json");
 		byte[] openApiBytes = resource.openapiJson(request, "", Locale.US).block();
-		String openApi = new String(openApiBytes, StandardCharsets.UTF_8); // for UTF-8 encoding		String openApi = resource.openapiJson(request, "", Locale.US).block();
+		String openApi = new String(openApiBytes,
+		                            StandardCharsets.UTF_8); // for UTF-8 encoding		String openApi = resource.openapiJson(request, "", Locale.US).block();
 		assertEquals(expected, openApi, true);
 	}
 
@@ -84,11 +84,12 @@ public class SpringDocApp81Test extends AbstractCommonTest {
 		collect.sort(Comparator.comparing(a -> ThreadLocalRandom.current().nextBoolean() ? -1 : 1));
 
 		collect.forEach(e -> mappingInfoHandlerMapping.unregisterMapping(e.getKey()));
-		collect.forEach(e -> mappingInfoHandlerMapping.registerMapping(e.getKey(), e.getValue().getBean(), e.getValue().getMethod()));
+		collect.forEach(e -> mappingInfoHandlerMapping.registerMapping(e.getKey(), e.getValue().getBean(),
+		                                                               e.getValue().getMethod()));
 	}
 
 	@SpringBootApplication
-	@ComponentScan(basePackages = { "org.springdoc", "test.org.springdoc.api.v30.app81" })
+	@ComponentScan(basePackages = {"org.springdoc", "test.org.springdoc.api.v30.app81"})
 	static class SpringDocTestApp {
 	}
 

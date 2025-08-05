@@ -26,20 +26,19 @@
 
 package org.springdoc.core.data;
 
-import java.lang.reflect.Method;
-import java.util.HashSet;
-import java.util.Set;
-
 import io.swagger.v3.oas.models.Operation;
 import io.swagger.v3.oas.models.tags.Tag;
 import org.springdoc.core.providers.SpringRepositoryRestResourceProvider;
 import org.springdoc.core.service.OpenAPIService;
 import org.springdoc.core.service.SecurityService;
-
 import org.springframework.data.rest.webmvc.ProfileController;
 import org.springframework.data.rest.webmvc.alps.AlpsController;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.method.HandlerMethod;
+
+import java.lang.reflect.Method;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * The type Data rest tags builder.
@@ -71,7 +70,7 @@ public class DataRestTagsService {
 	 * @param method             the method
 	 */
 	public void buildSearchTags(Operation operation, HandlerMethod handlerMethod,
-			DataRestRepository dataRestRepository, Method method) {
+	                            DataRestRepository dataRestRepository, Method method) {
 		buildTags(operation, handlerMethod, dataRestRepository, method);
 	}
 
@@ -83,7 +82,7 @@ public class DataRestTagsService {
 	 * @param dataRestRepository the repository data rest
 	 */
 	public void buildEntityTags(Operation operation, HandlerMethod handlerMethod,
-			DataRestRepository dataRestRepository) {
+	                            DataRestRepository dataRestRepository) {
 		buildTags(operation, handlerMethod, dataRestRepository, null);
 	}
 
@@ -96,15 +95,15 @@ public class DataRestTagsService {
 	 * @param method             the method
 	 */
 	private void buildTags(Operation operation, HandlerMethod handlerMethod,
-			DataRestRepository dataRestRepository, Method method) {
+	                       DataRestRepository dataRestRepository, Method method) {
 		String tagName = handlerMethod.getBeanType().getSimpleName();
-		if (SpringRepositoryRestResourceProvider.REPOSITORY_SCHEMA_CONTROLLER.equals(handlerMethod.getBeanType().getName())
+		if (SpringRepositoryRestResourceProvider.REPOSITORY_SCHEMA_CONTROLLER.equals(
+				handlerMethod.getBeanType().getName())
 				|| AlpsController.class.equals(handlerMethod.getBeanType())
 				|| ProfileController.class.equals(handlerMethod.getBeanType())) {
 			tagName = ProfileController.class.getSimpleName();
 			operation.addTagsItem(OpenAPIService.splitCamelCase(tagName));
-		}
-		else {
+		} else {
 			Class<?> domainType = dataRestRepository.getDomainType();
 			Set<Tag> tags = new HashSet<>();
 			Set<String> tagsStr = new HashSet<>();
@@ -117,11 +116,14 @@ public class DataRestTagsService {
 				operation.addTagsItem(OpenAPIService.splitCamelCase(tagName));
 			}
 			final SecurityService securityParser = openAPIService.getSecurityParser();
-			Set<io.swagger.v3.oas.annotations.security.SecurityRequirement> allSecurityTags = securityParser.getSecurityRequirementsForClass(repositoryType);
+			Set<io.swagger.v3.oas.annotations.security.SecurityRequirement> allSecurityTags =
+					securityParser.getSecurityRequirementsForClass(repositoryType);
 			if (method != null)
 				allSecurityTags = securityParser.getSecurityRequirementsForMethod(method, allSecurityTags);
 			if (!CollectionUtils.isEmpty(allSecurityTags))
-				securityParser.buildSecurityRequirement(allSecurityTags.toArray(new io.swagger.v3.oas.annotations.security.SecurityRequirement[0]), operation);
+				securityParser.buildSecurityRequirement(
+						allSecurityTags.toArray(new io.swagger.v3.oas.annotations.security.SecurityRequirement[0]),
+						operation);
 		}
 	}
 }

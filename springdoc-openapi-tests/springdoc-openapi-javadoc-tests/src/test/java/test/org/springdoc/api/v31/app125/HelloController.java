@@ -27,7 +27,6 @@
 package test.org.springdoc.api.v31.app125;
 
 import jakarta.validation.constraints.NotNull;
-
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -45,7 +44,7 @@ class HelloController {
 	 * @param toto the toto
 	 * @return the all pets
 	 */
-	@GetMapping(value = "/search", produces = { "application/xml", "application/json" })
+	@GetMapping(value = "/search", produces = {"application/xml", "application/json"})
 	public DeprecatedEntity getAllPets(@NotNull String toto) {
 		return null;
 	}

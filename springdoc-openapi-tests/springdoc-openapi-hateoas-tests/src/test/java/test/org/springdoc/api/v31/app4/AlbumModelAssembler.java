@@ -26,13 +26,13 @@
 
 package test.org.springdoc.api.v31.app4;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.server.RepresentationModelAssembler;
 import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
 public class AlbumModelAssembler implements RepresentationModelAssembler<Album, EntityModel<Album>> {

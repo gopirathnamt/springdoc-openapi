@@ -26,15 +26,15 @@
 
 package org.springdoc.core.converters;
 
-import java.util.Iterator;
-import java.util.List;
-import java.util.Optional;
-
 import io.swagger.v3.core.converter.AnnotatedType;
 import io.swagger.v3.core.converter.ModelConverter;
 import io.swagger.v3.core.converter.ModelConverterContext;
 import io.swagger.v3.oas.models.media.Schema;
 import org.springdoc.core.customizers.PropertyCustomizer;
+
+import java.util.Iterator;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * The type Property customizing converter.

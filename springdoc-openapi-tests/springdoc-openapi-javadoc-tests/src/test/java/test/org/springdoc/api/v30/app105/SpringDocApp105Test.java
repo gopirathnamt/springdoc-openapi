@@ -33,11 +33,10 @@ import io.swagger.v3.oas.models.info.License;
 import io.swagger.v3.oas.models.security.SecurityScheme;
 import org.junit.jupiter.api.Test;
 import org.springdoc.core.utils.Constants;
-import test.org.springdoc.api.v30.AbstractSpringDocTest;
-
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.TestPropertySource;
+import test.org.springdoc.api.v30.AbstractSpringDocTest;
 
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -75,9 +74,9 @@ class SpringDocApp105Test extends AbstractSpringDocTest {
 	@Test
 	protected void testApp() throws Exception {
 		mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL + "/stores"))
-				.andExpect(status().isOk())
-				.andExpect(jsonPath("$.openapi", is("3.0.1")))
-				.andExpect(content().json(getContent("results/3.0.1/app105-1.json"), true));
+		       .andExpect(status().isOk())
+		       .andExpect(jsonPath("$.openapi", is("3.0.1")))
+		       .andExpect(content().json(getContent("results/3.0.1/app105-1.json"), true));
 	}
 
 	/**
@@ -88,9 +87,9 @@ class SpringDocApp105Test extends AbstractSpringDocTest {
 	@Test
 	void testApp2() throws Exception {
 		mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL + "/users"))
-				.andExpect(status().isOk())
-				.andExpect(jsonPath("$.openapi", is("3.0.1")))
-				.andExpect(content().json(getContent("results/3.0.1/app105-2.json"), true));
+		       .andExpect(status().isOk())
+		       .andExpect(jsonPath("$.openapi", is("3.0.1")))
+		       .andExpect(content().json(getContent("results/3.0.1/app105-2.json"), true));
 	}
 
 	/**
@@ -101,9 +100,9 @@ class SpringDocApp105Test extends AbstractSpringDocTest {
 	@Test
 	void testApp3() throws Exception {
 		mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL + "/pets"))
-				.andExpect(status().isOk())
-				.andExpect(jsonPath("$.openapi", is("3.0.1")))
-				.andExpect(content().json(getContent("results/3.0.1/app105-3.json"), true));
+		       .andExpect(status().isOk())
+		       .andExpect(jsonPath("$.openapi", is("3.0.1")))
+		       .andExpect(content().json(getContent("results/3.0.1/app105-3.json"), true));
 	}
 
 	/**
@@ -114,9 +113,9 @@ class SpringDocApp105Test extends AbstractSpringDocTest {
 	@Test
 	void testApp4() throws Exception {
 		mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL + "/groups test"))
-				.andExpect(status().isOk())
-				.andExpect(jsonPath("$.openapi", is("3.0.1")))
-				.andExpect(content().json(getContent("results/3.0.1/app105-4.json"), true));
+		       .andExpect(status().isOk())
+		       .andExpect(jsonPath("$.openapi", is("3.0.1")))
+		       .andExpect(content().json(getContent("results/3.0.1/app105-4.json"), true));
 	}
 
 
@@ -134,11 +133,12 @@ class SpringDocApp105Test extends AbstractSpringDocTest {
 		public OpenAPI customOpenAPI() {
 			return new OpenAPI()
 					.components(new Components().addSecuritySchemes("basicScheme",
-							new SecurityScheme().type(SecurityScheme.Type.HTTP).scheme("basic")))
+					                                                new SecurityScheme().type(SecurityScheme.Type.HTTP)
+					                                                                    .scheme("basic")))
 					.info(new Info().title("Petstore API").version("v0").description(
-									"This is a sample server Petstore server.  You can find out more about     Swagger at [http://swagger.io](http://swagger.io) or on [irc.freenode.net, #swagger](http://swagger.io/irc/).      For this sample, you can use the api key `special-key` to test the authorization     filters.")
-							.termsOfService("http://swagger.io/terms/")
-							.license(new License().name("Apache 2.0").url("http://springdoc.org")));
+							                "This is a sample server Petstore server.  You can find out more about     Swagger at [http://swagger.io](http://swagger.io) or on [irc.freenode.net, #swagger](http://swagger.io/irc/).      For this sample, you can use the api key `special-key` to test the authorization     filters.")
+					                .termsOfService("http://swagger.io/terms/")
+					                .license(new License().name("Apache 2.0").url("http://springdoc.org")));
 		}
 	}
 }

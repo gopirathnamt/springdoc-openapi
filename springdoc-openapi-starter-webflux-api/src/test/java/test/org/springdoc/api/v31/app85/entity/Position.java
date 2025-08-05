@@ -26,11 +26,11 @@
 
 package test.org.springdoc.api.v31.app85.entity;
 
-import java.util.Date;
-
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+
+import java.util.Date;
 
 
 public class Position {

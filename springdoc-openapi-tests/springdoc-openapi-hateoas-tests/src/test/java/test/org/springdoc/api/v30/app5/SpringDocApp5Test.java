@@ -30,10 +30,9 @@ import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.media.ObjectSchema;
 import io.swagger.v3.oas.models.media.StringSchema;
-import test.org.springdoc.api.v30.AbstractSpringDocTest;
-
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import test.org.springdoc.api.v30.AbstractSpringDocTest;
 
 public class SpringDocApp5Test extends AbstractSpringDocTest {
 
@@ -42,8 +41,13 @@ public class SpringDocApp5Test extends AbstractSpringDocTest {
 		@Bean
 		public OpenAPI customOpenAPI() {
 			return new OpenAPI().components(new Components()
-					.addSchemas("CompanyDtoNew", new ObjectSchema().addProperties("id", new StringSchema().format("uuid"
-					)).addProperties("name", new StringSchema())));
+					                                .addSchemas("CompanyDtoNew", new ObjectSchema().addProperties("id",
+					                                                                                              new StringSchema().format(
+							                                                                                              "uuid"
+					                                                                                                                       ))
+					                                                                               .addProperties(
+							                                                                               "name",
+							                                                                               new StringSchema())));
 		}
 	}
 

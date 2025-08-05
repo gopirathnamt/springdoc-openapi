@@ -26,12 +26,8 @@
 
 package org.springdoc.webmvc.ui;
 
-import java.util.List;
-import java.util.Optional;
-
 import org.springdoc.core.properties.SwaggerUiConfigProperties;
 import org.springdoc.core.providers.ActuatorProvider;
-
 import org.springframework.format.FormatterRegistry;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.lang.Nullable;
@@ -50,6 +46,9 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+import java.util.List;
+import java.util.Optional;
 
 import static org.springdoc.core.utils.Constants.CLASSPATH_RESOURCE_LOCATION;
 import static org.springdoc.core.utils.Constants.DEFAULT_WEB_JARS_PREFIX_URL;
@@ -93,8 +92,9 @@ public class SwaggerWebMvcConfigurer implements WebMvcConfigurer {
 	 * @param swaggerResourceResolver   the swagger resource resolver
 	 */
 	public SwaggerWebMvcConfigurer(SwaggerUiConfigProperties swaggerUiConfigProperties,
-			SwaggerIndexTransformer swaggerIndexTransformer,
-			Optional<ActuatorProvider> actuatorProvider, SwaggerResourceResolver swaggerResourceResolver) {
+	                               SwaggerIndexTransformer swaggerIndexTransformer,
+	                               Optional<ActuatorProvider> actuatorProvider,
+	                               SwaggerResourceResolver swaggerResourceResolver) {
 		this.swaggerIndexTransformer = swaggerIndexTransformer;
 		this.actuatorProvider = actuatorProvider;
 		this.swaggerResourceResolver = swaggerResourceResolver;
@@ -111,17 +111,19 @@ public class SwaggerWebMvcConfigurer implements WebMvcConfigurer {
 			uiRootPath.append(actuatorProvider.get().getBasePath());
 
 		registry.addResourceHandler(uiRootPath + SWAGGER_UI_PREFIX + "*/*" + SWAGGER_INITIALIZER_JS)
-				.addResourceLocations(CLASSPATH_RESOURCE_LOCATION + DEFAULT_WEB_JARS_PREFIX_URL + DEFAULT_PATH_SEPARATOR)
-				.setCachePeriod(0)
-				.resourceChain(false)
-				.addResolver(swaggerResourceResolver)
-				.addTransformer(swaggerIndexTransformer);
+		        .addResourceLocations(
+				        CLASSPATH_RESOURCE_LOCATION + DEFAULT_WEB_JARS_PREFIX_URL + DEFAULT_PATH_SEPARATOR)
+		        .setCachePeriod(0)
+		        .resourceChain(false)
+		        .addResolver(swaggerResourceResolver)
+		        .addTransformer(swaggerIndexTransformer);
 
 		registry.addResourceHandler(uiRootPath + SWAGGER_UI_PREFIX + "*/**")
-				.addResourceLocations(CLASSPATH_RESOURCE_LOCATION + DEFAULT_WEB_JARS_PREFIX_URL + DEFAULT_PATH_SEPARATOR)
-				.resourceChain(false)
-				.addResolver(swaggerResourceResolver)
-				.addTransformer(swaggerIndexTransformer);
+		        .addResourceLocations(
+				        CLASSPATH_RESOURCE_LOCATION + DEFAULT_WEB_JARS_PREFIX_URL + DEFAULT_PATH_SEPARATOR)
+		        .resourceChain(false)
+		        .addResolver(swaggerResourceResolver)
+		        .addTransformer(swaggerIndexTransformer);
 	}
 
 	@Override

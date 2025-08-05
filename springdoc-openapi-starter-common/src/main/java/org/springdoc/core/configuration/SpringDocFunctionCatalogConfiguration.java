@@ -26,12 +26,9 @@
 
 package org.springdoc.core.configuration;
 
-import java.util.Optional;
-
 import org.springdoc.core.properties.SpringDocConfigProperties;
 import org.springdoc.core.providers.CloudFunctionProvider;
 import org.springdoc.core.providers.SpringCloudFunctionProvider;
-
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
@@ -42,6 +39,8 @@ import org.springframework.cloud.function.web.function.FunctionEndpointInitializ
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
+
+import java.util.Optional;
 
 /**
  * The type Spring doc function catalog configuration.
@@ -66,7 +65,8 @@ public class SpringDocFunctionCatalogConfiguration {
 	@Bean
 	@ConditionalOnMissingBean
 	@Lazy(false)
-	CloudFunctionProvider springCloudFunctionProvider(Optional<FunctionCatalog> functionCatalog, SpringDocConfigProperties springDocConfigProperties) {
+	CloudFunctionProvider springCloudFunctionProvider(Optional<FunctionCatalog> functionCatalog,
+	                                                  SpringDocConfigProperties springDocConfigProperties) {
 		return new SpringCloudFunctionProvider(functionCatalog, springDocConfigProperties);
 	}
 }

@@ -26,10 +26,9 @@ package test.org.springdoc.api.v30.app170;
 
 import org.junit.jupiter.api.Test;
 import org.springdoc.core.customizers.OpenApiCustomizer;
-import test.org.springdoc.api.v30.AbstractSpringDocV30Test;
-
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import test.org.springdoc.api.v30.AbstractSpringDocV30Test;
 
 
 public class SpringDocApp170Test extends AbstractSpringDocV30Test {

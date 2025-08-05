@@ -1,11 +1,11 @@
 package test.org.springdoc.api.v30.app206;
 
-import java.util.Optional;
-
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+
+import java.util.Optional;
 
 public class PersonResponse {
 	@Schema

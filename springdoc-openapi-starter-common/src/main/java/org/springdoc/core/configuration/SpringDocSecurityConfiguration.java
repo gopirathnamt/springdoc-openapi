@@ -27,8 +27,6 @@
 package org.springdoc.core.configuration;
 
 
-import java.util.Optional;
-
 import io.swagger.v3.oas.models.Operation;
 import io.swagger.v3.oas.models.PathItem;
 import io.swagger.v3.oas.models.media.Content;
@@ -45,7 +43,6 @@ import org.slf4j.LoggerFactory;
 import org.springdoc.core.configuration.hints.SpringDocSecurityHints;
 import org.springdoc.core.customizers.GlobalOpenApiCustomizer;
 import org.springdoc.core.customizers.OpenApiCustomizer;
-
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
@@ -70,6 +67,8 @@ import org.springframework.security.web.servlet.util.matcher.PathPatternRequestM
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.web.util.pattern.PathPattern;
+
+import java.util.Optional;
 
 import static org.springdoc.core.utils.Constants.SPRINGDOC_SHOW_LOGIN_ENDPOINT;
 import static org.springdoc.core.utils.Constants.SPRINGDOC_SHOW_OAUTH2_ENDPOINTS;
@@ -96,8 +95,8 @@ public class SpringDocSecurityConfiguration {
 
 	static {
 		getConfig().addRequestWrapperToIgnore(Authentication.class)
-				.addResponseTypeToIgnore(Authentication.class)
-				.addAnnotationsToIgnore(AuthenticationPrincipal.class);
+		           .addResponseTypeToIgnore(Authentication.class)
+		           .addAnnotationsToIgnore(AuthenticationPrincipal.class);
 	}
 
 	/**
@@ -118,42 +117,53 @@ public class SpringDocSecurityConfiguration {
 		@ConditionalOnProperty(SPRINGDOC_SHOW_LOGIN_ENDPOINT)
 		@Lazy(false)
 		OpenApiCustomizer springSecurityLoginEndpointCustomizer(ApplicationContext applicationContext) {
-			FilterChainProxy filterChainProxy = applicationContext.getBean(AbstractSecurityWebApplicationInitializer.DEFAULT_FILTER_NAME, FilterChainProxy.class);
+			FilterChainProxy filterChainProxy =
+					applicationContext.getBean(AbstractSecurityWebApplicationInitializer.DEFAULT_FILTER_NAME,
+					                           FilterChainProxy.class);
 			return openAPI -> {
 				for (SecurityFilterChain filterChain : filterChainProxy.getFilterChains()) {
 					Optional<UsernamePasswordAuthenticationFilter> optionalFilter =
 							filterChain.getFilters().stream()
-									.filter(UsernamePasswordAuthenticationFilter.class::isInstance)
-									.map(UsernamePasswordAuthenticationFilter.class::cast)
-									.findAny();
+							           .filter(UsernamePasswordAuthenticationFilter.class::isInstance)
+							           .map(UsernamePasswordAuthenticationFilter.class::cast)
+							           .findAny();
 					Optional<DefaultLoginPageGeneratingFilter> optionalDefaultLoginPageGeneratingFilter =
 							filterChain.getFilters().stream()
-									.filter(DefaultLoginPageGeneratingFilter.class::isInstance)
-									.map(DefaultLoginPageGeneratingFilter.class::cast)
-									.findAny();
+							           .filter(DefaultLoginPageGeneratingFilter.class::isInstance)
+							           .map(DefaultLoginPageGeneratingFilter.class::cast)
+							           .findAny();
 					if (optionalFilter.isPresent()) {
-						UsernamePasswordAuthenticationFilter usernamePasswordAuthenticationFilter = optionalFilter.get();
+						UsernamePasswordAuthenticationFilter usernamePasswordAuthenticationFilter =
+								optionalFilter.get();
 						Operation operation = new Operation();
 						Schema<?> schema = new ObjectSchema()
-								.addProperty(usernamePasswordAuthenticationFilter.getUsernameParameter(), new StringSchema())
-								.addProperty(usernamePasswordAuthenticationFilter.getPasswordParameter(), new StringSchema());
+								.addProperty(usernamePasswordAuthenticationFilter.getUsernameParameter(),
+								             new StringSchema())
+								.addProperty(usernamePasswordAuthenticationFilter.getPasswordParameter(),
+								             new StringSchema());
 						String mediaType = org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 						if (optionalDefaultLoginPageGeneratingFilter.isPresent()) {
-							DefaultLoginPageGeneratingFilter defaultLoginPageGeneratingFilter = optionalDefaultLoginPageGeneratingFilter.get();
+							DefaultLoginPageGeneratingFilter defaultLoginPageGeneratingFilter =
+									optionalDefaultLoginPageGeneratingFilter.get();
 							try {
-								boolean formLoginEnabled = (boolean) FieldUtils.readDeclaredField(defaultLoginPageGeneratingFilter, "formLoginEnabled", true);
+								boolean formLoginEnabled =
+										(boolean) FieldUtils.readDeclaredField(defaultLoginPageGeneratingFilter,
+										                                       "formLoginEnabled", true);
 								if (formLoginEnabled)
 									mediaType = org.springframework.http.MediaType.APPLICATION_FORM_URLENCODED_VALUE;
-							}
-							catch (IllegalAccessException e) {
+							} catch (IllegalAccessException e) {
 								LOGGER.warn(e.getMessage());
 							}
 						}
-						RequestBody requestBody = new RequestBody().content(new Content().addMediaType(mediaType, new MediaType().schema(schema)));
+						RequestBody requestBody = new RequestBody().content(
+								new Content().addMediaType(mediaType, new MediaType().schema(schema)));
 						operation.requestBody(requestBody);
 						ApiResponses apiResponses = new ApiResponses();
-						apiResponses.addApiResponse(String.valueOf(HttpStatus.OK.value()), new ApiResponse().description(HttpStatus.OK.getReasonPhrase()));
-						apiResponses.addApiResponse(String.valueOf(HttpStatus.UNAUTHORIZED.value()), new ApiResponse().description(HttpStatus.UNAUTHORIZED.getReasonPhrase()));
+						apiResponses.addApiResponse(String.valueOf(HttpStatus.OK.value()),
+						                            new ApiResponse().description(HttpStatus.OK.getReasonPhrase()));
+						apiResponses.addApiResponse(String.valueOf(HttpStatus.UNAUTHORIZED.value()),
+						                            new ApiResponse().description(
+								                            HttpStatus.UNAUTHORIZED.getReasonPhrase()));
 						operation.responses(apiResponses);
 						operation.addTagsItem("login-endpoint");
 						PathItem pathItem = new PathItem().post(operation);
@@ -162,26 +172,24 @@ public class SpringDocSecurityConfiguration {
 									usernamePasswordAuthenticationFilter,
 									"requiresAuthenticationRequestMatcher",
 									true
-							);
+							                                                                     );
 
 							String loginPath = null;
 
 							if (requestMatcher instanceof AntPathRequestMatcher) {
 								loginPath = ((AntPathRequestMatcher) requestMatcher).getPattern();
-							}
-							else if (requestMatcher instanceof PathPatternRequestMatcher) {
+							} else if (requestMatcher instanceof PathPatternRequestMatcher) {
 								PathPattern pathPattern = (PathPattern) FieldUtils.readField(
 										requestMatcher,
 										"pattern",
 										true
-								);
+								                                                            );
 								loginPath = pathPattern.getPatternString();
 							}
 
 							openAPI.getPaths().addPathItem(loginPath, pathItem);
-						}
-						catch (IllegalAccessException |
-							   ClassCastException ignored) {
+						} catch (IllegalAccessException |
+						         ClassCastException ignored) {
 							// Exception escaped
 							LOGGER.trace(ignored.getMessage());
 						}

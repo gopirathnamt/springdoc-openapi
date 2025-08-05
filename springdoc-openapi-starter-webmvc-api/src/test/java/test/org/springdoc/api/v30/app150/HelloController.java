@@ -24,19 +24,18 @@
 
 package test.org.springdoc.api.v30.app150;
 
-import java.time.LocalDate;
-import java.util.List;
-
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.time.LocalDate;
+import java.util.List;
 
 import static org.springframework.format.annotation.DateTimeFormat.ISO.DATE;
 
@@ -53,7 +52,8 @@ public class HelloController {
 	@GetMapping("/test1")
 	@ApiResponse(responseCode = "204", description = "No content")
 	@ResponseStatus(value = HttpStatus.NO_CONTENT)
-	public void test1(@RequestParam @Parameter(schema = @Schema(defaultValue = "false", type = "boolean")) boolean toto) {
+	public void test1(
+			@RequestParam @Parameter(schema = @Schema(defaultValue = "false", type = "boolean")) boolean toto) {
 
 	}
 

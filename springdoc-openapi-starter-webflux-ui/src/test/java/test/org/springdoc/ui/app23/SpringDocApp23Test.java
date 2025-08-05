@@ -27,9 +27,6 @@ package test.org.springdoc.ui.app23;
 import jakarta.annotation.PostConstruct;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
-import reactor.core.publisher.Mono;
-import test.org.springdoc.ui.AbstractCommonTest;
-
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
@@ -37,12 +34,14 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
+import test.org.springdoc.ui.AbstractCommonTest;
 
 
 @SpringBootTest(webEnvironment = WebEnvironment.DEFINED_PORT,
-		properties = { "spring.webflux.base-path=/test",
+		properties = {"spring.webflux.base-path=/test",
 				"springdoc.swagger-ui.use-root-path=true",
-				"server.port=9229" })
+				"server.port=9229"})
 class SpringDocApp23Test extends AbstractCommonTest {
 
 	@LocalServerPort
@@ -53,21 +52,26 @@ class SpringDocApp23Test extends AbstractCommonTest {
 	@PostConstruct
 	void init() {
 		webClient = WebClient.builder().baseUrl("http://localhost:" + port)
-				.build();
+		                     .build();
 	}
 
 	@Test
 	void testIndex() throws Exception {
 		HttpStatusCode httpStatusRoot = webClient.get().uri("/test/")
-				.exchangeToMono(clientResponse -> Mono.just(clientResponse.statusCode())).block();
+		                                         .exchangeToMono(
+				                                         clientResponse -> Mono.just(clientResponse.statusCode()))
+		                                         .block();
 		Assertions.assertThat(httpStatusRoot).isEqualTo(HttpStatus.FOUND);
 
 		HttpStatusCode httpStatusMono = webClient.get().uri("/test/swagger-ui.html")
-				.exchangeToMono(clientResponse -> Mono.just(clientResponse.statusCode())).block();
+		                                         .exchangeToMono(
+				                                         clientResponse -> Mono.just(clientResponse.statusCode()))
+		                                         .block();
 		Assertions.assertThat(httpStatusMono).isEqualTo(HttpStatus.FOUND);
 
 	}
 
 	@SpringBootApplication
-	static class SpringDocTestApp {}
+	static class SpringDocTestApp {
+	}
 }

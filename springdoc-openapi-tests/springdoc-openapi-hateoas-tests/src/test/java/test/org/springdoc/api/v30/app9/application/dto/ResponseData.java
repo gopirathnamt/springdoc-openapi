@@ -26,13 +26,13 @@
 
 package test.org.springdoc.api.v30.app9.application.dto;
 
-import java.time.LocalDate;
-import java.util.UUID;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
+
+import java.time.LocalDate;
+import java.util.UUID;
 
 @Builder
 public record ResponseData(
@@ -43,4 +43,5 @@ public record ResponseData(
 		@NotNull
 		@Schema(example = "2024-03-27", format = "date")
 		LocalDate date
-) {}
+) {
+}

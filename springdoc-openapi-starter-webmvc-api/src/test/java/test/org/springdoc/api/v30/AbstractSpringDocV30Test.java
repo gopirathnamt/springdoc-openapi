@@ -26,11 +26,10 @@ package test.org.springdoc.api.v30;
 
 import org.junit.jupiter.api.Test;
 import org.springdoc.core.utils.Constants;
-import test.org.springdoc.api.AbstractCommonTest;
-
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MvcResult;
+import test.org.springdoc.api.AbstractCommonTest;
 
 import static org.hamcrest.Matchers.is;
 import static org.skyscreamer.jsonassert.JSONAssert.assertEquals;
@@ -39,7 +38,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
-@TestPropertySource(properties = { "springdoc.api-docs.version=openapi_3_0" })
+@TestPropertySource(properties = {"springdoc.api-docs.version=openapi_3_0"})
 public abstract class AbstractSpringDocV30Test extends AbstractCommonTest {
 
 	public static String className;
@@ -49,7 +48,7 @@ public abstract class AbstractSpringDocV30Test extends AbstractCommonTest {
 		className = getClass().getSimpleName();
 		String testNumber = className.replaceAll("[^0-9]", "");
 		MvcResult mockMvcResult = mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL)).andExpect(status().isOk())
-				.andExpect(jsonPath("$.openapi", is("3.0.1"))).andReturn();
+		                                 .andExpect(jsonPath("$.openapi", is("3.0.1"))).andReturn();
 		String result = mockMvcResult.getResponse().getContentAsString();
 		String expected = getContent("results/3.0.1/app" + testNumber + ".json");
 		assertEquals(expected, result, true);

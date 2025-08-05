@@ -30,18 +30,17 @@ package test.org.springdoc.api.v31.app37;
  *
  */
 
-import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.util.List;
-
 import ch.qos.logback.core.rolling.helper.DateTokenConverter;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
-
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.format.annotation.DateTimeFormat;
+
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.List;
 
 /**
  * 商品信息
@@ -57,7 +56,7 @@ public interface ProductRepository extends JpaRepository<ProductEntity, Long> {
 			in = ParameterIn.QUERY,
 			required = true
 	)
-	@Param("price") BigDecimal price);
+	                                @Param("price") BigDecimal price);
 
 	/**
 	 * 根据商品名称查询商品信息
@@ -100,7 +99,8 @@ public interface ProductRepository extends JpaRepository<ProductEntity, Long> {
 	 * @return 商品信息列表
 	 */
 	List<ProductEntity> findByDateBefore(
-			@Parameter(name = "end2", required = true) @DateTimeFormat(pattern = DateTokenConverter.DEFAULT_DATE_PATTERN) @Param("end") LocalDate end);
+			@Parameter(name = "end2", required = true)
+			@DateTimeFormat(pattern = DateTokenConverter.DEFAULT_DATE_PATTERN) @Param("end") LocalDate end);
 
 	/**
 	 * 根据商品名称模糊查询指定日期前的商品信息
@@ -111,6 +111,7 @@ public interface ProductRepository extends JpaRepository<ProductEntity, Long> {
 	 */
 	List<ProductEntity> findByNameContainingIgnoreCaseAndDateBefore(
 			@Parameter(name = "name2", required = true) String name,
-			@Parameter(name = "end2", required = true) @DateTimeFormat(pattern = DateTokenConverter.DEFAULT_DATE_PATTERN) @Param("end") LocalDate end);
+			@Parameter(name = "end2", required = true)
+			@DateTimeFormat(pattern = DateTokenConverter.DEFAULT_DATE_PATTERN) @Param("end") LocalDate end);
 
 }

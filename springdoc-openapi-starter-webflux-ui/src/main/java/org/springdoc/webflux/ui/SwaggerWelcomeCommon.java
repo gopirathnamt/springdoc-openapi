@@ -26,20 +26,19 @@
 
 package org.springdoc.webflux.ui;
 
-import java.net.URI;
-import java.util.Map;
-
 import org.apache.commons.lang3.StringUtils;
 import org.springdoc.core.properties.SpringDocConfigProperties;
 import org.springdoc.core.properties.SwaggerUiConfigParameters;
 import org.springdoc.core.properties.SwaggerUiConfigProperties;
 import org.springdoc.ui.AbstractSwaggerWelcome;
-import reactor.core.publisher.Mono;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.web.util.UriComponentsBuilder;
+import reactor.core.publisher.Mono;
+
+import java.net.URI;
+import java.util.Map;
 
 import static org.springdoc.core.utils.Constants.DEFAULT_WEB_JARS_PREFIX_URL;
 
@@ -57,7 +56,8 @@ public abstract class SwaggerWelcomeCommon extends AbstractSwaggerWelcome {
 	 * @param swaggerUiConfig           the swagger ui config
 	 * @param springDocConfigProperties the spring doc config properties
 	 */
-	protected SwaggerWelcomeCommon(SwaggerUiConfigProperties swaggerUiConfig, SpringDocConfigProperties springDocConfigProperties) {
+	protected SwaggerWelcomeCommon(SwaggerUiConfigProperties swaggerUiConfig,
+	                               SpringDocConfigProperties springDocConfigProperties) {
 		super(swaggerUiConfig, springDocConfigProperties);
 	}
 
@@ -86,8 +86,10 @@ public abstract class SwaggerWelcomeCommon extends AbstractSwaggerWelcome {
 	}
 
 	@Override
-	protected void calculateOauth2RedirectUrl(SwaggerUiConfigParameters swaggerUiConfigParameters, UriComponentsBuilder uriComponentsBuilder) {
-		if (StringUtils.isBlank(swaggerUiConfig.getOauth2RedirectUrl()) || !swaggerUiConfigParameters.isValidUrl(swaggerUiConfig.getOauth2RedirectUrl())) {
+	protected void calculateOauth2RedirectUrl(SwaggerUiConfigParameters swaggerUiConfigParameters,
+	                                          UriComponentsBuilder uriComponentsBuilder) {
+		if (StringUtils.isBlank(swaggerUiConfig.getOauth2RedirectUrl()) ||
+				!swaggerUiConfigParameters.isValidUrl(swaggerUiConfig.getOauth2RedirectUrl())) {
 			String webjarsPrefix = springDocConfigProperties.getWebjars().getPrefix();
 			String additionalPath = DEFAULT_WEB_JARS_PREFIX_URL.equals(webjarsPrefix) ? "" : webjarsPrefix;
 			swaggerUiConfigParameters.setOauth2RedirectUrl(
@@ -97,7 +99,7 @@ public abstract class SwaggerWelcomeCommon extends AbstractSwaggerWelcome {
 							.path(getOauth2RedirectUrl())
 							.build()
 							.toString()
-			);
+			                                              );
 		}
 	}
 
@@ -128,8 +130,7 @@ public abstract class SwaggerWelcomeCommon extends AbstractSwaggerWelcome {
 		int endIndex = url.indexOf(target) + target.length();
 		if (endIndex > 0) {
 			url = url.substring(0, endIndex);
-		}
-		else {
+		} else {
 			url = url.replace(request.getPath().toString(), "");
 		}
 		buildConfigUrl(swaggerUiConfigParameters, UriComponentsBuilder.fromUriString(url));

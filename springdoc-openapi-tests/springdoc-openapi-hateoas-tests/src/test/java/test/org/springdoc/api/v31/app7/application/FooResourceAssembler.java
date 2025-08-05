@@ -26,12 +26,12 @@
 
 package test.org.springdoc.api.v31.app7.application;
 
-import java.util.UUID;
-
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.SimpleRepresentationModelAssembler;
 import org.springframework.stereotype.Component;
+
+import java.util.UUID;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
@@ -47,8 +47,7 @@ public class FooResourceAssembler
 			try {
 				resource.add(
 						linkTo(methodOn(FooController.class).getFoo(UUID.fromString(foo.getFoo()))).withSelfRel());
-			}
-			catch (Exception e) {
+			} catch (Exception e) {
 				throw new RuntimeException(e);
 			}
 		}

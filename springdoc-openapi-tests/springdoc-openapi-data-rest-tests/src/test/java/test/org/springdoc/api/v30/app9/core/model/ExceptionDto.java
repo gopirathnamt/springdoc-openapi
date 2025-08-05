@@ -26,13 +26,13 @@
 
 package test.org.springdoc.api.v30.app9.core.model;
 
-import java.time.Instant;
-
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.NonNull;
+
+import java.time.Instant;
 
 @Data
 public class ExceptionDto {

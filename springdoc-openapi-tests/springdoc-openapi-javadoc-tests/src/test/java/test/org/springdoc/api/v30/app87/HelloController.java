@@ -26,16 +26,15 @@
 
 package test.org.springdoc.api.v30.app87;
 
-import java.util.UUID;
-
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.UUID;
 
 
 /**
@@ -60,7 +59,7 @@ class HelloController {
 			) String cookie,
 			@PathVariable UUID itemId,
 			@RequestBody Item item
-	) {
+	                                   ) {
 		return ResponseEntity.ok(item);
 	}
 

@@ -26,9 +26,6 @@
 
 package org.springdoc.webmvc.api;
 
-import java.util.List;
-import java.util.Locale;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.servlet.http.HttpServletRequest;
@@ -40,12 +37,14 @@ import org.springdoc.core.service.AbstractRequestService;
 import org.springdoc.core.service.GenericResponseService;
 import org.springdoc.core.service.OpenAPIService;
 import org.springdoc.core.service.OperationService;
-
 import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.boot.actuate.endpoint.web.annotation.RestControllerEndpoint;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+
+import java.util.List;
+import java.util.Locale;
 
 import static org.springdoc.core.utils.Constants.APPLICATION_OPENAPI_YAML;
 import static org.springdoc.core.utils.Constants.DEFAULT_API_DOCS_ACTUATOR_URL;
@@ -72,9 +71,15 @@ public class MultipleOpenApiActuatorResource extends MultipleOpenApiResource {
 	 * @param springDocProviders        the spring doc providers
 	 * @param springDocCustomizers      the spring doc customizers
 	 */
-	public MultipleOpenApiActuatorResource(List<GroupedOpenApi> groupedOpenApis, ObjectFactory<OpenAPIService> defaultOpenAPIBuilder, AbstractRequestService requestBuilder, GenericResponseService responseBuilder, OperationService operationParser,
-			SpringDocConfigProperties springDocConfigProperties, SpringDocProviders springDocProviders, SpringDocCustomizers springDocCustomizers) {
-		super(groupedOpenApis, defaultOpenAPIBuilder, requestBuilder, responseBuilder, operationParser, springDocConfigProperties, springDocProviders, springDocCustomizers);
+	public MultipleOpenApiActuatorResource(List<GroupedOpenApi> groupedOpenApis,
+	                                       ObjectFactory<OpenAPIService> defaultOpenAPIBuilder,
+	                                       AbstractRequestService requestBuilder,
+	                                       GenericResponseService responseBuilder, OperationService operationParser,
+	                                       SpringDocConfigProperties springDocConfigProperties,
+	                                       SpringDocProviders springDocProviders,
+	                                       SpringDocCustomizers springDocCustomizers) {
+		super(groupedOpenApis, defaultOpenAPIBuilder, requestBuilder, responseBuilder, operationParser,
+		      springDocConfigProperties, springDocProviders, springDocCustomizers);
 	}
 
 

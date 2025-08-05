@@ -29,7 +29,6 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.SchemaProperty;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
-
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -45,20 +44,21 @@ public class HelloController {
 
 	@RequestMapping(value = "/{config}",
 			method = RequestMethod.PUT,
-			consumes = { MediaType.MULTIPART_FORM_DATA_VALUE },
-			produces = { MediaType.APPLICATION_JSON_VALUE }
+			consumes = {MediaType.MULTIPART_FORM_DATA_VALUE},
+			produces = {MediaType.APPLICATION_JSON_VALUE}
 	)
 	public ResponseEntity<?> put(
 			@PathVariable("config") final String config,
-			@Parameter(name = "configuration", schema = @Schema(name = "configuration", type = "string", format = "binary")) @RequestPart(value = "configuration") final PersonDTO configuration,
+			@Parameter(name = "configuration", schema = @Schema(name = "configuration", type = "string", format = "binary"))
+			@RequestPart(value = "configuration") final PersonDTO configuration,
 			@RequestPart(value = "file") final MultipartFile aFile) {
 		return null;
 	}
 
 	@RequestMapping(value = "/test",
 			method = RequestMethod.PUT,
-			consumes = { MediaType.MULTIPART_FORM_DATA_VALUE },
-			produces = { MediaType.APPLICATION_JSON_VALUE }
+			consumes = {MediaType.MULTIPART_FORM_DATA_VALUE},
+			produces = {MediaType.APPLICATION_JSON_VALUE}
 	)
 	@RequestBody(content = @Content(schema = @Schema(requiredProperties = "file", type = "object")
 			, schemaProperties = @SchemaProperty(name = "file", schema = @Schema(type = "string", format = "binary"))

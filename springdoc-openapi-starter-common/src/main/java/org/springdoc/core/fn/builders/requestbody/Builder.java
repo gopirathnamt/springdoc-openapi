@@ -26,12 +26,12 @@
 
 package org.springdoc.core.fn.builders.requestbody;
 
-import java.lang.annotation.Annotation;
-
 import io.swagger.v3.oas.annotations.extensions.Extension;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import org.apache.commons.lang3.ArrayUtils;
+
+import java.lang.annotation.Annotation;
 
 /**
  * The type Request body builder.
@@ -117,7 +117,11 @@ public class Builder {
 	 * @return the request body builder
 	 */
 	public Builder implementation(Class clazz) {
-		this.content = ArrayUtils.add(this.content, org.springdoc.core.fn.builders.content.Builder.contentBuilder().schema(org.springdoc.core.fn.builders.schema.Builder.schemaBuilder().implementation(clazz)).build());
+		this.content = ArrayUtils.add(this.content, org.springdoc.core.fn.builders.content.Builder.contentBuilder()
+		                                                                                          .schema(org.springdoc.core.fn.builders.schema.Builder.schemaBuilder()
+		                                                                                                                                               .implementation(
+				                                                                                                                                               clazz))
+		                                                                                          .build());
 		return this;
 	}
 

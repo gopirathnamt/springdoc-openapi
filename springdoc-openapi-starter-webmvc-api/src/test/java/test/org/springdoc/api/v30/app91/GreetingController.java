@@ -29,7 +29,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.apache.commons.lang3.RandomStringUtils;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -47,9 +46,9 @@ public class GreetingController {
 	}
 
 	@GetMapping("/test")
-	@ApiResponses(value = { @ApiResponse(responseCode = "201", description = "item created"),
+	@ApiResponses(value = {@ApiResponse(responseCode = "201", description = "item created"),
 			@ApiResponse(responseCode = "400", description = "invalid input, object invalid"),
-			@ApiResponse(responseCode = "409", description = "an existing item already exists") })
+			@ApiResponse(responseCode = "409", description = "an existing item already exists")})
 	public ResponseEntity<Greeting> sayHello2() {
 		return ResponseEntity.ok(new Greeting(RandomStringUtils.randomAlphanumeric(10)));
 	}

@@ -26,10 +26,10 @@
 
 package test.org.springdoc.api.v30.app105.api.store;
 
-import java.util.Optional;
-
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Optional;
 
 /**
  * The type Store api controller.
@@ -50,7 +50,8 @@ class StoreApiController implements StoreApi {
 	 *
 	 * @param delegate the delegate
 	 */
-	public StoreApiController(@org.springframework.beans.factory.annotation.Autowired(required = false) StoreApiDelegate delegate) {
+	public StoreApiController(
+			@org.springframework.beans.factory.annotation.Autowired(required = false) StoreApiDelegate delegate) {
 		this.delegate = Optional.ofNullable(delegate).orElse(new StoreApiDelegate() {
 		});
 	}

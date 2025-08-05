@@ -26,15 +26,14 @@
 
 package test.org.springdoc.api.v31.app27;
 
-import java.util.Optional;
-
 import io.swagger.v3.core.converter.ModelConverter;
 import io.swagger.v3.core.converter.ModelConverters;
 import org.springdoc.core.converters.PageableOpenAPIConverter;
-import test.org.springdoc.api.v31.AbstractSpringDocTest;
-
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.test.context.TestPropertySource;
+import test.org.springdoc.api.v31.AbstractSpringDocTest;
+
+import java.util.Optional;
 
 @TestPropertySource(properties = "springdoc.model-converters.pageable-converter.enabled=false")
 public class SpringDocApp27Test extends AbstractSpringDocTest {
@@ -42,10 +41,12 @@ public class SpringDocApp27Test extends AbstractSpringDocTest {
 	static {
 		Optional<ModelConverter> pageabeConverter =
 				ModelConverters.getInstance(true).getConverters()
-						.stream().filter(modelConverter -> modelConverter instanceof PageableOpenAPIConverter).findAny();
+				               .stream().filter(modelConverter -> modelConverter instanceof PageableOpenAPIConverter)
+				               .findAny();
 		pageabeConverter.ifPresent(ModelConverters.getInstance(true)::removeConverter);
 	}
 
 	@SpringBootApplication
-	static class SpringDocTestApp {}
+	static class SpringDocTestApp {
+	}
 }

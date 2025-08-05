@@ -24,8 +24,6 @@
 
 package test.org.springdoc.api.v31.app94;
 
-import java.util.Collections;
-
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -40,9 +38,6 @@ import org.springdoc.core.service.GenericResponseService;
 import org.springdoc.core.service.OpenAPIService;
 import org.springdoc.core.service.OperationService;
 import org.springdoc.webmvc.api.OpenApiWebMvcResource;
-import test.org.springdoc.api.v31.AbstractSpringDocTest;
-import test.org.springdoc.api.v31.app91.Greeting;
-
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -57,6 +52,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
+import test.org.springdoc.api.v31.AbstractSpringDocTest;
+import test.org.springdoc.api.v31.app91.Greeting;
+
+import java.util.Collections;
 
 import static org.springdoc.core.utils.Constants.DEFAULT_GROUP_NAME;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
@@ -76,25 +75,35 @@ public class SpringDocApp94Test extends AbstractSpringDocTest {
 
 		@Bean
 		public OpenApiBuilderCustomizer customOpenAPI() {
-			return openApiBuilder -> openApiBuilder.addMappings(Collections.singletonMap("greetingController", new GreetingController()));
+			return openApiBuilder -> openApiBuilder.addMappings(
+					Collections.singletonMap("greetingController", new GreetingController()));
 		}
 
 		@Bean
-		public RequestMappingHandlerMapping defaultTestHandlerMapping(GreetingController greetingController) throws NoSuchMethodException {
+		public RequestMappingHandlerMapping defaultTestHandlerMapping(GreetingController greetingController) throws
+				NoSuchMethodException {
 			RequestMappingHandlerMapping result = new RequestMappingHandlerMapping();
 			RequestMappingInfo requestMappingInfo =
-					RequestMappingInfo.paths("/test").methods(RequestMethod.GET).produces(MediaType.APPLICATION_JSON_VALUE).build();
+					RequestMappingInfo.paths("/test").methods(RequestMethod.GET)
+					                  .produces(MediaType.APPLICATION_JSON_VALUE).build();
 
 			result.setApplicationContext(this.applicationContext);
-			result.registerMapping(requestMappingInfo, "greetingController", GreetingController.class.getDeclaredMethod("sayHello2"));
+			result.registerMapping(requestMappingInfo, "greetingController",
+			                       GreetingController.class.getDeclaredMethod("sayHello2"));
 			return result;
 		}
 
 		@Bean(name = "openApiResource")
-		public OpenApiWebMvcResource openApiResource(ObjectFactory<OpenAPIService> openAPIBuilderObjectFactory, AbstractRequestService requestBuilder, GenericResponseService responseBuilder,
-				OperationService operationParser, SpringDocConfigProperties springDocConfigProperties, SpringDocProviders springDocProviders, SpringDocCustomizers springDocCustomizers) {
-			return new OpenApiWebMvcResource(DEFAULT_GROUP_NAME, openAPIBuilderObjectFactory, requestBuilder, responseBuilder, operationParser,
-					springDocConfigProperties, springDocProviders, springDocCustomizers);
+		public OpenApiWebMvcResource openApiResource(ObjectFactory<OpenAPIService> openAPIBuilderObjectFactory,
+		                                             AbstractRequestService requestBuilder,
+		                                             GenericResponseService responseBuilder,
+		                                             OperationService operationParser,
+		                                             SpringDocConfigProperties springDocConfigProperties,
+		                                             SpringDocProviders springDocProviders,
+		                                             SpringDocCustomizers springDocCustomizers) {
+			return new OpenApiWebMvcResource(DEFAULT_GROUP_NAME, openAPIBuilderObjectFactory, requestBuilder,
+			                                 responseBuilder, operationParser,
+			                                 springDocConfigProperties, springDocProviders, springDocCustomizers);
 		}
 
 		@Override
@@ -114,9 +123,9 @@ public class SpringDocApp94Test extends AbstractSpringDocTest {
 		}
 
 		@GetMapping("/test")
-		@ApiResponses(value = { @ApiResponse(responseCode = "201", description = "item created"),
+		@ApiResponses(value = {@ApiResponse(responseCode = "201", description = "item created"),
 				@ApiResponse(responseCode = "400", description = "invalid input, object invalid"),
-				@ApiResponse(responseCode = "409", description = "an existing item already exists") })
+				@ApiResponse(responseCode = "409", description = "an existing item already exists")})
 		public ResponseEntity<Greeting> sayHello2() {
 			return ResponseEntity.ok(new Greeting(RandomStringUtils.randomAlphanumeric(10)));
 		}

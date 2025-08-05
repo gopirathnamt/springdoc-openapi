@@ -26,15 +26,8 @@
 
 package org.springdoc.webmvc.core.providers;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-import java.util.function.Function;
-
 import org.springdoc.core.fn.AbstractRouterFunctionVisitor;
 import org.springdoc.core.providers.RouterFunctionProvider;
-
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -46,6 +39,12 @@ import org.springframework.web.servlet.function.RequestPredicates;
 import org.springframework.web.servlet.function.RouterFunction;
 import org.springframework.web.servlet.function.RouterFunctions;
 import org.springframework.web.servlet.function.ServerRequest;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+import java.util.function.Function;
 
 /**
  * The type Router function provider.
@@ -89,7 +88,8 @@ public class RouterFunctionWebMvcProvider implements RouterFunctionProvider, App
 	 *
 	 * @author bnasslahsen
 	 */
-	private class RouterFunctionVisitor extends AbstractRouterFunctionVisitor implements RouterFunctions.Visitor, RequestPredicates.Visitor {
+	private class RouterFunctionVisitor extends AbstractRouterFunctionVisitor implements RouterFunctions.Visitor,
+			RequestPredicates.Visitor {
 		@Override
 		public void route(RequestPredicate predicate, HandlerFunction<?> handlerFunction) {
 			this.currentRouterFunctionDatas = new ArrayList<>();

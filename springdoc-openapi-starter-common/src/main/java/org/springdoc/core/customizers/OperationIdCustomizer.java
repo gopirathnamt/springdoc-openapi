@@ -25,12 +25,12 @@
  */
 package org.springdoc.core.customizers;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.Operation;
 import io.swagger.v3.oas.models.PathItem;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * The type Operation id customizer.
@@ -81,8 +81,7 @@ public class OperationIdCustomizer implements GlobalOpenApiCustomizer {
 				// Create new unique operationId by appending _x
 				String newOperationId = originalOperationId + "_" + count;
 				operation.setOperationId(newOperationId);
-			}
-			else {
+			} else {
 				// First time this operationId is seen, initialize the count
 				operationIdCount.put(originalOperationId, 0);
 			}

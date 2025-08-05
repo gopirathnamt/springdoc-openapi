@@ -26,8 +26,6 @@
 
 package org.springdoc.core.configuration;
 
-import java.lang.reflect.Field;
-
 import io.swagger.v3.core.util.AnnotationsUtils;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.models.OpenAPI;
@@ -58,7 +56,6 @@ import org.springdoc.core.configuration.oauth2.SpringDocOidcClientRegistrationRe
 import org.springdoc.core.configuration.oauth2.SpringDocOidcClientRegistrationResponse;
 import org.springdoc.core.configuration.oauth2.SpringDocOidcProviderConfiguration;
 import org.springdoc.core.customizers.GlobalOpenApiCustomizer;
-
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -83,6 +80,8 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.OrRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.util.ReflectionUtils;
+
+import java.lang.reflect.Field;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.http.MediaType.TEXT_HTML_VALUE;
@@ -122,16 +121,22 @@ public class SpringDocSecurityOAuth2Customizer implements GlobalOpenApiCustomize
 	 * @param httpStatus   the http status
 	 * @param openapi31    the openapi 31
 	 */
-	private static void buildOAuth2Error(OpenAPI openAPI, ApiResponses apiResponses, HttpStatus httpStatus, boolean openapi31) {
-		Schema oAuth2ErrorSchema = AnnotationsUtils.resolveSchemaFromType(OAuth2Error.class, openAPI.getComponents(), null, openapi31);
-		apiResponses.addApiResponse(String.valueOf(httpStatus.value()), new ApiResponse().description(httpStatus.getReasonPhrase()).content(new Content().addMediaType(
-				APPLICATION_JSON_VALUE,
-				new MediaType().schema(oAuth2ErrorSchema))));
+	private static void buildOAuth2Error(OpenAPI openAPI, ApiResponses apiResponses, HttpStatus httpStatus,
+	                                     boolean openapi31) {
+		Schema oAuth2ErrorSchema =
+				AnnotationsUtils.resolveSchemaFromType(OAuth2Error.class, openAPI.getComponents(), null, openapi31);
+		apiResponses.addApiResponse(String.valueOf(httpStatus.value()),
+		                            new ApiResponse().description(httpStatus.getReasonPhrase())
+		                                             .content(new Content().addMediaType(
+				                                             APPLICATION_JSON_VALUE,
+				                                             new MediaType().schema(oAuth2ErrorSchema))));
 	}
 
 	@Override
 	public void customise(OpenAPI openAPI) {
-		FilterChainProxy filterChainProxy = applicationContext.getBean(AbstractSecurityWebApplicationInitializer.DEFAULT_FILTER_NAME, FilterChainProxy.class);
+		FilterChainProxy filterChainProxy =
+				applicationContext.getBean(AbstractSecurityWebApplicationInitializer.DEFAULT_FILTER_NAME,
+				                           FilterChainProxy.class);
 		boolean openapi31 = SpecVersion.V31 == openAPI.getSpecVersion();
 		for (SecurityFilterChain filterChain : filterChainProxy.getFilterChains()) {
 			getNimbusJwkSetEndpoint(openAPI, filterChain, openapi31);
@@ -153,12 +158,15 @@ public class SpringDocSecurityOAuth2Customizer implements GlobalOpenApiCustomize
 	 * @param securityFilterChain the security filter chain
 	 * @param openapi31           the openapi 31
 	 */
-	private void getOAuth2TokenRevocationEndpointFilter(OpenAPI openAPI, SecurityFilterChain securityFilterChain, boolean openapi31) {
+	private void getOAuth2TokenRevocationEndpointFilter(OpenAPI openAPI, SecurityFilterChain securityFilterChain,
+	                                                    boolean openapi31) {
 		Object oAuth2EndpointFilter =
-				new SpringDocSecurityOAuth2EndpointUtils(OAuth2TokenRevocationEndpointFilter.class).findEndpoint(securityFilterChain);
+				new SpringDocSecurityOAuth2EndpointUtils(OAuth2TokenRevocationEndpointFilter.class).findEndpoint(
+						securityFilterChain);
 		if (oAuth2EndpointFilter != null) {
 			ApiResponses apiResponses = new ApiResponses();
-			apiResponses.addApiResponse(String.valueOf(HttpStatus.OK.value()), new ApiResponse().description(HttpStatus.OK.getReasonPhrase()));
+			apiResponses.addApiResponse(String.valueOf(HttpStatus.OK.value()),
+			                            new ApiResponse().description(HttpStatus.OK.getReasonPhrase()));
 			buildApiResponsesOnInternalServerError(apiResponses);
 			buildApiResponsesOnBadRequest(apiResponses, openAPI, openapi31);
 
@@ -168,7 +176,8 @@ public class SpringDocSecurityOAuth2Customizer implements GlobalOpenApiCustomize
 					.addProperty(OAuth2ParameterNames.TOKEN_TYPE_HINT, new StringSchema());
 
 			String mediaType = org.springframework.http.MediaType.APPLICATION_FORM_URLENCODED_VALUE;
-			RequestBody requestBody = new RequestBody().content(new Content().addMediaType(mediaType, new MediaType().schema(schema)));
+			RequestBody requestBody =
+					new RequestBody().content(new Content().addMediaType(mediaType, new MediaType().schema(schema)));
 			operation.setRequestBody(requestBody);
 			buildPath(oAuth2EndpointFilter, "tokenRevocationEndpointMatcher", openAPI, operation, HttpMethod.POST);
 		}
@@ -181,12 +190,17 @@ public class SpringDocSecurityOAuth2Customizer implements GlobalOpenApiCustomize
 	 * @param securityFilterChain the security filter chain
 	 * @param openapi31           the openapi 31
 	 */
-	private void getOAuth2TokenIntrospectionEndpointFilter(OpenAPI openAPI, SecurityFilterChain securityFilterChain, boolean openapi31) {
+	private void getOAuth2TokenIntrospectionEndpointFilter(OpenAPI openAPI, SecurityFilterChain securityFilterChain,
+	                                                       boolean openapi31) {
 		Object oAuth2EndpointFilter =
-				new SpringDocSecurityOAuth2EndpointUtils(OAuth2TokenIntrospectionEndpointFilter.class).findEndpoint(securityFilterChain);
+				new SpringDocSecurityOAuth2EndpointUtils(OAuth2TokenIntrospectionEndpointFilter.class).findEndpoint(
+						securityFilterChain);
 		if (oAuth2EndpointFilter != null) {
 			ApiResponses apiResponses = new ApiResponses();
-			buildApiResponsesOnSuccess(apiResponses, AnnotationsUtils.resolveSchemaFromType(SpringDocOAuth2TokenIntrospection.class, openAPI.getComponents(), null, openapi31));
+			buildApiResponsesOnSuccess(apiResponses,
+			                           AnnotationsUtils.resolveSchemaFromType(SpringDocOAuth2TokenIntrospection.class,
+			                                                                  openAPI.getComponents(), null,
+			                                                                  openapi31));
 			buildApiResponsesOnInternalServerError(apiResponses);
 			buildApiResponsesOnBadRequest(apiResponses, openAPI, openapi31);
 
@@ -197,7 +211,8 @@ public class SpringDocSecurityOAuth2Customizer implements GlobalOpenApiCustomize
 					.addProperty("additionalParameters", new ObjectSchema().additionalProperties(new StringSchema()));
 
 			String mediaType = org.springframework.http.MediaType.APPLICATION_FORM_URLENCODED_VALUE;
-			RequestBody requestBody = new RequestBody().content(new Content().addMediaType(mediaType, new MediaType().schema(requestSchema)));
+			RequestBody requestBody = new RequestBody().content(
+					new Content().addMediaType(mediaType, new MediaType().schema(requestSchema)));
 			operation.setRequestBody(requestBody);
 			buildPath(oAuth2EndpointFilter, "tokenIntrospectionEndpointMatcher", openAPI, operation, HttpMethod.POST);
 		}
@@ -210,16 +225,21 @@ public class SpringDocSecurityOAuth2Customizer implements GlobalOpenApiCustomize
 	 * @param securityFilterChain the security filter chain
 	 * @param openapi31           the openapi 31
 	 */
-	private void getOAuth2AuthorizationServerMetadataEndpoint(OpenAPI openAPI, SecurityFilterChain securityFilterChain, boolean openapi31) {
-		Class<OAuth2AuthorizationServerMetadataEndpointFilter> authorizationServerMetadataEndpointClass = OAuth2AuthorizationServerMetadataEndpointFilter.class;
+	private void getOAuth2AuthorizationServerMetadataEndpoint(OpenAPI openAPI, SecurityFilterChain securityFilterChain,
+	                                                          boolean openapi31) {
+		Class<OAuth2AuthorizationServerMetadataEndpointFilter> authorizationServerMetadataEndpointClass =
+				OAuth2AuthorizationServerMetadataEndpointFilter.class;
 		Object oAuth2EndpointFilter =
-				new SpringDocSecurityOAuth2EndpointUtils(authorizationServerMetadataEndpointClass).findEndpoint(securityFilterChain);
+				new SpringDocSecurityOAuth2EndpointUtils(authorizationServerMetadataEndpointClass).findEndpoint(
+						securityFilterChain);
 		if (oAuth2EndpointFilter != null) {
 			ApiResponses apiResponses = new ApiResponses();
-			buildApiResponsesOnSuccess(apiResponses, AnnotationsUtils.resolveSchemaFromType(SpringDocOAuth2AuthorizationServerMetadata.class, openAPI.getComponents(), null, openapi31));
+			buildApiResponsesOnSuccess(apiResponses, AnnotationsUtils.resolveSchemaFromType(
+					SpringDocOAuth2AuthorizationServerMetadata.class, openAPI.getComponents(), null, openapi31));
 			buildApiResponsesOnInternalServerError(apiResponses);
 			Operation operation = buildOperation(apiResponses);
-			Field field = ReflectionUtils.findField(authorizationServerMetadataEndpointClass, "DEFAULT_OAUTH2_AUTHORIZATION_SERVER_METADATA_ENDPOINT_URI");
+			Field field = ReflectionUtils.findField(authorizationServerMetadataEndpointClass,
+			                                        "DEFAULT_OAUTH2_AUTHORIZATION_SERVER_METADATA_ENDPOINT_URI");
 			if (field != null) {
 				ReflectionUtils.makeAccessible(field);
 				String defaultOauth2MetadataUri = (String) ReflectionUtils.getField(field, null);
@@ -241,15 +261,17 @@ public class SpringDocSecurityOAuth2Customizer implements GlobalOpenApiCustomize
 	 */
 	private void getNimbusJwkSetEndpoint(OpenAPI openAPI, SecurityFilterChain securityFilterChain, boolean openapi31) {
 		Object oAuth2EndpointFilter =
-				new SpringDocSecurityOAuth2EndpointUtils(NimbusJwkSetEndpointFilter.class).findEndpoint(securityFilterChain);
+				new SpringDocSecurityOAuth2EndpointUtils(NimbusJwkSetEndpointFilter.class).findEndpoint(
+						securityFilterChain);
 		if (oAuth2EndpointFilter != null) {
 			ApiResponses apiResponses = new ApiResponses();
 			Schema<?> schema = new MapSchema();
 			schema.addProperty("keys", new ArraySchema().items(new ObjectSchema().additionalProperties(true)));
 
-			ApiResponse response = new ApiResponse().description(HttpStatus.OK.getReasonPhrase()).content(new Content().addMediaType(
-					APPLICATION_JSON_VALUE,
-					new MediaType().schema(schema)));
+			ApiResponse response =
+					new ApiResponse().description(HttpStatus.OK.getReasonPhrase()).content(new Content().addMediaType(
+							APPLICATION_JSON_VALUE,
+							new MediaType().schema(schema)));
 			apiResponses.addApiResponse(String.valueOf(HttpStatus.OK.value()), response);
 			buildApiResponsesOnInternalServerError(apiResponses);
 			buildApiResponsesOnBadRequest(apiResponses, openAPI, openapi31);
@@ -269,11 +291,14 @@ public class SpringDocSecurityOAuth2Customizer implements GlobalOpenApiCustomize
 	 */
 	private void getOAuth2TokenEndpoint(OpenAPI openAPI, SecurityFilterChain securityFilterChain, boolean openapi31) {
 		Object oAuth2EndpointFilter =
-				new SpringDocSecurityOAuth2EndpointUtils(OAuth2TokenEndpointFilter.class).findEndpoint(securityFilterChain);
+				new SpringDocSecurityOAuth2EndpointUtils(OAuth2TokenEndpointFilter.class).findEndpoint(
+						securityFilterChain);
 
 		if (oAuth2EndpointFilter != null) {
 			ApiResponses apiResponses = new ApiResponses();
-			buildApiResponsesOnSuccess(apiResponses, AnnotationsUtils.resolveSchemaFromType(SpringDocOAuth2Token.class, openAPI.getComponents(), null, openapi31));
+			buildApiResponsesOnSuccess(apiResponses, AnnotationsUtils.resolveSchemaFromType(SpringDocOAuth2Token.class,
+			                                                                                openAPI.getComponents(),
+			                                                                                null, openapi31));
 			buildApiResponsesOnInternalServerError(apiResponses);
 			buildApiResponsesOnBadRequest(apiResponses, openAPI, openapi31);
 			buildOAuth2Error(openAPI, apiResponses, HttpStatus.UNAUTHORIZED, openapi31);
@@ -281,10 +306,10 @@ public class SpringDocSecurityOAuth2Customizer implements GlobalOpenApiCustomize
 
 			Schema<?> requestSchema = new ObjectSchema()
 					.addProperty(OAuth2ParameterNames.GRANT_TYPE,
-							new StringSchema()
-									.addEnumItem(AuthorizationGrantType.AUTHORIZATION_CODE.getValue())
-									.addEnumItem(AuthorizationGrantType.REFRESH_TOKEN.getValue())
-									.addEnumItem(AuthorizationGrantType.CLIENT_CREDENTIALS.getValue()))
+					             new StringSchema()
+							             .addEnumItem(AuthorizationGrantType.AUTHORIZATION_CODE.getValue())
+							             .addEnumItem(AuthorizationGrantType.REFRESH_TOKEN.getValue())
+							             .addEnumItem(AuthorizationGrantType.CLIENT_CREDENTIALS.getValue()))
 					.addProperty(OAuth2ParameterNames.CODE, new StringSchema())
 					.addProperty(OAuth2ParameterNames.REDIRECT_URI, new StringSchema())
 					.addProperty(OAuth2ParameterNames.REFRESH_TOKEN, new StringSchema())
@@ -296,7 +321,8 @@ public class SpringDocSecurityOAuth2Customizer implements GlobalOpenApiCustomize
 					.addProperty("additionalParameters", new ObjectSchema().additionalProperties(new StringSchema()));
 
 			String mediaType = org.springframework.http.MediaType.APPLICATION_FORM_URLENCODED_VALUE;
-			RequestBody requestBody = new RequestBody().content(new Content().addMediaType(mediaType, new MediaType().schema(requestSchema)));
+			RequestBody requestBody = new RequestBody().content(
+					new Content().addMediaType(mediaType, new MediaType().schema(requestSchema)));
 			operation.setRequestBody(requestBody);
 			operation.addParametersItem(new HeaderParameter().name("Authorization").schema(new StringSchema()));
 
@@ -311,24 +337,29 @@ public class SpringDocSecurityOAuth2Customizer implements GlobalOpenApiCustomize
 	 * @param securityFilterChain the security filter chain
 	 * @param openapi31           the openapi 31
 	 */
-	private void getOAuth2AuthorizationEndpoint(OpenAPI openAPI, SecurityFilterChain securityFilterChain, boolean openapi31) {
+	private void getOAuth2AuthorizationEndpoint(OpenAPI openAPI, SecurityFilterChain securityFilterChain,
+	                                            boolean openapi31) {
 		Object oAuth2EndpointFilter =
-				new SpringDocSecurityOAuth2EndpointUtils(OAuth2AuthorizationEndpointFilter.class).findEndpoint(securityFilterChain);
+				new SpringDocSecurityOAuth2EndpointUtils(OAuth2AuthorizationEndpointFilter.class).findEndpoint(
+						securityFilterChain);
 		if (oAuth2EndpointFilter != null) {
 			ApiResponses apiResponses = new ApiResponses();
 
-			ApiResponse response = new ApiResponse().description(HttpStatus.OK.getReasonPhrase()).content(new Content().addMediaType(
-					TEXT_HTML_VALUE,
-					new MediaType()));
+			ApiResponse response =
+					new ApiResponse().description(HttpStatus.OK.getReasonPhrase()).content(new Content().addMediaType(
+							TEXT_HTML_VALUE,
+							new MediaType()));
 			apiResponses.addApiResponse(String.valueOf(HttpStatus.OK.value()), response);
 			buildApiResponsesOnInternalServerError(apiResponses);
 			buildApiResponsesOnBadRequest(apiResponses, openAPI, openapi31);
 			apiResponses.addApiResponse(String.valueOf(HttpStatus.FOUND.value()),
-					new ApiResponse().description(HttpStatus.FOUND.getReasonPhrase())
-							.addHeaderObject("Location", new Header().schema(new StringSchema())));
+			                            new ApiResponse().description(HttpStatus.FOUND.getReasonPhrase())
+			                                             .addHeaderObject("Location",
+			                                                              new Header().schema(new StringSchema())));
 			Operation operation = buildOperation(apiResponses);
 			Schema<?> schema = new ObjectSchema().additionalProperties(new StringSchema());
-			operation.addParametersItem(new Parameter().name("parameters").in(ParameterIn.QUERY.toString()).schema(schema));
+			operation.addParametersItem(
+					new Parameter().name("parameters").in(ParameterIn.QUERY.toString()).schema(schema));
 			buildPath(oAuth2EndpointFilter, "authorizationEndpointMatcher", openAPI, operation, HttpMethod.POST);
 		}
 	}
@@ -340,18 +371,25 @@ public class SpringDocSecurityOAuth2Customizer implements GlobalOpenApiCustomize
 	 * @param securityFilterChain the security filter chain
 	 * @param openapi31           the openapi 31
 	 */
-	private void getOidcProviderConfigurationEndpoint(OpenAPI openAPI, SecurityFilterChain securityFilterChain, boolean openapi31) {
-		Class<OidcProviderConfigurationEndpointFilter> oidcProviderConfigurationEndpointFilterClass = OidcProviderConfigurationEndpointFilter.class;
+	private void getOidcProviderConfigurationEndpoint(OpenAPI openAPI, SecurityFilterChain securityFilterChain,
+	                                                  boolean openapi31) {
+		Class<OidcProviderConfigurationEndpointFilter> oidcProviderConfigurationEndpointFilterClass =
+				OidcProviderConfigurationEndpointFilter.class;
 		Object oAuth2EndpointFilter =
-				new SpringDocSecurityOAuth2EndpointUtils(oidcProviderConfigurationEndpointFilterClass).findEndpoint(securityFilterChain);
+				new SpringDocSecurityOAuth2EndpointUtils(oidcProviderConfigurationEndpointFilterClass).findEndpoint(
+						securityFilterChain);
 
 		if (oAuth2EndpointFilter != null) {
 			ApiResponses apiResponses = new ApiResponses();
-			buildApiResponsesOnSuccess(apiResponses, AnnotationsUtils.resolveSchemaFromType(SpringDocOidcProviderConfiguration.class, openAPI.getComponents(), null, openapi31));
+			buildApiResponsesOnSuccess(apiResponses,
+			                           AnnotationsUtils.resolveSchemaFromType(SpringDocOidcProviderConfiguration.class,
+			                                                                  openAPI.getComponents(), null,
+			                                                                  openapi31));
 			buildApiResponsesOnInternalServerError(apiResponses);
 			Operation operation = buildOperation(apiResponses);
 
-			Field field = ReflectionUtils.findField(oidcProviderConfigurationEndpointFilterClass, "DEFAULT_OIDC_PROVIDER_CONFIGURATION_ENDPOINT_URI");
+			Field field = ReflectionUtils.findField(oidcProviderConfigurationEndpointFilterClass,
+			                                        "DEFAULT_OIDC_PROVIDER_CONFIGURATION_ENDPOINT_URI");
 			if (field != null) {
 				ReflectionUtils.makeAccessible(field);
 				String defaultOidcConfigUri = (String) ReflectionUtils.getField(field, null);
@@ -372,7 +410,8 @@ public class SpringDocSecurityOAuth2Customizer implements GlobalOpenApiCustomize
 	 */
 	private void getOidcUserInfoEndpoint(OpenAPI openAPI, SecurityFilterChain securityFilterChain) {
 		Object oAuth2EndpointFilter =
-				new SpringDocSecurityOAuth2EndpointUtils(OidcUserInfoEndpointFilter.class).findEndpoint(securityFilterChain);
+				new SpringDocSecurityOAuth2EndpointUtils(OidcUserInfoEndpointFilter.class).findEndpoint(
+						securityFilterChain);
 
 		if (oAuth2EndpointFilter != null) {
 			ApiResponses apiResponses = new ApiResponses();
@@ -391,13 +430,16 @@ public class SpringDocSecurityOAuth2Customizer implements GlobalOpenApiCustomize
 	 * @param securityFilterChain the security filter chain
 	 * @param openapi31           the openapi 31
 	 */
-	private void getOidcClientRegistrationEndpoint(OpenAPI openAPI, SecurityFilterChain securityFilterChain, boolean openapi31) {
+	private void getOidcClientRegistrationEndpoint(OpenAPI openAPI, SecurityFilterChain securityFilterChain,
+	                                               boolean openapi31) {
 		Object oAuth2EndpointFilter =
-				new SpringDocSecurityOAuth2EndpointUtils(OidcClientRegistrationEndpointFilter.class).findEndpoint(securityFilterChain);
+				new SpringDocSecurityOAuth2EndpointUtils(OidcClientRegistrationEndpointFilter.class).findEndpoint(
+						securityFilterChain);
 
 		if (oAuth2EndpointFilter != null) {
 			ApiResponses apiResponses = new ApiResponses();
-			buildApiResponsesOnCreated(apiResponses, AnnotationsUtils.resolveSchemaFromType(SpringDocOidcClientRegistrationResponse.class, openAPI.getComponents(), null, openapi31));
+			buildApiResponsesOnCreated(apiResponses, AnnotationsUtils.resolveSchemaFromType(
+					SpringDocOidcClientRegistrationResponse.class, openAPI.getComponents(), null, openapi31));
 			buildApiResponsesOnInternalServerError(apiResponses);
 			buildApiResponsesOnBadRequest(apiResponses, openAPI, openapi31);
 			buildOAuth2Error(openAPI, apiResponses, HttpStatus.UNAUTHORIZED, openapi31);
@@ -405,10 +447,12 @@ public class SpringDocSecurityOAuth2Customizer implements GlobalOpenApiCustomize
 			Operation operation = buildOperation(apiResponses);
 
 			// OidcClientRegistration
-			Schema schema = AnnotationsUtils.resolveSchemaFromType(SpringDocOidcClientRegistrationRequest.class, openAPI.getComponents(), null, openapi31);
+			Schema schema = AnnotationsUtils.resolveSchemaFromType(SpringDocOidcClientRegistrationRequest.class,
+			                                                       openAPI.getComponents(), null, openapi31);
 
 			String mediaType = APPLICATION_JSON_VALUE;
-			RequestBody requestBody = new RequestBody().content(new Content().addMediaType(mediaType, new MediaType().schema(schema)));
+			RequestBody requestBody =
+					new RequestBody().content(new Content().addMediaType(mediaType, new MediaType().schema(schema)));
 			operation.setRequestBody(requestBody);
 			operation.addParametersItem(new HeaderParameter().name("Authorization").schema(new StringSchema()));
 
@@ -437,9 +481,10 @@ public class SpringDocSecurityOAuth2Customizer implements GlobalOpenApiCustomize
 	 * @return the api responses
 	 */
 	private ApiResponses buildApiResponsesOnSuccess(ApiResponses apiResponses, Schema schema) {
-		ApiResponse response = new ApiResponse().description(HttpStatus.OK.getReasonPhrase()).content(new Content().addMediaType(
-				APPLICATION_JSON_VALUE,
-				new MediaType().schema(schema)));
+		ApiResponse response =
+				new ApiResponse().description(HttpStatus.OK.getReasonPhrase()).content(new Content().addMediaType(
+						APPLICATION_JSON_VALUE,
+						new MediaType().schema(schema)));
 		apiResponses.addApiResponse(String.valueOf(HttpStatus.OK.value()), response);
 		return apiResponses;
 	}
@@ -452,9 +497,10 @@ public class SpringDocSecurityOAuth2Customizer implements GlobalOpenApiCustomize
 	 * @return the api responses
 	 */
 	private ApiResponses buildApiResponsesOnCreated(ApiResponses apiResponses, Schema schema) {
-		ApiResponse response = new ApiResponse().description(HttpStatus.CREATED.getReasonPhrase()).content(new Content().addMediaType(
-				APPLICATION_JSON_VALUE,
-				new MediaType().schema(schema)));
+		ApiResponse response =
+				new ApiResponse().description(HttpStatus.CREATED.getReasonPhrase()).content(new Content().addMediaType(
+						APPLICATION_JSON_VALUE,
+						new MediaType().schema(schema)));
 		apiResponses.addApiResponse(String.valueOf(HttpStatus.CREATED.value()), response);
 		return apiResponses;
 	}
@@ -466,7 +512,8 @@ public class SpringDocSecurityOAuth2Customizer implements GlobalOpenApiCustomize
 	 * @return the api responses
 	 */
 	private ApiResponses buildApiResponsesOnInternalServerError(ApiResponses apiResponses) {
-		apiResponses.addApiResponse(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()), new ApiResponse().description(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase()));
+		apiResponses.addApiResponse(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()),
+		                            new ApiResponse().description(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase()));
 		return apiResponses;
 	}
 
@@ -492,23 +539,29 @@ public class SpringDocSecurityOAuth2Customizer implements GlobalOpenApiCustomize
 	 * @param operation                    the operation
 	 * @param requestMethod                the request method
 	 */
-	private void buildPath(Object oAuth2EndpointFilter, String authorizationEndpointMatcher, OpenAPI openAPI, Operation operation, HttpMethod requestMethod) {
+	private void buildPath(Object oAuth2EndpointFilter, String authorizationEndpointMatcher, OpenAPI openAPI,
+	                       Operation operation, HttpMethod requestMethod) {
 		try {
-			RequestMatcher endpointMatcher = (RequestMatcher) FieldUtils.readDeclaredField(oAuth2EndpointFilter, authorizationEndpointMatcher, true);
+			RequestMatcher endpointMatcher =
+					(RequestMatcher) FieldUtils.readDeclaredField(oAuth2EndpointFilter, authorizationEndpointMatcher,
+					                                              true);
 			String path = null;
 			if (endpointMatcher instanceof AntPathRequestMatcher antPathRequestMatcher)
 				path = antPathRequestMatcher.getPattern();
 			else if (endpointMatcher instanceof OrRequestMatcher endpointMatchers) {
-				Iterable<RequestMatcher> requestMatchers = (Iterable<RequestMatcher>) FieldUtils.readDeclaredField(endpointMatchers, "requestMatchers", true);
+				Iterable<RequestMatcher> requestMatchers =
+						(Iterable<RequestMatcher>) FieldUtils.readDeclaredField(endpointMatchers, "requestMatchers",
+						                                                        true);
 				for (RequestMatcher requestMatcher : requestMatchers) {
 					if (requestMatcher instanceof OrRequestMatcher orRequestMatcher) {
-						requestMatchers = (Iterable<RequestMatcher>) FieldUtils.readDeclaredField(orRequestMatcher, "requestMatchers", true);
+						requestMatchers = (Iterable<RequestMatcher>) FieldUtils.readDeclaredField(orRequestMatcher,
+						                                                                          "requestMatchers",
+						                                                                          true);
 						for (RequestMatcher matcher : requestMatchers) {
 							if (matcher instanceof AntPathRequestMatcher antPathRequestMatcher)
 								path = antPathRequestMatcher.getPattern();
 						}
-					}
-					else if (requestMatcher instanceof AntPathRequestMatcher antPathRequestMatcher) {
+					} else if (requestMatcher instanceof AntPathRequestMatcher antPathRequestMatcher) {
 						path = antPathRequestMatcher.getPattern();
 					}
 				}
@@ -517,13 +570,11 @@ public class SpringDocSecurityOAuth2Customizer implements GlobalOpenApiCustomize
 			PathItem pathItem = new PathItem();
 			if (HttpMethod.POST.equals(requestMethod)) {
 				pathItem.post(operation);
-			}
-			else if (HttpMethod.GET.equals(requestMethod)) {
+			} else if (HttpMethod.GET.equals(requestMethod)) {
 				pathItem.get(operation);
 			}
 			openAPI.getPaths().addPathItem(path, pathItem);
-		}
-		catch (IllegalAccessException | ClassCastException ignored) {
+		} catch (IllegalAccessException | ClassCastException ignored) {
 			LOGGER.trace(ignored.getMessage());
 		}
 	}

@@ -27,16 +27,15 @@
 package test.org.springdoc.api.v31.app73;
 
 
-import java.time.Duration;
-
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
-
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+
+import java.time.Duration;
 
 @Component
 public class QuoteHandler {
@@ -49,24 +48,24 @@ public class QuoteHandler {
 
 	public Mono<ServerResponse> hello(ServerRequest request) {
 		return ServerResponse.ok().contentType(MediaType.TEXT_PLAIN)
-				.body(BodyInserters.fromObject("Hello Spring!"));
+		                     .body(BodyInserters.fromObject("Hello Spring!"));
 	}
 
 	public Mono<ServerResponse> echo(ServerRequest request) {
 		return ServerResponse.ok().contentType(MediaType.TEXT_PLAIN)
-				.body(request.bodyToMono(String.class), String.class);
+		                     .body(request.bodyToMono(String.class), String.class);
 	}
 
 	public Mono<ServerResponse> streamQuotes(ServerRequest request) {
 		return ServerResponse.ok()
-				.contentType(MediaType.APPLICATION_STREAM_JSON)
-				.body(this.quoteStream, Quote.class);
+		                     .contentType(MediaType.APPLICATION_STREAM_JSON)
+		                     .body(this.quoteStream, Quote.class);
 	}
 
 	public Mono<ServerResponse> fetchQuotes(ServerRequest request) {
 		int size = Integer.parseInt(request.queryParam("size").orElse("10"));
 		return ServerResponse.ok()
-				.contentType(MediaType.APPLICATION_JSON)
-				.body(this.quoteStream.take(size), Quote.class);
+		                     .contentType(MediaType.APPLICATION_JSON)
+		                     .body(this.quoteStream.take(size), Quote.class);
 	}
 }

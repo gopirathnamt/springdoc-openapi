@@ -19,11 +19,10 @@
 package test.org.springdoc.ui.app17;
 
 import org.junit.jupiter.api.Test;
-import test.org.springdoc.ui.AbstractSpringDocActuatorTest;
-
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MvcResult;
+import test.org.springdoc.ui.AbstractSpringDocActuatorTest;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -31,22 +30,25 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
-		properties = { "management.endpoints.web.exposure.include=*",
+		properties = {"management.endpoints.web.exposure.include=*",
 				"springdoc.show-actuator=true",
 				"management.server.port=9396",
 				"server.servlet.context-path=/sample",
 				"management.server.base-path=/test",
-				"management.endpoints.web.base-path=/application" })
+				"management.endpoints.web.base-path=/application"})
 class SpringDocApp17Test extends AbstractSpringDocActuatorTest {
 
 	@Test
 	void testIndex() throws Exception {
-		MvcResult mvcResult = mockMvc.perform(get("/sample/swagger-ui/index.html").contextPath("/sample")).andExpect(status().isOk()).andReturn();
+		MvcResult mvcResult =
+				mockMvc.perform(get("/sample/swagger-ui/index.html").contextPath("/sample")).andExpect(status().isOk())
+				       .andReturn();
 		String contentAsString = mvcResult.getResponse().getContentAsString();
 		assertTrue(contentAsString.contains("Swagger UI"));
 	}
 
 	@SpringBootApplication
-	static class SpringDocTestApp {}
+	static class SpringDocTestApp {
+	}
 
 }

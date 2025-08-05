@@ -27,15 +27,14 @@
 package org.springdoc.core.annotations;
 
 
+import io.swagger.v3.oas.annotations.Operation;
+import org.springframework.web.bind.annotation.RequestMethod;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Inherited;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-
-import io.swagger.v3.oas.annotations.Operation;
-
-import org.springframework.web.bind.annotation.RequestMethod;
 
 /**
  * The annotation may be used to define a single Router Operation as an OpenAPI Operation, and/or to define additional
@@ -43,7 +42,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
  *
  * @author bnasslahsen
  */
-@Target({ ElementType.TYPE, ElementType.METHOD })
+@Target({ElementType.TYPE, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 @Inherited
 public @interface RouterOperation {

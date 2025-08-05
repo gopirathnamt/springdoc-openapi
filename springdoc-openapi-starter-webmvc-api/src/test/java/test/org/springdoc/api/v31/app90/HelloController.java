@@ -30,7 +30,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -40,7 +39,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class HelloController {
 
 	@GetMapping("/test")
-	@ApiResponses(value = { @ApiResponse(description = "successful operation", content = { @Content(examples = @ExampleObject(name = "500", ref = "#/components/examples/http500Example"), mediaType = "application/json", schema = @Schema(implementation = User.class)), @Content(mediaType = "application/xml", schema = @Schema(implementation = User.class)) }) })
+	@ApiResponses(value = {@ApiResponse(description = "successful operation", content = {@Content(examples = @ExampleObject(name = "500", ref = "#/components/examples/http500Example"), mediaType = "application/json", schema = @Schema(implementation = User.class)), @Content(mediaType = "application/xml", schema = @Schema(implementation = User.class))})})
 	public void test1(String hello) {
 	}
 
@@ -59,7 +58,7 @@ public class HelloController {
 							@ExampleObject(
 									name = "An example request with all fields provided with example values.",
 									value = "full",
-									summary = "Full request") }))
+									summary = "Full request")}))
 	public void test2(String hello) {
 	}
 

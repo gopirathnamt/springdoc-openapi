@@ -26,9 +26,6 @@
 
 package org.springdoc.core.customizers;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Parameter;
-
 import io.swagger.v3.core.util.AnnotationsUtils;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.models.Components;
@@ -43,7 +40,6 @@ import org.apache.commons.lang3.reflect.FieldUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springdoc.core.properties.SpringDocConfigProperties;
-
 import org.springframework.boot.actuate.endpoint.ApiVersion;
 import org.springframework.boot.actuate.endpoint.SecurityContext;
 import org.springframework.boot.actuate.endpoint.annotation.AbstractDiscoveredOperation;
@@ -53,6 +49,9 @@ import org.springframework.boot.actuate.endpoint.invoke.reflect.OperationMethod;
 import org.springframework.boot.actuate.endpoint.web.WebServerNamespace;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.method.HandlerMethod;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.Parameter;
 
 import static org.springdoc.core.providers.ActuatorProvider.getTag;
 import static org.springdoc.core.utils.SpringDocUtils.handleSchemaTypes;
@@ -124,7 +123,8 @@ public class ActuatorOperationCustomizer implements GlobalOperationComponentsCus
 	 * @param components     the components
 	 * @param operationField the operation field
 	 */
-	private void processOperationField(HandlerMethod handlerMethod, Operation operation, Components components, Field operationField) {
+	private void processOperationField(HandlerMethod handlerMethod, Operation operation, Components components,
+	                                   Field operationField) {
 		try {
 			Object actuatorOperation = operationField.get(handlerMethod.getBean());
 			Field actuatorOperationField = FieldUtils.getDeclaredField(actuatorOperation.getClass(), OPERATION, true);
@@ -133,8 +133,7 @@ public class ActuatorOperationCustomizer implements GlobalOperationComponentsCus
 						(AbstractDiscoveredOperation) actuatorOperationField.get(actuatorOperation);
 				handleOperationMethod(discoveredOperation.getOperationMethod(), components, operation);
 			}
-		}
-		catch (IllegalAccessException e) {
+		} catch (IllegalAccessException e) {
 			LOGGER.warn(e.getMessage());
 		}
 	}
@@ -157,11 +156,17 @@ public class ActuatorOperationCustomizer implements GlobalOperationComponentsCus
 			case WRITE:
 				addWriteParameters(operationMethod, components, operation);
 				operation.setResponses(new ApiResponses()
-						.addApiResponse(String.valueOf(HttpStatus.NO_CONTENT.value()), new ApiResponse().description(HttpStatus.NO_CONTENT.getReasonPhrase()))
-						.addApiResponse(String.valueOf(HttpStatus.BAD_REQUEST.value()), new ApiResponse().description(HttpStatus.BAD_REQUEST.getReasonPhrase())));
+						                       .addApiResponse(String.valueOf(HttpStatus.NO_CONTENT.value()),
+						                                       new ApiResponse().description(
+								                                       HttpStatus.NO_CONTENT.getReasonPhrase()))
+						                       .addApiResponse(String.valueOf(HttpStatus.BAD_REQUEST.value()),
+						                                       new ApiResponse().description(
+								                                       HttpStatus.BAD_REQUEST.getReasonPhrase())));
 				break;
 			case DELETE:
-				operation.setResponses(new ApiResponses().addApiResponse(String.valueOf(HttpStatus.NO_CONTENT.value()), new ApiResponse().description(HttpStatus.NO_CONTENT.getReasonPhrase())));
+				operation.setResponses(new ApiResponses().addApiResponse(String.valueOf(HttpStatus.NO_CONTENT.value()),
+				                                                         new ApiResponse().description(
+						                                                         HttpStatus.NO_CONTENT.getReasonPhrase())));
 				addParameters(operationMethod, operation, components, ParameterIn.QUERY);
 				break;
 			default:
@@ -177,22 +182,24 @@ public class ActuatorOperationCustomizer implements GlobalOperationComponentsCus
 	 * @param components      the components
 	 * @param parameterIn     the parameter in
 	 */
-	private void addParameters(OperationMethod operationMethod, Operation operation, Components components, ParameterIn parameterIn) {
+	private void addParameters(OperationMethod operationMethod, Operation operation, Components components,
+	                           ParameterIn parameterIn) {
 		for (OperationParameter operationParameter : operationMethod.getParameters()) {
 			Parameter parameter = getParameterFromField(operationParameter);
 			if (parameter == null) continue;
 			Schema<?> schema = resolveSchema(parameter, components);
 			if (parameter.getAnnotation(Selector.class) != null) {
 				operation.addParametersItem(new io.swagger.v3.oas.models.parameters.PathParameter()
-						.name(parameter.getName())
-						.schema(schema));
-				operation.getResponses().addApiResponse(String.valueOf(HttpStatus.NOT_FOUND.value()), new ApiResponse().description(HttpStatus.NOT_FOUND.getReasonPhrase()));
-			}
-			else if (isValidParameterType(parameter)) {
+						                            .name(parameter.getName())
+						                            .schema(schema));
+				operation.getResponses().addApiResponse(String.valueOf(HttpStatus.NOT_FOUND.value()),
+				                                        new ApiResponse().description(
+						                                        HttpStatus.NOT_FOUND.getReasonPhrase()));
+			} else if (isValidParameterType(parameter)) {
 				operation.addParametersItem(new io.swagger.v3.oas.models.parameters.Parameter()
-						.name(parameter.getName())
-						.in(parameterIn.toString())
-						.schema(schema));
+						                            .name(parameter.getName())
+						                            .in(parameterIn.toString())
+						                            .schema(schema));
 			}
 		}
 	}
@@ -211,14 +218,14 @@ public class ActuatorOperationCustomizer implements GlobalOperationComponentsCus
 			Schema<?> schema = resolveSchema(parameter, components);
 			if (parameter.getAnnotation(Selector.class) != null) {
 				operation.addParametersItem(new io.swagger.v3.oas.models.parameters.PathParameter()
-						.name(parameter.getName())
-						.schema(schema));
-			}
-			else {
+						                            .name(parameter.getName())
+						                            .schema(schema));
+			} else {
 				operation.setRequestBody(new RequestBody()
-						.content(new Content()
-								.addMediaType(org.springframework.http.MediaType.APPLICATION_JSON_VALUE,
-										new MediaType().schema(schema))));
+						                         .content(new Content()
+								                                  .addMediaType(
+										                                  org.springframework.http.MediaType.APPLICATION_JSON_VALUE,
+										                                  new MediaType().schema(schema))));
 			}
 		}
 	}
@@ -232,8 +239,7 @@ public class ActuatorOperationCustomizer implements GlobalOperationComponentsCus
 	private Parameter getParameterFromField(OperationParameter operationParameter) {
 		try {
 			return (Parameter) FieldUtils.readDeclaredField(operationParameter, PARAMETER, true);
-		}
-		catch (IllegalAccessException e) {
+		} catch (IllegalAccessException e) {
 			LOGGER.warn(e.getMessage());
 			return null;
 		}
@@ -247,7 +253,8 @@ public class ActuatorOperationCustomizer implements GlobalOperationComponentsCus
 	 * @return the schema
 	 */
 	private Schema<?> resolveSchema(Parameter parameter, Components components) {
-		Schema schema = AnnotationsUtils.resolveSchemaFromType(parameter.getType(), components, null, springDocConfigProperties.isOpenapi31());
+		Schema schema = AnnotationsUtils.resolveSchemaFromType(parameter.getType(), components, null,
+		                                                       springDocConfigProperties.isOpenapi31());
 		if (springDocConfigProperties.isOpenapi31()) handleSchemaTypes(schema);
 		return schema;
 	}

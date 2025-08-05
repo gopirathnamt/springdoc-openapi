@@ -27,7 +27,6 @@
 package test.org.springdoc.api.v31.app6.security;
 
 import org.springdoc.core.properties.SpringDocConfigProperties;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -79,27 +78,28 @@ public class WebSecurity {
 
 
 	@Bean
-	public SecurityFilterChain securityWebFilterChain(HttpSecurity http, AuthenticationManager authenticationManager) throws Exception {
+	public SecurityFilterChain securityWebFilterChain(HttpSecurity http,
+	                                                  AuthenticationManager authenticationManager) throws Exception {
 		String apiDocsPath = configProperties.getApiDocs().getPath();
 		http.cors()
-				.and()
-				.csrf()
-				.disable()
-				.authorizeRequests()
-				.requestMatchers(apiDocsPath + ALL_PATTERN)
-				.permitAll()
-				.requestMatchers(apiDocsPath.substring(0, apiDocsPath.lastIndexOf("/") + 1) + "api-docs.yaml")
-				.permitAll()
-				.anyRequest()
-				.authenticated()
-				.and()
-				.exceptionHandling()
-				.and()
-				.addFilter(new JWTAuthenticationFilter(authenticationManager, lifetime, key))
-				.addFilter(new JWTAuthorizationFilter(authenticationManager, key))
-				// this disables session creation on Spring Security
-				.sessionManagement()
-				.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+		    .and()
+		    .csrf()
+		    .disable()
+		    .authorizeRequests()
+		    .requestMatchers(apiDocsPath + ALL_PATTERN)
+		    .permitAll()
+		    .requestMatchers(apiDocsPath.substring(0, apiDocsPath.lastIndexOf("/") + 1) + "api-docs.yaml")
+		    .permitAll()
+		    .anyRequest()
+		    .authenticated()
+		    .and()
+		    .exceptionHandling()
+		    .and()
+		    .addFilter(new JWTAuthenticationFilter(authenticationManager, lifetime, key))
+		    .addFilter(new JWTAuthorizationFilter(authenticationManager, key))
+		    // this disables session creation on Spring Security
+		    .sessionManagement()
+		    .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 		return http.build();
 	}
 

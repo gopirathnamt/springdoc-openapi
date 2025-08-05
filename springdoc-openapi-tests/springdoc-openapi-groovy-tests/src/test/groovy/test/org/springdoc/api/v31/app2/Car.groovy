@@ -27,7 +27,7 @@
 package test.org.springdoc.api.v31.app2
 
 class Car {
-	Long id
+    Long id
 
-	String name
+    String name
 }

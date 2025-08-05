@@ -26,24 +26,23 @@
 
 package test.org.springdoc.api.v31.app9;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-
 import com.fasterxml.jackson.databind.introspect.SimpleMixInResolver;
 import com.fasterxml.jackson.databind.type.ClassKey;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.springdoc.core.providers.ObjectMapperProvider;
-import test.org.springdoc.api.v31.AbstractSpringDocTest;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.test.context.TestPropertySource;
+import test.org.springdoc.api.v31.AbstractSpringDocTest;
+
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 @TestPropertySource(properties = "spring.hateoas.use-hal-as-default-json-media-type= false")
-@SuppressWarnings({ "deprecation", "unchecked" })
+@SuppressWarnings({"deprecation", "unchecked"})
 public class SpringDocApp9Test extends AbstractSpringDocTest {
 
 	private final Map<ClassKey, Class<?>> springMixins = new HashMap<>();
@@ -53,8 +52,10 @@ public class SpringDocApp9Test extends AbstractSpringDocTest {
 
 	@BeforeEach
 	void init() throws IllegalAccessException {
-		SimpleMixInResolver _mixIns = (SimpleMixInResolver) FieldUtils.readDeclaredField(objectMapperProvider.jsonMapper(), "_mixIns", true);
-		Map<ClassKey, Class<?>> _localMixIns = (Map<ClassKey, Class<?>>) FieldUtils.readDeclaredField(_mixIns, "_localMixIns", true);
+		SimpleMixInResolver _mixIns =
+				(SimpleMixInResolver) FieldUtils.readDeclaredField(objectMapperProvider.jsonMapper(), "_mixIns", true);
+		Map<ClassKey, Class<?>> _localMixIns =
+				(Map<ClassKey, Class<?>>) FieldUtils.readDeclaredField(_mixIns, "_localMixIns", true);
 		Iterator<Map.Entry<ClassKey, Class<?>>> it = _localMixIns.entrySet().iterator();
 		while (it.hasNext()) {
 			Map.Entry<ClassKey, Class<?>> entry = it.next();
@@ -68,12 +69,15 @@ public class SpringDocApp9Test extends AbstractSpringDocTest {
 
 	@AfterEach
 	void clean() throws IllegalAccessException {
-		SimpleMixInResolver _mixIns = (SimpleMixInResolver) FieldUtils.readDeclaredField(objectMapperProvider.jsonMapper(), "_mixIns", true);
-		Map<ClassKey, Class<?>> _localMixIns = (Map<ClassKey, Class<?>>) FieldUtils.readDeclaredField(_mixIns, "_localMixIns", true);
+		SimpleMixInResolver _mixIns =
+				(SimpleMixInResolver) FieldUtils.readDeclaredField(objectMapperProvider.jsonMapper(), "_mixIns", true);
+		Map<ClassKey, Class<?>> _localMixIns =
+				(Map<ClassKey, Class<?>>) FieldUtils.readDeclaredField(_mixIns, "_localMixIns", true);
 		_localMixIns.putAll(springMixins);
 	}
 
 	@SpringBootApplication
-	static class SpringDocTestApp {}
+	static class SpringDocTestApp {
+	}
 
 }

@@ -26,12 +26,11 @@
 
 package test.org.springdoc.api.v31.app68.api.user;
 
-import test.org.springdoc.api.v31.app68.model.User;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import test.org.springdoc.api.v31.app68.model.User;
 
 @RequestMapping(value = "/users", consumes = "application/json")
 @Controller

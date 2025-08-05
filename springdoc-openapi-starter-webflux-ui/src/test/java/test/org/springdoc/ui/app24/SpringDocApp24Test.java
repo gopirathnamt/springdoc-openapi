@@ -19,11 +19,10 @@
 package test.org.springdoc.ui.app24;
 
 import org.junit.jupiter.api.Test;
-import test.org.springdoc.ui.AbstractSpringDocTest;
-
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.TestPropertySource;
+import test.org.springdoc.ui.AbstractSpringDocTest;
 
 @TestPropertySource(properties = {
 		"springdoc.api-docs.enabled=false",
@@ -36,13 +35,14 @@ public class SpringDocApp24Test extends AbstractSpringDocTest {
 	@Test
 	void test_apidocs_disabled() {
 		webTestClient.get().uri("/api-docs/swagger-config").exchange()
-				.expectStatus().isOk().expectBody()
-				.jsonPath("$.url").isEqualTo("/api-docs/xxx/v1/openapi.yml")
-				.jsonPath("$.configUrl").isEqualTo("/api-docs/swagger-config")
-				.jsonPath("$.validatorUrl").isEqualTo("")
-				.jsonPath("$.oauth2RedirectUrl").isEqualTo("/swagger-ui/oauth2-redirect.html");
+		             .expectStatus().isOk().expectBody()
+		             .jsonPath("$.url").isEqualTo("/api-docs/xxx/v1/openapi.yml")
+		             .jsonPath("$.configUrl").isEqualTo("/api-docs/swagger-config")
+		             .jsonPath("$.validatorUrl").isEqualTo("")
+		             .jsonPath("$.oauth2RedirectUrl").isEqualTo("/swagger-ui/oauth2-redirect.html");
 	}
 
 	@SpringBootApplication
-	static class SpringDocTestApp {}
+	static class SpringDocTestApp {
+	}
 }

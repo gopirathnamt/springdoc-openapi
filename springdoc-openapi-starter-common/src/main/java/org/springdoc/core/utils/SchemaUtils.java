@@ -1,19 +1,5 @@
 package org.springdoc.core.utils;
 
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Field;
-import java.math.BigDecimal;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.OptionalDouble;
-import java.util.OptionalInt;
-import java.util.OptionalLong;
-import java.util.Set;
-import java.util.stream.Collectors;
-
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
 import io.swagger.v3.oas.models.media.Schema;
@@ -30,9 +16,22 @@ import jakarta.validation.constraints.Size;
 import kotlin.reflect.KProperty;
 import kotlin.reflect.jvm.ReflectJvmMapping;
 import org.springdoc.core.properties.SpringDocConfigProperties.ApiDocs.OpenApiVersion;
-
 import org.springframework.core.KotlinDetector;
 import org.springframework.lang.Nullable;
+
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
+import java.math.BigDecimal;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.OptionalDouble;
+import java.util.OptionalInt;
+import java.util.OptionalLong;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import static org.springdoc.core.utils.Constants.OPENAPI_ARRAY_TYPE;
 import static org.springdoc.core.utils.Constants.OPENAPI_STRING_TYPE;
@@ -54,7 +53,7 @@ public class SchemaUtils {
 	 */
 	// using string litterals to support both validation-api v1 and v2
 	public static final List<String> ANNOTATIONS_FOR_REQUIRED = Arrays.asList("NotNull", "NonNull", "NotBlank",
-			"NotEmpty");
+	                                                                          "NotEmpty");
 
 	/**
 	 * The constant OPTIONAL_TYPES.
@@ -82,7 +81,7 @@ public class SchemaUtils {
 	 * @return the boolean
 	 */
 	public static boolean swaggerVisible(@Nullable io.swagger.v3.oas.annotations.media.Schema schema,
-			@Nullable Parameter parameter) {
+	                                     @Nullable Parameter parameter) {
 		if (parameter != null) {
 			return !parameter.hidden();
 		}
@@ -105,7 +104,7 @@ public class SchemaUtils {
 	 */
 	@Nullable
 	public static Boolean swaggerRequired(@Nullable io.swagger.v3.oas.annotations.media.Schema schema,
-			@Nullable Parameter parameter) {
+	                                      @Nullable Parameter parameter) {
 		if (parameter != null && parameter.required()) {
 			return true;
 		}
@@ -139,8 +138,9 @@ public class SchemaUtils {
 	 */
 	public static boolean annotatedNotNull(List<Annotation> annotations) {
 		Collection<String> annotationSimpleNames = annotations.stream()
-				.map(annotation -> annotation.annotationType().getSimpleName())
-				.collect(Collectors.toSet());
+		                                                      .map(annotation -> annotation.annotationType()
+		                                                                                   .getSimpleName())
+		                                                      .collect(Collectors.toSet());
 		return ANNOTATIONS_FOR_REQUIRED.stream().anyMatch(annotationSimpleNames::contains);
 	}
 
@@ -177,7 +177,7 @@ public class SchemaUtils {
 	 * @see io.swagger.v3.oas.annotations.media.Schema#requiredMode()
 	 */
 	public static boolean fieldRequired(Field field, @Nullable io.swagger.v3.oas.annotations.media.Schema schema,
-			@Nullable Parameter parameter) {
+	                                    @Nullable Parameter parameter) {
 		Boolean swaggerRequired = swaggerRequired(schema, parameter);
 		if (swaggerRequired != null) {
 			return swaggerRequired;
@@ -203,8 +203,7 @@ public class SchemaUtils {
 			if (annotationName.equals(Positive.class.getSimpleName())) {
 				if (OpenApiVersion.OPENAPI_3_1.getVersion().equals(openapiVersion)) {
 					schema.setExclusiveMinimumValue(BigDecimal.ZERO);
-				}
-				else {
+				} else {
 					schema.setMinimum(BigDecimal.ZERO);
 					schema.setExclusiveMinimum(true);
 				}
@@ -218,8 +217,7 @@ public class SchemaUtils {
 			if (annotationName.equals(Negative.class.getSimpleName())) {
 				if (OpenApiVersion.OPENAPI_3_1.getVersion().equals(openapiVersion)) {
 					schema.setExclusiveMaximumValue(BigDecimal.ZERO);
-				}
-				else {
+				} else {
 					schema.setMaximum(BigDecimal.ZERO);
 					schema.setExclusiveMaximum(true);
 				}
@@ -234,8 +232,7 @@ public class SchemaUtils {
 				DecimalMin min = (DecimalMin) anno;
 				if (min.inclusive()) {
 					schema.setMinimum(BigDecimal.valueOf(Double.parseDouble(min.value())));
-				}
-				else {
+				} else {
 					schema.setExclusiveMinimum(true);
 				}
 			}
@@ -243,8 +240,7 @@ public class SchemaUtils {
 				DecimalMax max = (DecimalMax) anno;
 				if (max.inclusive()) {
 					schema.setMaximum(BigDecimal.valueOf(Double.parseDouble(max.value())));
-				}
-				else {
+				} else {
 					schema.setExclusiveMaximum(true);
 				}
 			}
@@ -255,8 +251,7 @@ public class SchemaUtils {
 				if (OPENAPI_ARRAY_TYPE.equals(type)) {
 					schema.setMinItems(((Size) anno).min());
 					schema.setMaxItems(((Size) anno).max());
-				}
-				else if (OPENAPI_STRING_TYPE.equals(type)) {
+				} else if (OPENAPI_STRING_TYPE.equals(type)) {
 					schema.setMinLength(((Size) anno).min());
 					schema.setMaxLength(((Size) anno).max());
 				}
@@ -265,7 +260,7 @@ public class SchemaUtils {
 				schema.setPattern(((Pattern) anno).regexp());
 			}
 		});
-		if (schema!=null && annotatedNotNull(annotations)) {
+		if (schema != null && annotatedNotNull(annotations)) {
 			String specVersion = schema.getSpecVersion().name();
 			if (!"V30".equals(specVersion)) {
 				schema.setNullable(false);

@@ -28,29 +28,35 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
-import test.org.springdoc.api.v30.AbstractSpringDocV30Test;
-
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import test.org.springdoc.api.v30.AbstractSpringDocV30Test;
 
 public class SpringDocApp222Test extends AbstractSpringDocV30Test {
 
 	@JsonTypeInfo(use = Id.NAME, property = "@type")
 	@JsonSubTypes(@Type(CommonImplementor.class))
-	interface FirstHierarchy {}
+	interface FirstHierarchy {
+	}
 
 	@JsonTypeInfo(use = Id.NAME, property = "@type")
 	@JsonSubTypes(@Type(CommonImplementor.class))
-	interface SecondHierarchy {}
+	interface SecondHierarchy {
+	}
 
 	@SpringBootApplication
-	static class SpringDocTestApp {}
+	static class SpringDocTestApp {
+	}
 
 	record CommonImplementorUser(FirstHierarchy firstHierarchy,
-								 SecondHierarchy secondHierarchy) {}
+	                             SecondHierarchy secondHierarchy) {
+	}
 
-	record FirstHierarchyUser(FirstHierarchy firstHierarchy) {}
+	record FirstHierarchyUser(FirstHierarchy firstHierarchy) {
+	}
 
-	record SecondHierarchyUser(SecondHierarchy secondHierarchy) {}
+	record SecondHierarchyUser(SecondHierarchy secondHierarchy) {
+	}
 
-	class CommonImplementor implements FirstHierarchy, SecondHierarchy {}
+	class CommonImplementor implements FirstHierarchy, SecondHierarchy {
+	}
 }

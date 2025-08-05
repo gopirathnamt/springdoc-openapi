@@ -27,16 +27,17 @@
 package test.org.springdoc.api.v30.app28;
 
 import org.springdoc.core.utils.SpringDocUtils;
-import test.org.springdoc.api.v30.AbstractSpringDocTest;
-
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import test.org.springdoc.api.v30.AbstractSpringDocTest;
 
 public class SpringDocApp28Test extends AbstractSpringDocTest {
 
 	static {
-		SpringDocUtils.getConfig().replaceParameterObjectWithClass(ExamplePageable.class, ExamplePageableReplacement.class);
+		SpringDocUtils.getConfig()
+		              .replaceParameterObjectWithClass(ExamplePageable.class, ExamplePageableReplacement.class);
 	}
 
 	@SpringBootApplication
-	static class SpringDocTestApp {}
+	static class SpringDocTestApp {
+	}
 }

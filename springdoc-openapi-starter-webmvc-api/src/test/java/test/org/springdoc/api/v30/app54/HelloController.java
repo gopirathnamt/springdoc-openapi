@@ -29,7 +29,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -42,7 +41,7 @@ public class HelloController {
 	@GetMapping(value = "/parties/{id}")
 	@JsonView(Views.Public.class)
 	@Operation(summary = "Gets meal party details [Meal party admin restricted]")
-	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Successfully retrieved the meal party") })
+	@ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Successfully retrieved the meal party")})
 	public MealParty getMealParty(@PathVariable("id") long mealPartyId) {
 		return null;
 	}
@@ -55,7 +54,8 @@ public class HelloController {
 
 	@JsonView(Views.MealPartyAdmin.class)
 	@PostMapping(value = "/new-parties")
-	public ResponseEntity<MealParty> saveMealNewParty(@JsonView(Views.Public.class) @org.springframework.web.bind.annotation.RequestBody MealParty p) {
+	public ResponseEntity<MealParty> saveMealNewParty(
+			@JsonView(Views.Public.class) @org.springframework.web.bind.annotation.RequestBody MealParty p) {
 		return null;
 	}
 }

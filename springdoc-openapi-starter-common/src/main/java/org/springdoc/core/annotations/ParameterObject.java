@@ -36,6 +36,7 @@ import java.lang.annotation.Target;
  *
  * @author bnasslahsen
  */
-@Target({ ElementType.PARAMETER, ElementType.TYPE })
+@Target({ElementType.PARAMETER, ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface ParameterObject {}
+public @interface ParameterObject {
+}

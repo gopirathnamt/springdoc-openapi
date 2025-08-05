@@ -25,7 +25,6 @@
 package test.org.springdoc.api.v30.app59;
 
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpHeaders;

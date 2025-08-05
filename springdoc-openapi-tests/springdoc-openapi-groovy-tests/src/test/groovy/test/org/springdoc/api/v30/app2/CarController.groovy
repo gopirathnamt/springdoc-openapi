@@ -27,7 +27,6 @@
 package test.org.springdoc.api.v30.app2
 
 import org.springdoc.core.annotations.ParameterObject
-
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RestController
@@ -35,23 +34,23 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 class CarController {
 
-	CarService carService
+    CarService carService
 
-	CarController(CarService carService) {
-		this.carService = carService
-	}
+    CarController(CarService carService) {
+        this.carService = carService
+    }
 
-	@GetMapping(path = '/cars')
-	List<test.org.springdoc.api.v30.app1.Car> getCars(@ParameterObject CarsFilter filter) {
-		return carService.getCars()
-	}
+    @GetMapping(path = '/cars')
+    List<test.org.springdoc.api.v30.app1.Car> getCars(@ParameterObject CarsFilter filter) {
+        return carService.getCars()
+    }
 
-	static class CarsFilter {
-		String name;
-	}
+    static class CarsFilter {
+        String name;
+    }
 
-	@GetMapping(path = 'cars/{carId}')
-	Car getCar(@PathVariable(value = 'carId') Long carId) {
-		return carService.getCar(carId)
-	}
+    @GetMapping(path = 'cars/{carId}')
+    Car getCar(@PathVariable(value = 'carId') Long carId) {
+        return carService.getCar(carId)
+    }
 }

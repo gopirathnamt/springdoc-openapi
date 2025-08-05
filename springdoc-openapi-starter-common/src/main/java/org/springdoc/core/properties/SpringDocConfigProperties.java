@@ -26,23 +26,22 @@
 
 package org.springdoc.core.properties;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
-
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.SpecVersion;
 import org.springdoc.core.configuration.SpringDocConfiguration;
 import org.springdoc.core.properties.SpringDocConfigProperties.ApiDocs.OpenApiVersion;
 import org.springdoc.core.utils.Constants;
-
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.http.MediaType;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 
 import static org.springdoc.core.utils.Constants.DEFAULT_WEB_JARS_PREFIX_URL;
 import static org.springdoc.core.utils.Constants.SPRINGDOC_ENABLED;
@@ -1740,9 +1739,9 @@ public class SpringDocConfigProperties {
 		 * @param displayName       the display name
 		 */
 		public GroupConfig(String group, List<String> pathsToMatch, List<String> packagesToScan,
-				List<String> packagesToExclude, List<String> pathsToExclude,
-				List<String> producesToMatch, List<String> consumesToMatch, List<String> headersToMatch,
-				String displayName) {
+		                   List<String> packagesToExclude, List<String> pathsToExclude,
+		                   List<String> producesToMatch, List<String> consumesToMatch, List<String> headersToMatch,
+		                   String displayName) {
 			this.pathsToMatch = pathsToMatch;
 			this.pathsToExclude = pathsToExclude;
 			this.packagesToExclude = packagesToExclude;

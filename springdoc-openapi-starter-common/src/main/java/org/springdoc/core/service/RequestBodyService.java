@@ -26,11 +26,6 @@
 
 package org.springdoc.core.service;
 
-import java.util.Arrays;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Optional;
-
 import com.fasterxml.jackson.annotation.JsonView;
 import io.swagger.v3.core.util.AnnotationsUtils;
 import io.swagger.v3.oas.models.Components;
@@ -44,9 +39,13 @@ import org.springdoc.core.models.ParameterInfo;
 import org.springdoc.core.models.RequestBodyInfo;
 import org.springdoc.core.utils.PropertyResolverUtils;
 import org.springdoc.core.utils.SpringDocAnnotationsUtils;
-
 import org.springframework.core.MethodParameter;
 import org.springframework.web.bind.annotation.RequestPart;
+
+import java.util.Arrays;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Optional;
 
 import static org.springdoc.core.utils.SpringDocAnnotationsUtils.mergeSchema;
 
@@ -92,7 +91,8 @@ public class RequestBodyService {
 	 * @return the optional
 	 */
 	public Optional<RequestBody> buildRequestBodyFromDoc(
-			io.swagger.v3.oas.annotations.parameters.RequestBody requestBody, RequestBody requestBodyOp, MethodAttributes methodAttributes,
+			io.swagger.v3.oas.annotations.parameters.RequestBody requestBody, RequestBody requestBodyOp,
+			MethodAttributes methodAttributes,
 			Components components, JsonView jsonViewAnnotation, Locale locale) {
 		String[] classConsumes = methodAttributes.getClassConsumes();
 		String[] methodConsumes = methodAttributes.getMethodConsumes();
@@ -117,7 +117,8 @@ public class RequestBodyService {
 			isEmpty = false;
 		}
 		if (requestBody.extensions().length > 0) {
-			Map<String, Object> extensions = AnnotationsUtils.getExtensions(parameterBuilder.isOpenapi31(), requestBody.extensions());
+			Map<String, Object> extensions =
+					AnnotationsUtils.getExtensions(parameterBuilder.isOpenapi31(), requestBody.extensions());
 			extensions.forEach(requestBodyObject::addExtension);
 			isEmpty = false;
 		}
@@ -128,7 +129,8 @@ public class RequestBodyService {
 		if (isEmpty)
 			return Optional.empty();
 
-		buildRequestBodyContent(requestBody, requestBodyOp, methodAttributes, components, jsonViewAnnotation, classConsumes, methodConsumes, requestBodyObject);
+		buildRequestBodyContent(requestBody, requestBodyOp, methodAttributes, components, jsonViewAnnotation,
+		                        classConsumes, methodConsumes, requestBodyObject);
 
 		return Optional.of(requestBodyObject);
 	}
@@ -146,12 +148,13 @@ public class RequestBodyService {
 	 * @param requestBodyObject  the request body object
 	 */
 	private void buildRequestBodyContent(io.swagger.v3.oas.annotations.parameters.RequestBody requestBody,
-										 RequestBody requestBodyOp, MethodAttributes methodAttributes,
-										 Components components, JsonView jsonViewAnnotation, String[] classConsumes,
-										 String[] methodConsumes, RequestBody requestBodyObject) {
+	                                     RequestBody requestBodyOp, MethodAttributes methodAttributes,
+	                                     Components components, JsonView jsonViewAnnotation, String[] classConsumes,
+	                                     String[] methodConsumes, RequestBody requestBodyObject) {
 		Optional<Content> optionalContent = SpringDocAnnotationsUtils
 				.getContent(requestBody.content(), getConsumes(classConsumes),
-						getConsumes(methodConsumes), null, components, jsonViewAnnotation, parameterBuilder.isOpenapi31());
+				            getConsumes(methodConsumes), null, components, jsonViewAnnotation,
+				            parameterBuilder.isOpenapi31());
 		if (requestBodyOp == null) {
 			if (optionalContent.isPresent()) {
 				Content content = optionalContent.get();
@@ -159,19 +162,18 @@ public class RequestBodyService {
 				if (containsResponseBodySchema(content))
 					methodAttributes.setWithResponseBodySchemaDoc(true);
 			}
-		}
-		else {
+		} else {
 			Content existingContent = requestBodyOp.getContent();
 			if (optionalContent.isPresent() && existingContent != null) {
 				Content newContent = optionalContent.get();
 				if (methodAttributes.isMethodOverloaded()) {
-					Arrays.stream(methodAttributes.getMethodProduces()).filter(mediaTypeStr -> (newContent.get(mediaTypeStr) != null)).forEach(mediaTypeStr -> {
-						if (newContent.get(mediaTypeStr).getSchema() != null)
-							mergeSchema(existingContent, newContent.get(mediaTypeStr).getSchema(), mediaTypeStr);
-					});
+					Arrays.stream(methodAttributes.getMethodProduces())
+					      .filter(mediaTypeStr -> (newContent.get(mediaTypeStr) != null)).forEach(mediaTypeStr -> {
+						      if (newContent.get(mediaTypeStr).getSchema() != null)
+							      mergeSchema(existingContent, newContent.get(mediaTypeStr).getSchema(), mediaTypeStr);
+					      });
 					requestBodyObject.content(existingContent);
-				}
-				else
+				} else
 					requestBodyObject.content(newContent);
 			}
 		}
@@ -184,7 +186,8 @@ public class RequestBodyService {
 	 * @return the boolean
 	 */
 	private boolean containsResponseBodySchema(Content content) {
-		return content.entrySet().stream().anyMatch(stringMediaTypeEntry -> stringMediaTypeEntry.getValue().getSchema() != null);
+		return content.entrySet().stream()
+		              .anyMatch(stringMediaTypeEntry -> stringMediaTypeEntry.getValue().getSchema() != null);
 	}
 
 	/**
@@ -205,7 +208,8 @@ public class RequestBodyService {
 	 * @param components       the components
 	 * @return the optional
 	 */
-	public Optional<RequestBody> buildRequestBodyFromDoc(io.swagger.v3.oas.annotations.parameters.RequestBody requestBody,
+	public Optional<RequestBody> buildRequestBodyFromDoc(
+			io.swagger.v3.oas.annotations.parameters.RequestBody requestBody,
 			MethodAttributes methodAttributes, Components components) {
 		return this.buildRequestBodyFromDoc(requestBody, null, methodAttributes, components, null, null);
 	}
@@ -220,10 +224,11 @@ public class RequestBodyService {
 	 * @param locale             the locale
 	 * @return the optional
 	 */
-	public Optional<RequestBody> buildRequestBodyFromDoc(io.swagger.v3.oas.annotations.parameters.RequestBody requestBody,
+	public Optional<RequestBody> buildRequestBodyFromDoc(
+			io.swagger.v3.oas.annotations.parameters.RequestBody requestBody,
 			MethodAttributes methodAttributes, Components components, JsonView jsonViewAnnotation, Locale locale) {
 		return this.buildRequestBodyFromDoc(requestBody, null, methodAttributes,
-				components, jsonViewAnnotation, locale);
+		                                    components, jsonViewAnnotation, locale);
 	}
 
 	/**
@@ -237,7 +242,8 @@ public class RequestBodyService {
 	 * @return the optional
 	 */
 	public Optional<RequestBody> buildRequestBodyFromDoc(
-			io.swagger.v3.oas.annotations.parameters.RequestBody requestBody, RequestBody requestBodyOp, MethodAttributes methodAttributes,
+			io.swagger.v3.oas.annotations.parameters.RequestBody requestBody, RequestBody requestBodyOp,
+			MethodAttributes methodAttributes,
 			Components components, Locale locale) {
 		return this.buildRequestBodyFromDoc(requestBody, requestBodyOp, methodAttributes, components, null, locale);
 	}
@@ -251,12 +257,13 @@ public class RequestBodyService {
 	 * @param requestBodyInfo  the request body info
 	 */
 	public void calculateRequestBodyInfo(Components components, MethodAttributes methodAttributes,
-			ParameterInfo parameterInfo, RequestBodyInfo requestBodyInfo) {
+	                                     ParameterInfo parameterInfo, RequestBodyInfo requestBodyInfo) {
 		RequestBody requestBody = requestBodyInfo.getRequestBody();
 		MethodParameter methodParameter = parameterInfo.getMethodParameter();
 		// Get it from parameter level, if not present
 		if (requestBody == null) {
-			io.swagger.v3.oas.annotations.parameters.RequestBody requestBodyDoc = methodParameter.getParameterAnnotation(io.swagger.v3.oas.annotations.parameters.RequestBody.class);
+			io.swagger.v3.oas.annotations.parameters.RequestBody requestBodyDoc =
+					methodParameter.getParameterAnnotation(io.swagger.v3.oas.annotations.parameters.RequestBody.class);
 			requestBody = this.buildRequestBodyFromDoc(requestBodyDoc, methodAttributes, components).orElse(null);
 		}
 
@@ -271,7 +278,7 @@ public class RequestBodyService {
 		parameterInfo.setpName(paramName);
 
 		requestBody = buildRequestBody(requestBody, components, methodAttributes, parameterInfo,
-				requestBodyInfo);
+		                               requestBodyInfo);
 		requestBodyInfo.setRequestBody(requestBody);
 	}
 
@@ -286,8 +293,8 @@ public class RequestBodyService {
 	 * @return the request body
 	 */
 	private RequestBody buildRequestBody(RequestBody requestBody, Components components,
-			MethodAttributes methodAttributes,
-			ParameterInfo parameterInfo, RequestBodyInfo requestBodyInfo) {
+	                                     MethodAttributes methodAttributes,
+	                                     ParameterInfo parameterInfo, RequestBodyInfo requestBodyInfo) {
 		if (requestBody == null) {
 			requestBody = new RequestBody();
 			requestBodyInfo.setRequestBody(requestBody);
@@ -295,19 +302,19 @@ public class RequestBodyService {
 
 		if (requestBody.getContent() == null) {
 			Schema<?> schema = parameterBuilder.calculateSchema(components, parameterInfo, requestBodyInfo,
-					methodAttributes.getJsonViewAnnotationForRequestBody());
+			                                                    methodAttributes.getJsonViewAnnotationForRequestBody());
 			buildContent(requestBody, methodAttributes, schema);
-		}
-		else if (!methodAttributes.isWithResponseBodySchemaDoc()) {
+		} else if (!methodAttributes.isWithResponseBodySchemaDoc()) {
 			Schema<?> schema = parameterBuilder.calculateSchema(components, parameterInfo, requestBodyInfo,
-					methodAttributes.getJsonViewAnnotationForRequestBody());
+			                                                    methodAttributes.getJsonViewAnnotationForRequestBody());
 			mergeContent(requestBody, methodAttributes, schema);
 		}
 
 		// Add requestBody javadoc
 		if (StringUtils.isBlank(requestBody.getDescription()) && parameterBuilder.getJavadocProvider() != null
 				&& parameterBuilder.isRequestBodyPresent(parameterInfo)) {
-			String paramJavadocDescription = parameterBuilder.getParamJavadoc(parameterBuilder.getJavadocProvider(), parameterInfo.getMethodParameter());
+			String paramJavadocDescription = parameterBuilder.getParamJavadoc(parameterBuilder.getJavadocProvider(),
+			                                                                  parameterInfo.getMethodParameter());
 			if (!StringUtils.isBlank(paramJavadocDescription)) {
 				requestBody.setDescription(paramJavadocDescription);
 			}
@@ -347,7 +354,8 @@ public class RequestBodyService {
 	 * @param schema           the schema
 	 * @param content          the content
 	 */
-	private void buildContent(RequestBody requestBody, MethodAttributes methodAttributes, Schema<?> schema, Content content) {
+	private void buildContent(RequestBody requestBody, MethodAttributes methodAttributes, Schema<?> schema,
+	                          Content content) {
 		for (String value : methodAttributes.getMethodConsumes()) {
 			io.swagger.v3.oas.models.media.MediaType mediaTypeObject = new io.swagger.v3.oas.models.media.MediaType();
 			mediaTypeObject.setSchema(schema);

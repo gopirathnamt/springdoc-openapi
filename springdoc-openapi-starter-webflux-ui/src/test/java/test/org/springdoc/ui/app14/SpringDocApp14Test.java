@@ -25,30 +25,29 @@
 package test.org.springdoc.ui.app14;
 
 import org.junit.jupiter.api.Test;
-import reactor.core.publisher.Mono;
-import test.org.springdoc.ui.AbstractSpringDocActuatorTest;
-
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.test.web.reactive.server.EntityExchangeResult;
+import reactor.core.publisher.Mono;
+import test.org.springdoc.ui.AbstractSpringDocActuatorTest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.skyscreamer.jsonassert.JSONAssert.assertEquals;
 
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
-		properties = { "management.endpoints.web.exposure.include=*", "springdoc.use-management-port=true",
-				"management.server.port=9293", "management.endpoints.web.base-path=/application" })
+		properties = {"management.endpoints.web.exposure.include=*", "springdoc.use-management-port=true",
+				"management.server.port=9293", "management.endpoints.web.base-path=/application"})
 class SpringDocApp14Test extends AbstractSpringDocActuatorTest {
 
 	@Test
 	void testIndex() {
 		EntityExchangeResult<byte[]> getResult = webTestClient.get().uri("/application/swagger-ui/index.html")
-				.exchange()
-				.expectStatus().isOk()
-				.expectBody().returnResult();
+		                                                      .exchange()
+		                                                      .expectStatus().isOk()
+		                                                      .expectBody().returnResult();
 		assertThat(getResult.getResponseBody()).isNotNull();
 		String contentAsString = new String(getResult.getResponseBody());
 		assertThat(contentAsString).contains("Swagger UI");
@@ -57,19 +56,22 @@ class SpringDocApp14Test extends AbstractSpringDocActuatorTest {
 	@Test
 	void testIndexActuator() {
 		HttpStatusCode httpStatusMono = webClient.get().uri("/application/swagger-ui")
-				.exchangeToMono(clientResponse -> Mono.just(clientResponse.statusCode())).block();
+		                                         .exchangeToMono(
+				                                         clientResponse -> Mono.just(clientResponse.statusCode()))
+		                                         .block();
 		assertThat(httpStatusMono).isEqualTo(HttpStatus.FOUND);
 	}
 
 	@Test
 	void testIndexSwaggerConfig() throws Exception {
 		String contentAsString = webClient.get().uri("/application/swagger-ui/swagger-config").retrieve()
-				.bodyToMono(String.class).block();
+		                                  .bodyToMono(String.class).block();
 		String expected = getContent("results/app14-1.json");
 		assertEquals(expected, contentAsString, true);
 	}
 
 	@SpringBootApplication
-	static class SpringDocTestApp {}
+	static class SpringDocTestApp {
+	}
 
 }

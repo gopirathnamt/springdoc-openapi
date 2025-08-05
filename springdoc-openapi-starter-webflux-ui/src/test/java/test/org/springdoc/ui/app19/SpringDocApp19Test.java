@@ -26,9 +26,6 @@ package test.org.springdoc.ui.app19;
 
 import jakarta.annotation.PostConstruct;
 import org.junit.jupiter.api.Test;
-import reactor.core.publisher.Mono;
-import test.org.springdoc.ui.AbstractCommonTest;
-
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
@@ -36,14 +33,16 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
+import test.org.springdoc.ui.AbstractCommonTest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.skyscreamer.jsonassert.JSONAssert.assertEquals;
 
 
 @SpringBootTest(webEnvironment = WebEnvironment.DEFINED_PORT,
-		properties = { "server.port=9219",
-				"springdoc.swagger-ui.path=/" })
+		properties = {"server.port=9219",
+				"springdoc.swagger-ui.path=/"})
 class SpringDocApp19Test extends AbstractCommonTest {
 
 	@LocalServerPort
@@ -54,26 +53,29 @@ class SpringDocApp19Test extends AbstractCommonTest {
 	@PostConstruct
 	void init() {
 		webClient = WebClient.builder().baseUrl("http://localhost:" + port)
-				.build();
+		                     .build();
 	}
 
 	@Test
 	void testIndex() throws Exception {
 		HttpStatusCode httpStatusMono = webClient.get().uri("/")
-				.exchangeToMono(clientResponse -> Mono.just(clientResponse.statusCode())).block();
+		                                         .exchangeToMono(
+				                                         clientResponse -> Mono.just(clientResponse.statusCode()))
+		                                         .block();
 		assertThat(httpStatusMono).isEqualTo(HttpStatus.FOUND);
 
 		httpStatusMono = webClient.get().uri("/swagger-ui/index.html")
-				.exchangeToMono(clientResponse -> Mono.just(clientResponse.statusCode())).block();
+		                          .exchangeToMono(clientResponse -> Mono.just(clientResponse.statusCode())).block();
 		assertThat(httpStatusMono).isEqualTo(HttpStatus.OK);
 
 		String contentAsString = webClient.get().uri("/v3/api-docs/swagger-config").retrieve()
-				.bodyToMono(String.class).block();
+		                                  .bodyToMono(String.class).block();
 		String expected = getContent("results/app19-1.json");
 		assertEquals(expected, contentAsString, true);
 	}
 
 	@SpringBootApplication
-	static class SpringDocTestApp {}
+	static class SpringDocTestApp {
+	}
 
 }

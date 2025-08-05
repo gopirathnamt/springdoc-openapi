@@ -26,14 +26,13 @@
 
 package org.springdoc.webflux.ui;
 
-import java.util.Optional;
-
 import org.springdoc.core.properties.SpringDocConfigProperties;
 import org.springdoc.core.properties.SwaggerUiConfigProperties;
 import org.springdoc.core.providers.ActuatorProvider;
-
 import org.springframework.web.reactive.config.ResourceHandlerRegistry;
 import org.springframework.web.reactive.config.WebFluxConfigurer;
+
+import java.util.Optional;
 
 import static org.springdoc.core.utils.Constants.ALL_PATTERN;
 import static org.springdoc.core.utils.Constants.CLASSPATH_RESOURCE_LOCATION;
@@ -83,9 +82,10 @@ public class SwaggerWebFluxConfigurer implements WebFluxConfigurer {
 	 * @param swaggerResourceResolver   the swagger resource resolver
 	 */
 	public SwaggerWebFluxConfigurer(SwaggerUiConfigProperties swaggerUiConfigProperties,
-			SpringDocConfigProperties springDocConfigProperties,
-			SwaggerIndexTransformer swaggerIndexTransformer,
-			Optional<ActuatorProvider> actuatorProvider, SwaggerResourceResolver swaggerResourceResolver) {
+	                                SpringDocConfigProperties springDocConfigProperties,
+	                                SwaggerIndexTransformer swaggerIndexTransformer,
+	                                Optional<ActuatorProvider> actuatorProvider,
+	                                SwaggerResourceResolver swaggerResourceResolver) {
 		this.swaggerIndexTransformer = swaggerIndexTransformer;
 		this.actuatorProvider = actuatorProvider;
 		this.swaggerResourceResolver = swaggerResourceResolver;
@@ -107,26 +107,26 @@ public class SwaggerWebFluxConfigurer implements WebFluxConfigurer {
 
 		if (DEFAULT_WEB_JARS_PREFIX_URL.equals(webjarsPrefix)) {
 			swaggerUiPrefix = SWAGGER_UI_PREFIX;
-			resourcePath = webjarsPrefix + SWAGGER_UI_PREFIX + DEFAULT_PATH_SEPARATOR + swaggerUiConfigProperties.getVersion() + DEFAULT_PATH_SEPARATOR;
+			resourcePath = webjarsPrefix + SWAGGER_UI_PREFIX + DEFAULT_PATH_SEPARATOR +
+					swaggerUiConfigProperties.getVersion() + DEFAULT_PATH_SEPARATOR;
 			swaggerUiWebjarsPrefix = webjarsPrefix + swaggerUiPrefix;
-		}
-		else {
+		} else {
 			swaggerUiPrefix = webjarsPrefix;
 			resourcePath = DEFAULT_WEB_JARS_PREFIX_URL + DEFAULT_PATH_SEPARATOR;
 			swaggerUiWebjarsPrefix = swaggerUiPrefix;
 		}
 
 		registry.addResourceHandler(uiRootPath + swaggerUiWebjarsPrefix + ALL_PATTERN)
-				.addResourceLocations(CLASSPATH_RESOURCE_LOCATION + resourcePath)
-				.resourceChain(false)
-				.addResolver(swaggerResourceResolver)
-				.addTransformer(swaggerIndexTransformer);
+		        .addResourceLocations(CLASSPATH_RESOURCE_LOCATION + resourcePath)
+		        .resourceChain(false)
+		        .addResolver(swaggerResourceResolver)
+		        .addTransformer(swaggerIndexTransformer);
 
 		registry.addResourceHandler(uiRootPath + swaggerUiPrefix + ALL_PATTERN)
-				.addResourceLocations(CLASSPATH_RESOURCE_LOCATION + resourcePath)
-				.resourceChain(false)
-				.addResolver(swaggerResourceResolver)
-				.addTransformer(swaggerIndexTransformer);
+		        .addResourceLocations(CLASSPATH_RESOURCE_LOCATION + resourcePath)
+		        .resourceChain(false)
+		        .addResolver(swaggerResourceResolver)
+		        .addTransformer(swaggerIndexTransformer);
 	}
 
 }

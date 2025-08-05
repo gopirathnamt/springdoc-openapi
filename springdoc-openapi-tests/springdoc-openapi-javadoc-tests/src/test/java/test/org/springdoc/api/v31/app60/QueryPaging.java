@@ -26,19 +26,19 @@
 
 package test.org.springdoc.api.v31.app60;
 
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.Parameters;
-
 /**
  * The interface Query paging.
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ ElementType.METHOD })
+@Target({ElementType.METHOD})
 @Parameters({
 		@Parameter(name = "page", description = "desc page from Annotated interface"),
 		@Parameter(name = "size", description = "desc page from Annotated interface")

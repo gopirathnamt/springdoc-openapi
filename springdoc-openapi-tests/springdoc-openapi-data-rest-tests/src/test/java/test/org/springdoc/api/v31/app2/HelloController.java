@@ -26,19 +26,18 @@
 
 package test.org.springdoc.api.v31.app2;
 
-import java.util.List;
-
 import jakarta.validation.constraints.NotNull;
-
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 public class HelloController {
 
-	@GetMapping(value = "/search", produces = { "application/xml", "application/json" })
+	@GetMapping(value = "/search", produces = {"application/xml", "application/json"})
 	public ResponseEntity<List<PersonDTO>> getAllPets(@NotNull Pageable pageable) {
 		return null;
 	}

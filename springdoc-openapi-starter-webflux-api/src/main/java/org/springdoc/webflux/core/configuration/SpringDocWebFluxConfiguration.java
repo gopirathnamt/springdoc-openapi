@@ -26,9 +26,6 @@
 
 package org.springdoc.webflux.core.configuration;
 
-import java.util.List;
-import java.util.Optional;
-
 import org.springdoc.core.configuration.SpringDocConfiguration;
 import org.springdoc.core.customizers.ParameterCustomizer;
 import org.springdoc.core.customizers.SpringDocCustomizers;
@@ -49,7 +46,6 @@ import org.springdoc.webflux.api.OpenApiWebfluxResource;
 import org.springdoc.webflux.core.providers.ActuatorWebFluxProvider;
 import org.springdoc.webflux.core.providers.SpringWebFluxProvider;
 import org.springdoc.webflux.core.service.RequestService;
-
 import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.boot.actuate.autoconfigure.endpoint.web.WebEndpointProperties;
 import org.springframework.boot.actuate.autoconfigure.web.server.ConditionalOnManagementPort;
@@ -66,6 +62,9 @@ import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
+
+import java.util.List;
+import java.util.Optional;
 
 import static org.springdoc.core.utils.Constants.SPRINGDOC_ENABLED;
 
@@ -97,12 +96,15 @@ public class SpringDocWebFluxConfiguration {
 	@ConditionalOnMissingBean
 	@ConditionalOnExpression("(${springdoc.use-management-port:false} == false ) and ${springdoc.enable-default-api-docs:true}")
 	@Lazy(false)
-	OpenApiWebfluxResource openApiResource(ObjectFactory<OpenAPIService> openAPIBuilderObjectFactory, AbstractRequestService requestBuilder,
-			GenericResponseService responseBuilder, OperationService operationParser,
-			SpringDocConfigProperties springDocConfigProperties,
-			SpringDocProviders springDocProviders, SpringDocCustomizers springDocCustomizers) {
+	OpenApiWebfluxResource openApiResource(ObjectFactory<OpenAPIService> openAPIBuilderObjectFactory,
+	                                       AbstractRequestService requestBuilder,
+	                                       GenericResponseService responseBuilder, OperationService operationParser,
+	                                       SpringDocConfigProperties springDocConfigProperties,
+	                                       SpringDocProviders springDocProviders,
+	                                       SpringDocCustomizers springDocCustomizers) {
 		return new OpenApiWebfluxResource(openAPIBuilderObjectFactory, requestBuilder,
-				responseBuilder, operationParser, springDocConfigProperties, springDocProviders, springDocCustomizers);
+		                                  responseBuilder, operationParser, springDocConfigProperties,
+		                                  springDocProviders, springDocCustomizers);
 	}
 
 	/**
@@ -118,10 +120,10 @@ public class SpringDocWebFluxConfiguration {
 	@ConditionalOnMissingBean
 	@Lazy(false)
 	RequestService requestBuilder(GenericParameterService parameterBuilder, RequestBodyService requestBodyService,
-			Optional<List<ParameterCustomizer>> parameterCustomizers,
-			SpringDocParameterNameDiscoverer localSpringDocParameterNameDiscoverer) {
+	                              Optional<List<ParameterCustomizer>> parameterCustomizers,
+	                              SpringDocParameterNameDiscoverer localSpringDocParameterNameDiscoverer) {
 		return new RequestService(parameterBuilder, requestBodyService,
-				parameterCustomizers, localSpringDocParameterNameDiscoverer);
+		                          parameterCustomizers, localSpringDocParameterNameDiscoverer);
 	}
 
 	/**
@@ -135,7 +137,9 @@ public class SpringDocWebFluxConfiguration {
 	@Bean
 	@ConditionalOnMissingBean
 	@Lazy(false)
-	GenericResponseService responseBuilder(OperationService operationService, SpringDocConfigProperties springDocConfigProperties, PropertyResolverUtils propertyResolverUtils) {
+	GenericResponseService responseBuilder(OperationService operationService,
+	                                       SpringDocConfigProperties springDocConfigProperties,
+	                                       PropertyResolverUtils propertyResolverUtils) {
 		return new GenericResponseService(operationService, springDocConfigProperties, propertyResolverUtils);
 	}
 
@@ -173,13 +177,13 @@ public class SpringDocWebFluxConfiguration {
 		@ConditionalOnExpression("${springdoc.show-actuator:false} or ${springdoc.use-management-port:false}")
 		@Lazy(false)
 		ActuatorProvider actuatorProvider(ServerProperties serverProperties,
-				SpringDocConfigProperties springDocConfigProperties,
-				Optional<ManagementServerProperties> managementServerProperties,
-				Optional<WebEndpointProperties> webEndpointProperties) {
+		                                  SpringDocConfigProperties springDocConfigProperties,
+		                                  Optional<ManagementServerProperties> managementServerProperties,
+		                                  Optional<WebEndpointProperties> webEndpointProperties) {
 			return new ActuatorWebFluxProvider(serverProperties,
-					springDocConfigProperties,
-					managementServerProperties,
-					webEndpointProperties);
+			                                   springDocConfigProperties,
+			                                   managementServerProperties,
+			                                   webEndpointProperties);
 		}
 
 		/**
@@ -199,12 +203,16 @@ public class SpringDocWebFluxConfiguration {
 		@ConditionalOnExpression("${springdoc.use-management-port:false} and ${springdoc.enable-default-api-docs:true}")
 		@ConditionalOnManagementPort(ManagementPortType.DIFFERENT)
 		@Lazy(false)
-		OpenApiActuatorResource actuatorOpenApiResource(ObjectFactory<OpenAPIService> openAPIBuilderObjectFactory, AbstractRequestService requestBuilder,
-				GenericResponseService responseBuilder, OperationService operationParser,
-				SpringDocConfigProperties springDocConfigProperties,
-				SpringDocProviders springDocProviders, SpringDocCustomizers springDocCustomizers) {
+		OpenApiActuatorResource actuatorOpenApiResource(ObjectFactory<OpenAPIService> openAPIBuilderObjectFactory,
+		                                                AbstractRequestService requestBuilder,
+		                                                GenericResponseService responseBuilder,
+		                                                OperationService operationParser,
+		                                                SpringDocConfigProperties springDocConfigProperties,
+		                                                SpringDocProviders springDocProviders,
+		                                                SpringDocCustomizers springDocCustomizers) {
 			return new OpenApiActuatorResource(openAPIBuilderObjectFactory, requestBuilder,
-					responseBuilder, operationParser, springDocConfigProperties, springDocProviders, springDocCustomizers);
+			                                   responseBuilder, operationParser, springDocConfigProperties,
+			                                   springDocProviders, springDocCustomizers);
 		}
 	}
 }

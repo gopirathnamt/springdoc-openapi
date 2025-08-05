@@ -26,9 +26,9 @@
 
 package org.springdoc.core.fn.builders.extensionproperty;
 
-import java.lang.annotation.Annotation;
-
 import io.swagger.v3.oas.annotations.extensions.ExtensionProperty;
+
+import java.lang.annotation.Annotation;
 
 /**
  * The type Extension property builder.

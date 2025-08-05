@@ -24,16 +24,16 @@
 
 package test.org.springdoc.api.v31.app86;
 
-import test.org.springdoc.api.v31.AbstractSpringDocTest;
-
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.test.context.TestPropertySource;
+import test.org.springdoc.api.v31.AbstractSpringDocTest;
 
 @TestPropertySource(properties = {
 		"springdoc.packagesToScan=test.org.springdoc.api.v31.app86",
-		"springdoc.packagesToExclude=test.org.springdoc.api.v31.app86.test" })
+		"springdoc.packagesToExclude=test.org.springdoc.api.v31.app86.test"})
 public class SpringDocApp86Test extends AbstractSpringDocTest {
 
 	@SpringBootApplication
-	static class SpringDocTestApp {}
+	static class SpringDocTestApp {
+	}
 }

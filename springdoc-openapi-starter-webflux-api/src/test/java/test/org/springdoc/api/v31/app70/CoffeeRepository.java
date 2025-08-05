@@ -27,10 +27,9 @@
 package test.org.springdoc.api.v31.app70;
 
 import org.reactivestreams.Publisher;
+import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-
-import org.springframework.stereotype.Repository;
 
 @Repository
 public class CoffeeRepository {

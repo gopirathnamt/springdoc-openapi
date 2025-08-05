@@ -26,9 +26,8 @@
 
 package test.org.springdoc.api.v31.app6;
 
-import test.org.springdoc.api.v31.AbstractSpringDocTest;
-
 import org.springframework.test.context.TestPropertySource;
+import test.org.springdoc.api.v31.AbstractSpringDocTest;
 
 @TestPropertySource(properties = "springdoc.remove-broken-reference-definitions=false")
 public class SpringDocApp6Test extends AbstractSpringDocTest {

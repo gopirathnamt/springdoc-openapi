@@ -24,11 +24,10 @@ package test.org.springdoc.api.v31.app203;
 
 import org.junit.jupiter.api.Test;
 import org.springdoc.core.utils.Constants;
-import test.org.springdoc.api.v31.AbstractSpringDocTest;
-
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.TestPropertySource;
+import test.org.springdoc.api.v31.AbstractSpringDocTest;
 
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -36,15 +35,15 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@TestPropertySource(properties = { "springdoc.group-configs[0].group=mygroup", "springdoc.group-configs[0].paths-to-match=/test" })
+@TestPropertySource(properties = {"springdoc.group-configs[0].group=mygroup", "springdoc.group-configs[0].paths-to-match=/test"})
 public class SpringDocApp203Test extends AbstractSpringDocTest {
 
 	@Test
 	void testApp1() throws Exception {
 		mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL + "/mygroup"))
-				.andExpect(status().isOk())
-				.andExpect(jsonPath("$.openapi", is("3.1.0")))
-				.andExpect(content().json(getContent("results/3.1.0/app203.json"), true));
+		       .andExpect(status().isOk())
+		       .andExpect(jsonPath("$.openapi", is("3.1.0")))
+		       .andExpect(content().json(getContent("results/3.1.0/app203.json"), true));
 	}
 
 	@SpringBootApplication
@@ -53,5 +52,6 @@ public class SpringDocApp203Test extends AbstractSpringDocTest {
 			OrderDemo.Customizer2.class,
 			OrderDemo.Customizer3.class,
 	})
-	static class SpringDocTestApp {}
+	static class SpringDocTestApp {
+	}
 }

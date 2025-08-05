@@ -28,7 +28,6 @@ package test.org.springdoc.api.v31.app9.core.config;
 
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.info.Info;
-
 import org.springframework.stereotype.Component;
 
 @Component

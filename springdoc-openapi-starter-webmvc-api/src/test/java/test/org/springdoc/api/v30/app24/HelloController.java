@@ -31,7 +31,6 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
-
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -40,7 +39,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class HelloController {
 
 	@Operation(summary = "Add a new person to the store", description = "", security = {
-			@SecurityRequirement(name = "Authorization") })
+			@SecurityRequirement(name = "Authorization")})
 	@GetMapping(value = "/persons")
 	public void persons(@Valid @NotBlank String name) {
 

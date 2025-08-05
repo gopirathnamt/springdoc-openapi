@@ -16,7 +16,7 @@ public class WebSecurityConf {
 		http
 				.csrf(csrf -> csrf
 						.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
-				);
+				     );
 		return http.build();
 	}
 

@@ -28,11 +28,10 @@ package test.org.springdoc.api.v31.app152;
 
 import org.reactivestreams.Publisher;
 import org.springdoc.core.models.GroupedOpenApi;
-import reactor.core.publisher.Mono;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+import reactor.core.publisher.Mono;
 
 @RestController
 public class HelloController {
@@ -45,8 +44,8 @@ public class HelloController {
 	@Bean
 	public GroupedOpenApi userOpenApi() {
 		return GroupedOpenApi.builder()
-				.group("users")
-				.packagesToScan("test.org.springdoc.api.v31.app152")
-				.build();
+		                     .group("users")
+		                     .packagesToScan("test.org.springdoc.api.v31.app152")
+		                     .build();
 	}
 }

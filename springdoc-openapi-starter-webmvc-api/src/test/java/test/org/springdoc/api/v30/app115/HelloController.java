@@ -24,18 +24,18 @@
 
 package test.org.springdoc.api.v30.app115;
 
-import java.time.Duration;
-
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.time.Duration;
 
 @RestController
 public class HelloController {
 
 	@GetMapping(value = "/api/v2/timeout",
-			consumes = { MediaType.ALL_VALUE },
-			produces = { MediaType.APPLICATION_JSON_VALUE })
+			consumes = {MediaType.ALL_VALUE},
+			produces = {MediaType.APPLICATION_JSON_VALUE})
 	public Duration timeouts() {
 		return Duration.ofSeconds(5);
 	}

@@ -26,9 +26,9 @@
 
 package org.springdoc.core.customizers;
 
-import java.util.Locale;
-
 import io.swagger.v3.oas.models.OpenAPI;
+
+import java.util.Locale;
 
 /**
  * The interface Open api locale customizer.

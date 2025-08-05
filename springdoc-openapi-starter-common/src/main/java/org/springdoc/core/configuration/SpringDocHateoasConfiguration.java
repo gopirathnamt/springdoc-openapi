@@ -26,8 +26,6 @@
 
 package org.springdoc.core.configuration;
 
-import java.util.Optional;
-
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import org.springdoc.core.converters.CollectionModelContentConverter;
@@ -38,7 +36,6 @@ import org.springdoc.core.properties.SpringDocConfigProperties;
 import org.springdoc.core.providers.HateoasHalProvider;
 import org.springdoc.core.providers.ObjectMapperProvider;
 import org.springdoc.core.utils.Constants;
-
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
@@ -50,6 +47,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.hateoas.Links;
 import org.springframework.hateoas.server.LinkRelationProvider;
+
+import java.util.Optional;
 
 /**
  * The type Spring doc hateoas configuration.
@@ -74,7 +73,8 @@ public class SpringDocHateoasConfiguration {
 	@Bean
 	@ConditionalOnMissingBean
 	@Lazy(false)
-	HateoasHalProvider hateoasHalProvider(Optional<HateoasProperties> hateoasPropertiesOptional, ObjectMapperProvider objectMapperProvider) {
+	HateoasHalProvider hateoasHalProvider(Optional<HateoasProperties> hateoasPropertiesOptional,
+	                                      ObjectMapperProvider objectMapperProvider) {
 		return new HateoasHalProvider(hateoasPropertiesOptional, objectMapperProvider);
 	}
 
@@ -88,7 +88,8 @@ public class SpringDocHateoasConfiguration {
 	@Bean
 	@ConditionalOnMissingBean
 	@Lazy(false)
-	CollectionModelContentConverter collectionModelContentConverter(HateoasHalProvider halProvider, LinkRelationProvider linkRelationProvider) {
+	CollectionModelContentConverter collectionModelContentConverter(HateoasHalProvider halProvider,
+	                                                                LinkRelationProvider linkRelationProvider) {
 		return halProvider.isHalEnabled() ? new CollectionModelContentConverter(linkRelationProvider) : null;
 	}
 
@@ -104,7 +105,8 @@ public class SpringDocHateoasConfiguration {
 	@Bean(Constants.LINKS_SCHEMA_CUSTOMIZER)
 	@ConditionalOnMissingBean(name = Constants.LINKS_SCHEMA_CUSTOMIZER)
 	@Lazy(false)
-	GlobalOpenApiCustomizer linksSchemaCustomizer(HateoasHalProvider halProvider, SpringDocConfigProperties springDocConfigProperties) {
+	GlobalOpenApiCustomizer linksSchemaCustomizer(HateoasHalProvider halProvider,
+	                                              SpringDocConfigProperties springDocConfigProperties) {
 		if (!halProvider.isHalEnabled()) {
 			return openApi -> {
 			};

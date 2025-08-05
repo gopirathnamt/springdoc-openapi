@@ -33,7 +33,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springdoc.core.extractor.DelegatingMethodParameter;
 import org.springdoc.core.service.GenericParameterService;
-
 import org.springframework.core.MethodParameter;
 import org.springframework.core.convert.TypeDescriptor;
 import org.springframework.web.bind.annotation.CookieValue;
@@ -102,7 +101,8 @@ public class ParameterInfo {
 	 * @param genericParameterService the parameter builder
 	 * @param parameterAnnotation     the parameter annotation
 	 */
-	public ParameterInfo(String pName, MethodParameter methodParameter, GenericParameterService genericParameterService, Parameter parameterAnnotation) {
+	public ParameterInfo(String pName, MethodParameter methodParameter, GenericParameterService genericParameterService,
+	                     Parameter parameterAnnotation) {
 		RequestHeader requestHeader = methodParameter.getParameterAnnotation(RequestHeader.class);
 		RequestParam requestParam = methodParameter.getParameterAnnotation(RequestParam.class);
 		PathVariable pathVar = methodParameter.getParameterAnnotation(PathVariable.class);
@@ -124,17 +124,21 @@ public class ParameterInfo {
 		if (StringUtils.isNotBlank(this.pName))
 			this.pName = genericParameterService.resolveEmbeddedValuesAndExpressions(this.pName).toString();
 		if (this.defaultValue != null && !ValueConstants.DEFAULT_NONE.equals(this.defaultValue.toString())) {
-			this.defaultValue = genericParameterService.resolveEmbeddedValuesAndExpressions(this.defaultValue.toString());
+			this.defaultValue =
+					genericParameterService.resolveEmbeddedValuesAndExpressions(this.defaultValue.toString());
 			genericParameterService.getOptionalWebConversionServiceProvider()
-					.ifPresent(conversionService -> {
-								try {
-									this.defaultValue = conversionService.convert(this.defaultValue, new TypeDescriptor(methodParameter));
-								}
-								catch (Exception e) {
-									LOGGER.warn("Using the following default value : {}, without spring conversionService", this.defaultValue);
-								}
-							}
-					);
+			                       .ifPresent(conversionService -> {
+				                                  try {
+					                                  this.defaultValue = conversionService.convert(this.defaultValue,
+					                                                                                new TypeDescriptor(
+							                                                                                methodParameter));
+				                                  } catch (Exception e) {
+					                                  LOGGER.warn(
+							                                  "Using the following default value : {}, without spring conversionService",
+							                                  this.defaultValue);
+				                                  }
+			                                  }
+			                                 );
 		}
 
 		this.required = this.required && !methodParameter.isOptional();
@@ -144,8 +148,7 @@ public class ParameterInfo {
 				this.parameterId.setpName(this.pName);
 			if (StringUtils.isBlank(parameterId.getParamType()))
 				this.parameterId.setParamType(this.paramType);
-		}
-		else
+		} else
 			this.parameterId = new ParameterId(this.pName, paramType);
 
 	}

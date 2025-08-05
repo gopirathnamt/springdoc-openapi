@@ -24,8 +24,6 @@
 
 package test.org.springdoc.api.v31.app184;
 
-import java.util.Objects;
-
 import io.swagger.v3.oas.models.parameters.HeaderParameter;
 import io.swagger.v3.oas.models.servers.Server;
 import org.junit.jupiter.api.Test;
@@ -37,11 +35,12 @@ import org.springdoc.core.filters.GlobalOpenApiMethodFilter;
 import org.springdoc.core.filters.OpenApiMethodFilter;
 import org.springdoc.core.models.GroupedOpenApi;
 import org.springdoc.core.utils.Constants;
-import test.org.springdoc.api.v31.AbstractSpringDocTest;
-
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.TestPropertySource;
+import test.org.springdoc.api.v31.AbstractSpringDocTest;
+
+import java.util.Objects;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -56,22 +55,22 @@ public class SpringDocApp184Test extends AbstractSpringDocTest {
 	@Test
 	void testGroup1() throws Exception {
 		mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL + "/group1"))
-				.andExpect(status().isOk())
-				.andExpect(content().json(getContent("results/3.1.0/app184-1.json"), true));
+		       .andExpect(status().isOk())
+		       .andExpect(content().json(getContent("results/3.1.0/app184-1.json"), true));
 	}
 
 	@Test
 	void testGroup2() throws Exception {
 		mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL + "/group2"))
-				.andExpect(status().isOk())
-				.andExpect(content().json(getContent("results/3.1.0/app184-2.json"), true));
+		       .andExpect(status().isOk())
+		       .andExpect(content().json(getContent("results/3.1.0/app184-2.json"), true));
 	}
 
 	@Test
 	void testGroup3() throws Exception {
 		mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL + "/group3"))
-				.andExpect(status().isOk())
-				.andExpect(content().json(getContent("results/3.1.0/app184-3.json"), true));
+		       .andExpect(status().isOk())
+		       .andExpect(content().json(getContent("results/3.1.0/app184-3.json"), true));
 	}
 
 	@SpringBootApplication
@@ -89,7 +88,8 @@ public class SpringDocApp184Test extends AbstractSpringDocTest {
 
 		@Bean
 		public GlobalOperationCustomizer addHeaderGlobaBeanl() {
-			return (operation, handlerMethod) -> operation.addParametersItem(new HeaderParameter().name("headerGlobalBean"));
+			return (operation, handlerMethod) -> operation.addParametersItem(
+					new HeaderParameter().name("headerGlobalBean"));
 		}
 
 		@Bean
@@ -110,21 +110,25 @@ public class SpringDocApp184Test extends AbstractSpringDocTest {
 		@Bean
 		public GroupedOpenApi group2() {
 			return GroupedOpenApi.builder()
-					.group("group2")
-					.addOpenApiCustomizer(openApi -> openApi.getServers().add(new Server().url("urlGroup2")))
-					.addOperationCustomizer((operation, handlerMethod) -> operation.addParametersItem(new HeaderParameter().name("headerGroup2")))
-					.addOpenApiMethodFilter(method -> !Objects.equals(method.getName(), "group2Filtered"))
-					.build();
+			                     .group("group2")
+			                     .addOpenApiCustomizer(
+					                     openApi -> openApi.getServers().add(new Server().url("urlGroup2")))
+			                     .addOperationCustomizer((operation, handlerMethod) -> operation.addParametersItem(
+					                     new HeaderParameter().name("headerGroup2")))
+			                     .addOpenApiMethodFilter(method -> !Objects.equals(method.getName(), "group2Filtered"))
+			                     .build();
 		}
 
 		@Bean
 		public GroupedOpenApi group3() {
 			return GroupedOpenApi.builder()
-					.group("group3")
-					.addOpenApiCustomizer(openApi -> openApi.getServers().add(new Server().url("urlGroup3")))
-					.addOperationCustomizer((operation, handlerMethod) -> operation.addParametersItem(new HeaderParameter().name("headerGroup3")))
-					.addOpenApiMethodFilter(method -> !Objects.equals(method.getName(), "group3Filtered"))
-					.build();
+			                     .group("group3")
+			                     .addOpenApiCustomizer(
+					                     openApi -> openApi.getServers().add(new Server().url("urlGroup3")))
+			                     .addOperationCustomizer((operation, handlerMethod) -> operation.addParametersItem(
+					                     new HeaderParameter().name("headerGroup3")))
+			                     .addOpenApiMethodFilter(method -> !Objects.equals(method.getName(), "group3Filtered"))
+			                     .build();
 		}
 
 	}

@@ -26,9 +26,9 @@
 
 package org.springdoc.core.converters.models;
 
-import java.util.List;
-
 import org.springdoc.core.annotations.ParameterObject;
+
+import java.util.List;
 
 /**
  * The type Default pageable.

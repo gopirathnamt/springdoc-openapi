@@ -24,11 +24,11 @@
 
 package test.org.springdoc.api.v30.app130;
 
-import java.time.Instant;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import java.time.Instant;
 
 @Hidden
 public class TrackerData {

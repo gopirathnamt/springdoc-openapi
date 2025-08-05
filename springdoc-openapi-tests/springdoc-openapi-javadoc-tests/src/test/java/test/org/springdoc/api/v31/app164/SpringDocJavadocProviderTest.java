@@ -26,14 +26,14 @@
 
 package test.org.springdoc.api.v31.app164;
 
-import java.util.stream.Stream;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.springdoc.core.providers.JavadocProvider;
 import org.springdoc.core.providers.SpringDocJavadocProvider;
+
+import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
@@ -53,7 +53,7 @@ class SpringDocJavadocProviderTest {
 				arguments("<p>A b c</p>D e f", "A b c"),
 				arguments("<p>A b c. D</p>e f", "A b c"),
 				arguments("A b c.d e f", "A b c.d e f")
-		);
+		                );
 	}
 
 	/**
@@ -62,7 +62,7 @@ class SpringDocJavadocProviderTest {
 	static Stream<Arguments> getFirstSentenceNotHandled() {
 		return Stream.of(
 				arguments("<p>A b c<p>d e f</p>", "A b c")
-		);
+		                );
 	}
 
 	@BeforeEach

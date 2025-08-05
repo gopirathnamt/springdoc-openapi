@@ -26,14 +26,13 @@ package test.org.springdoc.api.v31.app107;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
-
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class HelloController {
 
-	@GetMapping(path = "/entity-b", produces = { "application/json", "application/xml" })
+	@GetMapping(path = "/entity-b", produces = {"application/json", "application/xml"})
 	public EntityB getEntityB() {
 		return new EntityB();
 	}

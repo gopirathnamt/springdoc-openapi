@@ -26,10 +26,6 @@
 
 package org.springdoc.core.converters;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JavaType;
@@ -40,6 +36,10 @@ import io.swagger.v3.oas.models.media.Schema;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springdoc.core.providers.ObjectMapperProvider;
+
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 import static org.springdoc.core.utils.SpringDocUtils.handleSchemaTypes;
 
@@ -170,9 +170,11 @@ public class AdditionalModelsConverter implements ModelConverter {
 					if (springDocObjectMapper.isOpenapi31())
 						handleSchemaTypes(schema);
 					return springDocObjectMapper.jsonMapper()
-							.readValue(springDocObjectMapper.jsonMapper().writeValueAsString(schema), new TypeReference<Schema>() {});
-				}
-				catch (JsonProcessingException e) {
+					                            .readValue(
+							                            springDocObjectMapper.jsonMapper().writeValueAsString(schema),
+							                            new TypeReference<Schema>() {
+							                            });
+				} catch (JsonProcessingException e) {
 					LOGGER.warn("Json Processing Exception occurred: {}", e.getMessage());
 				}
 			if (modelToClassMap.containsKey(cls))

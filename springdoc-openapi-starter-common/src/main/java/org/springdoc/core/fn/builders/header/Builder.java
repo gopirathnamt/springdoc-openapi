@@ -26,13 +26,13 @@
 
 package org.springdoc.core.fn.builders.header;
 
-import java.lang.annotation.Annotation;
-
 import io.swagger.v3.oas.annotations.enums.Explode;
 import io.swagger.v3.oas.annotations.headers.Header;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import java.lang.annotation.Annotation;
 
 /**
  * The type Header builder.

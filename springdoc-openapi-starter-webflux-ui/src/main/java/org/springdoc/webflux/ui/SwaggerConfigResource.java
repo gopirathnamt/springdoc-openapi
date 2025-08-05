@@ -25,14 +25,13 @@
  */
 package org.springdoc.webflux.ui;
 
-import java.util.Map;
-
 import io.swagger.v3.oas.annotations.Operation;
-
 import org.springframework.http.MediaType;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Map;
 
 import static org.springdoc.core.utils.Constants.SWAGGER_CONFIG_URL;
 

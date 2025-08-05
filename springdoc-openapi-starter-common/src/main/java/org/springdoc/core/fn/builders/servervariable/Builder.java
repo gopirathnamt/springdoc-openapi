@@ -26,11 +26,11 @@
 
 package org.springdoc.core.fn.builders.servervariable;
 
-import java.lang.annotation.Annotation;
-
 import io.swagger.v3.oas.annotations.extensions.Extension;
 import io.swagger.v3.oas.annotations.servers.ServerVariable;
 import org.apache.commons.lang3.ArrayUtils;
+
+import java.lang.annotation.Annotation;
 
 /**
  * The type Server variable builder.

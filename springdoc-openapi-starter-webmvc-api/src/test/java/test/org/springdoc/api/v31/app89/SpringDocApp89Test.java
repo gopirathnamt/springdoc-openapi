@@ -26,11 +26,10 @@ package test.org.springdoc.api.v31.app89;
 
 
 import io.swagger.v3.oas.models.media.ObjectSchema;
-import test.org.springdoc.api.v31.AbstractSpringDocTest;
-
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.web.servlet.ModelAndView;
+import test.org.springdoc.api.v31.AbstractSpringDocTest;
 
 import static org.springdoc.core.utils.SpringDocUtils.getConfig;
 
@@ -42,5 +41,6 @@ public class SpringDocApp89Test extends AbstractSpringDocTest {
 	}
 
 	@SpringBootApplication
-	static class SpringDocTestApp {}
+	static class SpringDocTestApp {
+	}
 }

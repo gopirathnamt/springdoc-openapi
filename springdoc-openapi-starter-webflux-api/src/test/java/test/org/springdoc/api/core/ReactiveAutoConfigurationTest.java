@@ -19,7 +19,6 @@
 package test.org.springdoc.api.core;
 
 import org.junit.jupiter.api.Test;
-
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;

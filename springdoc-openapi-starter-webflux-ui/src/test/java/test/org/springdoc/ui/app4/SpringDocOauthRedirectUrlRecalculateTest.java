@@ -19,33 +19,32 @@
 package test.org.springdoc.ui.app4;
 
 import org.junit.jupiter.api.Test;
-import test.org.springdoc.ui.AbstractSpringDocTest;
-
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.test.context.TestPropertySource;
+import test.org.springdoc.ui.AbstractSpringDocTest;
 
-@TestPropertySource(properties = { "server.forward-headers-strategy=framework" })
+@TestPropertySource(properties = {"server.forward-headers-strategy=framework"})
 public class SpringDocOauthRedirectUrlRecalculateTest extends AbstractSpringDocTest {
 
 	@Test
 	void oauth2_redirect_url_recalculation() throws Exception {
 
 		webTestClient.get().uri("/v3/api-docs/swagger-config")
-				.header("X-Forwarded-Proto", "https")
-				.header("X-Forwarded-Host", "host1")
-				.exchange()
-				.expectStatus().isOk()
-				.expectBody()
-				.jsonPath("$.oauth2RedirectUrl").isEqualTo("https://host1/swagger-ui/oauth2-redirect.html");
+		             .header("X-Forwarded-Proto", "https")
+		             .header("X-Forwarded-Host", "host1")
+		             .exchange()
+		             .expectStatus().isOk()
+		             .expectBody()
+		             .jsonPath("$.oauth2RedirectUrl").isEqualTo("https://host1/swagger-ui/oauth2-redirect.html");
 
 
 		webTestClient.get().uri("/v3/api-docs/swagger-config")
-				.header("X-Forwarded-Proto", "http")
-				.header("X-Forwarded-Host", "host2:8080")
-				.exchange()
-				.expectStatus().isOk()
-				.expectBody()
-				.jsonPath("$.oauth2RedirectUrl").isEqualTo("http://host2:8080/swagger-ui/oauth2-redirect.html");
+		             .header("X-Forwarded-Proto", "http")
+		             .header("X-Forwarded-Host", "host2:8080")
+		             .exchange()
+		             .expectStatus().isOk()
+		             .expectBody()
+		             .jsonPath("$.oauth2RedirectUrl").isEqualTo("http://host2:8080/swagger-ui/oauth2-redirect.html");
 
 	}
 

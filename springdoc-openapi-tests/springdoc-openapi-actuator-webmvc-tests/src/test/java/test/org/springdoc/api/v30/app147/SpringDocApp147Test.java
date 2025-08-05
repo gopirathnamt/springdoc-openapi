@@ -20,10 +20,9 @@ package test.org.springdoc.api.v30.app147;
 
 import org.junit.jupiter.api.Test;
 import org.springdoc.core.utils.Constants;
-import test.org.springdoc.api.v30.AbstractSpringDocActuatorTest;
-
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
+import test.org.springdoc.api.v30.AbstractSpringDocActuatorTest;
 
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -33,38 +32,39 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
-		properties = { "management.endpoints.web.exposure.include=*",
+		properties = {"management.endpoints.web.exposure.include=*",
 				"springdoc.show-actuator=true",
 				"management.server.port=9287",
 				"management.endpoints.web.exposure.exclude=functions, shutdown",
 				"server.servlet.context-path=/sample",
 				"management.server.base-path=/test",
-				"management.endpoints.web.base-path=/application" })
+				"management.endpoints.web.base-path=/application"})
 public class SpringDocApp147Test extends AbstractSpringDocActuatorTest {
 
 	@Test
 	void testApp() throws Exception {
 		mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL + "/" + Constants.ACTUATOR_DEFAULT_GROUP))
-				.andExpect(status().isOk())
-				.andExpect(jsonPath("$.openapi", is("3.0.1")))
-				.andExpect(content().json(getContent("results/3.0.1/app147-1.json"), true));
+		       .andExpect(status().isOk())
+		       .andExpect(jsonPath("$.openapi", is("3.0.1")))
+		       .andExpect(content().json(getContent("results/3.0.1/app147-1.json"), true));
 	}
 
 	@Test
 	void testApp1() throws Exception {
 		mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL + "/users"))
-				.andExpect(status().isOk())
-				.andExpect(jsonPath("$.openapi", is("3.0.1")))
-				.andExpect(content().json(getContent("results/3.0.1/app147-2.json"), true));
+		       .andExpect(status().isOk())
+		       .andExpect(jsonPath("$.openapi", is("3.0.1")))
+		       .andExpect(content().json(getContent("results/3.0.1/app147-2.json"), true));
 	}
 
 	@Test
 	void testApp2() throws Exception {
 		mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL + "/" + Constants.DEFAULT_GROUP_NAME))
-				.andExpect(status().isNotFound());
+		       .andExpect(status().isNotFound());
 	}
 
 	@SpringBootApplication
-	static class SpringDocTestApp {}
+	static class SpringDocTestApp {
+	}
 
 }

@@ -31,12 +31,11 @@ import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
 import io.swagger.v3.oas.models.security.SecurityScheme;
-import test.org.springdoc.api.v30.AbstractSpringDocTest;
-
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.context.TestPropertySource;
+import test.org.springdoc.api.v30.AbstractSpringDocTest;
 
 @TestPropertySource(properties = {
 		"springdoc.group-configs[0].group=stream",
@@ -50,15 +49,16 @@ public class SpringDocApp68Test extends AbstractSpringDocTest {
 
 
 	@SpringBootApplication
-	@ComponentScan(basePackages = { "org.springdoc", "test.org.springdoc.api.v30.app68" })
+	@ComponentScan(basePackages = {"org.springdoc", "test.org.springdoc.api.v30.app68"})
 	static class SpringDocTestApp {
 		@Bean
 		public OpenAPI customOpenAPI() {
 			return new OpenAPI()
 					.components(new Components().addSecuritySchemes("basicScheme",
-							new SecurityScheme().type(SecurityScheme.Type.HTTP).scheme("basic")))
+					                                                new SecurityScheme().type(SecurityScheme.Type.HTTP)
+					                                                                    .scheme("basic")))
 					.info(new Info().title("Tweet API").version("v0")
-							.license(new License().name("Apache 2.0").url("http://springdoc.org")));
+					                .license(new License().name("Apache 2.0").url("http://springdoc.org")));
 		}
 	}
 }

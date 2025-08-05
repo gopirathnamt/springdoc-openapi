@@ -26,9 +26,9 @@
 
 package test.org.springdoc.api.v30.app3;
 
-import java.util.Date;
-
 import com.fasterxml.jackson.annotation.JsonValue;
+
+import java.util.Date;
 
 /**
  * The type Playing card.

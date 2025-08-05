@@ -26,9 +26,9 @@
 
 package org.springdoc.core.fn;
 
-import java.util.function.Consumer;
-
 import org.springdoc.core.fn.builders.operation.Builder;
+
+import java.util.function.Consumer;
 
 /**
  * The type Abstract springdoc route builder.

@@ -1,7 +1,6 @@
 package test.org.springdoc.api.v30.app206;
 
 import org.springdoc.core.annotations.ParameterObject;
-
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 

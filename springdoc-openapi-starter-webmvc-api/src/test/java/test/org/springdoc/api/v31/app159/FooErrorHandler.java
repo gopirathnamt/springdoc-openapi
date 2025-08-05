@@ -25,7 +25,6 @@
 package test.org.springdoc.api.v31.app159;
 
 import com.fasterxml.jackson.annotation.JsonView;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;

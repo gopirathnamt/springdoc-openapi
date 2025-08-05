@@ -20,7 +20,6 @@ package test.org.springdoc.ui;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springdoc.core.utils.Constants;
-
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MvcResult;
 
@@ -35,7 +34,8 @@ public abstract class AbstractSpringDocTest extends AbstractCommonTest {
 	public static String className;
 
 	protected void checkJS(String fileName, String uri, String contextPath) throws Exception {
-		MvcResult mvcResult = mockMvc.perform(get(contextPath + uri).contextPath(contextPath)).andExpect(status().isOk()).andReturn();
+		MvcResult mvcResult =
+				mockMvc.perform(get(contextPath + uri).contextPath(contextPath)).andExpect(status().isOk()).andReturn();
 		String transformedIndex = mvcResult.getResponse().getContentAsString();
 		assertTrue(transformedIndex.contains("window.ui"));
 		assertEquals("no-store", mvcResult.getResponse().getHeader("Cache-Control"));

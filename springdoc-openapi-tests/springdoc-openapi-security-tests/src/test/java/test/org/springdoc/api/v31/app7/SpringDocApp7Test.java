@@ -29,20 +29,19 @@ package test.org.springdoc.api.v31.app7;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
-import test.org.springdoc.api.v31.AbstractSpringDocTest;
-
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import test.org.springdoc.api.v31.AbstractSpringDocTest;
 
 public class SpringDocApp7Test extends AbstractSpringDocTest {
 
-	@SpringBootApplication(scanBasePackages = { "test.org.springdoc.api.v31.configuration", "test.org.springdoc.api.v31.app7" })
+	@SpringBootApplication(scanBasePackages = {"test.org.springdoc.api.v31.configuration", "test.org.springdoc.api.v31.app7"})
 	static class SpringDocTestApp {
 		@Bean
 		public OpenAPI customOpenAPI() {
 			return new OpenAPI()
 					.info(new Info().title("Security API").version("v1")
-							.license(new License().name("Apache 2.0").url("http://springdoc.org")));
+					                .license(new License().name("Apache 2.0").url("http://springdoc.org")));
 		}
 	}
 }

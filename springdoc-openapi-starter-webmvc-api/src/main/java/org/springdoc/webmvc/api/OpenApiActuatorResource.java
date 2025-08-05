@@ -26,8 +26,6 @@
 
 package org.springdoc.webmvc.api;
 
-import java.util.Locale;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.servlet.http.HttpServletRequest;
@@ -38,12 +36,13 @@ import org.springdoc.core.service.AbstractRequestService;
 import org.springdoc.core.service.GenericResponseService;
 import org.springdoc.core.service.OpenAPIService;
 import org.springdoc.core.service.OperationService;
-
 import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.boot.actuate.endpoint.web.annotation.RestControllerEndpoint;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
+
+import java.util.Locale;
 
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 import static org.springdoc.core.utils.Constants.APPLICATION_OPENAPI_YAML;
@@ -74,11 +73,12 @@ public class OpenApiActuatorResource extends OpenApiResource {
 	 * @param springDocCustomizers        the spring doc customizers
 	 */
 	public OpenApiActuatorResource(ObjectFactory<OpenAPIService> openAPIBuilderObjectFactory,
-			AbstractRequestService requestBuilder, GenericResponseService responseBuilder,
-			OperationService operationParser,
-			SpringDocConfigProperties springDocConfigProperties,
-			SpringDocProviders springDocProviders, SpringDocCustomizers springDocCustomizers) {
-		super(openAPIBuilderObjectFactory, requestBuilder, responseBuilder, operationParser, springDocConfigProperties, springDocProviders, springDocCustomizers);
+	                               AbstractRequestService requestBuilder, GenericResponseService responseBuilder,
+	                               OperationService operationParser,
+	                               SpringDocConfigProperties springDocConfigProperties,
+	                               SpringDocProviders springDocProviders, SpringDocCustomizers springDocCustomizers) {
+		super(openAPIBuilderObjectFactory, requestBuilder, responseBuilder, operationParser, springDocConfigProperties,
+		      springDocProviders, springDocCustomizers);
 	}
 
 	/**
@@ -94,11 +94,12 @@ public class OpenApiActuatorResource extends OpenApiResource {
 	 * @param springDocCustomizers        the spring doc customizers
 	 */
 	public OpenApiActuatorResource(String groupName, ObjectFactory<OpenAPIService> openAPIBuilderObjectFactory,
-			AbstractRequestService requestBuilder, GenericResponseService responseBuilder,
-			OperationService operationParser, SpringDocConfigProperties springDocConfigProperties,
-			SpringDocProviders springDocProviders, SpringDocCustomizers springDocCustomizers) {
+	                               AbstractRequestService requestBuilder, GenericResponseService responseBuilder,
+	                               OperationService operationParser,
+	                               SpringDocConfigProperties springDocConfigProperties,
+	                               SpringDocProviders springDocProviders, SpringDocCustomizers springDocCustomizers) {
 		super(groupName, openAPIBuilderObjectFactory, requestBuilder, responseBuilder, operationParser,
-				springDocConfigProperties, springDocProviders, springDocCustomizers);
+		      springDocConfigProperties, springDocProviders, springDocCustomizers);
 	}
 
 	/**

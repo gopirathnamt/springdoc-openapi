@@ -26,10 +26,9 @@ package test.org.springdoc.api.v30.app210;
 
 import org.junit.jupiter.api.Test;
 import org.springdoc.core.models.GroupedOpenApi;
-import test.org.springdoc.api.AbstractCommonTest;
-
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
+import test.org.springdoc.api.AbstractCommonTest;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -42,6 +41,7 @@ public class SpringDocApp210Test extends AbstractCommonTest {
 	}
 
 	@SpringBootApplication
-	static class SpringDocTestApp {}
+	static class SpringDocTestApp {
+	}
 
 }

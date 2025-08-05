@@ -26,14 +26,9 @@
 
 package org.springdoc.core.providers;
 
-import java.lang.reflect.Field;
-import java.util.Map;
-import java.util.Optional;
-
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.springframework.aop.support.AopUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.InitializingBean;
@@ -46,6 +41,10 @@ import org.springframework.format.support.DefaultFormattingConversionService;
 import org.springframework.format.support.FormattingConversionService;
 import org.springframework.lang.Nullable;
 import org.springframework.util.ClassUtils;
+
+import java.lang.reflect.Field;
+import java.util.Map;
+import java.util.Optional;
 
 
 /**
@@ -68,12 +67,14 @@ public class WebConversionServiceProvider implements InitializingBean, Applicati
 	/**
 	 * The constant SERVLET_APPLICATION_CONTEXT_CLASS.
 	 */
-	private static final String SERVLET_APPLICATION_CONTEXT_CLASS = "org.springframework.web.context.WebApplicationContext";
+	private static final String SERVLET_APPLICATION_CONTEXT_CLASS =
+			"org.springframework.web.context.WebApplicationContext";
 
 	/**
 	 * The constant REACTIVE_APPLICATION_CONTEXT_CLASS.
 	 */
-	private static final String REACTIVE_APPLICATION_CONTEXT_CLASS = "org.springframework.boot.web.reactive.context.ReactiveWebApplicationContext";
+	private static final String REACTIVE_APPLICATION_CONTEXT_CLASS =
+			"org.springframework.boot.web.reactive.context.ReactiveWebApplicationContext";
 
 	/**
 	 * The Formatting conversion service.
@@ -88,12 +89,12 @@ public class WebConversionServiceProvider implements InitializingBean, Applicati
 	@Override
 	public void afterPropertiesSet() {
 		if (isAssignable(SERVLET_APPLICATION_CONTEXT_CLASS, this.applicationContext.getClass())) {
-			this.formattingConversionService = applicationContext.getBean("mvcConversionService", FormattingConversionService.class);
-		}
-		else if (isAssignable(REACTIVE_APPLICATION_CONTEXT_CLASS, this.applicationContext.getClass())) {
-			this.formattingConversionService = applicationContext.getBean("webFluxConversionService", FormattingConversionService.class);
-		}
-		else
+			this.formattingConversionService =
+					applicationContext.getBean("mvcConversionService", FormattingConversionService.class);
+		} else if (isAssignable(REACTIVE_APPLICATION_CONTEXT_CLASS, this.applicationContext.getClass())) {
+			this.formattingConversionService =
+					applicationContext.getBean("webFluxConversionService", FormattingConversionService.class);
+		} else
 			formattingConversionService = new DefaultFormattingConversionService();
 	}
 
@@ -123,14 +124,17 @@ public class WebConversionServiceProvider implements InitializingBean, Applicati
 			if (!AopUtils.isAopProxy(formattingConversionService)) {
 				try {
 					converters = convertersField.get(formattingConversionService);
-					Map<ConvertiblePair, Object> springConverters = (Map<ConvertiblePair, Object>) FieldUtils.readDeclaredField(converters, CONVERTERS, true);
-					Optional<ConvertiblePair> convertiblePairOptional = springConverters.keySet().stream().filter(convertiblePair -> convertiblePair.getTargetType().equals(clazz)).findAny();
+					Map<ConvertiblePair, Object> springConverters =
+							(Map<ConvertiblePair, Object>) FieldUtils.readDeclaredField(converters, CONVERTERS, true);
+					Optional<ConvertiblePair> convertiblePairOptional = springConverters.keySet().stream()
+					                                                                    .filter(convertiblePair -> convertiblePair.getTargetType()
+					                                                                                                              .equals(clazz))
+					                                                                    .findAny();
 					if (convertiblePairOptional.isPresent()) {
 						ConvertiblePair convertiblePair = convertiblePairOptional.get();
 						result = convertiblePair.getSourceType();
 					}
-				}
-				catch (IllegalAccessException e) {
+				} catch (IllegalAccessException e) {
 					LOGGER.warn(e.getMessage());
 				}
 			}
@@ -148,8 +152,7 @@ public class WebConversionServiceProvider implements InitializingBean, Applicati
 	private boolean isAssignable(String target, Class<?> type) {
 		try {
 			return ClassUtils.resolveClassName(target, null).isAssignableFrom(type);
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			return false;
 		}
 	}

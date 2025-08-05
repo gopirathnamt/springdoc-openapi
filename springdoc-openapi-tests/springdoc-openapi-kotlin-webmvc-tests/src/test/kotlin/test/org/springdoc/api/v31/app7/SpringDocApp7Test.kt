@@ -27,20 +27,20 @@ import test.org.springdoc.api.v31.AbstractKotlinSpringDocMVCTest
 
 class SpringDocApp7Test : AbstractKotlinSpringDocMVCTest() {
 
-	@SpringBootApplication
-	@ComponentScan(basePackages = ["org.springdoc", "test.org.springdoc.api.v31.app7"])
-	class DemoApplication {
-		@Bean
-		fun controller(applicationContext: GenericApplicationContext): ExampleController {
-			return createProxy(ExampleController::class.java)
-		}
+    @SpringBootApplication
+    @ComponentScan(basePackages = ["org.springdoc", "test.org.springdoc.api.v31.app7"])
+    class DemoApplication {
+        @Bean
+        fun controller(applicationContext: GenericApplicationContext): ExampleController {
+            return createProxy(ExampleController::class.java)
+        }
 
-		private fun <T> createProxy(clazz: Class<T>): T {
-			val proxyFactory = ProxyFactory(clazz)
-			proxyFactory.targetClass = clazz
-			@Suppress("UNCHECKED_CAST")
-			return proxyFactory.proxy as T
-		}
-	}
+        private fun <T> createProxy(clazz: Class<T>): T {
+            val proxyFactory = ProxyFactory(clazz)
+            proxyFactory.targetClass = clazz
+            @Suppress("UNCHECKED_CAST")
+            return proxyFactory.proxy as T
+        }
+    }
 
 }

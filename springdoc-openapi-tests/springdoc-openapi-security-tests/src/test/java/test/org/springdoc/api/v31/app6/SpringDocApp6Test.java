@@ -26,17 +26,16 @@
 
 package test.org.springdoc.api.v31.app6;
 
-import test.org.springdoc.api.v31.AbstractSpringDocTest;
-import test.org.springdoc.api.v31.app6.security.MyUserDetailsService;
-
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.TestPropertySource;
+import test.org.springdoc.api.v31.AbstractSpringDocTest;
+import test.org.springdoc.api.v31.app6.security.MyUserDetailsService;
 
 @TestPropertySource(properties = "springdoc.show-login-endpoint=true")
 public class SpringDocApp6Test extends AbstractSpringDocTest {
 
-	@SpringBootApplication(scanBasePackages = { "test.org.springdoc.api.v31.configuration", "test.org.springdoc.api.v31.app6" })
+	@SpringBootApplication(scanBasePackages = {"test.org.springdoc.api.v31.configuration", "test.org.springdoc.api.v31.app6"})
 	static class SpringDocTestApp {
 		@Bean
 		MyUserDetailsService userDetailsService() {

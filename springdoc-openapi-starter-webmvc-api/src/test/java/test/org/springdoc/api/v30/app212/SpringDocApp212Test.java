@@ -21,11 +21,10 @@ package test.org.springdoc.api.v30.app212;
 import org.junit.jupiter.api.Test;
 import org.springdoc.core.customizers.SpecPropertiesCustomizer;
 import org.springdoc.core.models.GroupedOpenApi;
-import test.org.springdoc.api.v30.AbstractSpringDocV30Test;
-
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.ActiveProfiles;
+import test.org.springdoc.api.v30.AbstractSpringDocV30Test;
 
 import static org.skyscreamer.jsonassert.JSONAssert.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -42,8 +41,8 @@ public class SpringDocApp212Test extends AbstractSpringDocV30Test {
 	@Test
 	void getGroupedOpenapi_shouldCustomizeFromPropertiesWithGroupNamePrefix() throws Exception {
 		String result = mockMvc.perform(get("/v3/api-docs/apiGroupName"))
-				.andExpect(status().isOk())
-				.andReturn().getResponse().getContentAsString();
+		                       .andExpect(status().isOk())
+		                       .andReturn().getResponse().getContentAsString();
 		String expected = getContent("results/3.0.1/app212-grouped.json");
 		assertEquals(expected, result, true);
 	}
@@ -57,9 +56,9 @@ public class SpringDocApp212Test extends AbstractSpringDocV30Test {
 		@Bean
 		GroupedOpenApi apiGroupBeanName() {
 			return GroupedOpenApi.builder()
-					.group("apiGroupName")
-					.packagesToScan("test.org.springdoc.api.v30.app212")
-					.build();
+			                     .group("apiGroupName")
+			                     .packagesToScan("test.org.springdoc.api.v30.app212")
+			                     .build();
 		}
 	}
 

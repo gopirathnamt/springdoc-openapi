@@ -28,9 +28,8 @@ package test.org.springdoc.api.v31.app27;
 
 import org.junit.jupiter.api.Test;
 import org.springdoc.core.utils.Constants;
-import test.org.springdoc.api.v31.AbstractSpringDocTest;
-
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import test.org.springdoc.api.v31.AbstractSpringDocTest;
 
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.is;
@@ -51,13 +50,17 @@ class SpringDocApp27Test extends AbstractSpringDocTest {
 	@Test
 	protected void testApp() throws Exception {
 		mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL)).andExpect(status().isOk())
-				.andExpect(jsonPath("$.openapi", is("3.1.0"))).andExpect(jsonPath("$.paths./test.get.responses.500.content.['*/*'].schema.oneOf").isArray()).andExpect(jsonPath("$.paths./test.get.responses.500.content.['*/*'].schema.oneOf[*].$ref", containsInAnyOrder("#/components/schemas/Bar",
-						"#/components/schemas/Foo")));
+		       .andExpect(jsonPath("$.openapi", is("3.1.0")))
+		       .andExpect(jsonPath("$.paths./test.get.responses.500.content.['*/*'].schema.oneOf").isArray()).andExpect(
+				       jsonPath("$.paths./test.get.responses.500.content.['*/*'].schema.oneOf[*].$ref",
+				                containsInAnyOrder("#/components/schemas/Bar",
+				                                   "#/components/schemas/Foo")));
 	}
 
 	/**
 	 * The type Spring doc test app.
 	 */
 	@SpringBootApplication
-	static class SpringDocTestApp {}
+	static class SpringDocTestApp {
+	}
 }

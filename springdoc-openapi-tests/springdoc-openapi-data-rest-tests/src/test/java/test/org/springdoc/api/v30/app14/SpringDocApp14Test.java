@@ -26,14 +26,10 @@
 
 package test.org.springdoc.api.v30.app14;
 
-import java.util.Optional;
-
 import org.springdoc.core.configuration.SpringDocDataRestConfiguration;
 import org.springdoc.core.customizers.DataRestDelegatingMethodParameterCustomizer;
 import org.springdoc.core.providers.RepositoryRestConfigurationProvider;
 import org.springdoc.core.providers.SpringDataWebPropertiesProvider;
-import test.org.springdoc.api.v30.AbstractSpringDocTest;
-
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -41,13 +37,16 @@ import org.springframework.boot.autoconfigure.data.rest.RepositoryRestMvcAutoCon
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.test.context.TestPropertySource;
+import test.org.springdoc.api.v30.AbstractSpringDocTest;
 
-@TestPropertySource(properties = { "spring.data.web.pageable.default-page-size=25",
+import java.util.Optional;
+
+@TestPropertySource(properties = {"spring.data.web.pageable.default-page-size=25",
 		"spring.data.web.pageable.page-parameter=pages",
 		"spring.data.web.pageable.size-parameter=sizes",
 		"spring.data.web.pageable.one-indexed-parameters=true",
 		"spring.data.web.pageable.prefix=prefix_",
-		"spring.data.web.sort.sort-parameter=sorts" })
+		"spring.data.web.sort.sort-parameter=sorts"})
 @EnableAutoConfiguration(exclude = {
 		RepositoryRestMvcAutoConfiguration.class, SpringDocDataRestConfiguration.class
 })
@@ -59,8 +58,11 @@ public class SpringDocApp14Test extends AbstractSpringDocTest {
 		@Bean
 		@ConditionalOnMissingBean
 		@Lazy(false)
-		DataRestDelegatingMethodParameterCustomizer dataRestDelegatingMethodParameterCustomizer(Optional<SpringDataWebPropertiesProvider> optionalSpringDataWebPropertiesProvider, Optional<RepositoryRestConfigurationProvider> optionalRepositoryRestConfiguration) {
-			return new DataRestDelegatingMethodParameterCustomizer(optionalSpringDataWebPropertiesProvider, optionalRepositoryRestConfiguration);
+		DataRestDelegatingMethodParameterCustomizer dataRestDelegatingMethodParameterCustomizer(
+				Optional<SpringDataWebPropertiesProvider> optionalSpringDataWebPropertiesProvider,
+				Optional<RepositoryRestConfigurationProvider> optionalRepositoryRestConfiguration) {
+			return new DataRestDelegatingMethodParameterCustomizer(optionalSpringDataWebPropertiesProvider,
+			                                                       optionalRepositoryRestConfiguration);
 		}
 	}
 

@@ -24,10 +24,6 @@
 
 package test.org.springdoc.api.v30.app209;
 
-import java.util.List;
-import java.util.Locale;
-import java.util.Optional;
-
 import io.swagger.v3.oas.models.OpenAPI;
 import org.junit.jupiter.api.Test;
 import org.skyscreamer.jsonassert.JSONAssert;
@@ -39,14 +35,17 @@ import org.springdoc.core.service.OpenAPIService;
 import org.springdoc.core.service.SecurityService;
 import org.springdoc.core.utils.Constants;
 import org.springdoc.core.utils.PropertyResolverUtils;
-import test.org.springdoc.api.AbstractCommonTest;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.test.web.servlet.MvcResult;
+import test.org.springdoc.api.AbstractCommonTest;
+
+import java.util.List;
+import java.util.Locale;
+import java.util.Optional;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -90,16 +89,28 @@ public class SpringDocApp209Test extends AbstractCommonTest {
 	@SpringBootApplication
 	static class SpringDocTestApp {
 		@Bean("openAPIService")
-		public OpenAPIServiceMock openAPIService(Optional<OpenAPI> openAPI, SecurityService securityParser, SpringDocConfigProperties springDocConfigProperties, PropertyResolverUtils propertyResolverUtils, Optional<List<OpenApiBuilderCustomizer>> openApiBuilderCustomizers, Optional<List<ServerBaseUrlCustomizer>> serverBaseUrlCustomizers, Optional<JavadocProvider> javadocProvider) {
-			return new OpenAPIServiceMock(openAPI, securityParser, springDocConfigProperties, propertyResolverUtils, openApiBuilderCustomizers, serverBaseUrlCustomizers, javadocProvider);
+		public OpenAPIServiceMock openAPIService(Optional<OpenAPI> openAPI, SecurityService securityParser,
+		                                         SpringDocConfigProperties springDocConfigProperties,
+		                                         PropertyResolverUtils propertyResolverUtils,
+		                                         Optional<List<OpenApiBuilderCustomizer>> openApiBuilderCustomizers,
+		                                         Optional<List<ServerBaseUrlCustomizer>> serverBaseUrlCustomizers,
+		                                         Optional<JavadocProvider> javadocProvider) {
+			return new OpenAPIServiceMock(openAPI, securityParser, springDocConfigProperties, propertyResolverUtils,
+			                              openApiBuilderCustomizers, serverBaseUrlCustomizers, javadocProvider);
 		}
 	}
 
 	public static class OpenAPIServiceMock extends OpenAPIService {
 		private int numberOfTimesCalculatePathWasCalled;
 
-		public OpenAPIServiceMock(Optional<OpenAPI> openAPI, SecurityService securityParser, SpringDocConfigProperties springDocConfigProperties, PropertyResolverUtils propertyResolverUtils, Optional<List<OpenApiBuilderCustomizer>> openApiBuilderCustomizers, Optional<List<ServerBaseUrlCustomizer>> serverBaseUrlCustomizers, Optional<JavadocProvider> javadocProvider) {
-			super(openAPI, securityParser, springDocConfigProperties, propertyResolverUtils, openApiBuilderCustomizers, serverBaseUrlCustomizers, javadocProvider);
+		public OpenAPIServiceMock(Optional<OpenAPI> openAPI, SecurityService securityParser,
+		                          SpringDocConfigProperties springDocConfigProperties,
+		                          PropertyResolverUtils propertyResolverUtils,
+		                          Optional<List<OpenApiBuilderCustomizer>> openApiBuilderCustomizers,
+		                          Optional<List<ServerBaseUrlCustomizer>> serverBaseUrlCustomizers,
+		                          Optional<JavadocProvider> javadocProvider) {
+			super(openAPI, securityParser, springDocConfigProperties, propertyResolverUtils, openApiBuilderCustomizers,
+			      serverBaseUrlCustomizers, javadocProvider);
 		}
 
 		@Override

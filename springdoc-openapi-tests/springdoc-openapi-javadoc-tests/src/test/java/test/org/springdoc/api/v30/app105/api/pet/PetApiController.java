@@ -26,10 +26,10 @@
 
 package test.org.springdoc.api.v30.app105.api.pet;
 
-import java.util.Optional;
-
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Optional;
 
 /**
  * The type Pet api controller.
@@ -50,7 +50,8 @@ class PetApiController implements PetApi {
 	 *
 	 * @param delegate the delegate
 	 */
-	public PetApiController(@org.springframework.beans.factory.annotation.Autowired(required = false) PetApiDelegate delegate) {
+	public PetApiController(
+			@org.springframework.beans.factory.annotation.Autowired(required = false) PetApiDelegate delegate) {
 		this.delegate = Optional.ofNullable(delegate).orElse(new PetApiDelegate() {
 		});
 	}

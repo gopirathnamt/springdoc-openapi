@@ -24,20 +24,19 @@
 
 package test.org.springdoc.api.v30.app70.customizer;
 
-import java.lang.annotation.Annotation;
-import java.time.Duration;
-import java.util.Collections;
-import java.util.Optional;
-import java.util.stream.Stream;
-
 import com.fasterxml.jackson.databind.JavaType;
 import io.swagger.v3.core.converter.AnnotatedType;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.media.StringSchema;
 import org.springdoc.core.providers.ObjectMapperProvider;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.lang.annotation.Annotation;
+import java.time.Duration;
+import java.util.Collections;
+import java.util.Optional;
+import java.util.stream.Stream;
 
 @Component
 public class PropertyCustomizer implements org.springdoc.core.customizers.PropertyCustomizer {
@@ -53,9 +52,9 @@ public class PropertyCustomizer implements org.springdoc.core.customizers.Proper
 		}
 
 		Optional<CustomizedProperty> propertyAnnotation = Stream.of(ctxAnnotations)
-				.filter(CustomizedProperty.class::isInstance)
-				.findFirst()
-				.map(CustomizedProperty.class::cast);
+		                                                        .filter(CustomizedProperty.class::isInstance)
+		                                                        .findFirst()
+		                                                        .map(CustomizedProperty.class::cast);
 
 		JavaType javaType = objectMapperProvider.jsonMapper().constructType(type.getType());
 		if (javaType.getRawClass().equals(Duration.class)) {

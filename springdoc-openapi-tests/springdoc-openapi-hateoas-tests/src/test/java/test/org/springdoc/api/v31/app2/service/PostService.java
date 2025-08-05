@@ -28,16 +28,15 @@ package test.org.springdoc.api.v31.app2.service;
 
 
 import lombok.RequiredArgsConstructor;
-import test.org.springdoc.api.v31.app2.entities.Post;
-import test.org.springdoc.api.v31.app2.hateoas.PostResourceAssembler;
-import test.org.springdoc.api.v31.app2.repositories.PostRepository;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.stereotype.Service;
+import test.org.springdoc.api.v31.app2.entities.Post;
+import test.org.springdoc.api.v31.app2.hateoas.PostResourceAssembler;
+import test.org.springdoc.api.v31.app2.repositories.PostRepository;
 
 /**
  * @author Davide Pedone

@@ -27,12 +27,11 @@
 package test.org.springdoc.api.v30.app9.component.controller.hateoas;
 
 
-import test.org.springdoc.api.v30.app9.component.controller.ComponentsController;
-import test.org.springdoc.api.v30.app9.component.dto.DemoComponentDto;
-
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.RepresentationModelProcessor;
 import org.springframework.stereotype.Component;
+import test.org.springdoc.api.v30.app9.component.controller.ComponentsController;
+import test.org.springdoc.api.v30.app9.component.dto.DemoComponentDto;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;

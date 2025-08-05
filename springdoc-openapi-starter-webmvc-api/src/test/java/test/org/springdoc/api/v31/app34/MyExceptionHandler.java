@@ -25,7 +25,6 @@
 package test.org.springdoc.api.v31.app34;
 
 import io.swagger.v3.oas.annotations.Hidden;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;

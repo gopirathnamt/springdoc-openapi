@@ -27,10 +27,9 @@
 package test.org.springdoc.api.v31.app232;
 
 import org.springdoc.core.customizers.OperationCustomizer;
-import test.org.springdoc.api.v31.AbstractSpringDocTest;
-
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import test.org.springdoc.api.v31.AbstractSpringDocTest;
 
 /**
  * @author bnasslahsen

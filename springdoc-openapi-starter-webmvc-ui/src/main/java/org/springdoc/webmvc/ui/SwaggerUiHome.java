@@ -28,7 +28,6 @@ package org.springdoc.webmvc.ui;
 
 import io.swagger.v3.oas.annotations.Operation;
 import org.springdoc.core.utils.SpringDocUtils;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

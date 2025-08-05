@@ -24,16 +24,10 @@
 
 package test.org.springdoc.api.v30.app111;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
-
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -46,6 +40,11 @@ import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+import java.util.UUID;
 
 
 @ControllerAdvice(basePackages = "test.org.springdoc.api.v30.appzzz")
@@ -71,7 +70,7 @@ public class GlobalControllerAdvice //extends ResponseEntityExceptionHandler
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	@ResponseStatus(code = HttpStatus.BAD_REQUEST)
 	public ResponseEntity<ErrorMessage> handleMethodArgumentNotValid(MethodArgumentNotValidException ex
-	) {
+	                                                                ) {
 		List<FieldError> fieldErrors = ex.getBindingResult().getFieldErrors();
 		List<ObjectError> globalErrors = ex.getBindingResult().getGlobalErrors();
 		List<String> errors = new ArrayList<>(fieldErrors.size() + globalErrors.size());
@@ -93,7 +92,7 @@ public class GlobalControllerAdvice //extends ResponseEntityExceptionHandler
 	@ExceptionHandler(ConstraintViolationException.class)
 	@ResponseStatus(code = HttpStatus.BAD_REQUEST)
 	public ResponseEntity<ErrorMessage> handleConstraintViolatedException(ConstraintViolationException ex
-	) {
+	                                                                     ) {
 		Set<ConstraintViolation<?>> constraintViolations = ex.getConstraintViolations();
 
 
@@ -111,8 +110,9 @@ public class GlobalControllerAdvice //extends ResponseEntityExceptionHandler
 
 	@ExceptionHandler(MissingServletRequestParameterException.class)
 	@ResponseStatus(code = HttpStatus.BAD_REQUEST)
-	public ResponseEntity<ErrorMessage> handleMissingServletRequestParameterException(MissingServletRequestParameterException ex
-	) {
+	public ResponseEntity<ErrorMessage> handleMissingServletRequestParameterException(
+			MissingServletRequestParameterException ex
+	                                                                                 ) {
 
 		List<String> errors = new ArrayList<>();
 		String error = ex.getParameterName() + ", " + ex.getMessage();
@@ -125,7 +125,7 @@ public class GlobalControllerAdvice //extends ResponseEntityExceptionHandler
 	@ExceptionHandler(HttpMediaTypeNotSupportedException.class)
 	@ResponseStatus(code = HttpStatus.UNSUPPORTED_MEDIA_TYPE)
 	public ResponseEntity<ErrorMessage> handleHttpMediaTypeNotSupported(HttpMediaTypeNotSupportedException ex
-	) {
+	                                                                   ) {
 		String unsupported = "Unsupported content type: " + ex.getContentType();
 		String supported = "Supported content types: " + MediaType.toString(ex.getSupportedMediaTypes());
 		ErrorMessage errorMessage = new ErrorMessage(unsupported, supported);
@@ -141,8 +141,7 @@ public class GlobalControllerAdvice //extends ResponseEntityExceptionHandler
 			String exceptionName = mostSpecificCause.getClass().getName();
 			String message = mostSpecificCause.getMessage();
 			errorMessage = new ErrorMessage(exceptionName, message);
-		}
-		else {
+		} else {
 			errorMessage = new ErrorMessage(ex.getMessage());
 		}
 		return new ResponseEntity(errorMessage, HttpStatus.BAD_REQUEST);

@@ -26,7 +26,6 @@ package test.org.springdoc.api.v30.app234;
 
 import io.swagger.v3.oas.models.parameters.Parameter;
 import org.springdoc.core.customizers.ParameterCustomizer;
-
 import org.springframework.core.MethodParameter;
 import org.springframework.stereotype.Component;
 

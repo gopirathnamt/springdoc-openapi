@@ -22,9 +22,8 @@
 
 package test.org.springdoc.api.v31.app8;
 
-import test.org.springdoc.api.v31.AbstractSpringDocTest;
-
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import test.org.springdoc.api.v31.AbstractSpringDocTest;
 
 public class SpringDocApp8Test extends AbstractSpringDocTest {
 

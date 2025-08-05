@@ -26,9 +26,9 @@
 
 package org.springdoc.core.fn.builders.linkparameter;
 
-import java.lang.annotation.Annotation;
-
 import io.swagger.v3.oas.annotations.links.LinkParameter;
+
+import java.lang.annotation.Annotation;
 
 /**
  * The type Link parameter builder.

@@ -24,13 +24,12 @@
 
 package test.org.springdoc.api.v31.app14;
 
-import java.util.Locale;
-
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import test.org.springdoc.api.v31.AbstractSpringDocTest;
 
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import java.util.Locale;
 
 public class SpringDocApp14Test extends AbstractSpringDocTest {
 
@@ -48,5 +47,6 @@ public class SpringDocApp14Test extends AbstractSpringDocTest {
 	}
 
 	@SpringBootApplication
-	static class SpringDocTestApp {}
+	static class SpringDocTestApp {
+	}
 }

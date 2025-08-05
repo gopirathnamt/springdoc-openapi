@@ -19,11 +19,10 @@
 package test.org.springdoc.ui.app32;
 
 import org.junit.jupiter.api.Test;
-import test.org.springdoc.ui.AbstractSpringDocTest;
-
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.TestPropertySource;
+import test.org.springdoc.ui.AbstractSpringDocTest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -56,9 +55,10 @@ public class SpringDocBehindProxyWithCustomUIPathWithApiDocsTest extends Abstrac
 				.expectStatus().isOk()
 				.expectBody(String.class)
 				.consumeWith(response ->
-						assertThat(response.getResponseBody())
-								.contains("\"configUrl\" : \"/path/prefix/bar/openapi/v3/swagger-config\",")
-				);
+						             assertThat(response.getResponseBody())
+								             .contains(
+										             "\"configUrl\" : \"/path/prefix/bar/openapi/v3/swagger-config\",")
+				            );
 	}
 
 	@Test
@@ -76,5 +76,6 @@ public class SpringDocBehindProxyWithCustomUIPathWithApiDocsTest extends Abstrac
 	}
 
 	@SpringBootApplication
-	static class SpringDocTestApp {}
+	static class SpringDocTestApp {
+	}
 }

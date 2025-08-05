@@ -21,10 +21,6 @@
  */
 package test.org.springdoc.api.v31.app120;
 
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.Explode;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -34,12 +30,15 @@ import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
-
 import org.springframework.core.annotation.AliasFor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 import static java.lang.annotation.ElementType.ANNOTATION_TYPE;
 import static java.lang.annotation.ElementType.METHOD;
@@ -97,13 +96,13 @@ public class MetaAnnotationController {
 	/**
 	 * This should inherent all the attributes of {@code @AccountId}, but give it a different name
 	 */
-	@Target({ PARAMETER, METHOD, ANNOTATION_TYPE })
+	@Target({PARAMETER, METHOD, ANNOTATION_TYPE})
 	@Retention(RetentionPolicy.RUNTIME)
 	@AccountId(name = "queryAccountId")
 	@interface QueryAccountId {
 	}
 
-	@Target({ PARAMETER, METHOD, ANNOTATION_TYPE })
+	@Target({PARAMETER, METHOD, ANNOTATION_TYPE})
 	@Retention(RetentionPolicy.RUNTIME)
 	@Parameter
 	@interface TestAllAttributesAsAlias {
@@ -160,7 +159,7 @@ public class MetaAnnotationController {
 		String ref() default "";
 	}
 
-	@Target({ PARAMETER, METHOD, ANNOTATION_TYPE })
+	@Target({PARAMETER, METHOD, ANNOTATION_TYPE})
 	@Retention(RetentionPolicy.RUNTIME)
 	@Parameter(name = "name", description = "desc", schema = @Schema(implementation = Boolean.class))
 	@interface TestNoAliasFors {

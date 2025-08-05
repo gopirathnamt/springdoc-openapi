@@ -25,18 +25,9 @@
  */
 package org.springdoc.webflux.core.providers;
 
-import java.util.Collection;
-import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
-import java.util.stream.Collectors;
-
 import org.apache.commons.lang3.StringUtils;
 import org.springdoc.core.properties.SpringDocConfigProperties;
 import org.springdoc.core.providers.SpringWebProvider;
-
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.reactive.result.condition.PatternsRequestCondition;
@@ -44,6 +35,14 @@ import org.springframework.web.reactive.result.method.AbstractHandlerMethodMappi
 import org.springframework.web.reactive.result.method.RequestMappingInfo;
 import org.springframework.web.reactive.result.method.annotation.RequestMappingHandlerMapping;
 import org.springframework.web.util.pattern.PathPattern;
+
+import java.util.Collection;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 
 /**
@@ -68,7 +67,8 @@ public class SpringWebFluxProvider extends SpringWebProvider {
 			if (!CollectionUtils.isEmpty(patterns)) {
 				for (String operationPath : patterns) {
 					if (operationPath.endsWith(springDocConfigProperties.getApiDocs().getPath()))
-						return operationPath.replace(springDocConfigProperties.getApiDocs().getPath(), StringUtils.EMPTY);
+						return operationPath.replace(springDocConfigProperties.getApiDocs().getPath(),
+						                             StringUtils.EMPTY);
 				}
 			}
 		}
@@ -85,7 +85,8 @@ public class SpringWebFluxProvider extends SpringWebProvider {
 		RequestMappingInfo requestMappingInfo = (RequestMappingInfo) requestMapping;
 		PatternsRequestCondition patternsRequestCondition = requestMappingInfo.getPatternsCondition();
 		return patternsRequestCondition.getPatterns().stream()
-				.map(PathPattern::getPatternString).collect(Collectors.toCollection(LinkedHashSet::new));
+		                               .map(PathPattern::getPatternString)
+		                               .collect(Collectors.toCollection(LinkedHashSet::new));
 	}
 
 
@@ -97,12 +98,16 @@ public class SpringWebFluxProvider extends SpringWebProvider {
 	@Override
 	public Map getHandlerMethods() {
 		if (this.handlerMethods == null) {
-			Map<String, RequestMappingHandlerMapping> beansOfTypeRequestMappingHandlerMapping = applicationContext.getBeansOfType(RequestMappingHandlerMapping.class);
+			Map<String, RequestMappingHandlerMapping> beansOfTypeRequestMappingHandlerMapping =
+					applicationContext.getBeansOfType(RequestMappingHandlerMapping.class);
 			this.handlerMethods = beansOfTypeRequestMappingHandlerMapping.values().stream()
-					.map(AbstractHandlerMethodMapping::getHandlerMethods)
-					.map(Map::entrySet)
-					.flatMap(Collection::stream)
-					.collect(Collectors.toMap(Entry::getKey, Entry::getValue, (a1, a2) -> a1, LinkedHashMap::new));
+			                                                             .map(AbstractHandlerMethodMapping::getHandlerMethods)
+			                                                             .map(Map::entrySet)
+			                                                             .flatMap(Collection::stream)
+			                                                             .collect(Collectors.toMap(Entry::getKey,
+			                                                                                       Entry::getValue,
+			                                                                                       (a1, a2) -> a1,
+			                                                                                       LinkedHashMap::new));
 		}
 		return this.handlerMethods;
 	}

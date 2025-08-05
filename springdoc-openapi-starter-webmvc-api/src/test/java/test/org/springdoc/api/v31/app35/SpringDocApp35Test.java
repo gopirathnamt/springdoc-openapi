@@ -24,9 +24,8 @@
 
 package test.org.springdoc.api.v31.app35;
 
-import test.org.springdoc.api.v31.AbstractSpringDocTest;
-
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import test.org.springdoc.api.v31.AbstractSpringDocTest;
 
 import static org.springdoc.core.utils.SpringDocUtils.getConfig;
 
@@ -37,5 +36,6 @@ public class SpringDocApp35Test extends AbstractSpringDocTest {
 	}
 
 	@SpringBootApplication
-	static class SpringDocTestApp {}
+	static class SpringDocTestApp {
+	}
 }

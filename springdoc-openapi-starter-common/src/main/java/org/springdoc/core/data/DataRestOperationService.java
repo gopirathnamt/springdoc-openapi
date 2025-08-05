@@ -26,11 +26,6 @@
 
 package org.springdoc.core.data;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.lang.reflect.Type;
-import java.util.Arrays;
-
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.Operation;
@@ -43,7 +38,6 @@ import org.springdoc.core.models.MethodAttributes;
 import org.springdoc.core.service.GenericParameterService;
 import org.springdoc.core.service.OperationService;
 import org.springdoc.core.utils.SpringDocAnnotationsUtils;
-
 import org.springframework.core.MethodParameter;
 import org.springframework.core.ResolvableType;
 import org.springframework.core.annotation.AnnotatedElementUtils;
@@ -58,6 +52,11 @@ import org.springframework.data.rest.webmvc.support.DefaultedPageable;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.method.HandlerMethod;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.lang.reflect.Type;
+import java.util.Arrays;
 
 /**
  * The type Data rest operation builder.
@@ -105,7 +104,8 @@ public class DataRestOperationService {
 	 * @param operationService        the operation service
 	 */
 	public DataRestOperationService(DataRestRequestService dataRestRequestService, DataRestTagsService tagsBuilder,
-			DataRestResponseService dataRestResponseService, OperationService operationService) {
+	                                DataRestResponseService dataRestResponseService,
+	                                OperationService operationService) {
 		this.dataRestRequestService = dataRestRequestService;
 		this.tagsBuilder = tagsBuilder;
 		this.dataRestResponseService = dataRestResponseService;
@@ -127,18 +127,19 @@ public class DataRestOperationService {
 	 * @return the operation
 	 */
 	public Operation buildOperation(HandlerMethod handlerMethod, DataRestRepository dataRestRepository,
-			OpenAPI openAPI, RequestMethod requestMethod, String operationPath, MethodAttributes methodAttributes,
-			ResourceMetadata resourceMetadata, MethodResourceMapping methodResourceMapping, ControllerType controllerType) {
+	                                OpenAPI openAPI, RequestMethod requestMethod, String operationPath,
+	                                MethodAttributes methodAttributes,
+	                                ResourceMetadata resourceMetadata, MethodResourceMapping methodResourceMapping,
+	                                ControllerType controllerType) {
 		Operation operation = null;
 		if (ControllerType.ENTITY.equals(controllerType)
 				|| ControllerType.PROPERTY.equals(controllerType)
 				|| ControllerType.SCHEMA.equals(controllerType) || ControllerType.GENERAL.equals(controllerType)) {
 			operation = buildEntityOperation(handlerMethod, dataRestRepository,
-					openAPI, requestMethod, operationPath, methodAttributes, resourceMetadata);
-		}
-		else if (ControllerType.SEARCH.equals(controllerType)) {
+			                                 openAPI, requestMethod, operationPath, methodAttributes, resourceMetadata);
+		} else if (ControllerType.SEARCH.equals(controllerType)) {
 			operation = buildSearchOperation(handlerMethod, dataRestRepository, openAPI, requestMethod,
-					methodAttributes, methodResourceMapping, resourceMetadata);
+			                                 methodAttributes, methodResourceMapping, resourceMetadata);
 		}
 		return operation;
 	}
@@ -156,17 +157,21 @@ public class DataRestOperationService {
 	 * @return the operation
 	 */
 	private Operation buildEntityOperation(HandlerMethod handlerMethod, DataRestRepository dataRestRepository,
-			OpenAPI openAPI, RequestMethod requestMethod, String operationPath, MethodAttributes methodAttributes,
-			ResourceMetadata resourceMetadata) {
+	                                       OpenAPI openAPI, RequestMethod requestMethod, String operationPath,
+	                                       MethodAttributes methodAttributes,
+	                                       ResourceMetadata resourceMetadata) {
 		Class<?> domainType = null;
 		if (!ControllerType.GENERAL.equals(dataRestRepository.getControllerType()))
 			domainType = dataRestRepository.getDomainType();
 		Operation operation = initOperation(handlerMethod, domainType, requestMethod);
-		dataRestRequestService.buildParameters(openAPI, handlerMethod, requestMethod, methodAttributes, operation, resourceMetadata, dataRestRepository);
-		dataRestResponseService.buildEntityResponse(operation, handlerMethod, openAPI, requestMethod, operationPath, methodAttributes, dataRestRepository, resourceMetadata);
+		dataRestRequestService.buildParameters(openAPI, handlerMethod, requestMethod, methodAttributes, operation,
+		                                       resourceMetadata, dataRestRepository);
+		dataRestResponseService.buildEntityResponse(operation, handlerMethod, openAPI, requestMethod, operationPath,
+		                                            methodAttributes, dataRestRepository, resourceMetadata);
 		tagsBuilder.buildEntityTags(operation, handlerMethod, dataRestRepository);
 		if (domainType != null)
-			addOperationDescription(operation, requestMethod, domainType.getSimpleName().toLowerCase(), dataRestRepository);
+			addOperationDescription(operation, requestMethod, domainType.getSimpleName().toLowerCase(),
+			                        dataRestRepository);
 		return operation;
 	}
 
@@ -183,14 +188,17 @@ public class DataRestOperationService {
 	 * @return the operation
 	 */
 	private Operation buildSearchOperation(HandlerMethod handlerMethod, DataRestRepository dataRestRepository,
-			OpenAPI openAPI, RequestMethod requestMethod, MethodAttributes methodAttributes,
-			MethodResourceMapping methodResourceMapping, ResourceMetadata resourceMetadata) {
+	                                       OpenAPI openAPI, RequestMethod requestMethod,
+	                                       MethodAttributes methodAttributes,
+	                                       MethodResourceMapping methodResourceMapping,
+	                                       ResourceMetadata resourceMetadata) {
 		Class<?> domainType = dataRestRepository.getDomainType();
 		Operation operation = initOperation(handlerMethod, domainType, requestMethod);
 
 		// Add support for operation annotation
-		io.swagger.v3.oas.annotations.Operation apiOperation = AnnotatedElementUtils.findMergedAnnotation(methodResourceMapping.getMethod(),
-				io.swagger.v3.oas.annotations.Operation.class);
+		io.swagger.v3.oas.annotations.Operation apiOperation =
+				AnnotatedElementUtils.findMergedAnnotation(methodResourceMapping.getMethod(),
+				                                           io.swagger.v3.oas.annotations.Operation.class);
 
 		if (apiOperation != null)
 			operationService.parse(apiOperation, operation, openAPI, methodAttributes);
@@ -199,10 +207,15 @@ public class DataRestOperationService {
 		Method method = methodResourceMapping.getMethod();
 
 		if (!CollectionUtils.isEmpty(parameterMetadata.getParameterNames())) {
-			HandlerMethod repositoryHandlerMethod = new HandlerMethod(methodResourceMapping.getMethod().getDeclaringClass(), methodResourceMapping.getMethod());
+			HandlerMethod repositoryHandlerMethod =
+					new HandlerMethod(methodResourceMapping.getMethod().getDeclaringClass(),
+					                  methodResourceMapping.getMethod());
 			MethodParameter[] parameters = repositoryHandlerMethod.getMethodParameters();
 			for (MethodParameter methodParameter : parameters) {
-				dataRestRequestService.buildCommonParameters(openAPI, requestMethod, methodAttributes, operation, new String[] { methodParameter.getParameterName() }, new MethodParameter[] { methodParameter }, dataRestRepository);
+				dataRestRequestService.buildCommonParameters(openAPI, requestMethod, methodAttributes, operation,
+				                                             new String[]{methodParameter.getParameterName()},
+				                                             new MethodParameter[]{methodParameter},
+				                                             dataRestRepository);
 			}
 		}
 
@@ -211,13 +224,13 @@ public class DataRestOperationService {
 			ResourceDescription description = parameterMetadatum.getDescription();
 			if (description instanceof TypedResourceDescription) {
 				Type type = getParameterType(pName, method, description);
-				Schema<?> schema = SpringDocAnnotationsUtils.extractSchema(openAPI.getComponents(), type, null, null, openAPI.getSpecVersion());
+				Schema<?> schema = SpringDocAnnotationsUtils.extractSchema(openAPI.getComponents(), type, null, null,
+				                                                           openAPI.getSpecVersion());
 				Parameter parameter = getParameterFromAnnotations(openAPI, methodAttributes, method, pName);
 				if (parameter == null) {
 					parameter = new Parameter().name(pName).in(ParameterIn.QUERY.toString()).schema(schema);
 					operation.addParametersItem(parameter);
-				}
-				else if (CollectionUtils.isEmpty(operation.getParameters()))
+				} else if (CollectionUtils.isEmpty(operation.getParameters()))
 					operation.addParametersItem(parameter);
 				else
 					GenericParameterService.mergeParameter(operation.getParameters(), parameter);
@@ -226,11 +239,18 @@ public class DataRestOperationService {
 
 		if (methodResourceMapping.isPagingResource()) {
 			MethodParameter[] parameters = handlerMethod.getMethodParameters();
-			Arrays.stream(parameters).filter(methodParameter -> DefaultedPageable.class.equals(methodParameter.getParameterType())).findAny()
-					.ifPresent(methodParameterPage -> dataRestRequestService.buildCommonParameters(openAPI, requestMethod, methodAttributes, operation,
-							new String[] { methodParameterPage.getParameterName() }, new MethodParameter[] { methodParameterPage }, dataRestRepository));
+			Arrays.stream(parameters)
+			      .filter(methodParameter -> DefaultedPageable.class.equals(methodParameter.getParameterType()))
+			      .findAny()
+			      .ifPresent(methodParameterPage -> dataRestRequestService.buildCommonParameters(openAPI, requestMethod,
+			                                                                                     methodAttributes,
+			                                                                                     operation,
+			                                                                                     new String[]{methodParameterPage.getParameterName()},
+			                                                                                     new MethodParameter[]{methodParameterPage},
+			                                                                                     dataRestRepository));
 		}
-		dataRestResponseService.buildSearchResponse(operation, handlerMethod, openAPI, methodResourceMapping, domainType, methodAttributes, resourceMetadata, dataRestRepository);
+		dataRestResponseService.buildSearchResponse(operation, handlerMethod, openAPI, methodResourceMapping,
+		                                            domainType, methodAttributes, resourceMetadata, dataRestRepository);
 		tagsBuilder.buildSearchTags(operation, handlerMethod, dataRestRepository, method);
 		return operation;
 	}
@@ -248,7 +268,8 @@ public class DataRestOperationService {
 		java.lang.reflect.Parameter[] parameters = method.getParameters();
 		for (int i = 0; i < parameters.length; i++) {
 			java.lang.reflect.Parameter parameter = parameters[i];
-			if (pName.equals(parameter.getName()) || (parameter.getAnnotation(Param.class) != null && pName.equals(parameter.getAnnotation(Param.class).value()))) {
+			if (pName.equals(parameter.getName()) || (parameter.getAnnotation(Param.class) != null &&
+					pName.equals(parameter.getAnnotation(Param.class).value()))) {
 				ResolvableType resolvableType = ResolvableType.forMethodParameter(method, i);
 				type = resolvableType.getType();
 				break;
@@ -259,8 +280,7 @@ public class DataRestOperationService {
 			Field fieldType = FieldUtils.getField(TypedResourceDescription.class, "type", true);
 			try {
 				type = (Type) fieldType.get(typedResourceDescription);
-			}
-			catch (IllegalAccessException e) {
+			} catch (IllegalAccessException e) {
 				LOGGER.warn(e.getMessage());
 				type = String.class;
 			}
@@ -277,7 +297,8 @@ public class DataRestOperationService {
 	 * @param pName            the p name
 	 * @return the parameter
 	 */
-	private Parameter getParameterFromAnnotations(OpenAPI openAPI, MethodAttributes methodAttributes, Method method, String pName) {
+	private Parameter getParameterFromAnnotations(OpenAPI openAPI, MethodAttributes methodAttributes, Method method,
+	                                              String pName) {
 		Parameter parameter = null;
 		for (java.lang.reflect.Parameter reflectParameter : method.getParameters()) {
 			Param paramAnnotation = reflectParameter.getAnnotation(Param.class);
@@ -286,7 +307,9 @@ public class DataRestOperationService {
 						AnnotatedElementUtils.forAnnotations(reflectParameter.getAnnotations()),
 						io.swagger.v3.oas.annotations.Parameter.class);
 				if (parameterDoc != null && (!parameterDoc.hidden() || parameterDoc.schema().hidden())) {
-					parameter = dataRestRequestService.buildParameterFromDoc(parameterDoc, openAPI.getComponents(), methodAttributes.getJsonViewAnnotation(), methodAttributes.getLocale());
+					parameter = dataRestRequestService.buildParameterFromDoc(parameterDoc, openAPI.getComponents(),
+					                                                         methodAttributes.getJsonViewAnnotation(),
+					                                                         methodAttributes.getLocale());
 					parameter.setName(pName);
 				}
 			}
@@ -308,7 +331,7 @@ public class DataRestOperationService {
 		operationIdBuilder.append(handlerMethod.getMethod().getName());
 		if (domainType != null) {
 			operationIdBuilder.append(STRING_SEPARATOR).append(domainType.getSimpleName().toLowerCase())
-					.append(STRING_SEPARATOR).append(requestMethod.toString().toLowerCase());
+			                  .append(STRING_SEPARATOR).append(requestMethod.toString().toLowerCase());
 		}
 		operation.setOperationId(operationIdBuilder.toString());
 		return operation;
@@ -322,7 +345,8 @@ public class DataRestOperationService {
 	 * @param entity             the entity
 	 * @param dataRestRepository the data rest repository
 	 */
-	private void addOperationDescription(Operation operation, RequestMethod requestMethod, String entity, DataRestRepository dataRestRepository) {
+	private void addOperationDescription(Operation operation, RequestMethod requestMethod, String entity,
+	                                     DataRestRepository dataRestRepository) {
 		switch (requestMethod) {
 			case GET:
 				operation.setDescription(createDescription("get-", entity, dataRestRepository));
@@ -355,7 +379,9 @@ public class DataRestOperationService {
 	private String createDescription(String action, String entity, DataRestRepository dataRestRepository) {
 		String description;
 		if (ControllerType.PROPERTY.equals(dataRestRepository.getControllerType()))
-			description = action + dataRestRepository.getPropertyType().getSimpleName().toLowerCase() + "-by-" + entity + "-Id";
+			description =
+					action + dataRestRepository.getPropertyType().getSimpleName().toLowerCase() + "-by-" + entity +
+							"-Id";
 		else
 			description = action + entity;
 		return description;

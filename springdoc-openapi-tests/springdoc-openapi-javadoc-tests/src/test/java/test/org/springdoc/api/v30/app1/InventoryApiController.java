@@ -26,20 +26,19 @@
 
 package test.org.springdoc.api.v30.app1;
 
-import java.util.List;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.v3.oas.annotations.Parameter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 /**
  * The type Inventory api controller.
@@ -79,7 +78,8 @@ class InventoryApiController implements InventoryApi {
 	 * @return the response entity
 	 */
 	public ResponseEntity<Void> addInventory(
-			@io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Inventory item to add") @Valid @RequestBody InventoryItem body) {
+			@io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Inventory item to add") @Valid
+			@RequestBody InventoryItem body) {
 		@SuppressWarnings("unused")
 		String accept = request.getHeader("Accept");
 		return new ResponseEntity<Void>(HttpStatus.NOT_IMPLEMENTED);
@@ -94,9 +94,12 @@ class InventoryApiController implements InventoryApi {
 	 * @return the response entity
 	 */
 	public ResponseEntity<List<InventoryItem>> searchInventory(
-			@Parameter(description = "pass an optional search string for looking up inventory") @Valid @RequestParam(value = "searchString", required = false) String searchString,
-			@Min(0) @Parameter(description = "number of records to skip for pagination") @Valid @RequestParam(value = "skip", required = true) Integer skip,
-			@Min(0) @Max(50) @Parameter(description = "maximum number of records to return") @Valid @RequestParam(value = "limit", required = true) Integer limit) {
+			@Parameter(description = "pass an optional search string for looking up inventory") @Valid
+			@RequestParam(value = "searchString", required = false) String searchString,
+			@Min(0) @Parameter(description = "number of records to skip for pagination") @Valid
+			@RequestParam(value = "skip", required = true) Integer skip,
+			@Min(0) @Max(50) @Parameter(description = "maximum number of records to return") @Valid
+			@RequestParam(value = "limit", required = true) Integer limit) {
 		@SuppressWarnings("unused")
 		String accept = request.getHeader("Accept");
 		return new ResponseEntity<List<InventoryItem>>(HttpStatus.NOT_IMPLEMENTED);

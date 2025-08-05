@@ -19,9 +19,8 @@
 package test.org.springdoc.ui.app1;
 
 import org.junit.jupiter.api.Test;
-import test.org.springdoc.ui.AbstractSpringDocTest;
-
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import test.org.springdoc.ui.AbstractSpringDocTest;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -34,8 +33,8 @@ public class SpringDocApp1Test extends AbstractSpringDocTest {
 	@Test
 	void shouldDisplaySwaggerUiPage() throws Exception {
 		mockMvc.perform(get("/swagger-ui/index.html"))
-				.andExpect(status().isOk())
-				.andExpect(content().string(containsString("Swagger UI")));
+		       .andExpect(status().isOk())
+		       .andExpect(content().string(containsString("Swagger UI")));
 	}
 
 	@Test

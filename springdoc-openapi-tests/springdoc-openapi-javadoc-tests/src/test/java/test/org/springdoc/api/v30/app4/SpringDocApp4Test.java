@@ -28,10 +28,9 @@ package test.org.springdoc.api.v30.app4;
 
 import io.swagger.v3.core.jackson.TypeNameResolver;
 import org.junit.jupiter.api.AfterAll;
-import test.org.springdoc.api.v30.AbstractSpringDocTest;
-
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.test.context.TestPropertySource;
+import test.org.springdoc.api.v30.AbstractSpringDocTest;
 
 /**
  * The type Spring doc app 4 test.
@@ -51,5 +50,6 @@ class SpringDocApp4Test extends AbstractSpringDocTest {
 	 * The type Spring doc test app.
 	 */
 	@SpringBootApplication
-	static class SpringDocTestApp {}
+	static class SpringDocTestApp {
+	}
 }

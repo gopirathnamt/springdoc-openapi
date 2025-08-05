@@ -26,13 +26,8 @@
 
 package org.springdoc.webflux.core.providers;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-
 import org.springdoc.core.properties.SpringDocConfigProperties;
 import org.springdoc.core.providers.ActuatorProvider;
-
 import org.springframework.boot.actuate.autoconfigure.endpoint.web.WebEndpointProperties;
 import org.springframework.boot.actuate.autoconfigure.web.server.ManagementServerProperties;
 import org.springframework.boot.actuate.endpoint.web.reactive.ControllerEndpointHandlerMapping;
@@ -41,6 +36,10 @@ import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.reactive.result.method.RequestMappingInfo;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 
 
 /**
@@ -60,23 +59,28 @@ public class ActuatorWebFluxProvider extends ActuatorProvider implements Applica
 	 * @param webEndpointProperties      the web endpoint properties
 	 */
 	public ActuatorWebFluxProvider(ServerProperties serverProperties,
-			SpringDocConfigProperties springDocConfigProperties,
-			Optional<ManagementServerProperties> managementServerProperties,
-			Optional<WebEndpointProperties> webEndpointProperties) {
+	                               SpringDocConfigProperties springDocConfigProperties,
+	                               Optional<ManagementServerProperties> managementServerProperties,
+	                               Optional<WebEndpointProperties> webEndpointProperties) {
 		super(managementServerProperties, webEndpointProperties, serverProperties, springDocConfigProperties);
 	}
 
 	public Map<RequestMappingInfo, HandlerMethod> getMethods() {
 		Map<RequestMappingInfo, HandlerMethod> mappingInfoHandlerMethodMap = new HashMap<>();
 
-		WebFluxEndpointHandlerMapping webFluxEndpointHandlerMapping = applicationContext.getBeansOfType(WebFluxEndpointHandlerMapping.class).values().stream().findFirst().orElse(null);
+		WebFluxEndpointHandlerMapping webFluxEndpointHandlerMapping =
+				applicationContext.getBeansOfType(WebFluxEndpointHandlerMapping.class).values().stream().findFirst()
+				                  .orElse(null);
 		if (webFluxEndpointHandlerMapping == null)
 			webFluxEndpointHandlerMapping = managementApplicationContext.getBean(WebFluxEndpointHandlerMapping.class);
 		mappingInfoHandlerMethodMap.putAll(webFluxEndpointHandlerMapping.getHandlerMethods());
 
-		ControllerEndpointHandlerMapping controllerEndpointHandlerMapping = applicationContext.getBeansOfType(ControllerEndpointHandlerMapping.class).values().stream().findFirst().orElse(null);
+		ControllerEndpointHandlerMapping controllerEndpointHandlerMapping =
+				applicationContext.getBeansOfType(ControllerEndpointHandlerMapping.class).values().stream().findFirst()
+				                  .orElse(null);
 		if (controllerEndpointHandlerMapping == null)
-			controllerEndpointHandlerMapping = managementApplicationContext.getBean(ControllerEndpointHandlerMapping.class);
+			controllerEndpointHandlerMapping =
+					managementApplicationContext.getBean(ControllerEndpointHandlerMapping.class);
 		mappingInfoHandlerMethodMap.putAll(controllerEndpointHandlerMapping.getHandlerMethods());
 
 		return mappingInfoHandlerMethodMap;

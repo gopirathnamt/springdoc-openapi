@@ -26,12 +26,11 @@
 
 package org.springdoc.core.utils;
 
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.util.CollectionUtils;
+
 import java.util.List;
 import java.util.Map;
-
-import org.apache.commons.lang3.StringUtils;
-
-import org.springframework.util.CollectionUtils;
 
 /**
  * The interface Spring doc properties utils.

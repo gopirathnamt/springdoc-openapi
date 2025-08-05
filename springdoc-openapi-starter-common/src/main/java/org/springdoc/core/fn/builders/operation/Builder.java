@@ -26,8 +26,6 @@
 
 package org.springdoc.core.fn.builders.operation;
 
-import java.lang.annotation.Annotation;
-
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -39,6 +37,8 @@ import io.swagger.v3.oas.annotations.servers.Server;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springdoc.core.fn.RouterOperation;
+
+import java.lang.annotation.Annotation;
 
 /**
  * The type Operation builder.
@@ -91,7 +91,8 @@ public class Builder {
 	/**
 	 * Additional external documentation for this operation.
 	 */
-	private ExternalDocumentation externalDocs = org.springdoc.core.fn.builders.externaldocumentation.Builder.externalDocumentationBuilder().build();
+	private ExternalDocumentation externalDocs =
+			org.springdoc.core.fn.builders.externaldocumentation.Builder.externalDocumentationBuilder().build();
 
 	/**
 	 * The operationId is used by third-party tools to uniquely identify this operation.
@@ -225,7 +226,8 @@ public class Builder {
 	 * @param externalDocumentationBuilder the external documentation builder
 	 * @return the operation builder
 	 */
-	public Builder externalDocs(org.springdoc.core.fn.builders.externaldocumentation.Builder externalDocumentationBuilder) {
+	public Builder externalDocs(
+			org.springdoc.core.fn.builders.externaldocumentation.Builder externalDocumentationBuilder) {
 		this.externalDocs = externalDocumentationBuilder.build();
 		return this;
 	}
@@ -451,8 +453,10 @@ public class Builder {
 			}
 		};
 
-		if (StringUtils.isEmpty(operation.operationId()) && (beanClass == null && beanMethod == null && parameterTypes == null))
-			throw new IllegalStateException("You should either fill, the Operation or at least the bean class and the bean method");
+		if (StringUtils.isEmpty(operation.operationId()) &&
+				(beanClass == null && beanMethod == null && parameterTypes == null))
+			throw new IllegalStateException(
+					"You should either fill, the Operation or at least the bean class and the bean method");
 
 		if (beanClass != null && beanMethod == null)
 			throw new IllegalStateException("The bean method, should not null");

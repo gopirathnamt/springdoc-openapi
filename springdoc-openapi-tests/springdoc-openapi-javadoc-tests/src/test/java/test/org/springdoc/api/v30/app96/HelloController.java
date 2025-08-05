@@ -28,7 +28,6 @@ package test.org.springdoc.api.v30.app96;
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
-
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;

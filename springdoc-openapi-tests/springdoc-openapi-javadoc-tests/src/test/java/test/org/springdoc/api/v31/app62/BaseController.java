@@ -26,20 +26,20 @@
 
 package test.org.springdoc.api.v31.app62;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-
 import org.springframework.core.annotation.AliasFor;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
 /**
  * The interface Base controller.
  */
-@Target({ ElementType.METHOD, ElementType.TYPE })
+@Target({ElementType.METHOD, ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @RestController
 @RequestMapping
@@ -58,5 +58,5 @@ public @interface BaseController {
 	 * @return the string [ ]
 	 */
 	@AliasFor(annotation = RequestMapping.class)
-	String[] produces() default { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE };
+	String[] produces() default {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE};
 }

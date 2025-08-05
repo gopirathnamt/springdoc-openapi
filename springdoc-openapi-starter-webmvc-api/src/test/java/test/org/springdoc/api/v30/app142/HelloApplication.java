@@ -24,14 +24,6 @@
 
 package test.org.springdoc.api.v30.app142;
 
-import java.io.IOException;
-import java.net.URI;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.concurrent.atomic.AtomicLong;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import jakarta.servlet.FilterChain;
@@ -40,7 +32,6 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
 import org.springdoc.webmvc.core.fn.SpringdocRouteBuilder;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
@@ -53,12 +44,21 @@ import org.springframework.web.servlet.function.RouterFunction;
 import org.springframework.web.servlet.function.ServerRequest;
 import org.springframework.web.servlet.function.ServerResponse;
 
+import java.io.IOException;
+import java.net.URI;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.concurrent.atomic.AtomicLong;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 import static org.springframework.web.servlet.function.ServerResponse.ok;
 
 @Configuration
 public class HelloApplication {
 
-	private static ServerResponse filter(ServerRequest serverRequest, HandlerFunction<ServerResponse> handlerFunction) throws Exception {
+	private static ServerResponse filter(ServerRequest serverRequest,
+	                                     HandlerFunction<ServerResponse> handlerFunction) throws Exception {
 		return handlerFunction.handle(serverRequest);
 	}
 
@@ -66,9 +66,12 @@ public class HelloApplication {
 	RouterFunction<ServerResponse> routes(PersonHandler ph) {
 		String root = "";
 		return SpringdocRouteBuilder.route()
-				.GET(root + "/people", ph::handleGetAllPeople, ops -> ops.beanClass(PersonService.class).beanMethod("all"))
-				.GET(root + "/people/{id}", ph::handleGetPersonById, ops -> ops.beanClass(PersonService.class).beanMethod("byId"))
-				.POST(root + "/people", ph::handlePostPerson, ops -> ops.beanClass(PersonService.class).beanMethod("save")).build();
+		                            .GET(root + "/people", ph::handleGetAllPeople,
+		                                 ops -> ops.beanClass(PersonService.class).beanMethod("all"))
+		                            .GET(root + "/people/{id}", ph::handleGetPersonById,
+		                                 ops -> ops.beanClass(PersonService.class).beanMethod("byId"))
+		                            .POST(root + "/people", ph::handlePostPerson,
+		                                  ops -> ops.beanClass(PersonService.class).beanMethod("save")).build();
 	}
 
 }
@@ -78,7 +81,7 @@ class SimpleFilter extends GenericFilter {
 
 	@Override
 	public void doFilter(ServletRequest req, ServletResponse res,
-			FilterChain filterChain) throws IOException, ServletException {
+	                     FilterChain filterChain) throws IOException, ServletException {
 		filterChain.doFilter(req, res);
 	}
 }
@@ -122,10 +125,10 @@ class PersonService {
 	private final AtomicLong counter = new AtomicLong();
 
 	private final Set<Person> people = Stream.of(
-					new Person(counter.incrementAndGet(), "Jane"),
-					new Person(counter.incrementAndGet(), "Josh"),
-					new Person(counter.incrementAndGet(), "Gordon"))
-			.collect(Collectors.toCollection(HashSet::new));
+			                                         new Person(counter.incrementAndGet(), "Jane"),
+			                                         new Person(counter.incrementAndGet(), "Josh"),
+			                                         new Person(counter.incrementAndGet(), "Gordon"))
+	                                         .collect(Collectors.toCollection(HashSet::new));
 
 
 	Person save(Person p) {
@@ -140,9 +143,10 @@ class PersonService {
 
 	Person byId(@Parameter(in = ParameterIn.PATH) Long id) {
 		return this.people.stream()
-				.filter(p -> p.getId().equals(id))
-				.findFirst()
-				.orElseThrow(() -> new IllegalArgumentException("no " + Person.class.getName() + " with that ID found!"));
+		                  .filter(p -> p.getId().equals(id))
+		                  .findFirst()
+		                  .orElseThrow(() -> new IllegalArgumentException(
+				                  "no " + Person.class.getName() + " with that ID found!"));
 	}
 
 }

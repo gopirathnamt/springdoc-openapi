@@ -20,7 +20,6 @@ package test.org.springdoc.api.v31.app148;
 
 
 import org.springdoc.core.models.GroupedOpenApi;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
@@ -39,9 +38,9 @@ public class HelloController {
 	@Order(Ordered.HIGHEST_PRECEDENCE)
 	public GroupedOpenApi userOpenApi() {
 		return GroupedOpenApi.builder()
-				.group("users")
-				.packagesToScan("test.org.springdoc.api.v31.app148")
-				.build();
+		                     .group("users")
+		                     .packagesToScan("test.org.springdoc.api.v31.app148")
+		                     .build();
 	}
 
 }

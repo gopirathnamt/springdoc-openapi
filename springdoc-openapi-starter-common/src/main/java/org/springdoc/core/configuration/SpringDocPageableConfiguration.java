@@ -26,15 +26,12 @@
 
 package org.springdoc.core.configuration;
 
-import java.util.Optional;
-
 import org.springdoc.core.converters.PageOpenAPIConverter;
 import org.springdoc.core.converters.PageableOpenAPIConverter;
 import org.springdoc.core.customizers.DataRestDelegatingMethodParameterCustomizer;
 import org.springdoc.core.providers.ObjectMapperProvider;
 import org.springdoc.core.providers.RepositoryRestConfigurationProvider;
 import org.springdoc.core.providers.SpringDataWebPropertiesProvider;
-
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -47,6 +44,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedModel;
 import org.springframework.data.web.config.EnableSpringDataWebSupport;
 import org.springframework.data.web.config.SpringDataWebSettings;
+
+import java.util.Optional;
 
 import static org.springdoc.core.utils.Constants.SPRINGDOC_ENABLED;
 import static org.springdoc.core.utils.Constants.SPRINGDOC_PAGEABLE_CONVERTER_ENABLED;
@@ -76,8 +75,10 @@ public class SpringDocPageableConfiguration {
 	@ConditionalOnProperty(name = SPRINGDOC_PAGEABLE_CONVERTER_ENABLED, matchIfMissing = true)
 	@Lazy(false)
 	PageableOpenAPIConverter pageableOpenAPIConverter(ObjectMapperProvider objectMapperProvider) {
-		getConfig().replaceParameterObjectWithClass(org.springframework.data.domain.Pageable.class, org.springdoc.core.converters.models.Pageable.class)
-				.replaceParameterObjectWithClass(org.springframework.data.domain.PageRequest.class, org.springdoc.core.converters.models.Pageable.class);
+		getConfig().replaceParameterObjectWithClass(org.springframework.data.domain.Pageable.class,
+		                                            org.springdoc.core.converters.models.Pageable.class)
+		           .replaceParameterObjectWithClass(org.springframework.data.domain.PageRequest.class,
+		                                            org.springdoc.core.converters.models.Pageable.class);
 		return new PageableOpenAPIConverter(objectMapperProvider);
 	}
 
@@ -90,13 +91,13 @@ public class SpringDocPageableConfiguration {
 	 */
 	@Bean
 	@ConditionalOnMissingBean
-	@ConditionalOnClass({ PagedModel.class, SpringDataWebSettings.class })
+	@ConditionalOnClass({PagedModel.class, SpringDataWebSettings.class})
 	@Lazy(false)
 	PageOpenAPIConverter pageOpenAPIConverter(Optional<SpringDataWebSettings> settings,
-			ObjectMapperProvider objectMapperProvider) {
+	                                          ObjectMapperProvider objectMapperProvider) {
 		boolean replacePageWithPagedModel = settings.map(SpringDataWebSettings::pageSerializationMode)
-				.map(EnableSpringDataWebSupport.PageSerializationMode.VIA_DTO::equals)
-				.orElse(false);
+		                                            .map(EnableSpringDataWebSupport.PageSerializationMode.VIA_DTO::equals)
+		                                            .orElse(false);
 		return new PageOpenAPIConverter(replacePageWithPagedModel, objectMapperProvider);
 	}
 
@@ -110,7 +111,10 @@ public class SpringDocPageableConfiguration {
 	@Bean
 	@ConditionalOnMissingBean
 	@Lazy(false)
-	DataRestDelegatingMethodParameterCustomizer dataRestDelegatingMethodParameterCustomizer(Optional<SpringDataWebPropertiesProvider> optionalSpringDataWebPropertiesProvider, Optional<RepositoryRestConfigurationProvider> optionalRepositoryRestConfiguration) {
-		return new DataRestDelegatingMethodParameterCustomizer(optionalSpringDataWebPropertiesProvider, optionalRepositoryRestConfiguration);
+	DataRestDelegatingMethodParameterCustomizer dataRestDelegatingMethodParameterCustomizer(
+			Optional<SpringDataWebPropertiesProvider> optionalSpringDataWebPropertiesProvider,
+			Optional<RepositoryRestConfigurationProvider> optionalRepositoryRestConfiguration) {
+		return new DataRestDelegatingMethodParameterCustomizer(optionalSpringDataWebPropertiesProvider,
+		                                                       optionalRepositoryRestConfiguration);
 	}
 }

@@ -26,10 +26,10 @@
 
 package org.springdoc.core.fn.builders.discriminatormapping;
 
-import java.lang.annotation.Annotation;
-
 import io.swagger.v3.oas.annotations.extensions.Extension;
 import io.swagger.v3.oas.annotations.media.DiscriminatorMapping;
+
+import java.lang.annotation.Annotation;
 
 /**
  * The type Discriminator mapping builder.

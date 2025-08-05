@@ -26,9 +26,6 @@
 
 package org.springdoc.core.converters;
 
-import java.util.List;
-import java.util.Optional;
-
 import io.swagger.v3.core.converter.ModelConverter;
 import io.swagger.v3.core.converter.ModelConverters;
 import io.swagger.v3.core.jackson.ModelResolver;
@@ -37,6 +34,9 @@ import org.apache.commons.lang3.reflect.FieldUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springdoc.core.properties.SpringDocConfigProperties;
+
+import java.util.List;
+import java.util.Optional;
 
 /**
  * Wrapper for model converters to only register converters once
@@ -49,25 +49,23 @@ public class ModelConverterRegistrar {
 	 * The constant LOGGER.
 	 */
 	private static final Logger LOGGER = LoggerFactory.getLogger(ModelConverterRegistrar.class);
-
+	/**
+	 * The singleton fallback instance.
+	 */
+	private static volatile ModelConverters modelConvertersFallbackInstance;
 	/**
 	 * The constant modelConvertersInstance.
 	 */
 	private final ModelConverters modelConvertersInstance;
 
-
-	/**
-	 * The singleton fallback instance.
-	 */
-	private static volatile ModelConverters modelConvertersFallbackInstance;
-	
 	/**
 	 * Instantiates a new Model converter registrar.
 	 *
 	 * @param modelConverters           spring registered model converter beans which have to be registered in {@link ModelConverters} instance
 	 * @param springDocConfigProperties the spring doc config properties
 	 */
-	public ModelConverterRegistrar(List<ModelConverter> modelConverters, SpringDocConfigProperties springDocConfigProperties) {
+	public ModelConverterRegistrar(List<ModelConverter> modelConverters,
+	                               SpringDocConfigProperties springDocConfigProperties) {
 		modelConvertersInstance = ModelConverters.getInstance(springDocConfigProperties.isOpenapi31());
 		for (ModelConverter modelConverter : modelConverters) {
 			Optional<ModelConverter> registeredConverterOptional = getRegisteredConverterSameAs(modelConverter);
@@ -97,7 +95,7 @@ public class ModelConverterRegistrar {
 	public static ModelConverters getModelConvertersFallbackInstance() {
 		return modelConvertersFallbackInstance;
 	}
-	
+
 	/**
 	 * Gets registered converter same as.
 	 *
@@ -107,12 +105,13 @@ public class ModelConverterRegistrar {
 	@SuppressWarnings("unchecked")
 	private Optional<ModelConverter> getRegisteredConverterSameAs(ModelConverter modelConverter) {
 		try {
-			List<ModelConverter> modelConverters = (List<ModelConverter>) FieldUtils.readDeclaredField(modelConvertersInstance, "converters", true);
+			List<ModelConverter> modelConverters =
+					(List<ModelConverter>) FieldUtils.readDeclaredField(modelConvertersInstance, "converters", true);
 			return modelConverters.stream()
-					.filter(registeredModelConverter -> isSameConverter(registeredModelConverter, modelConverter))
-					.findFirst();
-		}
-		catch (IllegalAccessException exception) {
+			                      .filter(registeredModelConverter -> isSameConverter(registeredModelConverter,
+			                                                                          modelConverter))
+			                      .findFirst();
+		} catch (IllegalAccessException exception) {
 			LOGGER.warn(exception.getMessage());
 		}
 		return Optional.empty();

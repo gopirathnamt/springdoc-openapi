@@ -19,14 +19,13 @@
 package test.org.springdoc.api.v31.app145;
 
 import org.junit.jupiter.api.Test;
-import test.org.springdoc.api.v31.AbstractSpringDocActuatorTest;
-
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
+import test.org.springdoc.api.v31.AbstractSpringDocActuatorTest;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -34,23 +33,22 @@ import static org.skyscreamer.jsonassert.JSONAssert.assertEquals;
 
 @DirtiesContext
 @SpringBootTest(webEnvironment = WebEnvironment.DEFINED_PORT,
-		properties = { "management.endpoints.web.exposure.include=*",
+		properties = {"management.endpoints.web.exposure.include=*",
 				"server.port=53594",
 				"springdoc.use-management-port=true",
 				"springdoc.group-configs[0].group=users",
 				"springdoc.group-configs[0].packages-to-scan=test.org.springdoc.api.v31.app145",
 				"management.server.port=9394",
-				"management.endpoints.web.base-path=/application" })
+				"management.endpoints.web.base-path=/application"})
 public class SpringDocApp1451Test extends AbstractSpringDocActuatorTest {
 
 	@Test
 	void testApp() {
 		try {
 			webClient.get().uri("/application/openapi").retrieve()
-					.bodyToMono(String.class).block();
+			         .bodyToMono(String.class).block();
 			fail();
-		}
-		catch (WebClientResponseException ex) {
+		} catch (WebClientResponseException ex) {
 			if (ex.getStatusCode() == HttpStatus.NOT_FOUND)
 				assertTrue(true);
 			else
@@ -62,16 +60,16 @@ public class SpringDocApp1451Test extends AbstractSpringDocActuatorTest {
 	void testApp2() throws Exception {
 		try {
 			String result = webClient.get().uri("/application/openapi/users").retrieve()
-					.bodyToMono(String.class).block();
+			                         .bodyToMono(String.class).block();
 			String expected = getContent("results/3.1.0/app145-1.json");
 			assertEquals(expected, result, true);
-		}
-		catch (WebClientResponseException ex) {
+		} catch (WebClientResponseException ex) {
 			fail();
 		}
 	}
 
 	@SpringBootApplication
-	static class SpringDocTestApp {}
+	static class SpringDocTestApp {
+	}
 
 }

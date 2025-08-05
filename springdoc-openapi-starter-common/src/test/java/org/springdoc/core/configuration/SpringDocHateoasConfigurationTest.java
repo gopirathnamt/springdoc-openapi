@@ -4,7 +4,6 @@ import org.junit.jupiter.api.Test;
 import org.springdoc.core.customizers.GlobalOpenApiCustomizer;
 import org.springdoc.core.customizers.OpenApiHateoasLinksCustomizer;
 import org.springdoc.core.properties.SpringDocConfigProperties;
-
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration;
 import org.springframework.boot.test.context.runner.WebApplicationContextRunner;
@@ -22,19 +21,20 @@ class SpringDocHateoasConfigurationTest {
 				.withPropertyValues(
 						"springdoc.api-docs.enabled=true",
 						"springdoc.enable-hateoas=true"
-				)
+				                   )
 				.withConfiguration(AutoConfigurations.of(
 						WebMvcAutoConfiguration.class,
 						HateoasConfiguration.class,
 						SpringDocConfiguration.class,
 						SpringDocConfigProperties.class,
 						SpringDocHateoasConfiguration.class
-				))
+				                                        ))
 				.run(context -> {
 					assertThat(context).getBeanNames(GlobalOpenApiCustomizer.class)
-							.hasSize(2)
-							.contains(LINKS_SCHEMA_CUSTOMIZER);
-					assertThat(context.getBean(LINKS_SCHEMA_CUSTOMIZER)).isExactlyInstanceOf(OpenApiHateoasLinksCustomizer.class);
+					                   .hasSize(2)
+					                   .contains(LINKS_SCHEMA_CUSTOMIZER);
+					assertThat(context.getBean(LINKS_SCHEMA_CUSTOMIZER)).isExactlyInstanceOf(
+							OpenApiHateoasLinksCustomizer.class);
 				});
 	}
 
@@ -44,19 +44,20 @@ class SpringDocHateoasConfigurationTest {
 				.withPropertyValues(
 						"springdoc.api-docs.enabled=true",
 						"springdoc.enable-hateoas=true"
-				)
+				                   )
 				.withConfiguration(AutoConfigurations.of(
 						WebMvcAutoConfiguration.class,
 						HateoasConfiguration.class,
 						SpringDocConfiguration.class,
 						SpringDocConfigProperties.class,
 						SpringDocHateoasConfiguration.class
-				))
-				.withBean("globalOpenApiCustomizer", GlobalOpenApiCustomizer.class, () -> mock(GlobalOpenApiCustomizer.class))
+				                                        ))
+				.withBean("globalOpenApiCustomizer", GlobalOpenApiCustomizer.class,
+				          () -> mock(GlobalOpenApiCustomizer.class))
 				.run(context -> {
 					assertThat(context).getBeanNames(GlobalOpenApiCustomizer.class)
-							.hasSize(2)
-							.containsExactlyInAnyOrder(LINKS_SCHEMA_CUSTOMIZER, "globalOpenApiCustomizer");
+					                   .hasSize(2)
+					                   .containsExactlyInAnyOrder(LINKS_SCHEMA_CUSTOMIZER, "globalOpenApiCustomizer");
 				});
 	}
 
@@ -66,20 +67,22 @@ class SpringDocHateoasConfigurationTest {
 				.withPropertyValues(
 						"springdoc.api-docs.enabled=true",
 						"springdoc.enable-hateoas=true"
-				)
+				                   )
 				.withConfiguration(AutoConfigurations.of(
 						WebMvcAutoConfiguration.class,
 						HateoasConfiguration.class,
 						SpringDocConfiguration.class,
 						SpringDocConfigProperties.class,
 						SpringDocHateoasConfiguration.class
-				))
-				.withBean(LINKS_SCHEMA_CUSTOMIZER, GlobalOpenApiCustomizer.class, () -> mock(GlobalOpenApiCustomizer.class))
+				                                        ))
+				.withBean(LINKS_SCHEMA_CUSTOMIZER, GlobalOpenApiCustomizer.class,
+				          () -> mock(GlobalOpenApiCustomizer.class))
 				.run(context -> {
 					assertThat(context).getBeanNames(GlobalOpenApiCustomizer.class)
-							.hasSize(2)
-							.contains(LINKS_SCHEMA_CUSTOMIZER);
-					assertThat(context.getBean(LINKS_SCHEMA_CUSTOMIZER)).isNotExactlyInstanceOf(OpenApiHateoasLinksCustomizer.class);
+					                   .hasSize(2)
+					                   .contains(LINKS_SCHEMA_CUSTOMIZER);
+					assertThat(context.getBean(LINKS_SCHEMA_CUSTOMIZER)).isNotExactlyInstanceOf(
+							OpenApiHateoasLinksCustomizer.class);
 				});
 	}
 }

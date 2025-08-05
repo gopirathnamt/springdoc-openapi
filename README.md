@@ -112,11 +112,12 @@ Pivotal)
 Maven
 
 ```xml
-   <dependency>
-      <groupId>org.springdoc.gopirathnam</groupId>
-      <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
-      <version>last-release-version</version>
-   </dependency>
+
+<dependency>
+	<groupId>org.springdoc.gopirathnam</groupId>
+	<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+	<version>last-release-version</version>
+</dependency>
 ```
 
 Gradle
@@ -166,11 +167,12 @@ springdoc.swagger-ui.path=/swagger-ui.html
 Maven
 
 ```xml
-   <dependency>
-      <groupId>org.springdoc.gopirathnam</groupId>
-      <artifactId>springdoc-openapi-starter-webmvc-api</artifactId>
-      <version>last-release-version</version>
-   </dependency>
+
+<dependency>
+	<groupId>org.springdoc.gopirathnam</groupId>
+	<artifactId>springdoc-openapi-starter-webmvc-api</artifactId>
+	<version>last-release-version</version>
+</dependency>
 ```
 
 Gradle
@@ -219,11 +221,12 @@ and `@SecurityScheme` annotations within a Spring managed bean.
 Maven
 
 ```xml
-   <dependency>
-      <groupId>org.springdoc.gopirathnam</groupId>
-      <artifactId>springdoc-openapi-starter-webflux-ui</artifactId>
-      <version>last-release-version</version>
-   </dependency>
+
+<dependency>
+	<groupId>org.springdoc.gopirathnam</groupId>
+	<artifactId>springdoc-openapi-starter-webflux-ui</artifactId>
+	<version>last-release-version</version>
+</dependency>
 ```
 
 Gradle

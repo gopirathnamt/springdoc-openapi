@@ -26,8 +26,6 @@
 
 package test.org.springdoc.api.v30.app25.model;
 
-import java.util.Set;
-
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.validation.constraints.NotNull;
@@ -37,6 +35,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+
+import java.util.Set;
 
 @Entity
 @Data

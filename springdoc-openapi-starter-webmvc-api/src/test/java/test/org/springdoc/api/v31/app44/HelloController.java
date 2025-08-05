@@ -28,7 +28,6 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -41,7 +40,7 @@ public class HelloController {
 	@PostMapping(value = "/helloworld", produces = "application/json", consumes = "application/vnd.v1+json")
 	@ApiResponses({
 			@ApiResponse(responseCode = "200", description = "Successful operation", content = @Content(schema = @Schema(implementation = HelloDTO1.class))),
-			@ApiResponse(responseCode = "400", description = "Bad name", content = @Content(schema = @Schema(implementation = ErrorDTO.class))) })
+			@ApiResponse(responseCode = "400", description = "Bad name", content = @Content(schema = @Schema(implementation = ErrorDTO.class)))})
 	public ResponseEntity<?> hello(@RequestBody RequestV1 request) {
 		final String name = request.getNameV1();
 		if ("error".equalsIgnoreCase(name)) {
@@ -53,7 +52,7 @@ public class HelloController {
 	@PostMapping(value = "/helloworld", produces = "application/json", consumes = "application/vnd.v2+json")
 	@ApiResponses({
 			@ApiResponse(responseCode = "200", description = "Successful operation", content = @Content(schema = @Schema(implementation = HelloDTO2.class))),
-			@ApiResponse(responseCode = "400", description = "Bad name", content = @Content(schema = @Schema(implementation = ErrorDTO.class))) })
+			@ApiResponse(responseCode = "400", description = "Bad name", content = @Content(schema = @Schema(implementation = ErrorDTO.class)))})
 	public ResponseEntity<?> hello(@RequestBody RequestV2 request) {
 		final String name = request.getNameV2();
 		if ("error".equalsIgnoreCase(name)) {

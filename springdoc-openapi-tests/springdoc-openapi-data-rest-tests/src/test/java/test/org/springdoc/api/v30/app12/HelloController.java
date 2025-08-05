@@ -31,7 +31,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
@@ -62,8 +61,8 @@ public class HelloController {
 	@GetMapping(produces = MediaTypes.HAL_JSON_VALUE)
 	public EntityModel<JsonResponse> getHal() {
 		return EntityModel.of(new JsonResponse(),
-				WebMvcLinkBuilder.linkTo(HelloController.class).slash("somelink").withSelfRel()
-		);
+		                      WebMvcLinkBuilder.linkTo(HelloController.class).slash("somelink").withSelfRel()
+		                     );
 	}
 
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)

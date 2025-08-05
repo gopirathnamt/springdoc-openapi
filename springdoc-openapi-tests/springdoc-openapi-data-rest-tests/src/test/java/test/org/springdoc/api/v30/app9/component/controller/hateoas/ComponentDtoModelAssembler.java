@@ -27,19 +27,19 @@
 package test.org.springdoc.api.v30.app9.component.controller.hateoas;
 
 
-import test.org.springdoc.api.v30.app9.component.dto.DemoComponentDto;
-import test.org.springdoc.api.v30.app9.component.dto.converter.DemoComponentConverter;
-import test.org.springdoc.api.v30.app9.component.model.DemoComponent;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.RepresentationModel;
 import org.springframework.hateoas.server.RepresentationModelAssembler;
 import org.springframework.stereotype.Component;
+import test.org.springdoc.api.v30.app9.component.dto.DemoComponentDto;
+import test.org.springdoc.api.v30.app9.component.dto.converter.DemoComponentConverter;
+import test.org.springdoc.api.v30.app9.component.model.DemoComponent;
 
 @Component
-@SuppressWarnings({ "deprecation", "unchecked" })
-public class ComponentDtoModelAssembler implements RepresentationModelAssembler<DemoComponent, RepresentationModel<EntityModel<DemoComponentDto>>> {
+@SuppressWarnings({"deprecation", "unchecked"})
+public class ComponentDtoModelAssembler implements
+		RepresentationModelAssembler<DemoComponent, RepresentationModel<EntityModel<DemoComponentDto>>> {
 
 	@Autowired
 	private DemoComponentConverter toDtoConverter;

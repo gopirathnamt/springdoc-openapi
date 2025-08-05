@@ -26,11 +26,11 @@
 
 package test.org.springdoc.api.v30.app121;
 
+import io.swagger.v3.oas.annotations.Parameter;
+
 import java.math.BigInteger;
 import java.util.List;
 import java.util.Optional;
-
-import io.swagger.v3.oas.annotations.Parameter;
 
 
 /**

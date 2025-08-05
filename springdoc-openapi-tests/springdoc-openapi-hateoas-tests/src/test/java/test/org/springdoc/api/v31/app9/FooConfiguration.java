@@ -26,8 +26,6 @@
 
 package test.org.springdoc.api.v31.app9;
 
-import java.util.List;
-
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Contact;
@@ -36,9 +34,10 @@ import io.swagger.v3.oas.models.media.ArraySchema;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.security.SecurityScheme;
 import io.swagger.v3.oas.models.tags.Tag;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import java.util.List;
 
 @Configuration
 public class FooConfiguration {
@@ -46,23 +45,23 @@ public class FooConfiguration {
 	OpenAPI customOpenApi() {
 		return new OpenAPI()
 				.components(new Components().addSecuritySchemes("bearerScheme",
-								new SecurityScheme()
-										.type(SecurityScheme.Type.HTTP)
-										.scheme("bearer")
-										.bearerFormat("JWT"))
-						.addSchemas("FeedResponse", feedResponseSchema()))
+				                                                new SecurityScheme()
+						                                                .type(SecurityScheme.Type.HTTP)
+						                                                .scheme("bearer")
+						                                                .bearerFormat("JWT"))
+				                            .addSchemas("FeedResponse", feedResponseSchema()))
 				.info(new Info()
-						.title("Response API")
-						.description("API for some response")
-						.version("0.0.1")
-						.contact(new Contact()
-								.name("EAlf91")))
+						      .title("Response API")
+						      .description("API for some response")
+						      .version("0.0.1")
+						      .contact(new Contact()
+								               .name("EAlf91")))
 				.tags(List.of(new Tag()
-								.name("ResponseTag")
-								.description("ResponseTag for API"),
-						new Tag()
-								.name("ResponseData")
-								.description("Version 2 ResponseApi")));
+						              .name("ResponseTag")
+						              .description("ResponseTag for API"),
+				              new Tag()
+						              .name("ResponseData")
+						              .description("Version 2 ResponseApi")));
 
 	}
 
@@ -75,8 +74,10 @@ public class FooConfiguration {
 
 	private Schema<?> linkSchema() {
 		Schema<?> linkSchema = new Schema<>();
-		linkSchema.addProperty("next", new Schema<>().$ref("#/components/schemas/Link").example("http://localhost:8080/some-link"));
-		linkSchema.addProperty("self", new Schema<>().$ref("#/components/schemas/Link").example("http://localhost:8080/some-other-link"));
+		linkSchema.addProperty("next", new Schema<>().$ref("#/components/schemas/Link")
+		                                             .example("http://localhost:8080/some-link"));
+		linkSchema.addProperty("self", new Schema<>().$ref("#/components/schemas/Link")
+		                                             .example("http://localhost:8080/some-other-link"));
 		return linkSchema;
 	}
 

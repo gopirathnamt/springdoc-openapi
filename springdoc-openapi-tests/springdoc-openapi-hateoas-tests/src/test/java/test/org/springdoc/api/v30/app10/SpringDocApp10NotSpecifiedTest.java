@@ -26,17 +26,16 @@
 
 package test.org.springdoc.api.v30.app10;
 
-import java.util.Optional;
-
 import io.swagger.v3.core.converter.ModelConverter;
 import io.swagger.v3.core.converter.ModelConverters;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springdoc.core.converters.PageOpenAPIConverter;
 import org.springdoc.core.utils.Constants;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import test.org.springdoc.api.v30.AbstractSpringDocTest;
 
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import java.util.Optional;
 
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -51,7 +50,8 @@ public class SpringDocApp10NotSpecifiedTest extends AbstractSpringDocTest {
 	public static void init() {
 		Optional<ModelConverter> pageOpenAPIConverter =
 				ModelConverters.getInstance().getConverters()
-						.stream().filter(modelConverter -> modelConverter instanceof PageOpenAPIConverter).findAny();
+				               .stream().filter(modelConverter -> modelConverter instanceof PageOpenAPIConverter)
+				               .findAny();
 		pageOpenAPIConverter.ifPresent(ModelConverters.getInstance()::removeConverter);
 	}
 
@@ -59,9 +59,9 @@ public class SpringDocApp10NotSpecifiedTest extends AbstractSpringDocTest {
 	@Test
 	protected void testApp() throws Exception {
 		mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL))
-				.andExpect(status().isOk())
-				.andExpect(jsonPath("$.openapi", is("3.0.1")))
-				.andExpect(content().json(getContent("results/3.0.1/app10-direct.json"), true));
+		       .andExpect(status().isOk())
+		       .andExpect(jsonPath("$.openapi", is("3.0.1")))
+		       .andExpect(content().json(getContent("results/3.0.1/app10-direct.json"), true));
 	}
 
 	@SpringBootApplication

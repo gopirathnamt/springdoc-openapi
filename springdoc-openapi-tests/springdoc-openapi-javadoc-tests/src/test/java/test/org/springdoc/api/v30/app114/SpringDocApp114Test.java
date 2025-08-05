@@ -26,12 +26,11 @@
 
 package test.org.springdoc.api.v30.app114;
 
-import javax.money.MonetaryAmount;
-
 import org.springdoc.core.utils.SpringDocUtils;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import test.org.springdoc.api.v30.AbstractSpringDocTest;
 
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import javax.money.MonetaryAmount;
 
 
 /**
@@ -40,12 +39,14 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 class SpringDocApp114Test extends AbstractSpringDocTest {
 
 	static {
-		SpringDocUtils.getConfig().replaceWithClass(MonetaryAmount.class, org.springdoc.core.converters.models.MonetaryAmount.class);
+		SpringDocUtils.getConfig().replaceWithClass(MonetaryAmount.class,
+		                                            org.springdoc.core.converters.models.MonetaryAmount.class);
 	}
 
 	/**
 	 * The type Spring doc test app.
 	 */
 	@SpringBootApplication
-	static class SpringDocTestApp {}
+	static class SpringDocTestApp {
+	}
 }

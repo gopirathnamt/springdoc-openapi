@@ -27,7 +27,6 @@
 package test.org.springdoc.api.v31.app235;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;

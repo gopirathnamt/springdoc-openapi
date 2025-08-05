@@ -30,10 +30,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import test.org.springdoc.api.v31.app163.exception.NoResultException;
-import test.org.springdoc.api.v31.app163.exception.NonUniqueResultException;
-import test.org.springdoc.api.v31.app163.rest.dto.AnnotationOverrideForJavadocRestDto;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -45,6 +41,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import test.org.springdoc.api.v31.app163.exception.NoResultException;
+import test.org.springdoc.api.v31.app163.exception.NonUniqueResultException;
+import test.org.springdoc.api.v31.app163.rest.dto.AnnotationOverrideForJavadocRestDto;
 
 /**
  * This is the {@code AnnotationOverrideForJavadocRestController} class javadoc.
@@ -68,7 +67,8 @@ class AnnotationOverrideForJavadocRestController {
 	)
 	@PutMapping(path = "{guid}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.OK)
-	public ResponseEntity<AnnotationOverrideForJavadocRestDto> update(@PathVariable String guid, @RequestBody AnnotationOverrideForJavadocRestDto input) throws NoResultException {
+	public ResponseEntity<AnnotationOverrideForJavadocRestDto> update(@PathVariable String guid, @RequestBody
+	AnnotationOverrideForJavadocRestDto input) throws NoResultException {
 		return new ResponseEntity<>(HttpStatus.CREATED);
 	}
 
@@ -93,7 +93,8 @@ class AnnotationOverrideForJavadocRestController {
 	)
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.CREATED)
-	public ResponseEntity<AnnotationOverrideForJavadocRestDto> create(@RequestBody AnnotationOverrideForJavadocRestDto input) {
+	public ResponseEntity<AnnotationOverrideForJavadocRestDto> create(
+			@RequestBody AnnotationOverrideForJavadocRestDto input) {
 		return new ResponseEntity<>(HttpStatus.CREATED);
 	}
 
@@ -125,7 +126,8 @@ class AnnotationOverrideForJavadocRestController {
 			}
 	)
 	@GetMapping(path = "startsBy/{prefix}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<AnnotationOverrideForJavadocRestDto> findStartsBy(@PathVariable String prefix) throws NoResultException, NonUniqueResultException {
+	public ResponseEntity<AnnotationOverrideForJavadocRestDto> findStartsBy(@PathVariable String prefix) throws
+			NoResultException, NonUniqueResultException {
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 }

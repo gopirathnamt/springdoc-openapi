@@ -27,7 +27,6 @@
 package org.springdoc.core.conditions;
 
 import org.springdoc.core.models.GroupedOpenApi;
-
 import org.springframework.boot.autoconfigure.condition.AnyNestedCondition;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -55,7 +54,8 @@ public class CacheOrGroupedOpenApiCondition extends AnyNestedCondition {
 	 * @author bnasslahsen
 	 */
 	@Conditional(MultipleOpenApiSupportCondition.class)
-	static class OnMultipleOpenApiSupportCondition {}
+	static class OnMultipleOpenApiSupportCondition {
+	}
 
 	/**
 	 * The type On cache disabled.
@@ -64,6 +64,7 @@ public class CacheOrGroupedOpenApiCondition extends AnyNestedCondition {
 	 */
 	@ConditionalOnProperty(name = SPRINGDOC_CACHE_DISABLED)
 	@ConditionalOnMissingBean(GroupedOpenApi.class)
-	static class OnCacheDisabled {}
+	static class OnCacheDisabled {
+	}
 
 }

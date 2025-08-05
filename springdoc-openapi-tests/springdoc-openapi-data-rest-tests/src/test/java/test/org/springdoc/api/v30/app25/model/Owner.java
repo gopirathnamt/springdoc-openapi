@@ -26,8 +26,6 @@
 
 package test.org.springdoc.api.v30.app25.model;
 
-import java.util.Set;
-
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
@@ -38,6 +36,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+
+import java.util.Set;
 
 @Entity
 @Data
@@ -57,7 +57,7 @@ public class Owner extends BaseEntity {
 	private Address addresses;
 
 	@EqualsAndHashCode.Exclude
-	@OneToMany(mappedBy = "owner", cascade = { CascadeType.ALL })
+	@OneToMany(mappedBy = "owner", cascade = {CascadeType.ALL})
 	private Set<Pet> pets;
 
 }

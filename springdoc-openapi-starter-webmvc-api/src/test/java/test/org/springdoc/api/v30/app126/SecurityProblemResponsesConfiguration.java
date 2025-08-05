@@ -24,18 +24,17 @@
 
 package test.org.springdoc.api.v30.app126;
 
-import java.io.IOException;
-import java.util.AbstractMap;
-import java.util.Map;
-
 import io.swagger.v3.oas.models.media.Content;
 import io.swagger.v3.oas.models.media.MediaType;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.responses.ApiResponse;
-
 import org.springframework.beans.factory.parsing.Problem;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import java.io.IOException;
+import java.util.AbstractMap;
+import java.util.Map;
 
 import static org.springframework.http.MediaType.APPLICATION_PROBLEM_JSON_VALUE;
 

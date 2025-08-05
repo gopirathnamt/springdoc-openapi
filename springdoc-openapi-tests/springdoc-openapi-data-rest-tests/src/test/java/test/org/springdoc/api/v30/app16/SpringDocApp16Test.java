@@ -28,10 +28,9 @@ package test.org.springdoc.api.v30.app16;
 
 import io.swagger.v3.oas.models.Operation;
 import org.springdoc.core.customizers.DataRestRouterOperationCustomizer;
-import test.org.springdoc.api.v30.AbstractSpringDocTest;
-
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import test.org.springdoc.api.v30.AbstractSpringDocTest;
 
 public class SpringDocApp16Test extends AbstractSpringDocTest {
 

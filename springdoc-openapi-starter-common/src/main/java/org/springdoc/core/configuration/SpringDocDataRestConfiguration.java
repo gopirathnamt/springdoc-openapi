@@ -26,8 +26,6 @@
 
 package org.springdoc.core.configuration;
 
-import java.util.Optional;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springdoc.core.configuration.hints.SpringDocDataRestHints;
 import org.springdoc.core.converters.models.DefaultPageable;
@@ -48,7 +46,6 @@ import org.springdoc.core.service.OpenAPIService;
 import org.springdoc.core.service.OperationService;
 import org.springdoc.core.service.RequestBodyService;
 import org.springdoc.core.utils.SpringDocDataRestUtils;
-
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
@@ -68,6 +65,8 @@ import org.springframework.data.rest.webmvc.RootResourceInformation;
 import org.springframework.data.rest.webmvc.support.DefaultedPageable;
 import org.springframework.data.rest.webmvc.support.ETag;
 import org.springframework.hateoas.server.LinkRelationProvider;
+
+import java.util.Optional;
 
 import static org.springdoc.core.utils.SpringDocUtils.getConfig;
 
@@ -97,7 +96,9 @@ public class SpringDocDataRestConfiguration {
 	@ConditionalOnMissingBean
 	@Primary
 	@Lazy(false)
-	DataRestHalProvider halProvider(Optional<RepositoryRestConfiguration> repositoryRestConfiguration, Optional<HateoasProperties> hateoasPropertiesOptional, ObjectMapperProvider objectMapperProvider) {
+	DataRestHalProvider halProvider(Optional<RepositoryRestConfiguration> repositoryRestConfiguration,
+	                                Optional<HateoasProperties> hateoasPropertiesOptional,
+	                                ObjectMapperProvider objectMapperProvider) {
 		return new DataRestHalProvider(repositoryRestConfiguration, hateoasPropertiesOptional, objectMapperProvider);
 	}
 
@@ -113,8 +114,9 @@ public class SpringDocDataRestConfiguration {
 
 		static {
 			getConfig().replaceParameterObjectWithClass(DefaultedPageable.class, DefaultPageable.class)
-					.addRequestWrapperToIgnore(RootResourceInformation.class, PersistentEntityResourceAssembler.class, ETag.class, Sort.class)
-					.addResponseWrapperToIgnore(RootResourceInformation.class);
+			           .addRequestWrapperToIgnore(RootResourceInformation.class,
+			                                      PersistentEntityResourceAssembler.class, ETag.class, Sort.class)
+			           .addResponseWrapperToIgnore(RootResourceInformation.class);
 		}
 
 		/**
@@ -128,7 +130,8 @@ public class SpringDocDataRestConfiguration {
 		@Bean
 		@ConditionalOnMissingBean
 		@Lazy(false)
-		SpringRepositoryRestResourceProvider springRepositoryRestResourceProvider(DataRestRouterOperationService dataRestRouterOperationService,
+		SpringRepositoryRestResourceProvider springRepositoryRestResourceProvider(
+				DataRestRouterOperationService dataRestRouterOperationService,
 				ObjectMapper mapper,
 				SpringDocDataRestUtils springDocDataRestUtils) {
 			return new SpringRepositoryRestResourceProvider(
@@ -148,8 +151,11 @@ public class SpringDocDataRestConfiguration {
 		@ConditionalOnMissingBean
 		@Lazy(false)
 		DataRestRouterOperationService dataRestRouterOperationBuilder(DataRestOperationService dataRestOperationService,
-				SpringDocConfigProperties springDocConfigProperties, RepositoryRestConfiguration repositoryRestConfiguration, DataRestHalProvider dataRestHalProvider) {
-			return new DataRestRouterOperationService(dataRestOperationService, springDocConfigProperties, repositoryRestConfiguration, dataRestHalProvider);
+		                                                              SpringDocConfigProperties springDocConfigProperties,
+		                                                              RepositoryRestConfiguration repositoryRestConfiguration,
+		                                                              DataRestHalProvider dataRestHalProvider) {
+			return new DataRestRouterOperationService(dataRestOperationService, springDocConfigProperties,
+			                                          repositoryRestConfiguration, dataRestHalProvider);
 		}
 
 		/**
@@ -164,9 +170,12 @@ public class SpringDocDataRestConfiguration {
 		@Bean
 		@ConditionalOnMissingBean
 		@Lazy(false)
-		DataRestOperationService dataRestOperationBuilder(DataRestRequestService dataRestRequestService, DataRestTagsService tagsBuilder,
-				DataRestResponseService dataRestResponseService, OperationService operationService) {
-			return new DataRestOperationService(dataRestRequestService, tagsBuilder, dataRestResponseService, operationService);
+		DataRestOperationService dataRestOperationBuilder(DataRestRequestService dataRestRequestService,
+		                                                  DataRestTagsService tagsBuilder,
+		                                                  DataRestResponseService dataRestResponseService,
+		                                                  OperationService operationService) {
+			return new DataRestOperationService(dataRestRequestService, tagsBuilder, dataRestResponseService,
+			                                    operationService);
 		}
 
 		/**
@@ -182,10 +191,13 @@ public class SpringDocDataRestConfiguration {
 		@Bean
 		@ConditionalOnMissingBean
 		@Lazy(false)
-		DataRestRequestService dataRestRequestBuilder(SpringDocParameterNameDiscoverer localSpringDocParameterNameDiscoverer, GenericParameterService parameterBuilder,
-				RequestBodyService requestBodyService, AbstractRequestService requestBuilder, SpringDocDataRestUtils springDocDataRestUtils) {
+		DataRestRequestService dataRestRequestBuilder(
+				SpringDocParameterNameDiscoverer localSpringDocParameterNameDiscoverer,
+				GenericParameterService parameterBuilder,
+				RequestBodyService requestBodyService, AbstractRequestService requestBuilder,
+				SpringDocDataRestUtils springDocDataRestUtils) {
 			return new DataRestRequestService(localSpringDocParameterNameDiscoverer, parameterBuilder,
-					requestBodyService, requestBuilder, springDocDataRestUtils);
+			                                  requestBodyService, requestBuilder, springDocDataRestUtils);
 		}
 
 		/**
@@ -198,7 +210,8 @@ public class SpringDocDataRestConfiguration {
 		@Bean
 		@ConditionalOnMissingBean
 		@Lazy(false)
-		DataRestResponseService dataRestResponseBuilder(GenericResponseService genericResponseService, SpringDocDataRestUtils springDocDataRestUtils) {
+		DataRestResponseService dataRestResponseBuilder(GenericResponseService genericResponseService,
+		                                                SpringDocDataRestUtils springDocDataRestUtils) {
 			return new DataRestResponseService(genericResponseService, springDocDataRestUtils);
 		}
 
@@ -225,7 +238,8 @@ public class SpringDocDataRestConfiguration {
 		@Bean
 		@ConditionalOnMissingBean
 		@Lazy(false)
-		SpringDocDataRestUtils springDocDataRestUtils(LinkRelationProvider linkRelationProvider, RepositoryRestConfiguration repositoryRestConfiguration) {
+		SpringDocDataRestUtils springDocDataRestUtils(LinkRelationProvider linkRelationProvider,
+		                                              RepositoryRestConfiguration repositoryRestConfiguration) {
 			return new SpringDocDataRestUtils(linkRelationProvider, repositoryRestConfiguration);
 		}
 	}

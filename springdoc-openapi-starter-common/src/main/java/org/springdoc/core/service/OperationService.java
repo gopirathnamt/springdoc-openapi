@@ -26,17 +26,6 @@
 
 package org.springdoc.core.service;
 
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Optional;
-import java.util.Set;
-
 import io.swagger.v3.core.util.AnnotationsUtils;
 import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.models.Components;
@@ -56,9 +45,19 @@ import org.springdoc.core.models.MethodAttributes;
 import org.springdoc.core.providers.JavadocProvider;
 import org.springdoc.core.utils.PropertyResolverUtils;
 import org.springdoc.core.utils.SpringDocAnnotationsUtils;
-
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.util.CollectionUtils;
+
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Optional;
+import java.util.Set;
 
 import static org.springdoc.core.utils.Constants.DELETE_METHOD;
 import static org.springdoc.core.utils.Constants.GET_METHOD;
@@ -105,7 +104,7 @@ public class OperationService {
 	 * @param propertyResolverUtils the property resolver utils
 	 */
 	public OperationService(GenericParameterService parameterBuilder, RequestBodyService requestBodyService,
-			SecurityService securityParser, PropertyResolverUtils propertyResolverUtils) {
+	                        SecurityService securityParser, PropertyResolverUtils propertyResolverUtils) {
 		super();
 		this.parameterBuilder = parameterBuilder;
 		this.requestBodyService = requestBodyService;
@@ -123,7 +122,7 @@ public class OperationService {
 	 * @return the open api
 	 */
 	public OpenAPI parse(io.swagger.v3.oas.annotations.Operation apiOperation,
-			Operation operation, OpenAPI openAPI, MethodAttributes methodAttributes) {
+	                     Operation operation, OpenAPI openAPI, MethodAttributes methodAttributes) {
 		Components components = openAPI.getComponents();
 		Locale locale = methodAttributes.getLocale();
 		if (StringUtils.isNotBlank(apiOperation.summary()))
@@ -142,22 +141,24 @@ public class OperationService {
 
 		if (operation.getExternalDocs() == null)  // if not set in root annotation
 			AnnotationsUtils.getExternalDocumentation(apiOperation.externalDocs(), propertyResolverUtils.isOpenapi31())
-					.ifPresent(operation::setExternalDocs);
+			                .ifPresent(operation::setExternalDocs);
 
 		// servers
 		AnnotationsUtils.getServers(apiOperation.servers())
-				.ifPresent(servers -> servers.forEach(operation::addServersItem));
+		                .ifPresent(servers -> servers.forEach(operation::addServersItem));
 
 		// build parameters
 		for (io.swagger.v3.oas.annotations.Parameter parameterDoc : apiOperation.parameters()) {
 			Parameter parameter = parameterBuilder.buildParameterFromDoc(parameterDoc, components,
-					methodAttributes.getJsonViewAnnotation(), locale);
+			                                                             methodAttributes.getJsonViewAnnotation(),
+			                                                             locale);
 			operation.addParametersItem(parameter);
 		}
 
 		// RequestBody in Operation
-		requestBodyService.buildRequestBodyFromDoc(apiOperation.requestBody(), operation.getRequestBody(), methodAttributes, components, locale)
-				.ifPresent(operation::setRequestBody);
+		requestBodyService.buildRequestBodyFromDoc(apiOperation.requestBody(), operation.getRequestBody(),
+		                                           methodAttributes, components, locale)
+		                  .ifPresent(operation::setRequestBody);
 
 		// build response
 		buildResponse(components, apiOperation, operation, methodAttributes);
@@ -178,7 +179,7 @@ public class OperationService {
 	 */
 	public boolean isHidden(Method method) {
 		io.swagger.v3.oas.annotations.Operation apiOperation = AnnotationUtils.findAnnotation(method,
-				io.swagger.v3.oas.annotations.Operation.class);
+		                                                                                      io.swagger.v3.oas.annotations.Operation.class);
 		return (apiOperation != null && (apiOperation.hidden()))
 				|| (AnnotationUtils.findAnnotation(method, Hidden.class) != null);
 	}
@@ -277,14 +278,15 @@ public class OperationService {
 	 * @param operation    the operation
 	 * @param locale       the locale
 	 */
-	private void buildExtensions(io.swagger.v3.oas.annotations.Operation apiOperation, Operation operation, Locale locale) {
+	private void buildExtensions(io.swagger.v3.oas.annotations.Operation apiOperation, Operation operation,
+	                             Locale locale) {
 		if (apiOperation.extensions().length > 0) {
-			Map<String, Object> extensions = AnnotationsUtils.getExtensions(propertyResolverUtils.isOpenapi31(), apiOperation.extensions());
+			Map<String, Object> extensions =
+					AnnotationsUtils.getExtensions(propertyResolverUtils.isOpenapi31(), apiOperation.extensions());
 			if (propertyResolverUtils.isResolveExtensionsProperties()) {
 				Map<String, Object> extensionsResolved = propertyResolverUtils.resolveExtensions(locale, extensions);
 				extensionsResolved.forEach(operation::addExtension);
-			}
-			else {
+			} else {
 				extensions.forEach(operation::addExtension);
 			}
 		}
@@ -300,9 +302,9 @@ public class OperationService {
 		Optional<List<String>> mlist = getStringListFromStringArray(apiOperation.tags());
 		if (mlist.isPresent()) {
 			List<String> tags = mlist.get().stream()
-					.filter(t -> operation.getTags() == null
-							|| (operation.getTags() != null && !operation.getTags().contains(t)))
-					.toList();
+			                         .filter(t -> operation.getTags() == null
+					                         || (operation.getTags() != null && !operation.getTags().contains(t)))
+			                         .toList();
 			tags.forEach(operation::addTagsItem);
 		}
 	}
@@ -335,17 +337,19 @@ public class OperationService {
 			setDescription(response, apiResponseObject, methodAttributes.getJavadocReturn());
 			setExtensions(response, apiResponseObject, methodAttributes.getLocale());
 
-			buildResponseContent(methodAttributes, components, classProduces, methodProduces, apiResponsesOp, response, apiResponseObject);
+			buildResponseContent(methodAttributes, components, classProduces, methodProduces, apiResponsesOp, response,
+			                     apiResponseObject);
 
-			SpringDocAnnotationsUtils.getHeaders(response.headers(), components, null, propertyResolverUtils.isOpenapi31()).ifPresent(apiResponseObject::headers);
+			SpringDocAnnotationsUtils.getHeaders(response.headers(), components, null,
+			                                     propertyResolverUtils.isOpenapi31())
+			                         .ifPresent(apiResponseObject::headers);
 			// Make schema as string if empty
 			calculateHeader(apiResponseObject);
 			if (isResponseObject(apiResponseObject)) {
 				setLinks(response, apiResponseObject);
 				if (StringUtils.isNotBlank(response.responseCode())) {
 					apiResponsesObject.addApiResponse(response.responseCode(), apiResponseObject);
-				}
-				else {
+				} else {
 					apiResponsesObject._default(apiResponseObject);
 				}
 			}
@@ -365,14 +369,19 @@ public class OperationService {
 	 * @param response          the response
 	 * @param apiResponseObject the api response object
 	 */
-	private void buildResponseContent(MethodAttributes methodAttributes, Components components, String[] classProduces, String[] methodProduces, ApiResponses apiResponsesOp, io.swagger.v3.oas.annotations.responses.ApiResponse response, ApiResponse apiResponseObject) {
+	private void buildResponseContent(MethodAttributes methodAttributes, Components components, String[] classProduces,
+	                                  String[] methodProduces, ApiResponses apiResponsesOp,
+	                                  io.swagger.v3.oas.annotations.responses.ApiResponse response,
+	                                  ApiResponse apiResponseObject) {
 		if (apiResponsesOp == null)
 			SpringDocAnnotationsUtils.getContent(response.content(),
-							classProduces == null ? new String[0] : classProduces,
-							methodProduces == null ? new String[0] : methodProduces, null, components, null, propertyResolverUtils.isOpenapi31())
-					.ifPresent(apiResponseObject::content);
+			                                     classProduces == null ? new String[0] : classProduces,
+			                                     methodProduces == null ? new String[0] : methodProduces, null,
+			                                     components, null, propertyResolverUtils.isOpenapi31())
+			                         .ifPresent(apiResponseObject::content);
 		else
-			GenericResponseService.buildContentFromDoc(components, apiResponsesOp, methodAttributes, response, apiResponseObject, propertyResolverUtils.isOpenapi31());
+			GenericResponseService.buildContentFromDoc(components, apiResponsesOp, methodAttributes, response,
+			                                           apiResponseObject, propertyResolverUtils.isOpenapi31());
 	}
 
 	/**
@@ -407,14 +416,12 @@ public class OperationService {
 	 * @param javadocReturn     the javadoc return
 	 */
 	private void setDescription(io.swagger.v3.oas.annotations.responses.ApiResponse response,
-			ApiResponse apiResponseObject, String javadocReturn) {
+	                            ApiResponse apiResponseObject, String javadocReturn) {
 		if (StringUtils.isNotBlank(response.description())) {
 			apiResponseObject.setDescription(response.description());
-		}
-		else if (StringUtils.isNotBlank(javadocReturn)) {
+		} else if (StringUtils.isNotBlank(javadocReturn)) {
 			apiResponseObject.setDescription(javadocReturn);
-		}
-		else {
+		} else {
 			GenericResponseService.setDescription(response.responseCode(), apiResponseObject);
 		}
 	}
@@ -430,7 +437,8 @@ public class OperationService {
 			for (Map.Entry<String, Header> entry : headers.entrySet()) {
 				Header header = entry.getValue();
 				if (header.getSchema() == null) {
-					Schema<?> schema = AnnotationsUtils.resolveSchemaFromType(String.class, null, null, propertyResolverUtils.isOpenapi31());
+					Schema<?> schema = AnnotationsUtils.resolveSchemaFromType(String.class, null, null,
+					                                                          propertyResolverUtils.isOpenapi31());
 					header.setSchema(schema);
 					entry.setValue(header);
 				}
@@ -446,12 +454,11 @@ public class OperationService {
 	 * @param apiResponseObject  the api response object
 	 */
 	private void setRef(ApiResponses apiResponsesObject, io.swagger.v3.oas.annotations.responses.ApiResponse response,
-			ApiResponse apiResponseObject) {
+	                    ApiResponse apiResponseObject) {
 		apiResponseObject.set$ref(response.ref());
 		if (StringUtils.isNotBlank(response.responseCode())) {
 			apiResponsesObject.addApiResponse(response.responseCode(), apiResponseObject);
-		}
-		else {
+		} else {
 			apiResponsesObject._default(apiResponseObject);
 		}
 	}
@@ -464,14 +471,14 @@ public class OperationService {
 	 * @param locale            the locale
 	 */
 	private void setExtensions(io.swagger.v3.oas.annotations.responses.ApiResponse response,
-			ApiResponse apiResponseObject, Locale locale) {
+	                           ApiResponse apiResponseObject, Locale locale) {
 		if (response.extensions().length > 0) {
-			Map<String, Object> extensions = AnnotationsUtils.getExtensions(propertyResolverUtils.isOpenapi31(), response.extensions());
+			Map<String, Object> extensions =
+					AnnotationsUtils.getExtensions(propertyResolverUtils.isOpenapi31(), response.extensions());
 			if (propertyResolverUtils.isResolveExtensionsProperties()) {
 				Map<String, Object> extensionsResolved = propertyResolverUtils.resolveExtensions(locale, extensions);
 				extensionsResolved.forEach(apiResponseObject::addExtension);
-			}
-			else {
+			} else {
 				extensions.forEach(apiResponseObject::addExtension);
 			}
 		}
@@ -487,12 +494,11 @@ public class OperationService {
 	 * @param methodAttributes the method attributes
 	 */
 	private void buildResponse(Components components, io.swagger.v3.oas.annotations.Operation apiOperation,
-			Operation operation, MethodAttributes methodAttributes) {
+	                           Operation operation, MethodAttributes methodAttributes) {
 		getApiResponses(apiOperation.responses(), methodAttributes, operation, components).ifPresent(responses -> {
 			if (operation.getResponses() == null) {
 				operation.setResponses(responses);
-			}
-			else {
+			} else {
 				responses.forEach(operation.getResponses()::addApiResponse);
 			}
 		});
@@ -540,9 +546,11 @@ public class OperationService {
 				Content existingContent = apiResponses.get(apiResponseEntry.getKey()).getContent();
 				Content newContent = apiResponseEntry.getValue().getContent();
 				if (newContent != null)
-					newContent.forEach((mediaTypeStr, mediaType) -> SpringDocAnnotationsUtils.mergeSchema(existingContent, mediaType.getSchema(), mediaTypeStr));
-			}
-			else
+					newContent.forEach(
+							(mediaTypeStr, mediaType) -> SpringDocAnnotationsUtils.mergeSchema(existingContent,
+							                                                                   mediaType.getSchema(),
+							                                                                   mediaTypeStr));
+			} else
 				apiResponses.addApiResponse(apiResponseEntry.getKey(), apiResponseEntry.getValue());
 		}
 		return operation;

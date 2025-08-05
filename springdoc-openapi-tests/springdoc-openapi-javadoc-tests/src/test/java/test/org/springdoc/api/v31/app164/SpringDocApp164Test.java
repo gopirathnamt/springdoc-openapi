@@ -28,10 +28,9 @@ package test.org.springdoc.api.v31.app164;
 
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
-import test.org.springdoc.api.v31.AbstractSpringDocTest;
-
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import test.org.springdoc.api.v31.AbstractSpringDocTest;
 
 /**
  * The type Spring doc app 164 test.
@@ -52,9 +51,9 @@ class SpringDocApp164Test extends AbstractSpringDocTest {
 		public OpenAPI customOpenAPI() {
 			return new OpenAPI()
 					.info(new Info()
-							.title("SpringShop API")
-							.version("v1")
-							.description("The description of the api"));
+							      .title("SpringShop API")
+							      .version("v1")
+							      .description("The description of the api"));
 		}
 
 	}

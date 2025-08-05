@@ -20,7 +20,6 @@ package test.org.springdoc.ui.app21;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
-
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -33,7 +32,8 @@ public class HelloController {
 
 	@Operation(summary = "add")
 	@PostMapping(value = "/add", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-	public ResponseEntity<Void> add(@Parameter(description = "content") @RequestPart(value = "content") String content) throws Exception {
+	public ResponseEntity<Void> add(
+			@Parameter(description = "content") @RequestPart(value = "content") String content) throws Exception {
 		return null;
 	}
 
@@ -43,13 +43,13 @@ public class HelloController {
 	public ResponseEntity<Void> add2(
 			@Parameter(description = "content") @RequestPart(value = "content") String content,
 			@RequestPart(value = "type") String type
-	) {
+	                                ) {
 		return null;
 	}
 
 	@PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 	@Operation(summary = "test")
 	public void test(@RequestPart("strValue") String strValue,
-			@RequestPart("intValue") Integer intValue) {
+	                 @RequestPart("intValue") Integer intValue) {
 	}
 }

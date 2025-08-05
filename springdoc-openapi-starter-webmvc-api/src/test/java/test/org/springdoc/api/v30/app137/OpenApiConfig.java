@@ -38,4 +38,5 @@ import io.swagger.v3.oas.annotations.servers.Server;
 		flows = @OAuthFlows(authorizationCode = @OAuthFlow(
 				authorizationUrl = "http://authorization.url"
 				, tokenUrl = "http://token.url", scopes = {})))
-public class OpenApiConfig {}
+public class OpenApiConfig {
+}

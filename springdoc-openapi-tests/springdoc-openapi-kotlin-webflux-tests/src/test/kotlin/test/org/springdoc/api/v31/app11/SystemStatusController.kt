@@ -25,35 +25,35 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 enum class SystemStatus(val status: String) {
-	OK("OK")
+    OK("OK")
 }
 
 data class PersonDTO(
-	@Deprecated("no-email") val email: String,
-	val firstName: String,
-	val lastName: String
+    @Deprecated("no-email") val email: String,
+    val firstName: String,
+    val lastName: String
 )
 
 data class SystemStatusResponse(
-	@Deprecated("will be removed in next version")
-	val systemStatus: SystemStatus,
+    @Deprecated("will be removed in next version")
+    val systemStatus: SystemStatus,
 
-	@Deprecated("")
-	val emptyTest: String,
+    @Deprecated("")
+    val emptyTest: String,
 
-	@Deprecated("should be ignored")
-	@Schema(description = "nonEmptyDesc")
-	val nonEmptyDesc: String
+    @Deprecated("should be ignored")
+    @Schema(description = "nonEmptyDesc")
+    val nonEmptyDesc: String
 )
 
 @RestController
 @RequestMapping("/status")
 class SystemStatusController {
-	@GetMapping
-	suspend fun index() = SystemStatusResponse(SystemStatus.OK, "", "")
+    @GetMapping
+    suspend fun index() = SystemStatusResponse(SystemStatus.OK, "", "")
 
-	@GetMapping("/foo")
-	fun foo(personDTO: PersonDTO) = mono {
-		SystemStatusResponse(SystemStatus.OK, "", "")
-	}
+    @GetMapping("/foo")
+    fun foo(personDTO: PersonDTO) = mono {
+        SystemStatusResponse(SystemStatus.OK, "", "")
+    }
 }

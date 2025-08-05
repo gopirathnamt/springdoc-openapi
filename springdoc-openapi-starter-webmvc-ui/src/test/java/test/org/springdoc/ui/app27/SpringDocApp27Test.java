@@ -19,10 +19,9 @@
 package test.org.springdoc.ui.app27;
 
 import org.junit.jupiter.api.Test;
-import test.org.springdoc.ui.AbstractSpringDocTest;
-
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.test.context.TestPropertySource;
+import test.org.springdoc.ui.AbstractSpringDocTest;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
@@ -36,13 +35,15 @@ public class SpringDocApp27Test extends AbstractSpringDocTest {
 	@Test
 	void shouldRedirectWithQueryParams() throws Exception {
 		mockMvc.perform(get("/swagger-ui.html"))
-				.andExpect(status().isFound())
-				.andExpect(header().string("Location", "/swagger-ui/index.html?operationsSorter=method&configUrl=/v3/api-docs/swagger-config"));
+		       .andExpect(status().isFound())
+		       .andExpect(header().string("Location",
+		                                  "/swagger-ui/index.html?operationsSorter=method&configUrl=/v3/api-docs/swagger-config"));
 
 		super.chekJS();
 	}
 
 
 	@SpringBootApplication
-	static class SpringDocTestApp {}
+	static class SpringDocTestApp {
+	}
 }

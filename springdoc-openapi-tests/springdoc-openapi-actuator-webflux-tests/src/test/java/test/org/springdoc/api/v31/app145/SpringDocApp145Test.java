@@ -20,43 +20,41 @@ package test.org.springdoc.api.v31.app145;
 
 import org.junit.jupiter.api.Test;
 import org.springdoc.core.utils.Constants;
-import test.org.springdoc.api.v31.AbstractSpringDocActuatorTest;
-
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
+import test.org.springdoc.api.v31.AbstractSpringDocActuatorTest;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 
 @SpringBootTest(webEnvironment = WebEnvironment.DEFINED_PORT,
-		properties = { "management.endpoints.web.exposure.include=*",
+		properties = {"management.endpoints.web.exposure.include=*",
 				"server.port=52593",
 				"springdoc.use-management-port=true",
 				"springdoc.group-configs[0].group=users",
 				"springdoc.group-configs[0].packages-to-scan=test.org.springdoc.api.v31.app145",
 				"management.server.port=9300",
-				"management.endpoints.web.base-path=/application" })
+				"management.endpoints.web.base-path=/application"})
 public class SpringDocApp145Test extends AbstractSpringDocActuatorTest {
 
 	@Test
 	void testApp() {
 		webTestClient.get().uri(Constants.DEFAULT_API_DOCS_URL + "/users")
-				.exchange()
-				.expectStatus().isNotFound();
+		             .exchange()
+		             .expectStatus().isNotFound();
 	}
 
 	@Test
 	void testApp3() throws Exception {
 		try {
 			webClient.get().uri("/application/openapi" + "/" + Constants.DEFAULT_GROUP_NAME).retrieve()
-					.bodyToMono(String.class).block();
+			         .bodyToMono(String.class).block();
 			fail();
-		}
-		catch (WebClientResponseException ex) {
+		} catch (WebClientResponseException ex) {
 			if (ex.getStatusCode() == HttpStatus.NOT_FOUND)
 				assertTrue(true);
 			else
@@ -65,6 +63,7 @@ public class SpringDocApp145Test extends AbstractSpringDocActuatorTest {
 	}
 
 	@SpringBootApplication
-	static class SpringDocTestApp {}
+	static class SpringDocTestApp {
+	}
 
 }

@@ -30,10 +30,9 @@ import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.info.Contact;
 import io.swagger.v3.oas.annotations.info.Info;
 import io.swagger.v3.oas.annotations.info.License;
-import test.org.springdoc.api.v30.AbstractSpringDocTest;
-
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.test.context.TestPropertySource;
+import test.org.springdoc.api.v30.AbstractSpringDocTest;
 
 /**
  * The type Spring doc app 15 test.
@@ -71,5 +70,6 @@ class SpringDocApp15Test extends AbstractSpringDocTest {
 					url = "${springdoc.openapidefinition.info.contact.url}"
 			)
 	))
-	static class SpringDocTestApp {}
+	static class SpringDocTestApp {
+	}
 }

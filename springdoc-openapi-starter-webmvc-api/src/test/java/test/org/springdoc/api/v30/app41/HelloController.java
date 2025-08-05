@@ -32,7 +32,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -47,10 +46,11 @@ public class HelloController {
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "File resource", content = @Content(schema = @Schema(implementation = java.io.File.class))),
 			@ApiResponse(responseCode = "400", description = "Wrong request", content = @Content(schema = @Schema(implementation = java.lang.Error.class))),
-			@ApiResponse(responseCode = "500", description = "Unexpected error", content = @Content(schema = @Schema(implementation = java.lang.Error.class))) })
+			@ApiResponse(responseCode = "500", description = "Unexpected error", content = @Content(schema = @Schema(implementation = java.lang.Error.class)))})
 	@GetMapping(value = "/file", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<java.io.File> getFile(
-			@NotNull @Parameter(description = "File path", required = true) @Valid @RequestParam(value = "path") String path) {
+			@NotNull @Parameter(description = "File path", required = true) @Valid @RequestParam(value = "path")
+			String path) {
 		return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).build();
 	}
 

@@ -1,8 +1,8 @@
 package test.org.springdoc.api.v30.app198;
 
-import java.math.BigDecimal;
-
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import java.math.BigDecimal;
 
 /**
  * @author bnasslahsen

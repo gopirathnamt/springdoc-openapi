@@ -26,13 +26,12 @@
 
 package test.org.springdoc.api.v30.app2.api;
 
-import java.io.IOException;
-
 import jakarta.servlet.http.HttpServletResponse;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.server.ResponseStatusException;
+
+import java.io.IOException;
 
 /**
  * The type Api util.
@@ -50,8 +49,7 @@ class ApiUtil {
 		try {
 			req.getNativeResponse(HttpServletResponse.class).addHeader("Content-Type", contentType);
 			req.getNativeResponse(HttpServletResponse.class).getOutputStream().print(example);
-		}
-		catch (IOException e) {
+		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
 	}

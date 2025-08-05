@@ -27,13 +27,12 @@
 package test.org.springdoc.api.v30.app75;
 
 
-import java.net.URI;
-
-import reactor.core.publisher.Mono;
-
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
+import reactor.core.publisher.Mono;
+
+import java.net.URI;
 
 @Component
 class PostHandler {
@@ -50,14 +49,14 @@ class PostHandler {
 
 	public Mono<ServerResponse> create(ServerRequest req) {
 		return req.bodyToMono(Post.class)
-				.flatMap(post -> this.posts.save(post))
-				.flatMap(p -> ServerResponse.created(URI.create("/posts/" + p.getId())).build());
+		          .flatMap(post -> this.posts.save(post))
+		          .flatMap(p -> ServerResponse.created(URI.create("/posts/" + p.getId())).build());
 	}
 
 	public Mono<ServerResponse> get(ServerRequest req) {
 		return this.posts.findById(req.pathVariable("id"))
-				.flatMap(post -> ServerResponse.ok().body(Mono.just(post), Post.class))
-				.switchIfEmpty(ServerResponse.notFound().build());
+		                 .flatMap(post -> ServerResponse.ok().body(Mono.just(post), Post.class))
+		                 .switchIfEmpty(ServerResponse.notFound().build());
 	}
 
 	public Mono<ServerResponse> update(ServerRequest req) {
@@ -73,7 +72,7 @@ class PostHandler {
 						},
 						this.posts.findById(req.pathVariable("id")),
 						req.bodyToMono(Post.class)
-				)
+				    )
 				.cast(Post.class)
 				.flatMap(post -> this.posts.save(post))
 				.flatMap(post -> ServerResponse.noContent().build());

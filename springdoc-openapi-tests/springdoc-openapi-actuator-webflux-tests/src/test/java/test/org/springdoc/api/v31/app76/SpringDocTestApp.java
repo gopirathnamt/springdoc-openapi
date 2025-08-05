@@ -29,7 +29,6 @@ import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
 import io.swagger.v3.oas.models.security.SecurityScheme;
 import org.springdoc.core.models.GroupedOpenApi;
-
 import org.springframework.boot.actuate.autoconfigure.endpoint.EndpointAutoConfiguration;
 import org.springframework.boot.actuate.autoconfigure.endpoint.web.WebEndpointAutoConfiguration;
 import org.springframework.boot.actuate.autoconfigure.endpoint.web.reactive.WebFluxEndpointManagementContextConfiguration;
@@ -42,30 +41,31 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Import;
 
 @SpringBootApplication
-@Import({ WebEndpointAutoConfiguration.class,
+@Import({WebEndpointAutoConfiguration.class,
 		EndpointAutoConfiguration.class,
 		InfoEndpointAutoConfiguration.class,
 		HealthEndpointAutoConfiguration.class,
 		WebFluxEndpointManagementContextConfiguration.class,
-		ReactiveManagementContextAutoConfiguration.class })
-@ComponentScan(basePackages = { "org.springdoc", "test.org.springdoc.api.v31.app76" })
+		ReactiveManagementContextAutoConfiguration.class})
+@ComponentScan(basePackages = {"org.springdoc", "test.org.springdoc.api.v31.app76"})
 public class SpringDocTestApp {
 
 	@Bean
 	public OpenAPI customOpenAPI() {
 		return new OpenAPI()
 				.components(new Components().addSecuritySchemes("basicScheme",
-						new SecurityScheme().type(SecurityScheme.Type.HTTP).scheme("basic")))
+				                                                new SecurityScheme().type(SecurityScheme.Type.HTTP)
+				                                                                    .scheme("basic")))
 				.info(new Info().title("Tweet API").version("v0")
-						.license(new License().name("Apache 2.0").url("http://springdoc.org")));
+				                .license(new License().name("Apache 2.0").url("http://springdoc.org")));
 	}
 
 
 	@Bean
 	public GroupedOpenApi actuatorApi() {
 		return GroupedOpenApi.builder().group("actuator")
-				.pathsToMatch("/actuator/**")
-				.pathsToExclude("/actuator/health/*")
-				.build();
+		                     .pathsToMatch("/actuator/**")
+		                     .pathsToExclude("/actuator/health/*")
+		                     .build();
 	}
 }

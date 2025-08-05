@@ -26,14 +26,14 @@
 
 package test.org.springdoc.api.v30.app10;
 
-import java.util.List;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.web.PagedModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @SuppressWarnings("rawtypes")
 @RestController
@@ -85,5 +85,6 @@ public class HelloController {
 	public record UserDto(
 			String id,
 			String email
-	) {}
+	) {
+	}
 }

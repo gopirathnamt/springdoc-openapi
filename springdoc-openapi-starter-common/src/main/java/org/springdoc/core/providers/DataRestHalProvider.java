@@ -26,13 +26,12 @@
 
 package org.springdoc.core.providers;
 
-import java.util.Optional;
-
 import jakarta.annotation.PostConstruct;
-
 import org.springframework.boot.autoconfigure.hateoas.HateoasProperties;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 import org.springframework.hateoas.mediatype.hal.Jackson2HalModule;
+
+import java.util.Optional;
 
 /**
  * The type Data rest hal provider.
@@ -53,8 +52,9 @@ public class DataRestHalProvider extends HateoasHalProvider {
 	 * @param hateoasPropertiesOptional           the hateoas properties optional
 	 * @param objectMapperProvider                the object mapper provider
 	 */
-	public DataRestHalProvider(Optional<RepositoryRestConfiguration> repositoryRestConfigurationOptional, Optional<HateoasProperties> hateoasPropertiesOptional,
-			ObjectMapperProvider objectMapperProvider) {
+	public DataRestHalProvider(Optional<RepositoryRestConfiguration> repositoryRestConfigurationOptional,
+	                           Optional<HateoasProperties> hateoasPropertiesOptional,
+	                           ObjectMapperProvider objectMapperProvider) {
 		super(hateoasPropertiesOptional, objectMapperProvider);
 		this.repositoryRestConfigurationOptional = repositoryRestConfigurationOptional;
 	}

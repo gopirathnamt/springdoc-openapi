@@ -24,14 +24,14 @@
 
 package test.org.springdoc.api.v31.app80;
 
-import test.org.springdoc.api.v31.AbstractSpringDocTest;
-
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.test.context.ActiveProfiles;
+import test.org.springdoc.api.v31.AbstractSpringDocTest;
 
 @ActiveProfiles("80")
 public class SpringDocApp80Test extends AbstractSpringDocTest {
 
 	@SpringBootApplication
-	static class SpringDocTestApp {}
+	static class SpringDocTestApp {
+	}
 }

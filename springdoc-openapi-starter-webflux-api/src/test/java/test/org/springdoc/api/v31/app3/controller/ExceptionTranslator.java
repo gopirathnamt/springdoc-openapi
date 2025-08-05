@@ -26,15 +26,14 @@
 
 package test.org.springdoc.api.v31.app3.controller;
 
-import test.org.springdoc.api.v31.app3.exception.TweetConflictException;
-import test.org.springdoc.api.v31.app3.exception.TweetNotFoundException;
-import test.org.springdoc.api.v31.app3.payload.ErrorResponse;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import test.org.springdoc.api.v31.app3.exception.TweetConflictException;
+import test.org.springdoc.api.v31.app3.exception.TweetNotFoundException;
+import test.org.springdoc.api.v31.app3.payload.ErrorResponse;
 
 @RestControllerAdvice
 public class ExceptionTranslator {
@@ -45,7 +44,7 @@ public class ExceptionTranslator {
 	@ResponseStatus(HttpStatus.CONFLICT)
 	public ResponseEntity handleDuplicateKeyException(TweetConflictException ex) {
 		return ResponseEntity.status(HttpStatus.CONFLICT)
-				.body(new ErrorResponse("A Tweet with the same text already exists"));
+		                     .body(new ErrorResponse("A Tweet with the same text already exists"));
 	}
 
 	@SuppressWarnings("rawtypes")

@@ -26,19 +26,18 @@
 
 package org.springdoc.webmvc.ui;
 
-import java.util.Map;
-
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.commons.lang3.StringUtils;
 import org.springdoc.core.properties.SpringDocConfigProperties;
 import org.springdoc.core.properties.SwaggerUiConfigParameters;
 import org.springdoc.core.properties.SwaggerUiConfigProperties;
 import org.springdoc.ui.AbstractSwaggerWelcome;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.web.util.UriComponentsBuilder;
+
+import java.util.Map;
 
 /**
  * The type Swagger welcome common.
@@ -52,7 +51,8 @@ public abstract class SwaggerWelcomeCommon extends AbstractSwaggerWelcome {
 	 * @param swaggerUiConfig           the swagger ui config
 	 * @param springDocConfigProperties the spring doc config properties
 	 */
-	protected SwaggerWelcomeCommon(SwaggerUiConfigProperties swaggerUiConfig, SpringDocConfigProperties springDocConfigProperties) {
+	protected SwaggerWelcomeCommon(SwaggerUiConfigProperties swaggerUiConfig,
+	                               SpringDocConfigProperties springDocConfigProperties) {
 		super(swaggerUiConfig, springDocConfigProperties);
 	}
 
@@ -65,15 +65,16 @@ public abstract class SwaggerWelcomeCommon extends AbstractSwaggerWelcome {
 	protected ResponseEntity<Void> redirectToUi(HttpServletRequest request) {
 		SwaggerUiConfigParameters swaggerUiConfigParameters = new SwaggerUiConfigParameters(swaggerUiConfig);
 		buildFromCurrentContextPath(swaggerUiConfigParameters, request);
-		String sbUrl = swaggerUiConfigParameters.getContextPath() + swaggerUiConfigParameters.getUiRootPath() + getSwaggerUiUrl();
+		String sbUrl = swaggerUiConfigParameters.getContextPath() + swaggerUiConfigParameters.getUiRootPath() +
+				getSwaggerUiUrl();
 		UriComponentsBuilder uriBuilder = getUriComponentsBuilder(swaggerUiConfigParameters, sbUrl);
 
 		// forward all queryParams from original request
 		request.getParameterMap().forEach(uriBuilder::queryParam);
 
 		return ResponseEntity.status(HttpStatus.FOUND)
-				.location(uriBuilder.build().encode().toUri())
-				.build();
+		                     .location(uriBuilder.build().encode().toUri())
+		                     .build();
 	}
 
 	/**
@@ -89,11 +90,13 @@ public abstract class SwaggerWelcomeCommon extends AbstractSwaggerWelcome {
 	}
 
 	@Override
-	protected void calculateOauth2RedirectUrl(SwaggerUiConfigParameters swaggerUiConfigParameters, UriComponentsBuilder uriComponentsBuilder) {
-		if (StringUtils.isBlank(swaggerUiConfig.getOauth2RedirectUrl()) || !swaggerUiConfigParameters.isValidUrl(swaggerUiConfig.getOauth2RedirectUrl()))
+	protected void calculateOauth2RedirectUrl(SwaggerUiConfigParameters swaggerUiConfigParameters,
+	                                          UriComponentsBuilder uriComponentsBuilder) {
+		if (StringUtils.isBlank(swaggerUiConfig.getOauth2RedirectUrl()) ||
+				!swaggerUiConfigParameters.isValidUrl(swaggerUiConfig.getOauth2RedirectUrl()))
 			swaggerUiConfigParameters.setOauth2RedirectUrl(uriComponentsBuilder
-					.path(swaggerUiConfigParameters.getUiRootPath())
-					.path(getOauth2RedirectUrl()).build().toString());
+					                                               .path(swaggerUiConfigParameters.getUiRootPath())
+					                                               .path(getOauth2RedirectUrl()).build().toString());
 	}
 
 	/**

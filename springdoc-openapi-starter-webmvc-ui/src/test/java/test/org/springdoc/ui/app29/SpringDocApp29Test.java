@@ -19,10 +19,9 @@
 package test.org.springdoc.ui.app29;
 
 import org.junit.jupiter.api.Test;
-import test.org.springdoc.ui.AbstractSpringDocTest;
-
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.test.context.TestPropertySource;
+import test.org.springdoc.ui.AbstractSpringDocTest;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -38,13 +37,15 @@ public class SpringDocApp29Test extends AbstractSpringDocTest {
 	@Test
 	void test_url_with_context() throws Exception {
 		mockMvc.perform(get("/context-path/v3/api-docs/swagger-config").contextPath("/context-path"))
-				.andExpect(status().isOk())
-				.andExpect(jsonPath("url", equalTo("/context-path/api-docs/xxx/v1/openapi.yml")))
-				.andExpect(jsonPath("configUrl", equalTo("/context-path/v3/api-docs/swagger-config")))
-				.andExpect(jsonPath("validatorUrl", equalTo("")))
-				.andExpect(jsonPath("oauth2RedirectUrl", equalTo("http://localhost/context-path/swagger-ui/oauth2-redirect.html")));
+		       .andExpect(status().isOk())
+		       .andExpect(jsonPath("url", equalTo("/context-path/api-docs/xxx/v1/openapi.yml")))
+		       .andExpect(jsonPath("configUrl", equalTo("/context-path/v3/api-docs/swagger-config")))
+		       .andExpect(jsonPath("validatorUrl", equalTo("")))
+		       .andExpect(jsonPath("oauth2RedirectUrl",
+		                           equalTo("http://localhost/context-path/swagger-ui/oauth2-redirect.html")));
 	}
 
 	@SpringBootApplication
-	static class SpringDocTestApp {}
+	static class SpringDocTestApp {
+	}
 }

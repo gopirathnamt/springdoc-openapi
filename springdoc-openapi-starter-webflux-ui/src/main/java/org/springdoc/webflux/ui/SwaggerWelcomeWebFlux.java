@@ -31,12 +31,11 @@ import org.springdoc.core.properties.SpringDocConfigProperties;
 import org.springdoc.core.properties.SwaggerUiConfigParameters;
 import org.springdoc.core.properties.SwaggerUiConfigProperties;
 import org.springdoc.core.providers.SpringWebProvider;
-import reactor.core.publisher.Mono;
-
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import reactor.core.publisher.Mono;
 
 import static org.springdoc.core.utils.Constants.SWAGGER_CONFIG_FILE;
 import static org.springdoc.core.utils.Constants.SWAGGER_UI_PATH;
@@ -62,7 +61,9 @@ public class SwaggerWelcomeWebFlux extends SwaggerWelcomeCommon {
 	 * @param springDocConfigProperties the spring doc config properties
 	 * @param springWebProvider         the spring web provider
 	 */
-	public SwaggerWelcomeWebFlux(SwaggerUiConfigProperties swaggerUiConfig, SpringDocConfigProperties springDocConfigProperties, SpringWebProvider springWebProvider) {
+	public SwaggerWelcomeWebFlux(SwaggerUiConfigProperties swaggerUiConfig,
+	                             SpringDocConfigProperties springDocConfigProperties,
+	                             SpringWebProvider springWebProvider) {
 		super(swaggerUiConfig, springDocConfigProperties);
 		this.springWebProvider = springWebProvider;
 	}
@@ -90,7 +91,8 @@ public class SwaggerWelcomeWebFlux extends SwaggerWelcomeCommon {
 
 	@Override
 	protected void buildApiDocUrl(SwaggerUiConfigParameters swaggerUiConfigParameters) {
-		swaggerUiConfigParameters.setApiDocsUrl(buildUrlWithContextPath(swaggerUiConfigParameters, springDocConfigProperties.getApiDocs().getPath()));
+		swaggerUiConfigParameters.setApiDocsUrl(
+				buildUrlWithContextPath(swaggerUiConfigParameters, springDocConfigProperties.getApiDocs().getPath()));
 	}
 
 	@Override
@@ -99,15 +101,16 @@ public class SwaggerWelcomeWebFlux extends SwaggerWelcomeCommon {
 			swaggerUiConfigParameters.setPathPrefix(springWebProvider.findPathPrefix(springDocConfigProperties));
 		if (swaggerUiUrl.startsWith(swaggerUiConfigParameters.getPathPrefix())) {
 			return buildUrl(swaggerUiConfigParameters.getContextPath(), swaggerUiUrl);
-		}
-		else {
-			return buildUrl(swaggerUiConfigParameters.getContextPath() + swaggerUiConfigParameters.getPathPrefix(), swaggerUiUrl);
+		} else {
+			return buildUrl(swaggerUiConfigParameters.getContextPath() + swaggerUiConfigParameters.getPathPrefix(),
+			                swaggerUiUrl);
 		}
 	}
 
 	@Override
 	protected void buildSwaggerConfigUrl(SwaggerUiConfigParameters swaggerUiConfigParameters) {
-		swaggerUiConfigParameters.setConfigUrl(swaggerUiConfigParameters.getApiDocsUrl() + DEFAULT_PATH_SEPARATOR + SWAGGER_CONFIG_FILE);
+		swaggerUiConfigParameters.setConfigUrl(
+				swaggerUiConfigParameters.getApiDocsUrl() + DEFAULT_PATH_SEPARATOR + SWAGGER_CONFIG_FILE);
 	}
 
 }

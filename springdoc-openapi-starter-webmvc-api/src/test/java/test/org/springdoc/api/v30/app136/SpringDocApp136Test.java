@@ -23,6 +23,17 @@
  */
 package test.org.springdoc.api.v30.app136;
 
+import jakarta.servlet.http.HttpServletRequest;
+import org.junit.jupiter.api.RepeatedTest;
+import org.springdoc.webmvc.api.OpenApiWebMvcResource;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.web.method.HandlerMethod;
+import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
+import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
+import test.org.springdoc.api.AbstractCommonTest;
+
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -30,18 +41,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
-
-import jakarta.servlet.http.HttpServletRequest;
-import org.junit.jupiter.api.RepeatedTest;
-import org.springdoc.webmvc.api.OpenApiWebMvcResource;
-import test.org.springdoc.api.AbstractCommonTest;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.web.method.HandlerMethod;
-import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
-import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -52,7 +51,7 @@ import static org.springdoc.core.utils.Constants.SPRINGDOC_CACHE_DISABLED;
 /**
  * Tests deterministic creation of operationIds
  */
-@SpringBootTest(properties = { SPRINGDOC_CACHE_DISABLED + "=true", "springdoc.api-docs.version=openapi_3_0" })
+@SpringBootTest(properties = {SPRINGDOC_CACHE_DISABLED + "=true", "springdoc.api-docs.version=openapi_3_0"})
 public class SpringDocApp136Test extends AbstractCommonTest {
 
 	@Autowired
@@ -70,7 +69,8 @@ public class SpringDocApp136Test extends AbstractCommonTest {
 
 		String expected = getContent("results/3.0.1/app136.json");
 		byte[] openApiBytes = resource.openapiJson(request, "", Locale.getDefault());
-		String openApi = new String(openApiBytes, StandardCharsets.UTF_8); // for UTF-8 encoding		assertEquals(expected, openApi, true);
+		String openApi = new String(openApiBytes,
+		                            StandardCharsets.UTF_8); // for UTF-8 encoding		assertEquals(expected, openApi, true);
 		assertEquals(expected, openApi, true);
 	}
 
@@ -80,10 +80,12 @@ public class SpringDocApp136Test extends AbstractCommonTest {
 		collect.sort(Comparator.comparing(a -> ThreadLocalRandom.current().nextBoolean() ? -1 : 1));
 
 		collect.forEach(e -> requestMappingHandlerMapping.unregisterMapping(e.getKey()));
-		collect.forEach(e -> requestMappingHandlerMapping.registerMapping(e.getKey(), e.getValue().getBean(), e.getValue().getMethod()));
+		collect.forEach(e -> requestMappingHandlerMapping.registerMapping(e.getKey(), e.getValue().getBean(),
+		                                                                  e.getValue().getMethod()));
 	}
 
 	@SpringBootApplication
-	static class SpringDocTestApp {}
+	static class SpringDocTestApp {
+	}
 
 }

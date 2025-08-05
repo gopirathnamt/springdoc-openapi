@@ -24,12 +24,12 @@
 
 package test.org.springdoc.api.v30.app2.model;
 
-import java.util.Date;
-
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import java.util.Date;
 
 public class Order {
 

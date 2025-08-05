@@ -28,7 +28,6 @@ package test.org.springdoc.api.v30.app65;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -47,7 +46,7 @@ class HelloController {
 	 * @return the response entity
 	 */
 	@Operation(summary = "Check server status", description = "Check server status, will return 200 with simple string if alive. Do nothing else.")
-	@GetMapping(value = { "/ping", "/health", "/" }, produces = MediaType.TEXT_PLAIN_VALUE)
+	@GetMapping(value = {"/ping", "/health", "/"}, produces = MediaType.TEXT_PLAIN_VALUE)
 	public ResponseEntity<String> ping() {
 		return ResponseEntity.ok("Healthy");
 	}

@@ -33,7 +33,6 @@ import org.springdoc.core.properties.SwaggerUiConfigParameters;
 import org.springdoc.core.properties.SwaggerUiConfigProperties;
 import org.springdoc.core.providers.SpringWebProvider;
 import org.springdoc.core.utils.SpringDocUtils;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -71,7 +70,9 @@ public class SwaggerWelcomeWebMvc extends SwaggerWelcomeCommon {
 	 * @param springDocConfigProperties the spring doc config properties
 	 * @param springWebProvider         the spring web provider
 	 */
-	public SwaggerWelcomeWebMvc(SwaggerUiConfigProperties swaggerUiConfig, SpringDocConfigProperties springDocConfigProperties, SpringWebProvider springWebProvider) {
+	public SwaggerWelcomeWebMvc(SwaggerUiConfigProperties swaggerUiConfig,
+	                            SpringDocConfigProperties springDocConfigProperties,
+	                            SpringWebProvider springWebProvider) {
 		super(swaggerUiConfig, springDocConfigProperties);
 		this.springWebProvider = springWebProvider;
 	}
@@ -100,19 +101,22 @@ public class SwaggerWelcomeWebMvc extends SwaggerWelcomeCommon {
 
 	@Override
 	protected void buildApiDocUrl(SwaggerUiConfigParameters swaggerUiConfigParameters) {
-		swaggerUiConfigParameters.setApiDocsUrl(buildUrlWithContextPath(swaggerUiConfigParameters, springDocConfigProperties.getApiDocs().getPath()));
+		swaggerUiConfigParameters.setApiDocsUrl(
+				buildUrlWithContextPath(swaggerUiConfigParameters, springDocConfigProperties.getApiDocs().getPath()));
 	}
 
 	@Override
 	protected String buildUrlWithContextPath(SwaggerUiConfigParameters swaggerUiConfigParameters, String swaggerUiUrl) {
 		if (swaggerUiConfigParameters.getPathPrefix() == null)
 			swaggerUiConfigParameters.setPathPrefix(springWebProvider.findPathPrefix(springDocConfigProperties));
-		return buildUrl(swaggerUiConfigParameters.getContextPath() + swaggerUiConfigParameters.getPathPrefix(), swaggerUiUrl);
+		return buildUrl(swaggerUiConfigParameters.getContextPath() + swaggerUiConfigParameters.getPathPrefix(),
+		                swaggerUiUrl);
 	}
 
 	@Override
 	protected void buildSwaggerConfigUrl(SwaggerUiConfigParameters swaggerUiConfigParameters) {
-		swaggerUiConfigParameters.setConfigUrl(swaggerUiConfigParameters.getApiDocsUrl() + DEFAULT_PATH_SEPARATOR + SWAGGER_CONFIG_FILE);
+		swaggerUiConfigParameters.setConfigUrl(
+				swaggerUiConfigParameters.getApiDocsUrl() + DEFAULT_PATH_SEPARATOR + SWAGGER_CONFIG_FILE);
 	}
 
 }

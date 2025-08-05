@@ -26,21 +26,20 @@
 
 package org.springdoc.core.utils;
 
+import io.swagger.v3.oas.models.SpecVersion;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springdoc.core.properties.SpringDocConfigProperties;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.MessageSource;
+import org.springframework.context.NoSuchMessageException;
+import org.springframework.util.CollectionUtils;
+
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Collectors;
-
-import io.swagger.v3.oas.models.SpecVersion;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springdoc.core.properties.SpringDocConfigProperties;
-
-import org.springframework.beans.factory.config.ConfigurableBeanFactory;
-import org.springframework.context.MessageSource;
-import org.springframework.context.NoSuchMessageException;
-import org.springframework.util.CollectionUtils;
 
 /**
  * The type Property resolver utils.
@@ -76,7 +75,8 @@ public class PropertyResolverUtils {
 	 * @param messageSource             the message source
 	 * @param springDocConfigProperties the spring doc config properties
 	 */
-	public PropertyResolverUtils(ConfigurableBeanFactory factory, MessageSource messageSource, SpringDocConfigProperties springDocConfigProperties) {
+	public PropertyResolverUtils(ConfigurableBeanFactory factory, MessageSource messageSource,
+	                             SpringDocConfigProperties springDocConfigProperties) {
 		this.factory = factory;
 		this.messageSource = messageSource;
 		this.springDocConfigProperties = springDocConfigProperties;
@@ -95,15 +95,13 @@ public class PropertyResolverUtils {
 			if (!springDocConfigProperties.isDisableI18n())
 				try {
 					result = messageSource.getMessage(parameterProperty, null, locale);
-				}
-				catch (NoSuchMessageException ex) {
+				} catch (NoSuchMessageException ex) {
 					LOGGER.trace(ex.getMessage());
 				}
 			if (parameterProperty.equals(result))
 				try {
 					result = factory.resolveEmbeddedValue(parameterProperty);
-				}
-				catch (IllegalArgumentException ex) {
+				} catch (IllegalArgumentException ex) {
 					LOGGER.warn(ex.getMessage());
 				}
 		}
@@ -129,10 +127,9 @@ public class PropertyResolverUtils {
 		int minIndent = resolveMinIndent(lines);
 		try {
 			return Arrays.stream(lines)
-					.map(line -> line.substring(Math.min(line.length(), minIndent)))
-					.collect(Collectors.joining(newLine));
-		}
-		catch (Exception ex) {
+			             .map(line -> line.substring(Math.min(line.length(), minIndent)))
+			             .collect(Collectors.joining(newLine));
+		} catch (Exception ex) {
 			LOGGER.warn(ex.getMessage());
 			return text;
 		}
@@ -146,10 +143,10 @@ public class PropertyResolverUtils {
 	 */
 	private int resolveMinIndent(String[] lines) {
 		return Arrays.stream(lines)
-				.filter(line -> !line.trim().isEmpty())
-				.mapToInt(this::countLeadingSpaces)
-				.min()
-				.orElse(0);
+		             .filter(line -> !line.trim().isEmpty())
+		             .mapToInt(this::countLeadingSpaces)
+		             .min()
+		             .orElse(0);
 	}
 
 	/**
@@ -232,18 +229,15 @@ public class PropertyResolverUtils {
 						valueResolved.put(key1Resolved, value1Resolved);
 					});
 					extensionsResolved.put(keyResolved, valueResolved);
-				}
-				else if (value instanceof String valueAsString) {
+				} else if (value instanceof String valueAsString) {
 					String valueResolved = resolve(valueAsString, locale);
 					extensionsResolved.put(keyResolved, valueResolved);
-				}
-				else {
+				} else {
 					extensionsResolved.put(keyResolved, value);
 				}
 			});
 			return extensionsResolved;
-		}
-		else {
+		} else {
 			return extensions;
 		}
 	}

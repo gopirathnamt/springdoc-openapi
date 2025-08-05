@@ -24,11 +24,11 @@
 
 package test.org.springdoc.api.v31.app2.api;
 
-import java.util.Optional;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.Optional;
 
 @jakarta.annotation.Generated(value = "org.springdoc.demo.app2.codegen.languages.SpringCodegen", date = "2019-07-11T00:09:29.839+02:00[Europe/Paris]")
 
@@ -39,7 +39,8 @@ public class UserApiController implements UserApi {
 
 	private final UserApiDelegate delegate;
 
-	public UserApiController(@org.springframework.beans.factory.annotation.Autowired(required = false) UserApiDelegate delegate) {
+	public UserApiController(
+			@org.springframework.beans.factory.annotation.Autowired(required = false) UserApiDelegate delegate) {
 		this.delegate = Optional.ofNullable(delegate).orElse(new UserApiDelegate() {
 		});
 	}

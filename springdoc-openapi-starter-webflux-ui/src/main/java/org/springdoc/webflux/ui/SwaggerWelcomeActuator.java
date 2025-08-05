@@ -26,14 +26,10 @@
 
 package org.springdoc.webflux.ui;
 
-import java.util.Map;
-
 import io.swagger.v3.oas.annotations.Operation;
 import org.springdoc.core.properties.SpringDocConfigProperties;
 import org.springdoc.core.properties.SwaggerUiConfigParameters;
 import org.springdoc.core.properties.SwaggerUiConfigProperties;
-import reactor.core.publisher.Mono;
-
 import org.springframework.boot.actuate.autoconfigure.endpoint.web.WebEndpointProperties;
 import org.springframework.boot.actuate.endpoint.web.annotation.ControllerEndpoint;
 import org.springframework.http.MediaType;
@@ -41,6 +37,9 @@ import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import reactor.core.publisher.Mono;
+
+import java.util.Map;
 
 import static org.springdoc.core.utils.Constants.DEFAULT_API_DOCS_ACTUATOR_URL;
 import static org.springdoc.core.utils.Constants.DEFAULT_SWAGGER_UI_ACTUATOR_PATH;
@@ -74,7 +73,7 @@ public class SwaggerWelcomeActuator extends SwaggerWelcomeCommon {
 	 */
 	public SwaggerWelcomeActuator(SwaggerUiConfigProperties swaggerUiConfig
 			, SpringDocConfigProperties springDocConfigProperties,
-			WebEndpointProperties webEndpointProperties) {
+			                      WebEndpointProperties webEndpointProperties) {
 		super(swaggerUiConfig, springDocConfigProperties);
 		this.webEndpointProperties = webEndpointProperties;
 	}
@@ -116,7 +115,9 @@ public class SwaggerWelcomeActuator extends SwaggerWelcomeCommon {
 
 	@Override
 	protected void buildApiDocUrl(SwaggerUiConfigParameters swaggerUiConfigParameters) {
-		swaggerUiConfigParameters.setApiDocsUrl(buildUrl(swaggerUiConfigParameters.getContextPath() + webEndpointProperties.getBasePath(), DEFAULT_API_DOCS_ACTUATOR_URL));
+		swaggerUiConfigParameters.setApiDocsUrl(
+				buildUrl(swaggerUiConfigParameters.getContextPath() + webEndpointProperties.getBasePath(),
+				         DEFAULT_API_DOCS_ACTUATOR_URL));
 	}
 
 	@Override
@@ -126,9 +127,10 @@ public class SwaggerWelcomeActuator extends SwaggerWelcomeCommon {
 
 	@Override
 	protected void buildSwaggerConfigUrl(SwaggerUiConfigParameters swaggerUiConfigParameters) {
-		swaggerUiConfigParameters.setConfigUrl(swaggerUiConfigParameters.getContextPath() + webEndpointProperties.getBasePath()
-				+ DEFAULT_PATH_SEPARATOR + DEFAULT_SWAGGER_UI_ACTUATOR_PATH
-				+ DEFAULT_PATH_SEPARATOR + SWAGGER_CONFIG_FILE);
+		swaggerUiConfigParameters.setConfigUrl(
+				swaggerUiConfigParameters.getContextPath() + webEndpointProperties.getBasePath()
+						+ DEFAULT_PATH_SEPARATOR + DEFAULT_SWAGGER_UI_ACTUATOR_PATH
+						+ DEFAULT_PATH_SEPARATOR + SWAGGER_CONFIG_FILE);
 	}
 
 }

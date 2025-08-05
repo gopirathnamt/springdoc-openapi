@@ -25,10 +25,10 @@
  */
 package org.springdoc.core.providers;
 
+import org.springdoc.core.fn.AbstractRouterFunctionVisitor;
+
 import java.util.Map;
 import java.util.Optional;
-
-import org.springdoc.core.fn.AbstractRouterFunctionVisitor;
 
 /**
  * The interface Router function provider.

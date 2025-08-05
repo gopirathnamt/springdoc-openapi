@@ -33,7 +33,6 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -51,12 +50,12 @@ class HelloController {
 	@PostMapping("/test1/{uuid}")
 	@Operation(summary = "Example api that realize an ECHO operation",
 			description = "The result of the echo is the input value of the api",
-			parameters = { @Parameter(in = ParameterIn.PATH,
+			parameters = {@Parameter(in = ParameterIn.PATH,
 					name = "uuid",
 					required = true,
 					description = "Is the identification of the document",
 					schema = @Schema(type = "string",
-							example = "uuid")) }
+							example = "uuid"))}
 
 
 	)
@@ -88,12 +87,12 @@ class HelloController {
 					@ApiResponse(responseCode = "201",
 							description = "other possible response")
 			},
-			parameters = { @Parameter(in = ParameterIn.PATH,
+			parameters = {@Parameter(in = ParameterIn.PATH,
 					name = "uuid",
 					required = true,
 					description = "Is the identification of the document",
 					schema = @Schema(type = "string",
-							example = "uuid")) }
+							example = "uuid"))}
 
 
 	)
@@ -109,12 +108,12 @@ class HelloController {
 	@PostMapping("/test3/{uuid}")
 	@Operation(summary = "Example api that realize an ECHO operation",
 			description = "The result of the echo is the input value of the api",
-			parameters = { @Parameter(in = ParameterIn.PATH,
+			parameters = {@Parameter(in = ParameterIn.PATH,
 					name = "uuid",
 					required = true,
 					description = "Is the identification of the document",
 					schema = @Schema(type = "string",
-							example = "uuid")) }
+							example = "uuid"))}
 
 
 	)

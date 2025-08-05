@@ -47,11 +47,14 @@ public class QApplication extends EntityPathBase<Application> {
 
 	private static final long serialVersionUID = 2120388982L;
 
-	public final EnumPath<Application.AuditStatus> auditStatus = createEnum("auditStatus", Application.AuditStatus.class);
+	public final EnumPath<Application.AuditStatus> auditStatus =
+			createEnum("auditStatus", Application.AuditStatus.class);
 
-	public final DateTimePath<java.time.LocalDateTime> auditTime = createDateTime("auditTime", java.time.LocalDateTime.class);
+	public final DateTimePath<java.time.LocalDateTime> auditTime =
+			createDateTime("auditTime", java.time.LocalDateTime.class);
 
-	public final DateTimePath<java.time.LocalDateTime> createTime = createDateTime("createTime", java.time.LocalDateTime.class);
+	public final DateTimePath<java.time.LocalDateTime> createTime =
+			createDateTime("createTime", java.time.LocalDateTime.class);
 
 	public final StringPath description = createString("description");
 

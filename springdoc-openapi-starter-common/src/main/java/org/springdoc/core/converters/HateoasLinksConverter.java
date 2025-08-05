@@ -27,9 +27,6 @@
 package org.springdoc.core.converters;
 
 
-import java.util.Iterator;
-import java.util.Optional;
-
 import com.fasterxml.jackson.databind.JavaType;
 import io.swagger.v3.core.converter.ModelConverter;
 import io.swagger.v3.core.converter.ModelConverterContext;
@@ -39,8 +36,10 @@ import io.swagger.v3.oas.models.media.ArraySchema;
 import io.swagger.v3.oas.models.media.JsonSchema;
 import io.swagger.v3.oas.models.media.Schema;
 import org.springdoc.core.providers.ObjectMapperProvider;
-
 import org.springframework.hateoas.RepresentationModel;
+
+import java.util.Iterator;
+import java.util.Optional;
 
 /**
  * The type Hateoas links converter.
@@ -68,15 +67,15 @@ public class HateoasLinksConverter implements ModelConverter {
 			io.swagger.v3.core.converter.AnnotatedType type,
 			ModelConverterContext context,
 			Iterator<ModelConverter> chain
-	) {
+	                        ) {
 		JavaType javaType = springDocObjectMapper.jsonMapper().constructType(type.getType());
 		if (javaType != null && RepresentationModel.class.isAssignableFrom(javaType.getRawClass())) {
 			Schema<?> schema = chain.next().resolve(type, context, chain);
 			if (schema != null) {
 				String schemaName = Optional.ofNullable(schema.get$ref())
-						.filter(ref -> ref.startsWith(Components.COMPONENTS_SCHEMAS_REF))
-						.map(ref -> ref.substring(Components.COMPONENTS_SCHEMAS_REF.length()))
-						.orElse(schema.getName());
+				                            .filter(ref -> ref.startsWith(Components.COMPONENTS_SCHEMAS_REF))
+				                            .map(ref -> ref.substring(Components.COMPONENTS_SCHEMAS_REF.length()))
+				                            .orElse(schema.getName());
 				if (schemaName != null) {
 					Schema original = context.getDefinedModels().get(schemaName);
 					if (original == null || original.getProperties() == null) {
@@ -88,8 +87,7 @@ public class HateoasLinksConverter implements ModelConverter {
 						jsonSchema.setType(null);
 						jsonSchema.setItems(null);
 						jsonSchema.setTypes(null);
-					}
-					else if (links instanceof ArraySchema arraySchema) {
+					} else if (links instanceof ArraySchema arraySchema) {
 						arraySchema.set$ref(AnnotationsUtils.COMPONENTS_REF + "Links");
 					}
 				}

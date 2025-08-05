@@ -20,11 +20,10 @@ package test.org.springdoc.api.v31.app215;
 
 import org.junit.jupiter.api.Test;
 import org.springdoc.core.utils.Constants;
-import test.org.springdoc.api.AbstractCommonTest;
-
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.context.annotation.ComponentScan;
+import test.org.springdoc.api.AbstractCommonTest;
 
 import static org.springdoc.core.utils.Constants.SPRINGDOC_ENABLE_DEFAULT_API_DOCS;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -39,6 +38,7 @@ public class SpringDocApp215Test extends AbstractCommonTest {
 	}
 
 	@SpringBootApplication
-	@ComponentScan(basePackages = { "org.springdoc" })
-	static class SpringDocTestApp {}
+	@ComponentScan(basePackages = {"org.springdoc"})
+	static class SpringDocTestApp {
+	}
 }

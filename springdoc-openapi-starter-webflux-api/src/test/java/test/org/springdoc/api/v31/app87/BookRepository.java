@@ -26,9 +26,8 @@
 
 package test.org.springdoc.api.v31.app87;
 
-import reactor.core.publisher.Flux;
-
 import org.springframework.stereotype.Component;
+import reactor.core.publisher.Flux;
 
 @Component
 public class BookRepository {

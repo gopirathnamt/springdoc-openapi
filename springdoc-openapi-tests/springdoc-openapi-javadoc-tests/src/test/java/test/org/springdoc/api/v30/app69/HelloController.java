@@ -26,12 +26,12 @@
 
 package test.org.springdoc.api.v30.app69;
 
-import java.util.concurrent.Callable;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.concurrent.Callable;
 
 /**
  * The type Hello controller.

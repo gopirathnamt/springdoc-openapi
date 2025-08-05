@@ -26,9 +26,9 @@
 
 package org.springdoc.core.data;
 
-import java.util.Locale;
-
 import org.springframework.data.mapping.PersistentEntity;
+
+import java.util.Locale;
 
 /**
  * The type Data rest repository.

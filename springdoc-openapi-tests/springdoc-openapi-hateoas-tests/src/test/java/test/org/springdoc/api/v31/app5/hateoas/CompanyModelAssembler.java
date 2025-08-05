@@ -26,13 +26,12 @@
 
 package test.org.springdoc.api.v31.app5.hateoas;
 
-import test.org.springdoc.api.v31.app5.controller.CompanyController;
-import test.org.springdoc.api.v31.app5.entities.Company;
-import test.org.springdoc.api.v31.app5.entities.CompanyDto;
-
 import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
+import test.org.springdoc.api.v31.app5.controller.CompanyController;
+import test.org.springdoc.api.v31.app5.entities.Company;
+import test.org.springdoc.api.v31.app5.entities.CompanyDto;
 
 /**
  * @author bnasslahsen
@@ -48,8 +47,8 @@ public class CompanyModelAssembler extends RepresentationModelAssemblerSupport<C
 	@NonNull
 	public CompanyDto toModel(@NonNull final Company company) {
 		return CompanyDto.builder()
-				.id(company.getId())
-				.name(company.getName())
-				.build();
+		                 .id(company.getId())
+		                 .name(company.getName())
+		                 .build();
 	}
 }

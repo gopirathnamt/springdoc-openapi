@@ -35,7 +35,6 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
-
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -45,7 +44,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @SecurityScheme(name = "personstore_auth", type = SecuritySchemeType.OAUTH2, flows = @OAuthFlows(implicit = @OAuthFlow(authorizationUrl = "${springdoc.oAuthFlow.authorizationUrl}", scopes = {
 		@OAuthScope(name = "write:persons", description = "modify persons in your account"),
-		@OAuthScope(name = "read:persons", description = "read your persons") })))
+		@OAuthScope(name = "read:persons", description = "read your persons")})))
 class HelloController {
 
 	/**
@@ -54,8 +53,8 @@ class HelloController {
 	 * @param name the name
 	 */
 	@Operation(summary = "Add a new person to the store", description = "", security = {
-			@SecurityRequirement(name = "personstore_auth", scopes = { "write:persons", "read:persons" }) }, tags = {
-			"person" })
+			@SecurityRequirement(name = "personstore_auth", scopes = {"write:persons", "read:persons"})}, tags = {
+			"person"})
 	@GetMapping(value = "/persons")
 	public void persons(@Valid @NotBlank String name) {
 

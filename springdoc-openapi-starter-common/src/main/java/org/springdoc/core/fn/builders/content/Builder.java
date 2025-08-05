@@ -26,8 +26,6 @@
 
 package org.springdoc.core.fn.builders.content;
 
-import java.lang.annotation.Annotation;
-
 import io.swagger.v3.oas.annotations.extensions.Extension;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -37,6 +35,8 @@ import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.SchemaProperty;
 import org.apache.commons.lang3.ArrayUtils;
+
+import java.lang.annotation.Annotation;
 
 /**
  * The type Content builder.
@@ -48,12 +48,14 @@ public class Builder {
 	/**
 	 * The schema properties defined for schema provided in @Schema
 	 */
-	private final Schema additionalPropertiesSchema = org.springdoc.core.fn.builders.schema.Builder.schemaBuilder().build();
+	private final Schema additionalPropertiesSchema =
+			org.springdoc.core.fn.builders.schema.Builder.schemaBuilder().build();
 
 	/**
 	 * The Additional properties array schema.
 	 */
-	private final ArraySchema additionalPropertiesArraySchema = org.springdoc.core.fn.builders.arrayschema.Builder.arraySchemaBuilder().build();
+	private final ArraySchema additionalPropertiesArraySchema =
+			org.springdoc.core.fn.builders.arrayschema.Builder.arraySchemaBuilder().build();
 
 	/**
 	 * The schema properties defined for schema provided in @Schema

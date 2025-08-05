@@ -25,7 +25,6 @@
 package test.org.springdoc.api.v31.app59;
 
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;

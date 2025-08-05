@@ -26,12 +26,12 @@
 
 package org.springdoc.core.providers;
 
+import io.swagger.v3.oas.models.OpenAPI;
+import org.springdoc.core.fn.RouterOperation;
+
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-
-import io.swagger.v3.oas.models.OpenAPI;
-import org.springdoc.core.fn.RouterOperation;
 
 /**
  * The interface Repository rest resource provider.

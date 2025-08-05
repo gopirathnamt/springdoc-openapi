@@ -26,12 +26,12 @@
 
 package test.org.springdoc.api.v31.app84;
 
-import java.util.Map;
-
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.util.Map;
 
 public class EmployeeRepository {
 

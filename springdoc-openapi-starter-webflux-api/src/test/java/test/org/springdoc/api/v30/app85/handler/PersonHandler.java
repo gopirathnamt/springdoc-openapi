@@ -26,20 +26,19 @@
 
 package test.org.springdoc.api.v30.app85.handler;
 
-import reactor.core.publisher.Mono;
-import test.org.springdoc.api.v30.app85.entity.Person;
-import test.org.springdoc.api.v30.app85.service.PersonService;
-
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
+import reactor.core.publisher.Mono;
+import test.org.springdoc.api.v30.app85.entity.Person;
+import test.org.springdoc.api.v30.app85.service.PersonService;
 
 import static org.springframework.web.reactive.function.server.ServerResponse.ok;
 
 @Component
-@SuppressWarnings({ "deprecared", "unchecked" })
+@SuppressWarnings({"deprecared", "unchecked"})
 public class PersonHandler {
 
 	private final PersonService personService;

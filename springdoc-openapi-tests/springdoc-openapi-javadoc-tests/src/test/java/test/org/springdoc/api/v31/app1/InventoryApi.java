@@ -31,8 +31,6 @@
  */
 package test.org.springdoc.api.v31.app1;
 
-import java.util.List;
-
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -41,12 +39,13 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.List;
 
 /**
  * The interface Inventory api.
@@ -62,13 +61,14 @@ public interface InventoryApi {
 	 * @return the response entity
 	 */
 	@Operation(description = "adds an inventory item", operationId = "addInventory", summary = "Adds an item to the system", tags = {
-			"admins", })
-	@ApiResponses(value = { @ApiResponse(responseCode = "201", description = "item created"),
+			"admins",})
+	@ApiResponses(value = {@ApiResponse(responseCode = "201", description = "item created"),
 			@ApiResponse(responseCode = "400", description = "invalid input, object invalid"),
-			@ApiResponse(responseCode = "409", description = "an existing item already exists") })
-	@PostMapping(value = "/inventory", consumes = { "application/json" })
+			@ApiResponse(responseCode = "409", description = "an existing item already exists")})
+	@PostMapping(value = "/inventory", consumes = {"application/json"})
 	ResponseEntity<Void> addInventory(
-			@io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Inventory item to do") @Valid @RequestBody InventoryItem body);
+			@io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Inventory item to do") @Valid
+			@RequestBody InventoryItem body);
 
 	/**
 	 * Search inventory response entity.
@@ -79,14 +79,16 @@ public interface InventoryApi {
 	 * @return the response entity
 	 */
 	@Operation(description = "searches inventory", operationId = "searchInventory", summary = "By passing in the appropriate options, you can search for available inventory in the system ", tags = {
-			"developers", }, parameters = {
-			@Parameter(description = "pass an optional search string for looking up inventory", name = "searchString") })
-	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "search results matching criteria"),
-			@ApiResponse(responseCode = "400", description = "bad input parameter") })
-	@GetMapping(value = "/inventory", produces = { "application/json" })
+			"developers",}, parameters = {
+			@Parameter(description = "pass an optional search string for looking up inventory", name = "searchString")})
+	@ApiResponses(value = {@ApiResponse(responseCode = "200", description = "search results matching criteria"),
+			@ApiResponse(responseCode = "400", description = "bad input parameter")})
+	@GetMapping(value = "/inventory", produces = {"application/json"})
 	ResponseEntity<List<InventoryItem>> searchInventory(
 			@Valid @RequestParam(value = "searchString", required = false) String searchString,
-			@Min(0) @Parameter(description = "number of records to skip for pagination") @Valid @RequestParam(value = "skip", required = true) Integer skip,
-			@Min(0) @Max(50) @Parameter(description = "maximum number of records to return") @Valid @RequestParam(value = "limit", required = true) Integer limit);
+			@Min(0) @Parameter(description = "number of records to skip for pagination") @Valid
+			@RequestParam(value = "skip", required = true) Integer skip,
+			@Min(0) @Max(50) @Parameter(description = "maximum number of records to return") @Valid
+			@RequestParam(value = "limit", required = true) Integer limit);
 
 }

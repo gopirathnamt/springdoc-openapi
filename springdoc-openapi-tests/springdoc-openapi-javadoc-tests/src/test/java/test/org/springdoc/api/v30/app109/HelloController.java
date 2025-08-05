@@ -29,7 +29,6 @@ package test.org.springdoc.api.v30.app109;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -48,7 +47,7 @@ class HelloController {
 	 */
 	@GetMapping("/api/v1/resource")
 	public Resource getResource() {
-		return new ByteArrayResource(new byte[] {});
+		return new ByteArrayResource(new byte[]{});
 	}
 
 	/**
@@ -59,6 +58,6 @@ class HelloController {
 	@GetMapping("/api/v1/bytearray")
 	@ApiResponse(content = @Content(schema = @Schema(type = "string", format = "binary")))
 	public byte[] getByteArray() {
-		return new byte[] {};
+		return new byte[]{};
 	}
 }

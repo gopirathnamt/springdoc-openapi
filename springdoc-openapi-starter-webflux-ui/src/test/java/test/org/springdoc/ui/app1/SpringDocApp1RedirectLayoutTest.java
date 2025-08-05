@@ -20,11 +20,10 @@ package test.org.springdoc.ui.app1;
 
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
-import test.org.springdoc.ui.AbstractSpringDocTest;
-
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.reactive.server.WebTestClient;
+import test.org.springdoc.ui.AbstractSpringDocTest;
 
 
 @TestPropertySource(properties = "springdoc.swagger-ui.layout=BaseLayout")
@@ -34,14 +33,15 @@ public class SpringDocApp1RedirectLayoutTest extends AbstractSpringDocTest {
 	void shouldRedirectWithConfigUrlIgnoringQueryParams() {
 
 		WebTestClient.ResponseSpec responseSpec = webTestClient.get().uri("/swagger-ui.html").exchange()
-				.expectStatus().isFound();
+		                                                       .expectStatus().isFound();
 		responseSpec.expectHeader()
-				.value("Location", Matchers.is("/swagger-ui/index.html"));
+		            .value("Location", Matchers.is("/swagger-ui/index.html"));
 
 		super.checkJS("index1-layout");
 	}
 
 	@SpringBootApplication
-	static class SpringDocTestApp {}
+	static class SpringDocTestApp {
+	}
 
 }

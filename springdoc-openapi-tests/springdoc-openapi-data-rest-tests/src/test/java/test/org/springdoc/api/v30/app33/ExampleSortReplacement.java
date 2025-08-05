@@ -26,10 +26,10 @@
 
 package test.org.springdoc.api.v30.app33;
 
-import java.util.List;
-
 import io.swagger.v3.oas.annotations.Parameter;
 import org.springdoc.core.converters.models.Sort;
+
+import java.util.List;
 
 public class ExampleSortReplacement extends Sort {
 

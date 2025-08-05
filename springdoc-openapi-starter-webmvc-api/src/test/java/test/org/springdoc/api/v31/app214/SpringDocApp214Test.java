@@ -22,12 +22,11 @@ import org.junit.jupiter.api.Test;
 import org.springdoc.core.customizers.SpecPropertiesCustomizer;
 import org.springdoc.core.properties.SpringDocConfigProperties;
 import org.springdoc.core.properties.SpringDocConfigProperties.GroupConfig;
-import test.org.springdoc.api.AbstractCommonTest;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
+import test.org.springdoc.api.AbstractCommonTest;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -36,14 +35,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * A test for {@link SpecPropertiesCustomizer}
  */
 @SpringBootTest
-@TestPropertySource(properties = { "springdoc.group-configs[0].group=Group0",
+@TestPropertySource(properties = {"springdoc.group-configs[0].group=Group0",
 		"springdoc.group-configs[0].packages-to-scan=com.my-package",
 		"springdoc.group-configs[1].group=Group1",
 		"springdoc.group-configs[1].packages-to-scan=com.my-package",
 		"springdoc.group-configs[2].group=Group2",
 		"springdoc.group-configs[2].packages-to-scan=com.my-package",
 		"springdoc.group-configs[3].group=Group3",
-		"springdoc.group-configs[3].packages-to-scan=com.my-package" })
+		"springdoc.group-configs[3].packages-to-scan=com.my-package"})
 
 public class SpringDocApp214Test extends AbstractCommonTest {
 
@@ -52,10 +51,12 @@ public class SpringDocApp214Test extends AbstractCommonTest {
 
 	@Test
 	protected void testApp() throws Exception {
-		assertEquals(4, springDocConfigProperties.getGroupConfigs().stream().map(GroupConfig::getGroup).toList().size());
+		assertEquals(4,
+		             springDocConfigProperties.getGroupConfigs().stream().map(GroupConfig::getGroup).toList().size());
 	}
 
 	@SpringBootApplication
-	static class SpringDocTestApp {}
+	static class SpringDocTestApp {
+	}
 
 }

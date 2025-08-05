@@ -26,11 +26,6 @@
 
 package org.springdoc.core.utils;
 
-import java.lang.annotation.Annotation;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.function.Predicate;
-
 import io.swagger.v3.core.converter.AnnotatedType;
 import io.swagger.v3.core.util.PrimitiveType;
 import io.swagger.v3.oas.models.media.ComposedSchema;
@@ -48,9 +43,13 @@ import org.springdoc.core.extractor.MethodParameterPojoExtractor;
 import org.springdoc.core.service.AbstractRequestService;
 import org.springdoc.core.service.GenericParameterService;
 import org.springdoc.core.service.GenericResponseService;
-
 import org.springframework.core.MethodParameter;
 import org.springframework.util.CollectionUtils;
+
+import java.lang.annotation.Annotation;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Predicate;
 
 import static io.swagger.v3.core.util.PrimitiveType.customClasses;
 
@@ -136,7 +135,8 @@ public class SpringDocUtils {
 	 */
 	@NotNull
 	public static String getParentTypeName(AnnotatedType type, Class<?> cls) {
-		return cls.getSimpleName() + StringUtils.capitalize(type.getParent().getType() != null ? type.getParent().getType() : "object");
+		return cls.getSimpleName() +
+				StringUtils.capitalize(type.getParent().getType() != null ? type.getParent().getType() : "object");
 	}
 
 	/**
@@ -146,7 +146,8 @@ public class SpringDocUtils {
 	 * @return the boolean
 	 */
 	public static boolean isComposedSchema(Schema referencedSchema) {
-		return referencedSchema.getOneOf() != null || referencedSchema.getAllOf() != null || referencedSchema.getAnyOf() != null || referencedSchema instanceof ComposedSchema;
+		return referencedSchema.getOneOf() != null || referencedSchema.getAllOf() != null ||
+				referencedSchema.getAnyOf() != null || referencedSchema instanceof ComposedSchema;
 	}
 
 	/**
@@ -158,15 +159,15 @@ public class SpringDocUtils {
 		if (schema != null) {
 			if (schema.getType() != null && CollectionUtils.isEmpty(schema.getTypes())) {
 				schema.addType(schema.getType());
-			}
-			else if (schema.getItems() != null && schema.getItems().getType() != null
+			} else if (schema.getItems() != null && schema.getItems().getType() != null
 					&& CollectionUtils.isEmpty(schema.getItems().getTypes())) {
 				schema.getItems().addType(schema.getItems().getType());
 			}
 			if (schema.getProperties() != null) {
 				schema.getProperties().forEach((key, value) -> handleSchemaTypes(value));
 			}
-			if (schema.getType() == null && schema.getTypes() == null && schema.get$ref() == null && !isComposedSchema(schema)) {
+			if (schema.getType() == null && schema.getTypes() == null && schema.get$ref() == null &&
+					!isComposedSchema(schema)) {
 				schema.addType("object");
 			}
 		}

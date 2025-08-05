@@ -19,9 +19,8 @@
 package test.org.springdoc.ui.app21;
 
 import org.junit.jupiter.api.Test;
-import test.org.springdoc.ui.AbstractSpringDocTest;
-
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import test.org.springdoc.ui.AbstractSpringDocTest;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -34,8 +33,8 @@ public class SpringDocApp21Test extends AbstractSpringDocTest {
 	@Test
 	void testAddSwaggerUiVersionToPath() throws Exception {
 		mockMvc.perform(get("/swagger-ui.html"))
-				.andExpect(status().isFound())
-				.andExpect(header().string("Location", "/swagger-ui/index.html"));
+		       .andExpect(status().isFound())
+		       .andExpect(header().string("Location", "/swagger-ui/index.html"));
 
 		super.chekJS();
 	}
@@ -43,9 +42,9 @@ public class SpringDocApp21Test extends AbstractSpringDocTest {
 	@Test
 	void shouldRedirectWithPrefix() throws Exception {
 		mockMvc.perform(get("/rest/v3/api-docs/swagger-config"))
-				.andExpect(status().isOk())
-				.andExpect(jsonPath("validatorUrl", equalTo("")))
-				.andExpect(jsonPath("oauth2RedirectUrl", equalTo("http://localhost/swagger-ui/oauth2-redirect.html")));
+		       .andExpect(status().isOk())
+		       .andExpect(jsonPath("validatorUrl", equalTo("")))
+		       .andExpect(jsonPath("oauth2RedirectUrl", equalTo("http://localhost/swagger-ui/oauth2-redirect.html")));
 	}
 
 	@SpringBootApplication

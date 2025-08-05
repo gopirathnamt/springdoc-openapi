@@ -26,16 +26,15 @@
 
 package test.org.springdoc.api.v31.app126;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.ArrayList;
+import java.util.Collection;
 
 import static org.springframework.http.ResponseEntity.ok;
 
@@ -48,7 +47,7 @@ import static org.springframework.http.ResponseEntity.ok;
 @ApiResponses(value = {
 		@ApiResponse(responseCode = "401", ref = SecurityProblemResponsesConfiguration.UNAUTHORIZED_401_NO_TOKEN_RESPONSE_REF),
 		@ApiResponse(responseCode = "401", ref = SecurityProblemResponsesConfiguration.UNAUTHORIZED_401_BAD_TOKEN_RESPONSE_REF),
-		@ApiResponse(responseCode = "403", ref = SecurityProblemResponsesConfiguration.FORBIDDEN_403_RESPONSE_REF) })
+		@ApiResponse(responseCode = "403", ref = SecurityProblemResponsesConfiguration.FORBIDDEN_403_RESPONSE_REF)})
 //@ApiResponses(value = {
 //    @ApiResponse(responseCode = "401", description = "Invalid authentication.", content = {@Content(schema = @Schema(implementation = Problem.class), mediaType = APPLICATION_PROBLEM_JSON_VALUE)}),
 //    @ApiResponse(responseCode = "401", description = "Invalid authentication.",content = {@Content(schema = @Schema(implementation = Problem.class), mediaType = APPLICATION_PROBLEM_JSON_VALUE)}),
@@ -72,7 +71,7 @@ class HelloController<T> {
 	 */
 	@GetMapping
 	@Operation(description = "Get all currencies", summary = "getAllCurrencies")
-	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "All currencies returned") })
+	@ApiResponses(value = {@ApiResponse(responseCode = "200", description = "All currencies returned")})
 	public ResponseEntity<Collection<String>> getAllCurrencies() {
 		return ok(CURRENCIES);
 	}

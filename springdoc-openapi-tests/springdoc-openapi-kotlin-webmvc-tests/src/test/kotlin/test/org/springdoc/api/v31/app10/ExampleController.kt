@@ -9,13 +9,13 @@ data class Greeting(val greeting: String)
 
 @RestController
 class ExampleController {
-	@GetMapping("/")
-	fun greet(@RequestParam name: String?) = Greeting("Hello ${name ?: "world"}")
+    @GetMapping("/")
+    fun greet(@RequestParam name: String?) = Greeting("Hello ${name ?: "world"}")
 
-	@GetMapping("/test")
-	fun test(@RequestParam name: String) = Greeting("Hello $name")
+    @GetMapping("/test")
+    fun test(@RequestParam name: String) = Greeting("Hello $name")
 
-	@GetMapping("/test-with-default")
-	fun testWithDefault(@RequestParam(defaultValue = "world") name: String) =
-		Greeting("Hello $name")
+    @GetMapping("/test-with-default")
+    fun testWithDefault(@RequestParam(defaultValue = "world") name: String) =
+        Greeting("Hello $name")
 }

@@ -25,9 +25,9 @@
  */
 package org.springdoc.core.providers;
 
-import java.util.Optional;
-
 import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties;
+
+import java.util.Optional;
 
 /**
  * The type Spring data web properties provider.

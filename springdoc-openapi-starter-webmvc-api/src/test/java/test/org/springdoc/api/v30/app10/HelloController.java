@@ -24,30 +24,29 @@
 
 package test.org.springdoc.api.v30.app10;
 
-import java.nio.charset.Charset;
-import java.util.Locale;
-
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.nio.charset.Charset;
+import java.util.Locale;
 
 @RestController
 public class HelloController {
 
 	@GetMapping("/test")
 	public void test(HttpSession header, HttpServletRequest request, HttpServletResponse response, Locale locale,
-			String hello) {
+	                 String hello) {
 	}
 
 	@GetMapping("/testreq")
 	public void testRequestAttribute(@RequestAttribute String sample, String s) {
 	}
 
-	@GetMapping(value = { "/employee" })
+	@GetMapping(value = {"/employee"})
 	public void getEmployee(Charset test) {
 	}
 }

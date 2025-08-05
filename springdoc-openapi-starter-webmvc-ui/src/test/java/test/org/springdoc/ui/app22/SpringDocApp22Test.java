@@ -19,9 +19,8 @@
 package test.org.springdoc.ui.app22;
 
 import org.junit.jupiter.api.Test;
-import test.org.springdoc.ui.AbstractSpringDocTest;
-
 import org.springframework.test.context.TestPropertySource;
+import test.org.springdoc.ui.AbstractSpringDocTest;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -38,10 +37,10 @@ public class SpringDocApp22Test extends AbstractSpringDocTest {
 	@Test
 	void test_apidocs_disabled() throws Exception {
 		mockMvc.perform(get("/api-docs/swagger-config"))
-				.andExpect(status().isOk())
-				.andExpect(jsonPath("url", equalTo("/api-docs/xxx/v1/openapi.yml")))
-				.andExpect(jsonPath("configUrl", equalTo("/api-docs/swagger-config")))
-				.andExpect(jsonPath("validatorUrl", equalTo("")))
-				.andExpect(jsonPath("oauth2RedirectUrl", equalTo("http://localhost/swagger-ui/oauth2-redirect.html")));
+		       .andExpect(status().isOk())
+		       .andExpect(jsonPath("url", equalTo("/api-docs/xxx/v1/openapi.yml")))
+		       .andExpect(jsonPath("configUrl", equalTo("/api-docs/swagger-config")))
+		       .andExpect(jsonPath("validatorUrl", equalTo("")))
+		       .andExpect(jsonPath("oauth2RedirectUrl", equalTo("http://localhost/swagger-ui/oauth2-redirect.html")));
 	}
 }

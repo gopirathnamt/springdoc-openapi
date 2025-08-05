@@ -26,18 +26,17 @@
 
 package org.springdoc.core.fn;
 
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.util.CollectionUtils;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import org.apache.commons.lang3.StringUtils;
-
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.util.CollectionUtils;
 
 /**
  * The type Abstract router function visitor.
@@ -123,19 +122,19 @@ public class AbstractRouterFunctionVisitor {
 			if (!nestedPaths.isEmpty()) {
 				List<String> nestedPathsList = this.nestedPaths.values().stream().flatMap(List::stream).toList();
 				if (!orPaths.isEmpty())
-					orPaths.forEach(nestedOrPath -> createRouterFunctionData(String.join(StringUtils.EMPTY, nestedPathsList) + nestedOrPath + pattern));
+					orPaths.forEach(nestedOrPath -> createRouterFunctionData(
+							String.join(StringUtils.EMPTY, nestedPathsList) + nestedOrPath + pattern));
 				else
 					createRouterFunctionData(String.join(StringUtils.EMPTY, nestedPathsList) + pattern);
-			}
-			else if (!orPaths.isEmpty())
+			} else if (!orPaths.isEmpty())
 				orPaths.forEach(nestedOrPath -> createRouterFunctionData(nestedOrPath + pattern));
 			else
 				createRouterFunctionData(pattern);
-		}
-		else if (isOr)
+		} else if (isOr)
 			orPaths.add(pattern);
 		else if (this.level > 0) {
-			List<String> paths = CollectionUtils.isEmpty(this.nestedPaths.get(this.level)) ? new ArrayList<>() : this.nestedPaths.get(this.level);
+			List<String> paths = CollectionUtils.isEmpty(
+					this.nestedPaths.get(this.level)) ? new ArrayList<>() : this.nestedPaths.get(this.level);
 			paths.add(pattern);
 			this.nestedPaths.put(this.level, paths);
 		}
@@ -301,9 +300,9 @@ public class AbstractRouterFunctionVisitor {
 				if (CollectionUtils.isEmpty(currentRouterFunctionDatas))
 					headers.add(mediaType);
 				else
-					currentRouterFunctionDatas.forEach(routerFunctionData -> addHeader(mediaType, header, routerFunctionData));
-		}
-		else {
+					currentRouterFunctionDatas.forEach(
+							routerFunctionData -> addHeader(mediaType, header, routerFunctionData));
+		} else {
 			if (CollectionUtils.isEmpty(currentRouterFunctionDatas))
 				headers.add(value);
 			else

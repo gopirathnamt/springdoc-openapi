@@ -25,7 +25,6 @@
 package test.org.springdoc.api.v30.app102;
 
 import org.springdoc.core.annotations.ParameterObject;
-
 import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;

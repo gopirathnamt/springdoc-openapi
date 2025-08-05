@@ -24,11 +24,11 @@
 
 package test.org.springdoc.api.v31.app121;
 
+import io.swagger.v3.oas.annotations.Parameter;
+
 import java.math.BigInteger;
 import java.util.List;
 import java.util.Optional;
-
-import io.swagger.v3.oas.annotations.Parameter;
 
 
 public class RequestParams {

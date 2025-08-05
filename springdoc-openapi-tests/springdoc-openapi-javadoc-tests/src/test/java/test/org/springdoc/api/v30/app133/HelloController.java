@@ -28,7 +28,6 @@ package test.org.springdoc.api.v30.app133;
 
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Schema;
-
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
@@ -45,11 +44,11 @@ class HelloController {
 	 * @param header the header
 	 * @return the message from header 1
 	 */
-	@GetMapping(path = "/test1", headers = { "myHeader" })
+	@GetMapping(path = "/test1", headers = {"myHeader"})
 	public String getMessageFromHeader1(
-			@Parameter(name = "myHeader", description = "A header", schema = @Schema(allowableValues = { "foo", "bar" }))
+			@Parameter(name = "myHeader", description = "A header", schema = @Schema(allowableValues = {"foo", "bar"}))
 			@RequestHeader("myHeader") String header
-	) {
+	                                   ) {
 		return "bar " + header;
 	}
 
@@ -63,7 +62,7 @@ class HelloController {
 	public String getMessageFromHeader2(
 			@Parameter(name = "myHeader", description = "A header", schema = @Schema(type = "integer"))
 			@RequestHeader("myHeader") Integer header
-	) {
+	                                   ) {
 		return "bar " + header;
 	}
 
@@ -73,11 +72,11 @@ class HelloController {
 	 * @param header the header
 	 * @return the message from header 3
 	 */
-	@GetMapping(path = "/test3", headers = { "myHeader" })
+	@GetMapping(path = "/test3", headers = {"myHeader"})
 	public String getMessageFromHeader3(
 			@Parameter(name = "myHeader", description = "A header", schema = @Schema(type = "integer"))
 			@RequestHeader("myHeader") Integer header
-	) {
+	                                   ) {
 		return "bar " + header;
 	}
 }

@@ -30,7 +30,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -52,7 +51,7 @@ class HelloController {
 	 */
 	@RequestMapping(value = "/ping", method = RequestMethod.GET)
 	@Operation(summary = "Simple health check")
-	@ApiResponses({ @ApiResponse(responseCode = "200", description = "OK") })
+	@ApiResponses({@ApiResponse(responseCode = "200", description = "OK")})
 	@ResponseBody
 	@ResponseStatus(HttpStatus.OK)
 	public Boolean ping() {

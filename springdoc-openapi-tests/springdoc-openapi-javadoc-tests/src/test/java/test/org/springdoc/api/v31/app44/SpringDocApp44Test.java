@@ -28,9 +28,8 @@ package test.org.springdoc.api.v31.app44;
 
 import org.junit.jupiter.api.Test;
 import org.springdoc.core.utils.Constants;
-import test.org.springdoc.api.v31.AbstractSpringDocTest;
-
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import test.org.springdoc.api.v31.AbstractSpringDocTest;
 
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.is;
@@ -51,11 +50,20 @@ class SpringDocApp44Test extends AbstractSpringDocTest {
 	@Test
 	protected void testApp() throws Exception {
 		mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL)).andExpect(status().isOk())
-				.andExpect(jsonPath("$.openapi", is("3.1.0"))).andExpect(jsonPath("$.paths./helloworld.post.responses.200.content.['application/json'].schema.oneOf").isArray()).andExpect(jsonPath("$.paths./helloworld.post.responses.200.content.['application/json'].schema.oneOf[*].$ref", containsInAnyOrder("#/components/schemas/HelloDTO2",
-						"#/components/schemas/HelloDTO1")))
-				.andExpect(jsonPath("$.paths./helloworld.post.requestBody.content.['application/vnd.v1+json'].schema.$ref", is("#/components/schemas/RequestV1")))
-				.andExpect(jsonPath("$.paths./helloworld.post.requestBody.content.['application/vnd.v2+json'].schema.$ref", is("#/components/schemas/RequestV2")))
-				.andExpect(jsonPath("$.paths./helloworld.post.responses.400.content.['application/json'].schema.$ref", is("#/components/schemas/ErrorDTO")));
+		       .andExpect(jsonPath("$.openapi", is("3.1.0"))).andExpect(
+				       jsonPath("$.paths./helloworld.post.responses.200.content.['application/json'].schema.oneOf").isArray())
+		       .andExpect(jsonPath(
+				       "$.paths./helloworld.post.responses.200.content.['application/json'].schema.oneOf[*].$ref",
+				       containsInAnyOrder("#/components/schemas/HelloDTO2",
+				                          "#/components/schemas/HelloDTO1")))
+		       .andExpect(
+				       jsonPath("$.paths./helloworld.post.requestBody.content.['application/vnd.v1+json'].schema.$ref",
+				                is("#/components/schemas/RequestV1")))
+		       .andExpect(
+				       jsonPath("$.paths./helloworld.post.requestBody.content.['application/vnd.v2+json'].schema.$ref",
+				                is("#/components/schemas/RequestV2")))
+		       .andExpect(jsonPath("$.paths./helloworld.post.responses.400.content.['application/json'].schema.$ref",
+		                           is("#/components/schemas/ErrorDTO")));
 
 	}
 
@@ -63,6 +71,7 @@ class SpringDocApp44Test extends AbstractSpringDocTest {
 	 * The type Spring doc test app.
 	 */
 	@SpringBootApplication
-	static class SpringDocTestApp {}
+	static class SpringDocTestApp {
+	}
 
 }

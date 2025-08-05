@@ -27,7 +27,6 @@
 package test.org.springdoc.api.v31.app70.customizer;
 
 import io.swagger.v3.oas.models.Operation;
-
 import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 

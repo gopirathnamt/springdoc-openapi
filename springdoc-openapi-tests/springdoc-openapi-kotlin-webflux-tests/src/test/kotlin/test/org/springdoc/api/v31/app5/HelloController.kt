@@ -27,20 +27,20 @@ import org.springframework.web.bind.annotation.RestController
 
 
 data class Person(
-	val name: String,
-	val nickname: String?
+    val name: String,
+    val nickname: String?
 )
 
 @RestController
 @RequestMapping("/test")
 class HelloController {
 
-	@GetMapping("/")
-	fun foo(): Flow<Int> = flow { // flow builder
-		for (i in 1..3) {
-			delay(100) // pretend we are doing something useful here
-			emit(i) // emit next value
-		}
-	}
+    @GetMapping("/")
+    fun foo(): Flow<Int> = flow { // flow builder
+        for (i in 1..3) {
+            delay(100) // pretend we are doing something useful here
+            emit(i) // emit next value
+        }
+    }
 
 }

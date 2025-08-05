@@ -26,12 +26,6 @@
 
 package org.springdoc.core.customizers;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.function.Consumer;
-import java.util.function.Supplier;
-
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.ExternalDocumentation;
 import io.swagger.v3.oas.models.OpenAPI;
@@ -50,8 +44,13 @@ import io.swagger.v3.oas.models.security.SecurityScheme.In;
 import io.swagger.v3.oas.models.security.SecurityScheme.Type;
 import org.apache.commons.lang3.StringUtils;
 import org.springdoc.core.properties.SpringDocConfigProperties;
-
 import org.springframework.util.CollectionUtils;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 /**
  * Allows externalizing strings in generated openapi schema via properties that follow
@@ -161,7 +160,7 @@ public class SpecPropertiesCustomizer implements GlobalOpenApiCustomizer {
 	/**
 	 * Customized external docs.
 	 *
-	 * @param openApi the open api
+	 * @param openApi                         the open api
 	 * @param externalDocumentationProperties the external documentation
 	 */
 	private void customizeExternalDocs(OpenAPI openApi, ExternalDocumentation externalDocumentationProperties) {
@@ -184,8 +183,7 @@ public class SpecPropertiesCustomizer implements GlobalOpenApiCustomizer {
 		List<SecurityRequirement> securityRequirements = openApi.getSecurity();
 		if (CollectionUtils.isEmpty(securityRequirements)) {
 			openApi.setSecurity(securityRequirementsProperties);
-		}
-		else {
+		} else {
 			securityRequirementsProperties.forEach(securityRequirement -> {
 				if (!securityRequirements.contains(securityRequirement)) {
 					securityRequirements.add(securityRequirement);
@@ -204,8 +202,7 @@ public class SpecPropertiesCustomizer implements GlobalOpenApiCustomizer {
 		Paths paths = openApi.getPaths();
 		if (paths == null) {
 			openApi.paths(pathsProperties);
-		}
-		else {
+		} else {
 			paths.forEach((path, pathItem) -> {
 				if (path.startsWith("/")) {
 					path = path.substring(1); // Remove the leading '/'
@@ -241,8 +238,7 @@ public class SpecPropertiesCustomizer implements GlobalOpenApiCustomizer {
 		Components components = openApi.getComponents();
 		if (components == null || CollectionUtils.isEmpty(components.getSchemas())) {
 			openApi.components(componentsProperties);
-		}
-		else {
+		} else {
 			Map<String, Schema> schemaMap = components.getSchemas();
 			schemaMap.forEach((key, schema) -> {
 				if (!CollectionUtils.isEmpty(componentsProperties.getSchemas())) {
@@ -267,8 +263,7 @@ public class SpecPropertiesCustomizer implements GlobalOpenApiCustomizer {
 			Map<String, SecurityScheme> securitySchemeMap = components.getSecuritySchemes();
 			if (CollectionUtils.isEmpty(securitySchemeMap)) {
 				components.setSecuritySchemes(componentsProperties.getSecuritySchemes());
-			}
-			else {
+			} else {
 				securitySchemeMap.forEach((key, securityScheme) -> {
 					SecurityScheme securitySchemeToCustomize = components.getSecuritySchemes().get(key);
 					if (securitySchemeToCustomize != null) {
@@ -307,8 +302,7 @@ public class SpecPropertiesCustomizer implements GlobalOpenApiCustomizer {
 			if (license != null) {
 				resolveString(license::name, licenseProperties::getName);
 				resolveString(license::url, licenseProperties::getUrl);
-			}
-			else
+			} else
 				info.license(licenseProperties);
 
 			Contact contact = info.getContact();
@@ -317,11 +311,9 @@ public class SpecPropertiesCustomizer implements GlobalOpenApiCustomizer {
 				resolveString(contact::name, contactProperties::getName);
 				resolveString(contact::email, contactProperties::getEmail);
 				resolveString(contact::url, contactProperties::getUrl);
-			}
-			else
+			} else
 				info.contact(contactProperties);
-		}
-		else
+		} else
 			openApi.info(infoProperties);
 	}
 

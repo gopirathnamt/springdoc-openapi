@@ -26,7 +26,6 @@ package test.org.springdoc.api.v30.app72;
 
 import org.junit.jupiter.api.Test;
 import org.springdoc.core.models.GroupedOpenApi;
-
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.runner.WebApplicationContextRunner;
 import org.springframework.context.annotation.Bean;
@@ -46,7 +45,7 @@ public class GroupAutoConfigurationTest {
 						.hasBean("openApiResource")
 						.hasBean("springdocBeanFactoryPostProcessor")
 						.hasBean("multipleOpenApiResource")
-				);
+				    );
 	}
 
 	@EnableAutoConfiguration
@@ -54,9 +53,9 @@ public class GroupAutoConfigurationTest {
 		@Bean
 		GroupedOpenApi testGroupedOpenApi() {
 			return GroupedOpenApi.builder()
-					.group("test-group")
-					.packagesToScan("org.test")
-					.build();
+			                     .group("test-group")
+			                     .packagesToScan("org.test")
+			                     .build();
 		}
 	}
 }

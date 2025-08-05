@@ -26,15 +26,14 @@
 
 package test.org.springdoc.api.v30.app83;
 
-import java.time.Duration;
-import java.time.Instant;
-
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import org.springframework.stereotype.Service;
+import java.time.Duration;
+import java.time.Instant;
 
 @Service
 public class CoffeeService {
@@ -54,7 +53,7 @@ public class CoffeeService {
 
 	Flux<CoffeeOrder> getOrdersForCoffeeById(@Parameter(in = ParameterIn.PATH) String id) {
 		return Flux.interval(Duration.ofSeconds(1))
-				.onBackpressureDrop()
-				.map(i -> new CoffeeOrder(id, Instant.now()));
+		           .onBackpressureDrop()
+		           .map(i -> new CoffeeOrder(id, Instant.now()));
 	}
 }

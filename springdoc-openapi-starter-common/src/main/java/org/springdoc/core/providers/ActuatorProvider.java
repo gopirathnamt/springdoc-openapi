@@ -26,15 +26,11 @@
 
 package org.springdoc.core.providers;
 
-import java.util.Map;
-import java.util.Optional;
-
 import io.swagger.v3.oas.models.ExternalDocumentation;
 import io.swagger.v3.oas.models.tags.Tag;
 import org.springdoc.api.AbstractOpenApiResource;
 import org.springdoc.core.properties.SpringDocConfigProperties;
 import org.springdoc.core.utils.Constants;
-
 import org.springframework.beans.BeansException;
 import org.springframework.boot.actuate.autoconfigure.endpoint.web.WebEndpointProperties;
 import org.springframework.boot.actuate.autoconfigure.web.server.ManagementServerProperties;
@@ -48,6 +44,9 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.web.method.HandlerMethod;
 
+import java.util.Map;
+import java.util.Optional;
+
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 
 
@@ -56,7 +55,8 @@ import static org.apache.commons.lang3.StringUtils.EMPTY;
  *
  * @author bnasslahsen
  */
-public abstract class ActuatorProvider implements ApplicationListener<WebServerInitializedEvent>, ApplicationContextAware {
+public abstract class ActuatorProvider implements ApplicationListener<WebServerInitializedEvent>,
+		ApplicationContextAware {
 
 	/**
 	 * The Management server properties.
@@ -107,11 +107,12 @@ public abstract class ActuatorProvider implements ApplicationListener<WebServerI
 	 * @param springDocConfigProperties  the spring doc config properties
 	 */
 	protected ActuatorProvider(Optional<ManagementServerProperties> managementServerProperties,
-			Optional<WebEndpointProperties> webEndpointProperties,
-			ServerProperties serverProperties,
-			SpringDocConfigProperties springDocConfigProperties) {
+	                           Optional<WebEndpointProperties> webEndpointProperties,
+	                           ServerProperties serverProperties,
+	                           SpringDocConfigProperties springDocConfigProperties) {
 
-		managementServerProperties.ifPresent(managementServerProperties1 -> this.managementServerProperties = managementServerProperties1);
+		managementServerProperties.ifPresent(
+				managementServerProperties1 -> this.managementServerProperties = managementServerProperties1);
 		webEndpointProperties.ifPresent(webEndpointProperties1 -> this.webEndpointProperties = webEndpointProperties1);
 
 		this.serverProperties = serverProperties;
@@ -131,7 +132,7 @@ public abstract class ActuatorProvider implements ApplicationListener<WebServerI
 				new ExternalDocumentation()
 						.url(Constants.SPRINGDOC_ACTUATOR_DOC_URL)
 						.description(Constants.SPRINGDOC_ACTUATOR_DOC_DESCRIPTION)
-		);
+		                           );
 		return actuatorTag;
 	}
 
@@ -140,8 +141,7 @@ public abstract class ActuatorProvider implements ApplicationListener<WebServerI
 		if (WebServerApplicationContext.hasServerNamespace(event.getApplicationContext(), "management")) {
 			managementApplicationContext = event.getApplicationContext();
 			actuatorWebServer = event.getWebServer();
-		}
-		else {
+		} else {
 			applicationWebServer = event.getWebServer();
 		}
 	}

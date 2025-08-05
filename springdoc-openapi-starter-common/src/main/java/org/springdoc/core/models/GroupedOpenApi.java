@@ -26,21 +26,20 @@
 
 package org.springdoc.core.models;
 
+import org.apache.commons.lang3.StringUtils;
+import org.springdoc.core.customizers.OpenApiCustomizer;
+import org.springdoc.core.customizers.OperationCustomizer;
+import org.springdoc.core.customizers.RouterOperationCustomizer;
+import org.springdoc.core.filters.OpenApiMethodFilter;
+import org.springframework.util.Assert;
+import org.springframework.util.CollectionUtils;
+
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
-
-import org.apache.commons.lang3.StringUtils;
-import org.springdoc.core.customizers.OpenApiCustomizer;
-import org.springdoc.core.customizers.OperationCustomizer;
-import org.springdoc.core.customizers.RouterOperationCustomizer;
-import org.springdoc.core.filters.OpenApiMethodFilter;
-
-import org.springframework.util.Assert;
-import org.springframework.util.CollectionUtils;
 
 import static org.springdoc.core.utils.Constants.GROUP_NAME_NOT_NULL_OR_EMPTY;
 
@@ -146,7 +145,9 @@ public class GroupedOpenApi {
 				&& CollectionUtils.isEmpty(openApiCustomizers)
 				&& CollectionUtils.isEmpty(operationCustomizers)
 				&& CollectionUtils.isEmpty(openApiMethodFilters))
-			throw new IllegalStateException("Packages to scan or paths to filter or openApiCustomizers/operationCustomizers can not be all null for the group:" + this.group);
+			throw new IllegalStateException(
+					"Packages to scan or paths to filter or openApiCustomizers/operationCustomizers can not be all null for the group:" +
+							this.group);
 	}
 
 	/**
@@ -295,7 +296,8 @@ public class GroupedOpenApi {
 	 * @param operationCustomizerCollection the operation customizer collection
 	 * @return the grouped open api
 	 */
-	public GroupedOpenApi addAllOperationCustomizer(Collection<? extends OperationCustomizer> operationCustomizerCollection) {
+	public GroupedOpenApi addAllOperationCustomizer(
+			Collection<? extends OperationCustomizer> operationCustomizerCollection) {
 		Set<OperationCustomizer> result = new LinkedHashSet<>();
 		result.addAll(operationCustomizerCollection);
 		result.addAll(operationCustomizers);
@@ -309,7 +311,8 @@ public class GroupedOpenApi {
 	 * @param openApiMethodFilterCollection the open api method filter collection
 	 * @return the grouped open api
 	 */
-	public GroupedOpenApi addAllOpenApiMethodFilter(Collection<? extends OpenApiMethodFilter> openApiMethodFilterCollection) {
+	public GroupedOpenApi addAllOpenApiMethodFilter(
+			Collection<? extends OpenApiMethodFilter> openApiMethodFilterCollection) {
 		Set<OpenApiMethodFilter> result = new LinkedHashSet<>();
 		result.addAll(openApiMethodFilterCollection);
 		result.addAll(openApiMethodFilters);

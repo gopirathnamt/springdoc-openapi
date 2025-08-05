@@ -26,19 +26,18 @@
 
 package org.springdoc.core.fn;
 
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.http.HttpMethod;
+import org.springframework.util.CollectionUtils;
+import org.springframework.web.bind.annotation.RequestMethod;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import org.apache.commons.lang3.ArrayUtils;
-import org.apache.commons.lang3.StringUtils;
-
-import org.springframework.http.HttpMethod;
-import org.springframework.util.CollectionUtils;
-import org.springframework.web.bind.annotation.RequestMethod;
 
 /**
  * The type Router function data.
@@ -289,8 +288,7 @@ public class RouterFunctionData {
 			case "HEAD" -> requestMethod = RequestMethod.HEAD;
 			case "OPTIONS" -> requestMethod = RequestMethod.OPTIONS;
 			case "TRACE" -> requestMethod = RequestMethod.TRACE;
-			default ->
-					throw new IllegalStateException("Unexpected value: " + httpMethod.name());
+			default -> throw new IllegalStateException("Unexpected value: " + httpMethod.name());
 		}
 		return requestMethod;
 	}

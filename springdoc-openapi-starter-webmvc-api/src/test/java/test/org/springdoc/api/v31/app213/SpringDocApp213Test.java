@@ -19,11 +19,10 @@
 package test.org.springdoc.api.v31.app213;
 
 import org.springdoc.core.customizers.SpecPropertiesCustomizer;
-import test.org.springdoc.api.v31.AbstractSpringDocTest;
-
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
+import test.org.springdoc.api.v31.AbstractSpringDocTest;
 
 /**
  * <p>
@@ -34,6 +33,7 @@ import org.springframework.test.context.ActiveProfiles;
 public class SpringDocApp213Test extends AbstractSpringDocTest {
 
 	@SpringBootApplication
-	static class SpringDocTestApp {}
+	static class SpringDocTestApp {
+	}
 
 }

@@ -26,15 +26,15 @@
 
 package test.org.springdoc.api.v31.app229;
 
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
+
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 import static java.lang.annotation.ElementType.ANNOTATION_TYPE;
 import static java.lang.annotation.ElementType.FIELD;
@@ -44,7 +44,7 @@ import static java.lang.annotation.ElementType.PARAMETER;
 /**
  * @author bnasslahsen
  */
-@Target({ PARAMETER, METHOD, FIELD, ANNOTATION_TYPE })
+@Target({PARAMETER, METHOD, FIELD, ANNOTATION_TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Parameter(
 		examples = {
@@ -63,4 +63,5 @@ import static java.lang.annotation.ElementType.PARAMETER;
 @Size(min = 2, max = 16)
 @Pattern(regexp = "\\w+([-.]?\\w+)*")
 @Valid
-@interface LocaleParam {}
+@interface LocaleParam {
+}

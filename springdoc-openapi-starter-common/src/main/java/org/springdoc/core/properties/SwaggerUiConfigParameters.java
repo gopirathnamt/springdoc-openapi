@@ -26,6 +26,9 @@
 
 package org.springdoc.core.properties;
 
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.util.CollectionUtils;
+
 import java.net.URL;
 import java.util.Collections;
 import java.util.Comparator;
@@ -36,10 +39,6 @@ import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
-
-import org.apache.commons.lang3.StringUtils;
-
-import org.springframework.util.CollectionUtils;
 
 import static org.springframework.util.AntPathMatcher.DEFAULT_PATH_SEPARATOR;
 
@@ -220,11 +219,11 @@ public class SwaggerUiConfigParameters extends AbstractSwaggerUiConfigProperties
 	 */
 	public void addUrl(String url) {
 		this.urls.forEach(elt ->
-				{
-					if (!isSwaggerUrlDefined(elt.getName()))
-						elt.setUrl(url + DEFAULT_PATH_SEPARATOR + elt.getName());
-				}
-		);
+		                  {
+			                  if (!isSwaggerUrlDefined(elt.getName()))
+				                  elt.setUrl(url + DEFAULT_PATH_SEPARATOR + elt.getName());
+		                  }
+		                 );
 	}
 
 	/**
@@ -255,8 +254,7 @@ public class SwaggerUiConfigParameters extends AbstractSwaggerUiConfigProperties
 		try {
 			new URL(url).toURI();
 			return true;
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			return false;
 		}
 	}
@@ -274,26 +272,34 @@ public class SwaggerUiConfigParameters extends AbstractSwaggerUiConfigProperties
 		params.put(VALIDATOR_URL_PROPERTY, validatorUrl != null ? validatorUrl : "");
 		org.springdoc.core.utils.SpringDocPropertiesUtils.put(CONFIG_URL_PROPERTY, configUrl, params);
 		org.springdoc.core.utils.SpringDocPropertiesUtils.put(DEEP_LINKING_PROPERTY, this.deepLinking, params);
-		org.springdoc.core.utils.SpringDocPropertiesUtils.put(DISPLAY_OPERATION_ID_PROPERTY, displayOperationId, params);
-		org.springdoc.core.utils.SpringDocPropertiesUtils.put("defaultModelsExpandDepth", defaultModelsExpandDepth, params);
-		org.springdoc.core.utils.SpringDocPropertiesUtils.put("defaultModelExpandDepth", defaultModelExpandDepth, params);
+		org.springdoc.core.utils.SpringDocPropertiesUtils.put(DISPLAY_OPERATION_ID_PROPERTY, displayOperationId,
+		                                                      params);
+		org.springdoc.core.utils.SpringDocPropertiesUtils.put("defaultModelsExpandDepth", defaultModelsExpandDepth,
+		                                                      params);
+		org.springdoc.core.utils.SpringDocPropertiesUtils.put("defaultModelExpandDepth", defaultModelExpandDepth,
+		                                                      params);
 		org.springdoc.core.utils.SpringDocPropertiesUtils.put("defaultModelRendering", defaultModelRendering, params);
-		org.springdoc.core.utils.SpringDocPropertiesUtils.put(DISPLAY_REQUEST_DURATION_PROPERTY, displayRequestDuration, params);
+		org.springdoc.core.utils.SpringDocPropertiesUtils.put(DISPLAY_REQUEST_DURATION_PROPERTY, displayRequestDuration,
+		                                                      params);
 		org.springdoc.core.utils.SpringDocPropertiesUtils.put("docExpansion", docExpansion, params);
 		org.springdoc.core.utils.SpringDocPropertiesUtils.put("maxDisplayedTags", maxDisplayedTags, params);
 		org.springdoc.core.utils.SpringDocPropertiesUtils.put(SHOW_EXTENSIONS_PROPERTY, showExtensions, params);
-		org.springdoc.core.utils.SpringDocPropertiesUtils.put(SHOW_COMMON_EXTENSIONS_PROPERTY, showCommonExtensions, params);
+		org.springdoc.core.utils.SpringDocPropertiesUtils.put(SHOW_COMMON_EXTENSIONS_PROPERTY, showCommonExtensions,
+		                                                      params);
 		org.springdoc.core.utils.SpringDocPropertiesUtils.put("operationsSorter", operationsSorter, params);
 		org.springdoc.core.utils.SpringDocPropertiesUtils.put("tagsSorter", tagsSorter, params);
-		org.springdoc.core.utils.SpringDocPropertiesUtils.put(SwaggerUiConfigParameters.LAYOUT_PROPERTY, layout, params);
+		org.springdoc.core.utils.SpringDocPropertiesUtils.put(SwaggerUiConfigParameters.LAYOUT_PROPERTY, layout,
+		                                                      params);
 		if (supportedSubmitMethods != null)
-			org.springdoc.core.utils.SpringDocPropertiesUtils.put("supportedSubmitMethods", supportedSubmitMethods, params);
+			org.springdoc.core.utils.SpringDocPropertiesUtils.put("supportedSubmitMethods", supportedSubmitMethods,
+			                                                      params);
 		org.springdoc.core.utils.SpringDocPropertiesUtils.put(OAUTH2_REDIRECT_URL_PROPERTY, oauth2RedirectUrl, params);
 		org.springdoc.core.utils.SpringDocPropertiesUtils.put(URL_PROPERTY, url, params);
 		put(URLS_PROPERTY, urls, params);
 		org.springdoc.core.utils.SpringDocPropertiesUtils.put("urls.primaryName", urlsPrimaryName, params);
 		org.springdoc.core.utils.SpringDocPropertiesUtils.put(TRY_IT_ENABLED_PROPERTY, tryItOutEnabled, params);
-		org.springdoc.core.utils.SpringDocPropertiesUtils.put(PERSIST_AUTHORIZATION_PROPERTY, persistAuthorization, params);
+		org.springdoc.core.utils.SpringDocPropertiesUtils.put(PERSIST_AUTHORIZATION_PROPERTY, persistAuthorization,
+		                                                      params);
 		org.springdoc.core.utils.SpringDocPropertiesUtils.put(FILTER_PROPERTY, filter, params);
 		org.springdoc.core.utils.SpringDocPropertiesUtils.put(WITH_CREDENTIALS_PROPERTY, withCredentials, params);
 		return params;
@@ -313,7 +319,9 @@ public class SwaggerUiConfigParameters extends AbstractSwaggerUiConfigProperties
 		else
 			swaggerUrlComparator = (h1, h2) -> h2.getDisplayName().compareTo(h1.getDisplayName());
 
-		swaggerUrls = swaggerUrls.stream().sorted(swaggerUrlComparator).filter(elt -> StringUtils.isNotEmpty(elt.getUrl())).collect(Collectors.toCollection(LinkedHashSet::new));
+		swaggerUrls =
+				swaggerUrls.stream().sorted(swaggerUrlComparator).filter(elt -> StringUtils.isNotEmpty(elt.getUrl()))
+				           .collect(Collectors.toCollection(LinkedHashSet::new));
 		if (!CollectionUtils.isEmpty(swaggerUrls)) {
 			params.put(urls, swaggerUrls);
 		}
@@ -327,7 +335,8 @@ public class SwaggerUiConfigParameters extends AbstractSwaggerUiConfigProperties
 	 */
 	private boolean isSwaggerUrlDefined(String name) {
 		if (!CollectionUtils.isEmpty(swaggerUiConfig.getUrls()))
-			return swaggerUiConfig.getUrls().stream().anyMatch(swaggerUrl -> name.equals(swaggerUrl.getName()) && StringUtils.isNotBlank(swaggerUrl.getUrl()));
+			return swaggerUiConfig.getUrls().stream().anyMatch(
+					swaggerUrl -> name.equals(swaggerUrl.getName()) && StringUtils.isNotBlank(swaggerUrl.getUrl()));
 		return false;
 	}
 

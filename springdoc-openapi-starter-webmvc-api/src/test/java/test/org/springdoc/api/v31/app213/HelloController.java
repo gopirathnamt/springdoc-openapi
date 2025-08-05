@@ -7,7 +7,6 @@ import io.swagger.v3.oas.annotations.extensions.ExtensionProperty;
 import io.swagger.v3.oas.annotations.info.Info;
 import io.swagger.v3.oas.annotations.servers.Server;
 import io.swagger.v3.oas.annotations.tags.Tag;
-
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,7 +20,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @OpenAPIDefinition(
 		info = @Info(
 
-				extensions = { @Extension(
+				extensions = {@Extension(
 						name = "${api.extensions.name}",
 						properties = {
 								@ExtensionProperty(name = "type", value = "${api.extensions.properties.type}"),
@@ -31,13 +30,13 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 										name = "uri",
 										value = "${api.extensions.properties.uri}/testcontroller/getTest"),
 								@ExtensionProperty(name = "passthroughBehavior", value = "${api.extensions.properties.passthroughBehavior}"),
-								@ExtensionProperty(name = "connectionType", value = "${api.extensions.properties.connectionType}") }) },
+								@ExtensionProperty(name = "connectionType", value = "${api.extensions.properties.connectionType}")})},
 
 				title = "${api.info.title}",
 				version = "${api.info.version}",
 				description = "${api.info.description}",
 				termsOfService = "${api.info.termsOfService}"),
-		servers = { @Server(description = "${api.server.description}", url = "${api.server.url}") })
+		servers = {@Server(description = "${api.server.description}", url = "${api.server.url}")})
 @Tag(name = "${api.tag.name}", description = "${api.tag.description}")
 @RestController
 @RequestMapping(value = "${api.base-request-mapping}/testcontroller", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -47,7 +46,7 @@ public class HelloController {
 	@Operation(
 			summary = "Get Test",
 			description = "Get Test",
-			extensions = { @Extension(
+			extensions = {@Extension(
 					name = "${api.extensions.name}",
 					properties = {
 							@ExtensionProperty(name = "type", value = "${api.extensions.properties.type}"),
@@ -57,7 +56,7 @@ public class HelloController {
 									name = "uri",
 									value = "${api.extensions.properties.uri}/testcontroller/getTest"),
 							@ExtensionProperty(name = "passthroughBehavior", value = "${api.extensions.properties.passthroughBehavior}"),
-							@ExtensionProperty(name = "connectionType", value = "${api.extensions.properties.connectionType}") }) })
+							@ExtensionProperty(name = "connectionType", value = "${api.extensions.properties.connectionType}")})})
 
 	public PersonDTO queryMyDto() {
 		// This return a PageImpl with the data, the method parameter 'query' is a pojo containg filter properties

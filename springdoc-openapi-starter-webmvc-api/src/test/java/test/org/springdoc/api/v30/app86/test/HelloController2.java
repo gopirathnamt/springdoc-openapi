@@ -24,21 +24,20 @@
 
 package test.org.springdoc.api.v30.app86.test;
 
-import java.util.Locale;
-
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Locale;
 
 @RestController
 public class HelloController2 {
 
 	@GetMapping("/test2")
 	public void test(HttpSession header, HttpServletRequest request, HttpServletResponse response, Locale locale,
-			String hello) {
+	                 String hello) {
 	}
 
 }

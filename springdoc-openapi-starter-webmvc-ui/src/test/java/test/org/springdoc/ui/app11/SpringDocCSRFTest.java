@@ -19,11 +19,10 @@
 package test.org.springdoc.ui.app11;
 
 import jakarta.servlet.http.Cookie;
-import test.org.springdoc.ui.AbstractSpringDocTest;
-
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MvcResult;
+import test.org.springdoc.ui.AbstractSpringDocTest;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -39,13 +38,14 @@ public class SpringDocCSRFTest extends AbstractSpringDocTest {
 	//@Test
 	public void testApp() throws Exception {
 		MvcResult mvcResult = mockMvc.perform(get("/swagger-ui.html"))
-				.andExpect(status().isFound()).andReturn();
+		                             .andExpect(status().isFound()).andReturn();
 		Cookie cookie = mvcResult.getResponse().getCookie("XSRF-TOKEN");
 		mockMvc.perform(post("/post").header("X-XSRF-TOKEN", cookie.getValue()).cookie(cookie))
-				.andExpect(status().isOk());
+		       .andExpect(status().isOk());
 	}
 
 	@SpringBootApplication
-	static class SpringDocTestApp {}
+	static class SpringDocTestApp {
+	}
 
 }

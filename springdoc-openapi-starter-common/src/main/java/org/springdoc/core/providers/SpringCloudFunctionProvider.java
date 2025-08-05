@@ -26,13 +26,6 @@
 
 package org.springdoc.core.providers;
 
-import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.Operation;
 import io.swagger.v3.oas.models.media.Content;
@@ -49,7 +42,6 @@ import org.springdoc.core.fn.RouterOperation;
 import org.springdoc.core.properties.SpringDocConfigProperties;
 import org.springdoc.core.service.GenericResponseService;
 import org.springdoc.core.utils.SpringDocAnnotationsUtils;
-
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.function.context.FunctionCatalog;
@@ -62,6 +54,13 @@ import org.springframework.http.MediaType;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.RequestMethod;
+
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
@@ -76,22 +75,23 @@ public class SpringCloudFunctionProvider implements CloudFunctionProvider, Appli
 	/**
 	 * The constant supplierRequestMethods.
 	 */
-	private static final RequestMethod[] supplierRequestMethods = new RequestMethod[] { GET };
+	private static final RequestMethod[] supplierRequestMethods = new RequestMethod[]{GET};
 
 	/**
 	 * The constant consumerRequestMethods.
 	 */
-	private static final RequestMethod[] consumerRequestMethods = new RequestMethod[] { POST };
+	private static final RequestMethod[] consumerRequestMethods = new RequestMethod[]{POST};
 
 	/**
 	 * The constant functionRequestMethods.
 	 */
-	private static final RequestMethod[] functionRequestMethods = new RequestMethod[] { GET, POST };
+	private static final RequestMethod[] functionRequestMethods = new RequestMethod[]{GET, POST};
 
 	/**
 	 * The constant defaultMediaTypes.
 	 */
-	private static final String[] defaultMediaTypes = new String[] { MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE };
+	private static final String[] defaultMediaTypes =
+			new String[]{MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE};
 
 	/**
 	 * The Function catalog.
@@ -120,7 +120,8 @@ public class SpringCloudFunctionProvider implements CloudFunctionProvider, Appli
 	 * @param functionCatalogOptional   the function catalog
 	 * @param springDocConfigProperties the spring doc config properties
 	 */
-	public SpringCloudFunctionProvider(Optional<FunctionCatalog> functionCatalogOptional, SpringDocConfigProperties springDocConfigProperties) {
+	public SpringCloudFunctionProvider(Optional<FunctionCatalog> functionCatalogOptional,
+	                                   SpringDocConfigProperties springDocConfigProperties) {
 		this.functionCatalogOptional = functionCatalogOptional;
 		this.springDocConfigProperties = springDocConfigProperties;
 	}
@@ -137,50 +138,60 @@ public class SpringCloudFunctionProvider implements CloudFunctionProvider, Appli
 							FunctionInvocationWrapper function = functionCatalog.lookup(name);
 							if (function.isFunction()) {
 								for (RequestMethod requestMethod : functionRequestMethods) {
-									RouterOperation routerOperation = buildRouterOperation(name, " function", requestMethod, routerOperationList);
+									RouterOperation routerOperation =
+											buildRouterOperation(name, " function", requestMethod, routerOperationList);
 									buildRequest(openAPI, name, function, requestMethod, routerOperation);
-									ApiResponses apiResponses = buildResponses(openAPI, function, defaultMediaTypes, genericResponseService);
+									ApiResponses apiResponses = buildResponses(openAPI, function, defaultMediaTypes,
+									                                           genericResponseService);
 									routerOperation.getOperationModel().responses(apiResponses);
 									if (StringUtils.isEmpty(prefix)) {
 										if (GET.equals(requestMethod))
-											routerOperation.setPath(AntPathMatcher.DEFAULT_PATH_SEPARATOR + name + AntPathMatcher.DEFAULT_PATH_SEPARATOR + "{" + name + "}");
+											routerOperation.setPath(AntPathMatcher.DEFAULT_PATH_SEPARATOR + name +
+													                        AntPathMatcher.DEFAULT_PATH_SEPARATOR +
+													                        "{" + name + "}");
 										else
 											routerOperation.setPath(AntPathMatcher.DEFAULT_PATH_SEPARATOR + name);
-									}
-									else {
+									} else {
 										if (GET.equals(requestMethod))
-											routerOperation.setPath(prefix + AntPathMatcher.DEFAULT_PATH_SEPARATOR + name + AntPathMatcher.DEFAULT_PATH_SEPARATOR + "{" + name + "}");
+											routerOperation.setPath(
+													prefix + AntPathMatcher.DEFAULT_PATH_SEPARATOR + name +
+															AntPathMatcher.DEFAULT_PATH_SEPARATOR + "{" + name + "}");
 										else
-											routerOperation.setPath(prefix + AntPathMatcher.DEFAULT_PATH_SEPARATOR + name);
+											routerOperation.setPath(
+													prefix + AntPathMatcher.DEFAULT_PATH_SEPARATOR + name);
 									}
 
-									RouterOperation userRouterOperation = this.getRouterFunctionPaths(name, requestMethod);
+									RouterOperation userRouterOperation =
+											this.getRouterFunctionPaths(name, requestMethod);
 									if (userRouterOperation != null)
 										mergeRouterOperation(routerOperation, userRouterOperation);
 								}
-							}
-							else if (function.isConsumer()) {
+							} else if (function.isConsumer()) {
 								for (RequestMethod requestMethod : consumerRequestMethods) {
-									RouterOperation routerOperation = buildRouterOperation(name, " consumer", requestMethod, routerOperationList);
+									RouterOperation routerOperation =
+											buildRouterOperation(name, " consumer", requestMethod, routerOperationList);
 									buildRequest(openAPI, name, function, requestMethod, routerOperation);
 									ApiResponses apiResponses = new ApiResponses();
 									ApiResponse apiResponse = new ApiResponse();
 									apiResponse.setContent(new Content());
-									apiResponses.put(String.valueOf(HttpStatus.ACCEPTED.value()), apiResponse.description(HttpStatus.ACCEPTED.getReasonPhrase()));
+									apiResponses.put(String.valueOf(HttpStatus.ACCEPTED.value()),
+									                 apiResponse.description(HttpStatus.ACCEPTED.getReasonPhrase()));
 									getRouterOperationsCommon(name, requestMethod, routerOperation, apiResponses);
 								}
-							}
-							else if (function.isSupplier()) {
+							} else if (function.isSupplier()) {
 								for (RequestMethod requestMethod : supplierRequestMethods) {
-									RouterOperation routerOperation = buildRouterOperation(name, " supplier", requestMethod, routerOperationList);
-									ApiResponses apiResponses = buildResponses(openAPI, function, new String[] { springDocConfigProperties.getDefaultProducesMediaType() }, genericResponseService);
+									RouterOperation routerOperation =
+											buildRouterOperation(name, " supplier", requestMethod, routerOperationList);
+									ApiResponses apiResponses = buildResponses(openAPI, function,
+									                                           new String[]{springDocConfigProperties.getDefaultProducesMediaType()},
+									                                           genericResponseService);
 									getRouterOperationsCommon(name, requestMethod, routerOperation, apiResponses);
 								}
 							}
 						}
 					}
 				}
-		);
+		                                 );
 		return routerOperationList;
 	}
 
@@ -192,7 +203,8 @@ public class SpringCloudFunctionProvider implements CloudFunctionProvider, Appli
 	 * @param routerOperation the router operation
 	 * @param apiResponses    the api responses
 	 */
-	private void getRouterOperationsCommon(String name, RequestMethod requestMethod, RouterOperation routerOperation, ApiResponses apiResponses) {
+	private void getRouterOperationsCommon(String name, RequestMethod requestMethod, RouterOperation routerOperation,
+	                                       ApiResponses apiResponses) {
 		routerOperation.getOperationModel().responses(apiResponses);
 		if (StringUtils.isEmpty(prefix))
 			routerOperation.setPath(AntPathMatcher.DEFAULT_PATH_SEPARATOR + name);
@@ -212,14 +224,15 @@ public class SpringCloudFunctionProvider implements CloudFunctionProvider, Appli
 	 * @param requestMethod   the request method
 	 * @param routerOperation the router operation
 	 */
-	private void buildRequest(OpenAPI openAPI, String name, FunctionInvocationWrapper function, RequestMethod requestMethod, RouterOperation routerOperation) {
+	private void buildRequest(OpenAPI openAPI, String name, FunctionInvocationWrapper function,
+	                          RequestMethod requestMethod, RouterOperation routerOperation) {
 		Type paramType = function.getInputType();
-		Schema<?> schema = SpringDocAnnotationsUtils.extractSchema(openAPI.getComponents(), paramType, null, null, openAPI.getSpecVersion());
+		Schema<?> schema = SpringDocAnnotationsUtils.extractSchema(openAPI.getComponents(), paramType, null, null,
+		                                                           openAPI.getSpecVersion());
 		if (GET.equals(requestMethod)) {
 			Parameter parameter = new PathParameter().name(name).schema(schema);
 			routerOperation.getOperationModel().addParametersItem(parameter);
-		}
-		else {
+		} else {
 			RequestBody requestBody = new RequestBody();
 			Content content = new Content();
 			for (String defaultMediaType : defaultMediaTypes) {
@@ -239,12 +252,13 @@ public class SpringCloudFunctionProvider implements CloudFunctionProvider, Appli
 	 * @param routerOperationList the router operation list
 	 * @return the router operation
 	 */
-	private RouterOperation buildRouterOperation(String name, String type, RequestMethod requestMethod, List<RouterOperation> routerOperationList) {
+	private RouterOperation buildRouterOperation(String name, String type, RequestMethod requestMethod,
+	                                             List<RouterOperation> routerOperationList) {
 		Operation operation = new Operation().operationId(name + "_" + requestMethod);
 		RouterOperation routerOperation = new RouterOperation();
 		routerOperation.setConsumes(defaultMediaTypes);
 		routerOperation.setProduces(defaultMediaTypes);
-		routerOperation.setMethods(new RequestMethod[] { requestMethod });
+		routerOperation.setMethods(new RequestMethod[]{requestMethod});
 		operation.description(name + type);
 		routerOperation.setOperationModel(operation);
 		routerOperationList.add(routerOperation);
@@ -260,13 +274,16 @@ public class SpringCloudFunctionProvider implements CloudFunctionProvider, Appli
 	 * @param genericResponseService the generic response service
 	 * @return the api responses
 	 */
-	private ApiResponses buildResponses(OpenAPI openAPI, FunctionInvocationWrapper function, String[] mediaTypes, GenericResponseService genericResponseService) {
+	private ApiResponses buildResponses(OpenAPI openAPI, FunctionInvocationWrapper function, String[] mediaTypes,
+	                                    GenericResponseService genericResponseService) {
 		Type returnType = function.getOutputType();
-		Content content = genericResponseService.buildContent(openAPI.getComponents(), null, mediaTypes, null, returnType);
+		Content content =
+				genericResponseService.buildContent(openAPI.getComponents(), null, mediaTypes, null, returnType);
 		ApiResponses apiResponses = new ApiResponses();
 		ApiResponse apiResponse = new ApiResponse();
 		apiResponse.setContent(content);
-		apiResponses.put(String.valueOf(HttpStatus.OK.value()), apiResponse.description(HttpStatus.OK.getReasonPhrase()));
+		apiResponses.put(String.valueOf(HttpStatus.OK.value()),
+		                 apiResponse.description(HttpStatus.OK.getReasonPhrase()));
 		return apiResponses;
 	}
 
@@ -282,18 +299,21 @@ public class SpringCloudFunctionProvider implements CloudFunctionProvider, Appli
 		RouterOperations routerOperations = applicationContext.findAnnotationOnBean(beanName, RouterOperations.class);
 		RouterOperation routerOperationResult = null;
 		if (routerOperations == null) {
-			org.springdoc.core.annotations.RouterOperation routerOperation = applicationContext.findAnnotationOnBean(beanName, org.springdoc.core.annotations.RouterOperation.class);
+			org.springdoc.core.annotations.RouterOperation routerOperation =
+					applicationContext.findAnnotationOnBean(beanName,
+					                                        org.springdoc.core.annotations.RouterOperation.class);
 			if (routerOperation != null)
 				routerOperationResult = new RouterOperation(routerOperation);
-		}
-		else {
+		} else {
 			org.springdoc.core.annotations.RouterOperation[] routerOperationArray = routerOperations.value();
 			if (ArrayUtils.isNotEmpty(routerOperationArray)) {
 				if (routerOperationArray.length == 1)
 					routerOperationResult = new RouterOperation(routerOperationArray[0]);
 				else {
-					Optional<org.springdoc.core.annotations.RouterOperation> routerOperationOptional = Arrays.stream(routerOperationArray)
-							.filter(routerOperation -> Arrays.asList(routerOperation.method()).contains(requestMethod)).findAny();
+					Optional<org.springdoc.core.annotations.RouterOperation> routerOperationOptional =
+							Arrays.stream(routerOperationArray)
+							      .filter(routerOperation -> Arrays.asList(routerOperation.method())
+							                                       .contains(requestMethod)).findAny();
 					if (routerOperationOptional.isPresent())
 						routerOperationResult = new RouterOperation(routerOperationOptional.get(), requestMethod);
 				}

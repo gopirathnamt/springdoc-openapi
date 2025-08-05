@@ -26,27 +26,6 @@
 
 package org.springdoc.core.service;
 
-import java.lang.annotation.Annotation;
-import java.lang.reflect.AnnotatedElement;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Optional;
-import java.util.Set;
-import java.util.function.Consumer;
-import java.util.function.Supplier;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.v3.core.jackson.TypeNameResolver;
@@ -77,7 +56,6 @@ import org.springdoc.core.customizers.ServerBaseUrlCustomizer;
 import org.springdoc.core.properties.SpringDocConfigProperties;
 import org.springdoc.core.providers.JavadocProvider;
 import org.springdoc.core.utils.PropertyResolverUtils;
-
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.boot.autoconfigure.AutoConfigurationPackages;
@@ -94,6 +72,27 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.method.HandlerMethod;
+
+import java.lang.annotation.Annotation;
+import java.lang.reflect.AnnotatedElement;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Optional;
+import java.util.Set;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static org.springdoc.core.utils.Constants.DEFAULT_SERVER_DESCRIPTION;
 import static org.springdoc.core.utils.Constants.DEFAULT_TITLE;
@@ -189,10 +188,11 @@ public class OpenAPIService implements ApplicationContextAware {
 	 * @param javadocProvider           the javadoc provider
 	 */
 	public OpenAPIService(Optional<OpenAPI> openAPI, SecurityService securityParser,
-			SpringDocConfigProperties springDocConfigProperties, PropertyResolverUtils propertyResolverUtils,
-			Optional<List<OpenApiBuilderCustomizer>> openApiBuilderCustomizers,
-			Optional<List<ServerBaseUrlCustomizer>> serverBaseUrlCustomizers,
-			Optional<JavadocProvider> javadocProvider) {
+	                      SpringDocConfigProperties springDocConfigProperties,
+	                      PropertyResolverUtils propertyResolverUtils,
+	                      Optional<List<OpenApiBuilderCustomizer>> openApiBuilderCustomizers,
+	                      Optional<List<ServerBaseUrlCustomizer>> serverBaseUrlCustomizers,
+	                      Optional<JavadocProvider> javadocProvider) {
 		if (openAPI.isPresent()) {
 			this.openAPI = openAPI.get();
 			if (this.openAPI.getComponents() == null)
@@ -220,13 +220,13 @@ public class OpenAPIService implements ApplicationContextAware {
 	 */
 	public static String splitCamelCase(String str) {
 		return str.replaceAll(
-						String.format(
-								"%s|%s|%s",
-								"(?<=[A-Z])(?=[A-Z][a-z])",
-								"(?<=[^A-Z])(?=[A-Z])",
-								"(?<=[A-Za-z])(?=[^A-Za-z])"),
-						"-")
-				.toLowerCase(Locale.ROOT);
+				          String.format(
+						          "%s|%s|%s",
+						          "(?<=[A-Z])(?=[A-Z][a-z])",
+						          "(?<=[^A-Z])(?=[A-Z])",
+						          "(?<=[A-Za-z])(?=[^A-Za-z])"),
+				          "-")
+		          .toLowerCase(Locale.ROOT);
 	}
 
 	/**
@@ -243,13 +243,11 @@ public class OpenAPIService implements ApplicationContextAware {
 			calculatedOpenAPI = new OpenAPI(springDocConfigProperties.getSpecVersion());
 			calculatedOpenAPI.setComponents(new Components());
 			calculatedOpenAPI.setPaths(new Paths());
-		}
-		else {
+		} else {
 			try {
 				ObjectMapper objectMapper = new ObjectMapper();
 				calculatedOpenAPI = objectMapper.readValue(objectMapper.writeValueAsString(openAPI), OpenAPI.class);
-			}
-			catch (JsonProcessingException e) {
+			} catch (JsonProcessingException e) {
 				LOGGER.warn("Json Processing Exception occurred: {}", e.getMessage());
 				calculatedOpenAPI = openAPI;
 			}
@@ -273,7 +271,8 @@ public class OpenAPIService implements ApplicationContextAware {
 		// add security schemes
 		if (calculatedOpenAPI != null)
 			this.calculateSecuritySchemes(calculatedOpenAPI.getComponents(), locale);
-		openApiBuilderCustomisers.ifPresent(customizers -> customizers.forEach(customiser -> customiser.customise(this)));
+		openApiBuilderCustomisers.ifPresent(
+				customizers -> customizers.forEach(customiser -> customiser.customise(this)));
 		return calculatedOpenAPI;
 	}
 
@@ -284,11 +283,14 @@ public class OpenAPIService implements ApplicationContextAware {
 		if (basicErrorController != null)
 			getConfig().addHiddenRestControllers(basicErrorController);
 		List<Class<?>> hiddenRestControllers = this.mappingsMap.entrySet().parallelStream()
-				.filter(controller -> (AnnotationUtils.findAnnotation(controller.getValue().getClass(),
-						Hidden.class) != null)).map(controller -> controller.getValue().getClass())
-				.collect(Collectors.toList());
+		                                                       .filter(controller -> (AnnotationUtils.findAnnotation(
+				                                                       controller.getValue().getClass(),
+				                                                       Hidden.class) != null))
+		                                                       .map(controller -> controller.getValue().getClass())
+		                                                       .collect(Collectors.toList());
 		if (!CollectionUtils.isEmpty(hiddenRestControllers))
-			getConfig().addHiddenRestControllers(hiddenRestControllers.toArray(new Class<?>[hiddenRestControllers.size()]));
+			getConfig().addHiddenRestControllers(
+					hiddenRestControllers.toArray(new Class<?>[hiddenRestControllers.size()]));
 	}
 
 	/**
@@ -335,8 +337,8 @@ public class OpenAPIService implements ApplicationContextAware {
 
 		if (!CollectionUtils.isEmpty(tagsStr))
 			tagsStr = tagsStr.stream()
-					.map(str -> propertyResolverUtils.resolve(str, locale))
-					.collect(Collectors.toCollection(LinkedHashSet::new));
+			                 .map(str -> propertyResolverUtils.resolve(str, locale))
+			                 .collect(Collectors.toCollection(LinkedHashSet::new));
 
 		if (springdocTags.containsKey(handlerMethod)) {
 			io.swagger.v3.oas.models.tags.Tag tag = springdocTags.get(handlerMethod);
@@ -402,15 +404,18 @@ public class OpenAPIService implements ApplicationContextAware {
 	 * @param tagsStr the tags str
 	 * @param locale  the locale
 	 */
-	private void buildTagsFromMethod(Method method, Set<io.swagger.v3.oas.models.tags.Tag> tags, Set<String> tagsStr, Locale locale) {
+	private void buildTagsFromMethod(Method method, Set<io.swagger.v3.oas.models.tags.Tag> tags, Set<String> tagsStr,
+	                                 Locale locale) {
 		// method tags
 		Set<Tags> tagsSet = AnnotatedElementUtils
 				.findAllMergedAnnotations(method, Tags.class);
 		Set<Tag> methodTags = tagsSet.stream()
-				.flatMap(x -> Stream.of(x.value())).collect(Collectors.toCollection(LinkedHashSet::new));
+		                             .flatMap(x -> Stream.of(x.value()))
+		                             .collect(Collectors.toCollection(LinkedHashSet::new));
 		methodTags.addAll(AnnotatedElementUtils.findAllMergedAnnotations(method, Tag.class));
 		if (!CollectionUtils.isEmpty(methodTags)) {
-			tagsStr.addAll(methodTags.stream().map(tag -> propertyResolverUtils.resolve(tag.name(), locale)).collect(Collectors.toCollection(LinkedHashSet::new)));
+			tagsStr.addAll(methodTags.stream().map(tag -> propertyResolverUtils.resolve(tag.name(), locale))
+			                         .collect(Collectors.toCollection(LinkedHashSet::new)));
 			List<Tag> allTags = new ArrayList<>(methodTags);
 			addTags(allTags, tags, locale);
 		}
@@ -444,16 +449,19 @@ public class OpenAPIService implements ApplicationContextAware {
 	 * @param tagsStr  the tags str
 	 * @param locale   the locale
 	 */
-	public void buildTagsFromClass(Class<?> beanType, Set<io.swagger.v3.oas.models.tags.Tag> tags, Set<String> tagsStr, Locale locale) {
+	public void buildTagsFromClass(Class<?> beanType, Set<io.swagger.v3.oas.models.tags.Tag> tags, Set<String> tagsStr,
+	                               Locale locale) {
 		List<Tag> allTags = new ArrayList<>();
 		// class tags
 		Set<Tags> tagsSet = AnnotatedElementUtils
 				.findAllMergedAnnotations(beanType, Tags.class);
 		Set<Tag> classTags = tagsSet.stream()
-				.flatMap(x -> Stream.of(x.value())).collect(Collectors.toCollection(LinkedHashSet::new));
+		                            .flatMap(x -> Stream.of(x.value()))
+		                            .collect(Collectors.toCollection(LinkedHashSet::new));
 		classTags.addAll(AnnotatedElementUtils.findAllMergedAnnotations(beanType, Tag.class));
 		if (!CollectionUtils.isEmpty(classTags)) {
-			tagsStr.addAll(classTags.stream().map(tag -> propertyResolverUtils.resolve(tag.name(), locale)).collect(Collectors.toCollection(LinkedHashSet::new)));
+			tagsStr.addAll(classTags.stream().map(tag -> propertyResolverUtils.resolve(tag.name(), locale))
+			                        .collect(Collectors.toCollection(LinkedHashSet::new)));
 			allTags.addAll(classTags);
 			addTags(allTags, tags, locale);
 		}
@@ -481,7 +489,7 @@ public class OpenAPIService implements ApplicationContextAware {
 				}
 				return es;
 			}).collect(Collectors.toMap(Entry::getKey, Entry::getValue, (e1, e2) -> e2,
-					LinkedHashMap::new));
+			                            LinkedHashMap::new));
 			schema.setProperties(resolvedSchemas);
 		}
 		return schema;
@@ -584,8 +592,7 @@ public class OpenAPIService implements ApplicationContextAware {
 								collectWebhooksFromElement(method, allWebhooks);
 							}
 
-						}
-						catch (ClassNotFoundException e) {
+						} catch (ClassNotFoundException e) {
 							LOGGER.error("Class not found in classpath: {}", e.getMessage());
 						}
 					}
@@ -644,16 +651,17 @@ public class OpenAPIService implements ApplicationContextAware {
 		// OpenApiDefinition security requirements
 		securityParser.getSecurityRequirements(apiDef.security()).ifPresent(openAPI::setSecurity);
 		// OpenApiDefinition external docs
-		AnnotationsUtils.getExternalDocumentation(apiDef.externalDocs(), isOpenapi3).ifPresent(openAPI::setExternalDocs);
+		AnnotationsUtils.getExternalDocumentation(apiDef.externalDocs(), isOpenapi3)
+		                .ifPresent(openAPI::setExternalDocs);
 		// OpenApiDefinition tags
 		AnnotationsUtils.getTags(apiDef.tags(), false).ifPresent(tags -> openAPI.setTags(new ArrayList<>(tags)));
 		// OpenApiDefinition servers
 		Optional<List<Server>> optionalServers = AnnotationsUtils.getServers(apiDef.servers());
 		optionalServers.map(servers -> resolveProperties(servers, locale)).ifPresent(servers -> {
-					this.isServersPresent = true;
-					openAPI.servers(servers);
-				}
-		);
+			                                                                             this.isServersPresent = true;
+			                                                                             openAPI.servers(servers);
+		                                                                             }
+		                                                                            );
 		// OpenApiDefinition extensions
 		if (apiDef.extensions().length > 0) {
 			openAPI.setExtensions(AnnotationsUtils.getExtensions(isOpenapi3, apiDef.extensions()));
@@ -706,11 +714,10 @@ public class OpenAPIService implements ApplicationContextAware {
 
 		if (extensions != null) {
 			Map<String, Object> extensionsResolved = propertyResolverUtils.resolveExtensions(locale, extensions);
-			if (propertyResolverUtils.isOpenapi31()){
+			if (propertyResolverUtils.isOpenapi31()) {
 				extensionsResolved.forEach(info::addExtension31);
 				info.setExtensions(extensionsResolved);
-			}
-			else
+			} else
 				info.setExtensions(extensionsResolved);
 		}
 
@@ -726,7 +733,7 @@ public class OpenAPIService implements ApplicationContextAware {
 	 * @param locale                the locale
 	 */
 	private void resolveProperty(Supplier<String> getProperty, Consumer<String> setProperty,
-			PropertyResolverUtils propertyResolverUtils, Locale locale) {
+	                             PropertyResolverUtils propertyResolverUtils, Locale locale) {
 		String value = getProperty.get();
 		if (StringUtils.isNotBlank(value)) {
 			setProperty.accept(propertyResolverUtils.resolve(value, locale));
@@ -746,7 +753,9 @@ public class OpenAPIService implements ApplicationContextAware {
 		if (securitySchemeBeans.size() > 0) {
 			for (Map.Entry<String, Object> entry : securitySchemeBeans.entrySet()) {
 				Class<?> objClz = entry.getValue().getClass();
-				Set<io.swagger.v3.oas.annotations.security.SecurityScheme> apiSecurityScheme = AnnotatedElementUtils.findMergedRepeatableAnnotations(objClz, io.swagger.v3.oas.annotations.security.SecurityScheme.class);
+				Set<io.swagger.v3.oas.annotations.security.SecurityScheme> apiSecurityScheme =
+						AnnotatedElementUtils.findMergedRepeatableAnnotations(objClz,
+						                                                      io.swagger.v3.oas.annotations.security.SecurityScheme.class);
 				this.addSecurityScheme(apiSecurityScheme, components, locale);
 			}
 		}
@@ -755,13 +764,15 @@ public class OpenAPIService implements ApplicationContextAware {
 		else {
 			ClassPathScanningCandidateComponentProvider scanner = new ClassPathScanningCandidateComponentProvider(
 					false);
-			scanner.addIncludeFilter(new AnnotationTypeFilter(io.swagger.v3.oas.annotations.security.SecuritySchemes.class));
+			scanner.addIncludeFilter(
+					new AnnotationTypeFilter(io.swagger.v3.oas.annotations.security.SecuritySchemes.class));
 			scanner.addIncludeFilter(
 					new AnnotationTypeFilter(io.swagger.v3.oas.annotations.security.SecurityScheme.class));
 			if (AutoConfigurationPackages.has(context)) {
 				List<String> packagesToScan = AutoConfigurationPackages.get(context);
-				Set<io.swagger.v3.oas.annotations.security.SecurityScheme> apiSecurityScheme = getSecuritySchemesClasses(
-						scanner, packagesToScan);
+				Set<io.swagger.v3.oas.annotations.security.SecurityScheme> apiSecurityScheme =
+						getSecuritySchemesClasses(
+								scanner, packagesToScan);
 				this.addSecurityScheme(apiSecurityScheme, components, locale);
 			}
 
@@ -776,17 +787,17 @@ public class OpenAPIService implements ApplicationContextAware {
 	 * @param locale            the locale
 	 */
 	private void addSecurityScheme(Set<io.swagger.v3.oas.annotations.security.SecurityScheme> apiSecurityScheme,
-			Components components, Locale locale) {
+	                               Components components, Locale locale) {
 		for (io.swagger.v3.oas.annotations.security.SecurityScheme securitySchemeAnnotation : apiSecurityScheme) {
-			Optional<SecuritySchemePair> securityScheme = securityParser.getSecurityScheme(securitySchemeAnnotation, locale);
+			Optional<SecuritySchemePair> securityScheme =
+					securityParser.getSecurityScheme(securitySchemeAnnotation, locale);
 			if (securityScheme.isPresent()) {
 				Map<String, SecurityScheme> securitySchemeMap = new HashMap<>();
 				if (StringUtils.isNotBlank(securityScheme.get().key())) {
 					securitySchemeMap.put(securityScheme.get().key(), securityScheme.get().securityScheme());
 					if (!CollectionUtils.isEmpty(components.getSecuritySchemes())) {
 						components.getSecuritySchemes().putAll(securitySchemeMap);
-					}
-					else {
+					} else {
 						components.setSecuritySchemes(securitySchemeMap);
 					}
 				}
@@ -802,15 +813,14 @@ public class OpenAPIService implements ApplicationContextAware {
 	 * @return the api def class
 	 */
 	private OpenAPIDefinition getApiDefClass(ClassPathScanningCandidateComponentProvider scanner,
-			List<String> packagesToScan) {
+	                                         List<String> packagesToScan) {
 		for (String pack : packagesToScan) {
 			for (BeanDefinition bd : scanner.findCandidateComponents(pack)) {
 				// first one found is ok
 				try {
 					return AnnotationUtils.findAnnotation(Class.forName(bd.getBeanClassName()),
-							OpenAPIDefinition.class);
-				}
-				catch (ClassNotFoundException e) {
+					                                      OpenAPIDefinition.class);
+				} catch (ClassNotFoundException e) {
 					LOGGER.error("Class Not Found in classpath : {}", e.getMessage());
 				}
 			}
@@ -842,13 +852,13 @@ public class OpenAPIService implements ApplicationContextAware {
 			for (BeanDefinition bd : scanner.findCandidateComponents(pack)) {
 				try {
 					apiSecurityScheme.add(AnnotationUtils.findAnnotation(Class.forName(bd.getBeanClassName()),
-							io.swagger.v3.oas.annotations.security.SecurityScheme.class));
+					                                                     io.swagger.v3.oas.annotations.security.SecurityScheme.class));
 					SecuritySchemes apiSecuritySchemes
-							= AnnotationUtils.findAnnotation(Class.forName(bd.getBeanClassName()), io.swagger.v3.oas.annotations.security.SecuritySchemes.class);
+							= AnnotationUtils.findAnnotation(Class.forName(bd.getBeanClassName()),
+							                                 io.swagger.v3.oas.annotations.security.SecuritySchemes.class);
 					if (apiSecuritySchemes != null && !ArrayUtils.isEmpty(apiSecuritySchemes.value()))
 						Arrays.stream(apiSecuritySchemes.value()).forEach(apiSecurityScheme::add);
-				}
-				catch (ClassNotFoundException e) {
+				} catch (ClassNotFoundException e) {
 					LOGGER.error("Class Not Found in classpath : {}", e.getMessage());
 				}
 			}
@@ -892,8 +902,9 @@ public class OpenAPIService implements ApplicationContextAware {
 	public Map<String, Object> getControllerAdviceMap() {
 		Map<String, Object> controllerAdviceMap = context.getBeansWithAnnotation(ControllerAdvice.class);
 		return Stream.of(controllerAdviceMap).flatMap(mapEl -> mapEl.entrySet().stream()).filter(
-						controller -> (AnnotationUtils.findAnnotation(controller.getValue().getClass(), Hidden.class) == null))
-				.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (a1, a2) -> a1, LinkedHashMap::new));
+				             controller -> (AnnotationUtils.findAnnotation(controller.getValue().getClass(), Hidden.class) == null))
+		             .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (a1, a2) -> a1,
+		                                       LinkedHashMap::new));
 	}
 
 	/**

@@ -26,20 +26,19 @@
 
 package test.org.springdoc.api.v31.app6.security;
 
-import java.io.IOException;
-import java.util.ArrayList;
-
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+
+import java.io.IOException;
+import java.util.ArrayList;
 
 
 public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
@@ -90,12 +89,11 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 			String user = null;
 			try {
 				user = Jwts.parser()
-						.setSigningKey(key)
-						.parseClaimsJws(token.replace(WebSecurity.TokenPrefix, ""))
-						.getBody()
-						.getSubject();
-			}
-			catch (ExpiredJwtException e) {
+				           .setSigningKey(key)
+				           .parseClaimsJws(token.replace(WebSecurity.TokenPrefix, ""))
+				           .getBody()
+				           .getSubject();
+			} catch (ExpiredJwtException e) {
 				request.setAttribute(AUTH_ERROR_ATTRIBUTE, e.getMessage());
 			}
 			if (user != null) {

@@ -26,9 +26,6 @@
 
 package org.springdoc.webflux.api;
 
-import java.util.Locale;
-import java.util.Optional;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.v3.oas.annotations.Operation;
 import org.apache.commons.lang3.StringUtils;
@@ -40,8 +37,6 @@ import org.springdoc.core.service.AbstractRequestService;
 import org.springdoc.core.service.GenericResponseService;
 import org.springdoc.core.service.OpenAPIService;
 import org.springdoc.core.service.OperationService;
-import reactor.core.publisher.Mono;
-
 import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -50,6 +45,10 @@ import org.springframework.http.MediaType;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+import reactor.core.publisher.Mono;
+
+import java.util.Locale;
+import java.util.Optional;
 
 import static org.springdoc.core.utils.Constants.API_DOCS_URL;
 import static org.springdoc.core.utils.Constants.APPLICATION_OPENAPI_YAML;
@@ -79,9 +78,12 @@ public class OpenApiWebfluxResource extends OpenApiResource {
 	 * @param springDocCustomizers        the spring doc customizers
 	 */
 	public OpenApiWebfluxResource(String groupName, ObjectFactory<OpenAPIService> openAPIBuilderObjectFactory,
-			AbstractRequestService requestBuilder, GenericResponseService responseBuilder, OperationService operationParser,
-			SpringDocConfigProperties springDocConfigProperties, SpringDocProviders springDocProviders, SpringDocCustomizers springDocCustomizers) {
-		super(groupName, openAPIBuilderObjectFactory, requestBuilder, responseBuilder, operationParser, springDocConfigProperties, springDocProviders, springDocCustomizers);
+	                              AbstractRequestService requestBuilder, GenericResponseService responseBuilder,
+	                              OperationService operationParser,
+	                              SpringDocConfigProperties springDocConfigProperties,
+	                              SpringDocProviders springDocProviders, SpringDocCustomizers springDocCustomizers) {
+		super(groupName, openAPIBuilderObjectFactory, requestBuilder, responseBuilder, operationParser,
+		      springDocConfigProperties, springDocProviders, springDocCustomizers);
 	}
 
 	/**
@@ -96,10 +98,12 @@ public class OpenApiWebfluxResource extends OpenApiResource {
 	 * @param springDocCustomizers        the spring doc customizers
 	 */
 	@Autowired
-	public OpenApiWebfluxResource(ObjectFactory<OpenAPIService> openAPIBuilderObjectFactory, AbstractRequestService requestBuilder, GenericResponseService responseBuilder,
-			OperationService operationParser, SpringDocConfigProperties springDocConfigProperties,
-			SpringDocProviders springDocProviders, SpringDocCustomizers springDocCustomizers) {
-		super(openAPIBuilderObjectFactory, requestBuilder, responseBuilder, operationParser, springDocConfigProperties, springDocProviders, springDocCustomizers);
+	public OpenApiWebfluxResource(ObjectFactory<OpenAPIService> openAPIBuilderObjectFactory,
+	                              AbstractRequestService requestBuilder, GenericResponseService responseBuilder,
+	                              OperationService operationParser, SpringDocConfigProperties springDocConfigProperties,
+	                              SpringDocProviders springDocProviders, SpringDocCustomizers springDocCustomizers) {
+		super(openAPIBuilderObjectFactory, requestBuilder, responseBuilder, operationParser, springDocConfigProperties,
+		      springDocProviders, springDocCustomizers);
 	}
 
 	/**
@@ -114,7 +118,8 @@ public class OpenApiWebfluxResource extends OpenApiResource {
 	@Operation(hidden = true)
 	@GetMapping(value = API_DOCS_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 	@Override
-	public Mono<byte[]> openapiJson(ServerHttpRequest serverHttpRequest, @Value(API_DOCS_URL) String apiDocsUrl, Locale locale)
+	public Mono<byte[]> openapiJson(ServerHttpRequest serverHttpRequest, @Value(API_DOCS_URL) String apiDocsUrl,
+	                                Locale locale)
 			throws JsonProcessingException {
 		return super.openapiJson(serverHttpRequest, apiDocsUrl, locale);
 	}
@@ -132,7 +137,8 @@ public class OpenApiWebfluxResource extends OpenApiResource {
 	@GetMapping(value = DEFAULT_API_DOCS_URL_YAML, produces = APPLICATION_OPENAPI_YAML)
 	@Override
 	public Mono<byte[]> openapiYaml(ServerHttpRequest serverHttpRequest,
-			@Value(DEFAULT_API_DOCS_URL_YAML) String apiDocsUrl, Locale locale) throws JsonProcessingException {
+	                                @Value(DEFAULT_API_DOCS_URL_YAML) String apiDocsUrl, Locale locale) throws
+			JsonProcessingException {
 		return super.openapiYaml(serverHttpRequest, apiDocsUrl, locale);
 	}
 

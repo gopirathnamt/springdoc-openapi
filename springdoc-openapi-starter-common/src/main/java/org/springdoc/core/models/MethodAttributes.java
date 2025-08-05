@@ -26,6 +26,19 @@
 
 package org.springdoc.core.models;
 
+import com.fasterxml.jackson.annotation.JsonView;
+import io.swagger.v3.oas.models.responses.ApiResponse;
+import io.swagger.v3.oas.models.responses.ApiResponses;
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.jetbrains.annotations.Nullable;
+import org.springframework.core.annotation.AnnotatedElementUtils;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
@@ -34,20 +47,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
-
-import com.fasterxml.jackson.annotation.JsonView;
-import io.swagger.v3.oas.models.responses.ApiResponse;
-import io.swagger.v3.oas.models.responses.ApiResponses;
-import org.apache.commons.lang3.ArrayUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.jetbrains.annotations.Nullable;
-
-import org.springframework.core.annotation.AnnotatedElementUtils;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
  * The type Method attributes.
@@ -145,7 +144,9 @@ public class MethodAttributes {
 	 * @param genericMapResponse       the generic map response
 	 * @param locale                   the locale
 	 */
-	public MethodAttributes(String[] methodProducesNew, String defaultConsumesMediaType, String defaultProducesMediaType, Map<String, ApiResponse> genericMapResponse, Locale locale) {
+	public MethodAttributes(String[] methodProducesNew, String defaultConsumesMediaType,
+	                        String defaultProducesMediaType, Map<String, ApiResponse> genericMapResponse,
+	                        Locale locale) {
 		this.methodProduces = methodProducesNew;
 		this.defaultConsumesMediaType = defaultConsumesMediaType;
 		this.defaultProducesMediaType = defaultProducesMediaType;
@@ -176,7 +177,8 @@ public class MethodAttributes {
 	 * @param headers                  the headers
 	 * @param locale                   the locale
 	 */
-	public MethodAttributes(String defaultConsumesMediaType, String defaultProducesMediaType, String[] methodConsumes, String[] methodProduces, String[] headers, Locale locale) {
+	public MethodAttributes(String defaultConsumesMediaType, String defaultProducesMediaType, String[] methodConsumes,
+	                        String[] methodProduces, String[] headers, Locale locale) {
 		this.defaultConsumesMediaType = defaultConsumesMediaType;
 		this.defaultProducesMediaType = defaultProducesMediaType;
 		this.methodProduces = methodProduces;
@@ -248,7 +250,8 @@ public class MethodAttributes {
 	public void calculateConsumesProduces(Method method) {
 		PostMapping reqPostMappingMethod = AnnotatedElementUtils.findMergedAnnotation(method, PostMapping.class);
 		if (reqPostMappingMethod != null) {
-			fillMethods(reqPostMappingMethod.produces(), reqPostMappingMethod.consumes(), reqPostMappingMethod.headers());
+			fillMethods(reqPostMappingMethod.produces(), reqPostMappingMethod.consumes(),
+			            reqPostMappingMethod.headers());
 			return;
 		}
 		GetMapping reqGetMappingMethod = AnnotatedElementUtils.findMergedAnnotation(method, GetMapping.class);
@@ -258,7 +261,8 @@ public class MethodAttributes {
 		}
 		DeleteMapping reqDeleteMappingMethod = AnnotatedElementUtils.findMergedAnnotation(method, DeleteMapping.class);
 		if (reqDeleteMappingMethod != null) {
-			fillMethods(reqDeleteMappingMethod.produces(), reqDeleteMappingMethod.consumes(), reqDeleteMappingMethod.headers());
+			fillMethods(reqDeleteMappingMethod.produces(), reqDeleteMappingMethod.consumes(),
+			            reqDeleteMappingMethod.headers());
 			return;
 		}
 		PutMapping reqPutMappingMethod = AnnotatedElementUtils.findMergedAnnotation(method, PutMapping.class);
@@ -267,22 +271,20 @@ public class MethodAttributes {
 			return;
 		}
 		RequestMapping reqMappingMethod = AnnotatedElementUtils.findMergedAnnotation(method, RequestMapping.class);
-		RequestMapping reqMappingClass = AnnotatedElementUtils.findMergedAnnotation(method.getDeclaringClass(), RequestMapping.class);
+		RequestMapping reqMappingClass =
+				AnnotatedElementUtils.findMergedAnnotation(method.getDeclaringClass(), RequestMapping.class);
 
 		if (reqMappingMethod != null && reqMappingClass != null) {
 			fillMethods(
 					calculateMethodMediaTypes(reqMappingMethod.produces(), reqMappingClass.produces()),
 					calculateMethodMediaTypes(reqMappingMethod.consumes(), reqMappingClass.consumes()),
 					reqMappingMethod.headers()
-			);
-		}
-		else if (reqMappingMethod != null) {
+			           );
+		} else if (reqMappingMethod != null) {
 			fillMethods(reqMappingMethod.produces(), reqMappingMethod.consumes(), reqMappingMethod.headers());
-		}
-		else if (reqMappingClass != null) {
+		} else if (reqMappingClass != null) {
 			fillMethods(reqMappingClass.produces(), reqMappingClass.consumes(), reqMappingClass.headers());
-		}
-		else
+		} else
 			fillMethods(methodProduces, methodConsumes, null);
 	}
 
@@ -296,35 +298,31 @@ public class MethodAttributes {
 	private void fillMethods(String[] produces, String[] consumes, String[] headers) {
 		if (ArrayUtils.isNotEmpty(produces)) {
 			methodProduces = mergeArrays(methodProduces, produces);
-		}
-		else if (ArrayUtils.isNotEmpty(classProduces)) {
+		} else if (ArrayUtils.isNotEmpty(classProduces)) {
 			methodProduces = mergeArrays(methodProduces, classProduces);
-		}
-		else if (ArrayUtils.isEmpty(methodProduces)) {
-			methodProduces = new String[] { defaultProducesMediaType };
+		} else if (ArrayUtils.isEmpty(methodProduces)) {
+			methodProduces = new String[]{defaultProducesMediaType};
 		}
 
 		if (ArrayUtils.isNotEmpty(consumes)) {
 			methodConsumes = mergeArrays(methodConsumes, consumes);
-		}
-		else if (ArrayUtils.isNotEmpty(classConsumes)) {
+		} else if (ArrayUtils.isNotEmpty(classConsumes)) {
 			methodConsumes = mergeArrays(methodConsumes, classConsumes);
-		}
-		else if (ArrayUtils.isEmpty(methodConsumes)) {
-			methodConsumes = new String[] { defaultConsumesMediaType };
+		} else if (ArrayUtils.isEmpty(methodConsumes)) {
+			methodConsumes = new String[]{defaultConsumesMediaType};
 		}
 
 		setHeaders(headers);
 	}
 
 	/**
-     * If there is any method type(s) present, then these will override the class type(s).
-     * See <a href="https://docs.spring.io/spring-framework/reference/web/webmvc/mvc-controller/ann-requestmapping.html#mvc-ann-requestmapping-consumes">...</a> for details
+	 * If there is any method type(s) present, then these will override the class type(s).
+	 * See <a href="https://docs.spring.io/spring-framework/reference/web/webmvc/mvc-controller/ann-requestmapping.html#mvc-ann-requestmapping-consumes">...</a> for details
 	 *
-     * @param methodTypes the method types
-     * @param classTypes the class types
-     * @return the string [ ] containing the types that can be used for the method
-     */
+	 * @param methodTypes the method types
+	 * @param classTypes  the class types
+	 * @return the string [ ] containing the types that can be used for the method
+	 */
 	private String[] calculateMethodMediaTypes(@Nullable String[] methodTypes, String[] classTypes) {
 		if (ArrayUtils.isNotEmpty(methodTypes)) {
 			return methodTypes;
@@ -340,7 +338,8 @@ public class MethodAttributes {
 	 * @return the string [ ]
 	 */
 	private String[] mergeArrays(@Nullable String[] array1, String[] array2) {
-		Set<String> uniqueValues = array1 == null ? new LinkedHashSet<>() : Arrays.stream(array1).collect(Collectors.toCollection(LinkedHashSet::new));
+		Set<String> uniqueValues = array1 == null ? new LinkedHashSet<>() : Arrays.stream(array1).collect(
+				Collectors.toCollection(LinkedHashSet::new));
 		uniqueValues.addAll(Arrays.asList(array2));
 		return uniqueValues.toArray(new String[0]);
 	}
@@ -440,8 +439,7 @@ public class MethodAttributes {
 					String[] keyValueHeader = header.split("=");
 					String headerValue = keyValueHeader.length > 1 ? keyValueHeader[1] : "";
 					this.headers.put(keyValueHeader[0], headerValue);
-				}
-				else {
+				} else {
 					String[] keyValueHeader = header.split("!=");
 					if (!this.headers.containsKey(keyValueHeader[0]))
 						this.headers.put(keyValueHeader[0], StringUtils.EMPTY);
@@ -495,7 +493,8 @@ public class MethodAttributes {
 	 * @param declaringClass the declaring class
 	 */
 	public void calculateHeadersForClass(Class<?> declaringClass) {
-		RequestMapping reqMappingClass = AnnotatedElementUtils.findMergedAnnotation(declaringClass, RequestMapping.class);
+		RequestMapping reqMappingClass =
+				AnnotatedElementUtils.findMergedAnnotation(declaringClass, RequestMapping.class);
 		if (reqMappingClass != null) {
 			setHeaders(reqMappingClass.headers());
 		}

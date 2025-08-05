@@ -26,12 +26,11 @@
 
 package test.org.springdoc.api.v31.app33;
 
-import java.util.List;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.Parameter;
-
 import org.springframework.data.domain.Sort;
+
+import java.util.List;
 
 public class ExampleSort extends Sort {
 

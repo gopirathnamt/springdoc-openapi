@@ -24,10 +24,9 @@
 
 package test.org.springdoc.api.v31.app166;
 
-import test.org.springdoc.api.v31.AbstractSpringDocTest;
-
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.test.context.TestPropertySource;
+import test.org.springdoc.api.v31.AbstractSpringDocTest;
 
 /**
  * In this test, it is checked that the error handler is displayed correctly in the documentation.

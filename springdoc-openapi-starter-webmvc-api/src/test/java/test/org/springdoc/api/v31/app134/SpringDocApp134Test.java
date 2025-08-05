@@ -25,9 +25,8 @@ package test.org.springdoc.api.v31.app134;
 
 import org.junit.jupiter.api.Test;
 import org.springdoc.core.utils.Constants;
-import test.org.springdoc.api.v31.AbstractSpringDocTest;
-
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import test.org.springdoc.api.v31.AbstractSpringDocTest;
 
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -44,43 +43,44 @@ public class SpringDocApp134Test extends AbstractSpringDocTest {
 	@Test
 	protected void testApp() throws Exception {
 		mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL + "/v1-group"))
-				.andExpect(status().isOk())
-				.andExpect(jsonPath("$.openapi", is("3.1.0")))
-				.andExpect(content().json(getContent("results/3.1.0/app134-1.json"), true));
+		       .andExpect(status().isOk())
+		       .andExpect(jsonPath("$.openapi", is("3.1.0")))
+		       .andExpect(content().json(getContent("results/3.1.0/app134-1.json"), true));
 	}
 
 	@Test
 	void testApp2() throws Exception {
 		mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL + "/v2-group"))
-				.andExpect(status().isOk())
-				.andExpect(jsonPath("$.openapi", is("3.1.0")))
-				.andExpect(content().json(getContent("results/3.1.0/app134-2.json"), true));
+		       .andExpect(status().isOk())
+		       .andExpect(jsonPath("$.openapi", is("3.1.0")))
+		       .andExpect(content().json(getContent("results/3.1.0/app134-2.json"), true));
 	}
 
 	@Test
 	void testApp3() throws Exception {
 		mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL + "/v1-headers-group"))
-				.andExpect(status().isOk())
-				.andExpect(jsonPath("$.openapi", is("3.1.0")))
-				.andExpect(content().json(getContent("results/3.1.0/app134-3.json"), true));
+		       .andExpect(status().isOk())
+		       .andExpect(jsonPath("$.openapi", is("3.1.0")))
+		       .andExpect(content().json(getContent("results/3.1.0/app134-3.json"), true));
 	}
 
 	@Test
 	void testApp4() throws Exception {
 		mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL + "/v1-v2-headers-group"))
-				.andExpect(status().isOk())
-				.andExpect(jsonPath("$.openapi", is("3.1.0")))
-				.andExpect(content().json(getContent("results/3.1.0/app134-4.json"), true));
+		       .andExpect(status().isOk())
+		       .andExpect(jsonPath("$.openapi", is("3.1.0")))
+		       .andExpect(content().json(getContent("results/3.1.0/app134-4.json"), true));
 	}
 
 	@Test
 	void testApp5() throws Exception {
 		mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL + "/v2-consumes-group"))
-				.andExpect(status().isOk())
-				.andExpect(jsonPath("$.openapi", is("3.1.0")))
-				.andExpect(content().json(getContent("results/3.1.0/app134-5.json"), true));
+		       .andExpect(status().isOk())
+		       .andExpect(jsonPath("$.openapi", is("3.1.0")))
+		       .andExpect(content().json(getContent("results/3.1.0/app134-5.json"), true));
 	}
 
 	@SpringBootApplication
-	static class SpringDocTestApp {}
+	static class SpringDocTestApp {
+	}
 }

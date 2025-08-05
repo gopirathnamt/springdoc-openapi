@@ -26,17 +26,16 @@
 
 package test.org.springdoc.api.v30.app53;
 
-import java.util.List;
-
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 /**
  * The type Hello controller with global api response.
@@ -51,7 +50,7 @@ class HelloControllerWithGlobalApiResponse {
 	 * @return the list
 	 */
 	@Operation(description = "Some operation", responses = {
-			@ApiResponse(responseCode = "204", description = "Explicit description for this response") })
+			@ApiResponse(responseCode = "204", description = "Explicit description for this response")})
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	@GetMapping(value = "/hello1", produces = MediaType.APPLICATION_JSON_VALUE)
 	List<String> listWithNoApiResponse() {

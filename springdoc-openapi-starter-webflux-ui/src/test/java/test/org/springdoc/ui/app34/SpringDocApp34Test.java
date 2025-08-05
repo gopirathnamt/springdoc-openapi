@@ -24,11 +24,9 @@
 package test.org.springdoc.ui.app34;
 
 import org.junit.jupiter.api.Test;
-
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.reactive.server.EntityExchangeResult;
-
 import test.org.springdoc.ui.AbstractSpringDocTest;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -40,9 +38,9 @@ public class SpringDocApp34Test extends AbstractSpringDocTest {
 	@Test
 	void transformed_index_with_oauth() throws Exception {
 		EntityExchangeResult<byte[]> getResult = webTestClient.get().uri("/webjars/swagger-ui/swagger-initializer.js")
-				.exchange()
-				.expectStatus().isOk()
-				.expectBody().returnResult();
+		                                                      .exchange()
+		                                                      .expectStatus().isOk()
+		                                                      .expectBody().returnResult();
 
 		var responseContent = new String(getResult.getResponseBody());
 		assertFalse(responseContent.contains("https://petstore.swagger.io/v2/swagger.json"));
@@ -50,6 +48,7 @@ public class SpringDocApp34Test extends AbstractSpringDocTest {
 	}
 
 	@SpringBootApplication
-	static class SpringDocTestApp {}
+	static class SpringDocTestApp {
+	}
 
 }

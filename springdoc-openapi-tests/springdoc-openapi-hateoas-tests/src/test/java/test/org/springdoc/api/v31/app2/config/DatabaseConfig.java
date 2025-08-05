@@ -26,14 +26,13 @@
 
 package test.org.springdoc.api.v31.app2.config;
 
-import java.time.LocalDate;
-
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Configuration;
 import test.org.springdoc.api.v31.app2.entities.Post;
 import test.org.springdoc.api.v31.app2.repositories.PostRepository;
 
-import org.springframework.context.annotation.Configuration;
+import java.time.LocalDate;
 
 /**
  * @author Davide Pedone

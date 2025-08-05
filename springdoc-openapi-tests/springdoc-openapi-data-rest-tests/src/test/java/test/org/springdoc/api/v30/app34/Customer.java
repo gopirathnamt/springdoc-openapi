@@ -27,13 +27,13 @@
 package test.org.springdoc.api.v30.app34;
 
 
-import java.util.Collection;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+
+import java.util.Collection;
 
 
 /**

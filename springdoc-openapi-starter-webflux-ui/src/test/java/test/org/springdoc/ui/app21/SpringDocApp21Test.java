@@ -19,10 +19,9 @@
 package test.org.springdoc.ui.app21;
 
 import org.junit.jupiter.api.Test;
-import test.org.springdoc.ui.AbstractSpringDocTest;
-
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.test.context.TestPropertySource;
+import test.org.springdoc.ui.AbstractSpringDocTest;
 
 @TestPropertySource(properties = "springdoc.swagger-ui.use-root-path=true")
 public class SpringDocApp21Test extends AbstractSpringDocTest {
@@ -30,12 +29,13 @@ public class SpringDocApp21Test extends AbstractSpringDocTest {
 	@Test
 	void testUseRootPath() {
 		webTestClient.get().uri("/").exchange()
-				.expectStatus().is3xxRedirection();
+		             .expectStatus().is3xxRedirection();
 		webTestClient.get().uri("/swagger-ui.html").exchange()
-				.expectStatus().isFound();
+		             .expectStatus().isFound();
 	}
 
 	@SpringBootApplication
-	static class SpringDocTestApp {}
+	static class SpringDocTestApp {
+	}
 
 }

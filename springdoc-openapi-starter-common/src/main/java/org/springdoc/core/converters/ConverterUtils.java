@@ -26,15 +26,15 @@
 
 package org.springdoc.core.converters;
 
+import org.springframework.http.HttpEntity;
+import org.springframework.http.ResponseEntity;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.CompletionStage;
-
-import org.springframework.http.HttpEntity;
-import org.springframework.http.ResponseEntity;
 
 /**
  * The type Converter utils.

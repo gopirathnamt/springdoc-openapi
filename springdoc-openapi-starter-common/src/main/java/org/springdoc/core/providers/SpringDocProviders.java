@@ -25,9 +25,9 @@
  */
 package org.springdoc.core.providers;
 
-import java.util.Optional;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.util.Optional;
 
 /**
  * The type Spring doc providers.
@@ -82,10 +82,13 @@ public class SpringDocProviders {
 	 * @param springWebProvider              the spring web provider
 	 * @param objectMapperProvider           the object mapper provider
 	 */
-	public SpringDocProviders(Optional<ActuatorProvider> actuatorProvider, Optional<CloudFunctionProvider> springCloudFunctionProvider,
-			Optional<SecurityOAuth2Provider> springSecurityOAuth2Provider, Optional<RepositoryRestResourceProvider> repositoryRestResourceProvider,
-			Optional<RouterFunctionProvider> routerFunctionProvider, Optional<SpringWebProvider> springWebProvider,
-			ObjectMapperProvider objectMapperProvider) {
+	public SpringDocProviders(Optional<ActuatorProvider> actuatorProvider,
+	                          Optional<CloudFunctionProvider> springCloudFunctionProvider,
+	                          Optional<SecurityOAuth2Provider> springSecurityOAuth2Provider,
+	                          Optional<RepositoryRestResourceProvider> repositoryRestResourceProvider,
+	                          Optional<RouterFunctionProvider> routerFunctionProvider,
+	                          Optional<SpringWebProvider> springWebProvider,
+	                          ObjectMapperProvider objectMapperProvider) {
 		this.actuatorProvider = actuatorProvider;
 		this.springCloudFunctionProvider = springCloudFunctionProvider;
 		this.springSecurityOAuth2Provider = springSecurityOAuth2Provider;

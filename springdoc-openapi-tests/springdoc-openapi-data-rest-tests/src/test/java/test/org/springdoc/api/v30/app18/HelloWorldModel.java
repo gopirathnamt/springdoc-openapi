@@ -26,13 +26,12 @@
 
 package test.org.springdoc.api.v30.app18;
 
-import java.time.LocalDate;
-
 import io.swagger.v3.oas.annotations.Parameter;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-
 import org.springframework.format.annotation.DateTimeFormat;
+
+import java.time.LocalDate;
 
 public class HelloWorldModel {
 

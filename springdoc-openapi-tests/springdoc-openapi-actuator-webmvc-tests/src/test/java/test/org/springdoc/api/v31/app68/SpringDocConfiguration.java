@@ -26,9 +26,6 @@
 
 package test.org.springdoc.api.v31.app68;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.Operation;
@@ -41,11 +38,13 @@ import org.springdoc.core.customizers.OpenApiCustomizer;
 import org.springdoc.core.customizers.OperationCustomizer;
 import org.springdoc.core.models.GroupedOpenApi;
 import org.springdoc.core.utils.Constants;
-
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.HandlerMethod;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Configuration
 public class SpringDocConfiguration {
@@ -53,18 +52,19 @@ public class SpringDocConfiguration {
 	@Bean
 	public GroupedOpenApi storeOpenApi() {
 		return GroupedOpenApi.builder()
-				.group("stores")
-				.pathsToMatch("/store/**")
-				.build();
+		                     .group("stores")
+		                     .pathsToMatch("/store/**")
+		                     .build();
 	}
 
 	@Bean
 	public GroupedOpenApi userOpenApi() {
 		return GroupedOpenApi.builder()
-				.group("users")
-				.packagesToScan("test.org.springdoc.api.v31.app68.api.user").addOpenApiCustomizer(serverOpenApiCustomizer1())
-				.addOperationCustomizer(operationCustomizer())
-				.build();
+		                     .group("users")
+		                     .packagesToScan("test.org.springdoc.api.v31.app68.api.user")
+		                     .addOpenApiCustomizer(serverOpenApiCustomizer1())
+		                     .addOperationCustomizer(operationCustomizer())
+		                     .build();
 	}
 
 	public OpenApiCustomizer serverOpenApiCustomizer1() {
@@ -85,7 +85,9 @@ public class SpringDocConfiguration {
 		return (Operation operation, HandlerMethod handlerMethod) -> {
 			CustomizedOperation annotation = handlerMethod.getMethodAnnotation(CustomizedOperation.class);
 			if (annotation != null) {
-				operation.description(StringUtils.defaultIfBlank(operation.getDescription(), Constants.DEFAULT_DESCRIPTION) + ", " + annotation.addition());
+				operation.description(
+						StringUtils.defaultIfBlank(operation.getDescription(), Constants.DEFAULT_DESCRIPTION) + ", " +
+								annotation.addition());
 			}
 			return operation;
 		};
@@ -94,31 +96,34 @@ public class SpringDocConfiguration {
 	@Bean
 	public GroupedOpenApi petOpenApi() {
 		return GroupedOpenApi.builder()
-				.group("pets")
-				.pathsToMatch("/pet/**").addOpenApiCustomizer(serverOpenApiCustomizer2())
-				.build();
+		                     .group("pets")
+		                     .pathsToMatch("/pet/**").addOpenApiCustomizer(serverOpenApiCustomizer2())
+		                     .build();
 	}
 
 	@Bean
 	public GroupedOpenApi groupOpenApi() {
 		return GroupedOpenApi.builder()
-				.group("groups test")
-				.pathsToMatch("/v1/**").pathsToExclude("/v1/users")
-				.packagesToScan("test.org.springdoc.api.v31.app68.api.user", "test.org.springdoc.api.v31.app68.api.store")
-				.build();
+		                     .group("groups test")
+		                     .pathsToMatch("/v1/**").pathsToExclude("/v1/users")
+		                     .packagesToScan("test.org.springdoc.api.v31.app68.api.user",
+		                                     "test.org.springdoc.api.v31.app68.api.store")
+		                     .build();
 	}
 
 	@Bean
 	public OpenAPI customOpenAPI() {
 		return new OpenAPI()
 				.components(new Components().addSecuritySchemes("basicScheme",
-						new SecurityScheme().type(SecurityScheme.Type.HTTP).scheme("basic")))
+				                                                new SecurityScheme().type(SecurityScheme.Type.HTTP)
+				                                                                    .scheme("basic")))
 				.info(new Info().title("Petstore API").version("v0").description(
-								"This is a sample server Petstore server.  You can find out more about     Swagger at [http://swagger.io](http://swagger.io) or on [irc.freenode.net, #swagger](http://swagger.io/irc/).      For this sample, you can use the api key `special-key` to test the authorization     filters.")
-						.termsOfService("http://swagger.io/terms/")
-						.license(new License().name("Apache 2.0").url("http://springdoc.org")));
+						                "This is a sample server Petstore server.  You can find out more about     Swagger at [http://swagger.io](http://swagger.io) or on [irc.freenode.net, #swagger](http://swagger.io/irc/).      For this sample, you can use the api key `special-key` to test the authorization     filters.")
+				                .termsOfService("http://swagger.io/terms/")
+				                .license(new License().name("Apache 2.0").url("http://springdoc.org")));
 	}
 
 	@SpringBootApplication
-	static class SpringDocTestApp {}
+	static class SpringDocTestApp {
+	}
 }

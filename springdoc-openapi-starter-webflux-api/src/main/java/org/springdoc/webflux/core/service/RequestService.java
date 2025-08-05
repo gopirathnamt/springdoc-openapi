@@ -26,20 +26,19 @@
 
 package org.springdoc.webflux.core.service;
 
-import java.util.List;
-import java.util.Optional;
-
 import org.springdoc.core.customizers.ParameterCustomizer;
 import org.springdoc.core.discoverer.SpringDocParameterNameDiscoverer;
 import org.springdoc.core.service.AbstractRequestService;
 import org.springdoc.core.service.GenericParameterService;
 import org.springdoc.core.service.RequestBodyService;
-
 import org.springframework.http.codec.multipart.FilePart;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.server.ServerWebExchange;
+
+import java.util.List;
+import java.util.Optional;
 
 import static org.springdoc.core.utils.SpringDocUtils.getConfig;
 
@@ -52,9 +51,9 @@ public class RequestService extends AbstractRequestService {
 
 	static {
 		getConfig().addRequestWrapperToIgnore(ServerWebExchange.class, ServerHttpRequest.class)
-				.addRequestWrapperToIgnore(ServerHttpResponse.class)
-				.addRequestWrapperToIgnore(ServerRequest.class)
-				.addFileType(FilePart.class);
+		           .addRequestWrapperToIgnore(ServerHttpResponse.class)
+		           .addRequestWrapperToIgnore(ServerRequest.class)
+		           .addFileType(FilePart.class);
 	}
 
 	/**
@@ -66,8 +65,8 @@ public class RequestService extends AbstractRequestService {
 	 * @param localSpringDocParameterNameDiscoverer the local spring doc parameter name discoverer
 	 */
 	public RequestService(GenericParameterService parameterBuilder, RequestBodyService requestBodyService,
-			Optional<List<ParameterCustomizer>> parameterCustomizers,
-			SpringDocParameterNameDiscoverer localSpringDocParameterNameDiscoverer) {
+	                      Optional<List<ParameterCustomizer>> parameterCustomizers,
+	                      SpringDocParameterNameDiscoverer localSpringDocParameterNameDiscoverer) {
 		super(parameterBuilder, requestBodyService, parameterCustomizers, localSpringDocParameterNameDiscoverer);
 	}
 }

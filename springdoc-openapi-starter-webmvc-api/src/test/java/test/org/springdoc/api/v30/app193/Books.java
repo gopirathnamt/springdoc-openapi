@@ -1,10 +1,10 @@
 package test.org.springdoc.api.v30.app193;
 
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import java.util.ArrayList;
 import java.util.Arrays;
-
-import io.swagger.v3.oas.annotations.media.Schema;
 
 @Schema(description = "Represents a list of Books.")
 public class Books extends ArrayList<Book> implements Knowledge {

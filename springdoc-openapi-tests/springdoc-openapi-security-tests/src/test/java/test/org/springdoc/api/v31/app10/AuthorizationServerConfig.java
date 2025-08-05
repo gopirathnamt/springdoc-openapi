@@ -26,13 +26,10 @@
 
 package test.org.springdoc.api.v31.app10;
 
-import java.util.UUID;
-
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -47,6 +44,8 @@ import org.springframework.security.oauth2.server.authorization.config.annotatio
 import org.springframework.security.oauth2.server.authorization.settings.AuthorizationServerSettings;
 import org.springframework.security.oauth2.server.authorization.settings.ClientSettings;
 import org.springframework.security.web.SecurityFilterChain;
+
+import java.util.UUID;
 
 /*
  * @author James Selvakumar
@@ -63,13 +62,16 @@ public class AuthorizationServerConfig {
 	@Bean
 	public RegisteredClientRepository registeredClientRepository() {
 		RegisteredClient registeredClient = RegisteredClient.withId(UUID.randomUUID().toString())
-				.clientId("messaging-client")
-				.clientSecret("{noop}secret")
-				.authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS)
-				.scope("message.read")
-				.scope("message.write")
-				.clientSettings(ClientSettings.builder().requireAuthorizationConsent(true).build())
-				.build();
+		                                                    .clientId("messaging-client")
+		                                                    .clientSecret("{noop}secret")
+		                                                    .authorizationGrantType(
+				                                                    AuthorizationGrantType.CLIENT_CREDENTIALS)
+		                                                    .scope("message.read")
+		                                                    .scope("message.write")
+		                                                    .clientSettings(ClientSettings.builder()
+		                                                                                  .requireAuthorizationConsent(
+				                                                                                  true).build())
+		                                                    .build();
 
 		return new InMemoryRegisteredClientRepository(registeredClient);
 	}

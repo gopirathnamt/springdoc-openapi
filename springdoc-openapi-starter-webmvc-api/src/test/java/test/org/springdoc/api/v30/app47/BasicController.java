@@ -8,18 +8,18 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(path = "/")
 public class BasicController {
 
-	@GetMapping(headers = { "foo=bar" })
+	@GetMapping(headers = {"foo=bar"})
 	public String get1() {
 		return null;
 	}
 
-	@GetMapping(headers = { "fi=ri" })
+	@GetMapping(headers = {"fi=ri"})
 	public String get2() {
 		return null;
 	}
 
 	@GetMapping(
-			headers = { "User-Agent=" + "MyUserAgent" })
+			headers = {"User-Agent=" + "MyUserAgent"})
 	public String get3() {
 		return null;
 	}

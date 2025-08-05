@@ -26,12 +26,12 @@
 
 package test.org.springdoc.api.v31.app36;
 
-import java.util.List;
-
 import org.springframework.data.repository.Repository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.data.util.Streamable;
+
+import java.util.List;
 
 @RepositoryRestResource
 public interface EnumFieldHolderRepository extends Repository<EnumFieldHolder, Long> {

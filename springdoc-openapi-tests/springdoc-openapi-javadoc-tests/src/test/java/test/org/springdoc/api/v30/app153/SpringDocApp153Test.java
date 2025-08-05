@@ -27,9 +27,8 @@
 package test.org.springdoc.api.v30.app153;
 
 
-import test.org.springdoc.api.v30.AbstractSpringDocTest;
-
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import test.org.springdoc.api.v30.AbstractSpringDocTest;
 
 /**
  * Tests Spring meta-annotations as method parameters
@@ -40,6 +39,7 @@ class SpringDocApp153Test extends AbstractSpringDocTest {
 	 * The type Spring doc test app.
 	 */
 	@SpringBootApplication
-	static class SpringDocTestApp {}
+	static class SpringDocTestApp {
+	}
 
 }

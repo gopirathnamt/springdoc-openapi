@@ -26,15 +26,14 @@
 
 package org.springdoc.core.providers;
 
-import java.util.List;
-import java.util.Optional;
-
 import jakarta.annotation.PostConstruct;
-
 import org.springframework.boot.autoconfigure.hateoas.HateoasProperties;
 import org.springframework.hateoas.mediatype.hal.Jackson2HalModule;
 import org.springframework.lang.NonNull;
 import org.springframework.util.ReflectionUtils;
+
+import java.util.List;
+import java.util.Optional;
 
 /**
  * The type Hateoas hal provider.
@@ -59,7 +58,8 @@ public class HateoasHalProvider {
 	 * @param hateoasPropertiesOptional the hateoas properties optional
 	 * @param objectMapperProvider      the object mapper provider
 	 */
-	public HateoasHalProvider(Optional<HateoasProperties> hateoasPropertiesOptional, ObjectMapperProvider objectMapperProvider) {
+	public HateoasHalProvider(Optional<HateoasProperties> hateoasPropertiesOptional,
+	                          ObjectMapperProvider objectMapperProvider) {
 		this.hateoasPropertiesOptional = hateoasPropertiesOptional;
 		this.objectMapperProvider = objectMapperProvider;
 	}

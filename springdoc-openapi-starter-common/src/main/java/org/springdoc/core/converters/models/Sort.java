@@ -26,12 +26,12 @@
 
 package org.springdoc.core.converters.models;
 
-import java.util.List;
-import java.util.Objects;
-
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import java.util.List;
+import java.util.Objects;
 
 /**
  * The Sort type.
@@ -75,8 +75,7 @@ public class Sort {
 	public void setSort(List<String> sort) {
 		if (sort == null) {
 			this.sort.clear();
-		}
-		else {
+		} else {
 			this.sort = sort;
 		}
 	}

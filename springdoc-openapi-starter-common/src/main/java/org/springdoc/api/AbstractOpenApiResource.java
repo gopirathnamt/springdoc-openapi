@@ -26,35 +26,6 @@
 
 package org.springdoc.api;
 
-import java.io.UnsupportedEncodingException;
-import java.lang.reflect.Method;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URLDecoder;
-import java.nio.charset.StandardCharsets;
-import java.time.Duration;
-import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Set;
-import java.util.TreeSet;
-import java.util.concurrent.Executors;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
-
 import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -110,7 +81,6 @@ import org.springdoc.core.service.OpenAPIService;
 import org.springdoc.core.service.OperationService;
 import org.springdoc.core.utils.PropertyResolverUtils;
 import org.springdoc.core.utils.SpringDocUtils;
-
 import org.springframework.aop.support.AopUtils;
 import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.context.ApplicationContext;
@@ -125,6 +95,35 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.method.HandlerMethod;
+
+import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Method;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
+import java.time.Duration;
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
+import java.util.TreeSet;
+import java.util.concurrent.Executors;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import static org.springdoc.core.converters.SchemaPropertyDeprecatingConverter.isDeprecated;
 import static org.springdoc.core.utils.Constants.ACTUATOR_DEFAULT_GROUP;
@@ -237,9 +236,11 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	 * @param springDocCustomizers        the spring doc customizers
 	 */
 	protected AbstractOpenApiResource(String groupName, ObjectFactory<OpenAPIService> openAPIBuilderObjectFactory,
-			AbstractRequestService requestBuilder,
-			GenericResponseService responseBuilder, OperationService operationParser,
-			SpringDocConfigProperties springDocConfigProperties, SpringDocProviders springDocProviders, SpringDocCustomizers springDocCustomizers) {
+	                                  AbstractRequestService requestBuilder,
+	                                  GenericResponseService responseBuilder, OperationService operationParser,
+	                                  SpringDocConfigProperties springDocConfigProperties,
+	                                  SpringDocProviders springDocProviders,
+	                                  SpringDocCustomizers springDocCustomizers) {
 		super();
 		this.groupName = Objects.requireNonNull(groupName, "groupName");
 		this.openAPIBuilderObjectFactory = openAPIBuilderObjectFactory;
@@ -253,10 +254,10 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 		if (springDocConfigProperties.isPreLoadingEnabled()) {
 			if (CollectionUtils.isEmpty(springDocConfigProperties.getPreLoadingLocales())) {
 				Executors.newSingleThreadExecutor().execute(this::getOpenApi);
-			}
-			else {
+			} else {
 				for (String locale : springDocConfigProperties.getPreLoadingLocales()) {
-					Executors.newSingleThreadExecutor().execute(() -> this.getOpenApi(null, Locale.forLanguageTag(locale)));
+					Executors.newSingleThreadExecutor()
+					         .execute(() -> this.getOpenApi(null, Locale.forLanguageTag(locale)));
 				}
 			}
 		}
@@ -290,8 +291,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 		for (String aClass : classes) {
 			try {
 				hiddenClasses.add(Class.forName(aClass));
-			}
-			catch (ClassNotFoundException e) {
+			} catch (ClassNotFoundException e) {
 				LOGGER.warn("The following class doesn't exist and cannot be hidden: {}", aClass);
 			}
 		}
@@ -305,7 +305,8 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	 * @return the boolean
 	 */
 	public static boolean containsResponseBody(HandlerMethod handlerMethod) {
-		ResponseBody responseBodyAnnotation = AnnotationUtils.findAnnotation(handlerMethod.getBeanType(), ResponseBody.class);
+		ResponseBody responseBodyAnnotation =
+				AnnotationUtils.findAnnotation(handlerMethod.getBeanType(), ResponseBody.class);
 		if (responseBodyAnnotation == null)
 			responseBodyAnnotation = AnnotationUtils.findAnnotation(handlerMethod.getMethod(), ResponseBody.class);
 		return responseBodyAnnotation != null;
@@ -318,7 +319,8 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	 * @return the boolean
 	 */
 	public static boolean isHiddenRestControllers(Class<?> rawClass) {
-		return HIDDEN_REST_CONTROLLERS.stream().anyMatch(clazz -> ClassUtils.getUserClass(clazz).isAssignableFrom(rawClass));
+		return HIDDEN_REST_CONTROLLERS.stream()
+		                              .anyMatch(clazz -> ClassUtils.getUserClass(clazz).isAssignableFrom(rawClass));
 	}
 
 	/**
@@ -352,10 +354,14 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 				Instant start = Instant.now();
 				openAPI = openAPIService.build(finalLocale);
 				Map<String, Object> mappingsMap = openAPIService.getMappingsMap().entrySet().stream()
-						.filter(controller -> (AnnotationUtils.findAnnotation(controller.getValue().getClass(),
-								Hidden.class) == null))
-						.filter(controller -> !isHiddenRestControllers(controller.getValue().getClass()))
-						.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (a1, a2) -> a1));
+				                                                .filter(controller -> (AnnotationUtils.findAnnotation(
+						                                                controller.getValue().getClass(),
+						                                                Hidden.class) == null))
+				                                                .filter(controller -> !isHiddenRestControllers(
+						                                                controller.getValue().getClass()))
+				                                                .collect(Collectors.toMap(Map.Entry::getKey,
+				                                                                          Map.Entry::getValue,
+				                                                                          (a1, a2) -> a1));
 
 				Map<String, Object> findControllerAdvice = openAPIService.getControllerAdviceMap();
 				if (OpenApiVersion.OPENAPI_3_1 == springDocConfigProperties.getApiDocs().getVersion()) {
@@ -373,13 +379,14 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 				if (springDocConfigProperties.isTrimKotlinIndent())
 					this.trimIndent(openAPI);
 
-				Optional<CloudFunctionProvider> cloudFunctionProviderOptional = springDocProviders.getSpringCloudFunctionProvider();
+				Optional<CloudFunctionProvider> cloudFunctionProviderOptional =
+						springDocProviders.getSpringCloudFunctionProvider();
 				cloudFunctionProviderOptional.ifPresent(cloudFunctionProvider -> {
-							List<RouterOperation> routerOperationList = cloudFunctionProvider.getRouterOperations(openAPI);
-							if (!CollectionUtils.isEmpty(routerOperationList))
-								this.calculatePath(routerOperationList, locale, openAPI);
-						}
-				);
+					                                        List<RouterOperation> routerOperationList = cloudFunctionProvider.getRouterOperations(openAPI);
+					                                        if (!CollectionUtils.isEmpty(routerOperationList))
+						                                        this.calculatePath(routerOperationList, locale, openAPI);
+				                                        }
+				                                       );
 				if (!CollectionUtils.isEmpty(openAPI.getServers()))
 					openAPIService.setServersPresent(true);
 				else
@@ -394,30 +401,32 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 				List<Server> serversCopy = null;
 				try {
 					serversCopy = springDocProviders.jsonMapper()
-							.readValue(springDocProviders.jsonMapper().writeValueAsString(servers), new TypeReference<List<Server>>() {});
-				}
-				catch (JsonProcessingException e) {
+					                                .readValue(
+							                                springDocProviders.jsonMapper().writeValueAsString(servers),
+							                                new TypeReference<List<Server>>() {
+							                                });
+				} catch (JsonProcessingException e) {
 					LOGGER.warn("Json Processing Exception occurred: {}", e.getMessage());
 				}
 
-				openAPIService.getContext().getBeansOfType(OpenApiLocaleCustomizer.class).values().forEach(openApiLocaleCustomizer -> openApiLocaleCustomizer.customise(openAPI, finalLocale));
-				springDocCustomizers.getOpenApiCustomizers().ifPresent(apiCustomizers -> apiCustomizers.forEach(openApiCustomizer -> openApiCustomizer.customise(openAPI)));
+				openAPIService.getContext().getBeansOfType(OpenApiLocaleCustomizer.class).values().forEach(
+						openApiLocaleCustomizer -> openApiLocaleCustomizer.customise(openAPI, finalLocale));
+				springDocCustomizers.getOpenApiCustomizers().ifPresent(apiCustomizers -> apiCustomizers.forEach(
+						openApiCustomizer -> openApiCustomizer.customise(openAPI)));
 				if (!CollectionUtils.isEmpty(openAPI.getServers()) && !openAPI.getServers().equals(serversCopy))
 					openAPIService.setServersPresent(true);
 
 				openAPIService.setCachedOpenAPI(openAPI, finalLocale);
 
 				LOGGER.info("Init duration for springdoc-openapi is: {} ms",
-						Duration.between(start, Instant.now()).toMillis());
-			}
-			else {
+				            Duration.between(start, Instant.now()).toMillis());
+			} else {
 				LOGGER.debug("Fetching openApi document from cache");
 				openAPI = openAPIService.getCachedOpenAPI(finalLocale);
 				openAPIService.updateServers(serverBaseUrl, openAPI);
 			}
 			return openAPI;
-		}
-		finally {
+		} finally {
 			this.reentrantLock.unlock();
 		}
 	}
@@ -428,9 +437,10 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 			Locale bestMatchingAllowedLocale = Locale.lookup(
 					Locale.LanguageRange.parse(inputLocale.toLanguageTag()),
 					allowedLocales.stream().map(Locale::forLanguageTag).toList()
-			);
+			                                                );
 
-			return bestMatchingAllowedLocale == null ? Locale.forLanguageTag(allowedLocales.get(0)) : bestMatchingAllowedLocale;
+			return bestMatchingAllowedLocale == null ? Locale.forLanguageTag(
+					allowedLocales.get(0)) : bestMatchingAllowedLocale;
 		}
 
 		return inputLocale == null ? Locale.getDefault() : inputLocale;
@@ -530,8 +540,9 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 		Arrays.stream(webhooks).forEach(webhook -> {
 			io.swagger.v3.oas.annotations.Operation apiOperation = webhook.operation();
 			Operation operation = new Operation();
-			MethodAttributes methodAttributes = new MethodAttributes(springDocConfigProperties.getDefaultConsumesMediaType(),
-					springDocConfigProperties.getDefaultProducesMediaType(), locale);
+			MethodAttributes methodAttributes =
+					new MethodAttributes(springDocConfigProperties.getDefaultConsumesMediaType(),
+					                     springDocConfigProperties.getDefaultProducesMediaType(), locale);
 			operationParser.parse(apiOperation, operation, calculatedOpenAPI, methodAttributes);
 			PathItem pathItem = new PathItem().post(operation);
 			calculatedOpenAPI.addWebhooks(webhook.name(), pathItem);
@@ -546,7 +557,8 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	 * @param locale          the locale
 	 * @param openAPI         the open api
 	 */
-	protected void calculatePath(HandlerMethod handlerMethod, RouterOperation routerOperation, Locale locale, OpenAPI openAPI) {
+	protected void calculatePath(HandlerMethod handlerMethod, RouterOperation routerOperation, Locale locale,
+	                             OpenAPI openAPI) {
 		routerOperation = customizeRouterOperation(routerOperation, handlerMethod);
 
 		String operationPath = routerOperation.getPath();
@@ -576,9 +588,12 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 				continue;
 
 			RequestMapping reqMappingClass = AnnotatedElementUtils.findMergedAnnotation(handlerMethod.getBeanType(),
-					RequestMapping.class);
+			                                                                            RequestMapping.class);
 
-			MethodAttributes methodAttributes = new MethodAttributes(springDocConfigProperties.getDefaultConsumesMediaType(), springDocConfigProperties.getDefaultProducesMediaType(), methodConsumes, methodProduces, headers, locale);
+			MethodAttributes methodAttributes =
+					new MethodAttributes(springDocConfigProperties.getDefaultConsumesMediaType(),
+					                     springDocConfigProperties.getDefaultProducesMediaType(), methodConsumes,
+					                     methodProduces, headers, locale);
 			methodAttributes.setMethodOverloaded(existingOperation != null);
 			//Use the javadoc return if present
 			if (javadocProvider != null) {
@@ -601,7 +616,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 			// Add documentation from operation annotation
 			if (apiOperation == null || StringUtils.isBlank(apiOperation.operationId()))
 				apiOperation = AnnotatedElementUtils.findMergedAnnotation(method,
-						io.swagger.v3.oas.annotations.Operation.class);
+				                                                          io.swagger.v3.oas.annotations.Operation.class);
 
 			calculateJsonView(apiOperation, methodAttributes, method);
 			if (apiOperation != null)
@@ -611,14 +626,15 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 			// compute tags
 			operation = openAPIService.buildTags(handlerMethod, operation, openAPI, locale);
 
-			io.swagger.v3.oas.annotations.parameters.RequestBody requestBodyDoc = AnnotatedElementUtils.findMergedAnnotation(method,
-					io.swagger.v3.oas.annotations.parameters.RequestBody.class);
+			io.swagger.v3.oas.annotations.parameters.RequestBody requestBodyDoc =
+					AnnotatedElementUtils.findMergedAnnotation(method,
+					                                           io.swagger.v3.oas.annotations.parameters.RequestBody.class);
 
 			// RequestBody in Operation
 			requestBuilder.getRequestBodyBuilder()
-					.buildRequestBodyFromDoc(requestBodyDoc, methodAttributes, components,
-							methodAttributes.getJsonViewAnnotationForRequestBody(), locale)
-					.ifPresent(operation::setRequestBody);
+			              .buildRequestBodyFromDoc(requestBodyDoc, methodAttributes, components,
+			                                       methodAttributes.getJsonViewAnnotationForRequestBody(), locale)
+			              .ifPresent(operation::setRequestBody);
 			// requests
 			operation = requestBuilder.build(handlerMethod, requestMethod, operation, methodAttributes, openAPI);
 
@@ -643,7 +659,9 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 				}
 			}
 
-			Set<io.swagger.v3.oas.annotations.callbacks.Callback> apiCallbacks = AnnotatedElementUtils.findMergedRepeatableAnnotations(method, io.swagger.v3.oas.annotations.callbacks.Callback.class);
+			Set<io.swagger.v3.oas.annotations.callbacks.Callback> apiCallbacks =
+					AnnotatedElementUtils.findMergedRepeatableAnnotations(method,
+					                                                      io.swagger.v3.oas.annotations.callbacks.Callback.class);
 
 			// callbacks
 			buildCallbacks(openAPI, methodAttributes, operation, apiCallbacks);
@@ -673,10 +691,11 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	 * @param operation        the operation
 	 * @param apiCallbacks     the api callbacks
 	 */
-	private void buildCallbacks(OpenAPI openAPI, MethodAttributes methodAttributes, Operation operation, Set<Callback> apiCallbacks) {
+	private void buildCallbacks(OpenAPI openAPI, MethodAttributes methodAttributes, Operation operation,
+	                            Set<Callback> apiCallbacks) {
 		if (!CollectionUtils.isEmpty(apiCallbacks))
 			operationParser.buildCallbacks(apiCallbacks, openAPI, methodAttributes)
-					.ifPresent(operation::setCallbacks);
+			               .ifPresent(operation::setCallbacks);
 	}
 
 	/**
@@ -698,31 +717,44 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 					if (StringUtils.isNotBlank(routerOperation.getBeanMethod())) {
 						try {
 							if (ArrayUtils.isEmpty(routerOperation.getParameterTypes())) {
-								Method[] declaredMethods = org.springframework.util.ReflectionUtils.getAllDeclaredMethods(AopUtils.getTargetClass(handlerBean));
+								Method[] declaredMethods =
+										org.springframework.util.ReflectionUtils.getAllDeclaredMethods(
+												AopUtils.getTargetClass(handlerBean));
 								Optional<Method> methodOptional = Arrays.stream(declaredMethods)
-										.filter(method -> routerOperation.getBeanMethod().equals(method.getName()) && method.getParameters().length == 0)
-										.findAny();
+								                                        .filter(method ->
+										                                                routerOperation.getBeanMethod()
+										                                                               .equals(method.getName()) &&
+												                                                method.getParameters().length ==
+														                                                0)
+								                                        .findAny();
 								if (!methodOptional.isPresent())
 									methodOptional = Arrays.stream(declaredMethods)
-											.filter(method1 -> routerOperation.getBeanMethod().equals(method1.getName()))
-											.findAny();
+									                       .filter(method1 -> routerOperation.getBeanMethod()
+									                                                         .equals(method1.getName()))
+									                       .findAny();
 								if (methodOptional.isPresent())
 									handlerMethod = new HandlerMethod(handlerBean, methodOptional.get());
-							}
-							else
-								handlerMethod = new HandlerMethod(handlerBean, routerOperation.getBeanMethod(), routerOperation.getParameterTypes());
-						}
-						catch (NoSuchMethodException e) {
+							} else
+								handlerMethod = new HandlerMethod(handlerBean, routerOperation.getBeanMethod(),
+								                                  routerOperation.getParameterTypes());
+						} catch (NoSuchMethodException e) {
 							LOGGER.error(e.getMessage());
 						}
-						if (handlerMethod != null && isFilterCondition(handlerMethod, routerOperation.getPath(), routerOperation.getProduces(), routerOperation.getConsumes(), routerOperation.getHeaders()))
+						if (handlerMethod != null && isFilterCondition(handlerMethod, routerOperation.getPath(),
+						                                               routerOperation.getProduces(),
+						                                               routerOperation.getConsumes(),
+						                                               routerOperation.getHeaders()))
 							calculatePath(handlerMethod, routerOperation, locale, openAPI);
 					}
-				}
-				else if (routerOperation.getOperation() != null && StringUtils.isNotBlank(routerOperation.getOperation().operationId()) && isFilterCondition(routerOperation.getPath(), routerOperation.getProduces(), routerOperation.getConsumes(), routerOperation.getHeaders())) {
+				} else if (routerOperation.getOperation() != null &&
+						StringUtils.isNotBlank(routerOperation.getOperation().operationId()) &&
+						isFilterCondition(routerOperation.getPath(), routerOperation.getProduces(),
+						                  routerOperation.getConsumes(), routerOperation.getHeaders())) {
 					calculatePath(routerOperation, locale, openAPI);
-				}
-				else if (routerOperation.getOperationModel() != null && StringUtils.isNotBlank(routerOperation.getOperationModel().getOperationId()) && isFilterCondition(routerOperation.getPath(), routerOperation.getProduces(), routerOperation.getConsumes(), routerOperation.getHeaders())) {
+				} else if (routerOperation.getOperationModel() != null &&
+						StringUtils.isNotBlank(routerOperation.getOperationModel().getOperationId()) &&
+						isFilterCondition(routerOperation.getPath(), routerOperation.getProduces(),
+						                  routerOperation.getConsumes(), routerOperation.getHeaders())) {
 					calculatePath(routerOperation, locale, openAPI);
 				}
 			}
@@ -754,7 +786,10 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 		}
 		for (RequestMethod requestMethod : routerOperation.getMethods()) {
 			Operation existingOperation = getExistingOperation(operationMap, requestMethod);
-			MethodAttributes methodAttributes = new MethodAttributes(springDocConfigProperties.getDefaultConsumesMediaType(), springDocConfigProperties.getDefaultProducesMediaType(), methodConsumes, methodProduces, headers, locale);
+			MethodAttributes methodAttributes =
+					new MethodAttributes(springDocConfigProperties.getDefaultConsumesMediaType(),
+					                     springDocConfigProperties.getDefaultProducesMediaType(), methodConsumes,
+					                     methodProduces, headers, locale);
 			methodAttributes.setMethodOverloaded(existingOperation != null);
 			Operation operation = getOperation(routerOperation, existingOperation);
 			if (apiOperation != null)
@@ -766,14 +801,14 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 			fillParametersList(operation, queryParams, methodAttributes);
 			if (!CollectionUtils.isEmpty(operation.getParameters()))
 				operation.getParameters().stream()
-						.filter(parameter -> StringUtils.isEmpty(parameter.get$ref()))
-						.forEach(parameter -> {
-									if (parameter.getSchema() == null)
-										parameter.setSchema(new StringSchema());
-									if (parameter.getIn() == null)
-										parameter.setIn(ParameterIn.QUERY.toString());
-								}
-						);
+				         .filter(parameter -> StringUtils.isEmpty(parameter.get$ref()))
+				         .forEach(parameter -> {
+					                  if (parameter.getSchema() == null)
+						                  parameter.setSchema(new StringSchema());
+					                  if (parameter.getIn() == null)
+						                  parameter.setIn(ParameterIn.QUERY.toString());
+				                  }
+				                 );
 
 			PathItem pathItemObject = buildPathItem(requestMethod, operation, operationPath, paths);
 			paths.addPathItem(operationPath, pathItemObject);
@@ -787,9 +822,11 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	 * @return the router operation
 	 */
 	private RouterOperation customizeDataRestRouterOperation(RouterOperation routerOperation) {
-		Optional<Set<DataRestRouterOperationCustomizer>> optionalDataRestRouterOperationCustomizers = springDocCustomizers.getDataRestRouterOperationCustomizers();
+		Optional<Set<DataRestRouterOperationCustomizer>> optionalDataRestRouterOperationCustomizers =
+				springDocCustomizers.getDataRestRouterOperationCustomizers();
 		if (optionalDataRestRouterOperationCustomizers.isPresent()) {
-			Set<DataRestRouterOperationCustomizer> dataRestRouterOperationCustomizerList = optionalDataRestRouterOperationCustomizers.get();
+			Set<DataRestRouterOperationCustomizer> dataRestRouterOperationCustomizerList =
+					optionalDataRestRouterOperationCustomizers.get();
 			for (DataRestRouterOperationCustomizer dataRestRouterOperationCustomizer : dataRestRouterOperationCustomizerList) {
 				routerOperation = dataRestRouterOperationCustomizer.customize(routerOperation);
 			}
@@ -811,8 +848,10 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	 * @param openAPI        the open api
 	 */
 	protected void calculatePath(HandlerMethod handlerMethod, String operationPath,
-			Set<RequestMethod> requestMethods, String[] consumes, String[] produces, String[] headers, String[] params, Locale locale, OpenAPI openAPI) {
-		this.calculatePath(handlerMethod, new RouterOperation(operationPath, requestMethods.toArray(new RequestMethod[requestMethods.size()]), consumes, produces, headers, params), locale, openAPI);
+	                             Set<RequestMethod> requestMethods, String[] consumes, String[] produces,
+	                             String[] headers, String[] params, Locale locale, OpenAPI openAPI) {
+		this.calculatePath(handlerMethod, new RouterOperation(operationPath, requestMethods.toArray(
+				new RequestMethod[requestMethods.size()]), consumes, produces, headers, params), locale, openAPI);
 	}
 
 	/**
@@ -824,28 +863,38 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	 * @param openAPI               the open api
 	 */
 	protected void getRouterFunctionPaths(String beanName, AbstractRouterFunctionVisitor routerFunctionVisitor,
-			Locale locale, OpenAPI openAPI) {
+	                                      Locale locale, OpenAPI openAPI) {
 		boolean withRouterOperation = routerFunctionVisitor.getRouterFunctionDatas().stream()
-				.anyMatch(routerFunctionData -> routerFunctionData.getAttributes().containsKey(OPERATION_ATTRIBUTE));
+		                                                   .anyMatch(
+				                                                   routerFunctionData -> routerFunctionData.getAttributes()
+				                                                                                           .containsKey(
+						                                                                                           OPERATION_ATTRIBUTE));
 		if (withRouterOperation) {
-			List<RouterOperation> operationList = routerFunctionVisitor.getRouterFunctionDatas().stream().map(RouterOperation::new).collect(Collectors.toList());
+			List<RouterOperation> operationList =
+					routerFunctionVisitor.getRouterFunctionDatas().stream().map(RouterOperation::new)
+					                     .collect(Collectors.toList());
 			calculatePath(operationList, locale, openAPI);
-		}
-		else {
+		} else {
 			List<org.springdoc.core.annotations.RouterOperation> routerOperationList = new ArrayList<>();
 			ApplicationContext applicationContext = openAPIService.getContext();
-			RouterOperations routerOperations = applicationContext.findAnnotationOnBean(beanName, RouterOperations.class);
+			RouterOperations routerOperations =
+					applicationContext.findAnnotationOnBean(beanName, RouterOperations.class);
 			if (routerOperations == null) {
-				org.springdoc.core.annotations.RouterOperation routerOperation = applicationContext.findAnnotationOnBean(beanName, org.springdoc.core.annotations.RouterOperation.class);
+				org.springdoc.core.annotations.RouterOperation routerOperation =
+						applicationContext.findAnnotationOnBean(beanName,
+						                                        org.springdoc.core.annotations.RouterOperation.class);
 				if (routerOperation != null)
 					routerOperationList.add(routerOperation);
-			}
-			else
+			} else
 				routerOperationList.addAll(Arrays.asList(routerOperations.value()));
 			if (routerOperationList.size() == 1)
-				calculatePath(routerOperationList.stream().map(routerOperation -> new RouterOperation(routerOperation, routerFunctionVisitor.getRouterFunctionDatas().get(0))).collect(Collectors.toList()), locale, openAPI);
+				calculatePath(routerOperationList.stream().map(routerOperation -> new RouterOperation(routerOperation,
+				                                                                                      routerFunctionVisitor.getRouterFunctionDatas()
+				                                                                                                           .get(0)))
+				                                 .collect(Collectors.toList()), locale, openAPI);
 			else {
-				List<RouterOperation> operationList = routerOperationList.stream().map(RouterOperation::new).collect(Collectors.toList());
+				List<RouterOperation> operationList =
+						routerOperationList.stream().map(RouterOperation::new).collect(Collectors.toList());
 				mergeRouters(routerFunctionVisitor.getRouterFunctionDatas(), operationList);
 				calculatePath(operationList, locale, openAPI);
 			}
@@ -862,7 +911,8 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	 * @param headers       the headers
 	 * @return the boolean
 	 */
-	protected boolean isFilterCondition(HandlerMethod handlerMethod, String operationPath, String[] produces, String[] consumes, String[] headers) {
+	protected boolean isFilterCondition(HandlerMethod handlerMethod, String operationPath, String[] produces,
+	                                    String[] consumes, String[] headers) {
 		return isMethodToFilter(handlerMethod)
 				&& isPackageToScan(handlerMethod.getBeanType().getPackage())
 				&& isFilterCondition(operationPath, produces, consumes, headers);
@@ -876,9 +926,10 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	 */
 	protected boolean isMethodToFilter(HandlerMethod handlerMethod) {
 		return this.springDocCustomizers.getMethodFilters()
-				.map(Collection::stream)
-				.map(stream -> stream.allMatch(m -> m.isMethodToInclude(handlerMethod.getMethod())))
-				.orElse(true);
+		                                .map(Collection::stream)
+		                                .map(stream -> stream.allMatch(
+				                                m -> m.isMethodToInclude(handlerMethod.getMethod())))
+		                                .orElse(true);
 	}
 
 	/**
@@ -891,12 +942,16 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	protected boolean isConditionToMatch(String[] existingConditions, ConditionType conditionType) {
 		List<String> conditionsToMatch = getConditionsToMatch(conditionType);
 		if (CollectionUtils.isEmpty(conditionsToMatch)) {
-			Optional<GroupConfig> optionalGroupConfig = springDocConfigProperties.getGroupConfigs().stream().filter(groupConfig -> this.groupName.equals(groupConfig.getGroup())).findAny();
+			Optional<GroupConfig> optionalGroupConfig = springDocConfigProperties.getGroupConfigs().stream()
+			                                                                     .filter(groupConfig -> this.groupName.equals(
+					                                                                     groupConfig.getGroup()))
+			                                                                     .findAny();
 			if (optionalGroupConfig.isPresent())
 				conditionsToMatch = getConditionsToMatch(conditionType, optionalGroupConfig.get());
 		}
 		return CollectionUtils.isEmpty(conditionsToMatch)
-				|| (!ArrayUtils.isEmpty(existingConditions) && conditionsToMatch.size() == existingConditions.length && conditionsToMatch.containsAll(Arrays.asList(existingConditions)));
+				|| (!ArrayUtils.isEmpty(existingConditions) && conditionsToMatch.size() == existingConditions.length &&
+				conditionsToMatch.containsAll(Arrays.asList(existingConditions)));
 	}
 
 	/**
@@ -912,12 +967,18 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 		List<String> packagesToScan = springDocConfigProperties.getPackagesToScan();
 		List<String> packagesToExclude = springDocConfigProperties.getPackagesToExclude();
 		if (CollectionUtils.isEmpty(packagesToScan)) {
-			Optional<GroupConfig> optionalGroupConfig = springDocConfigProperties.getGroupConfigs().stream().filter(groupConfig -> this.groupName.equals(groupConfig.getGroup())).findAny();
+			Optional<GroupConfig> optionalGroupConfig = springDocConfigProperties.getGroupConfigs().stream()
+			                                                                     .filter(groupConfig -> this.groupName.equals(
+					                                                                     groupConfig.getGroup()))
+			                                                                     .findAny();
 			if (optionalGroupConfig.isPresent())
 				packagesToScan = optionalGroupConfig.get().getPackagesToScan();
 		}
 		if (CollectionUtils.isEmpty(packagesToExclude)) {
-			Optional<GroupConfig> optionalGroupConfig = springDocConfigProperties.getGroupConfigs().stream().filter(groupConfig -> this.groupName.equals(groupConfig.getGroup())).findAny();
+			Optional<GroupConfig> optionalGroupConfig = springDocConfigProperties.getGroupConfigs().stream()
+			                                                                     .filter(groupConfig -> this.groupName.equals(
+					                                                                     groupConfig.getGroup()))
+			                                                                     .findAny();
 			if (optionalGroupConfig.isPresent())
 				packagesToExclude = optionalGroupConfig.get().getPackagesToExclude();
 		}
@@ -941,17 +1002,25 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 		List<String> pathsToMatch = springDocConfigProperties.getPathsToMatch();
 		List<String> pathsToExclude = springDocConfigProperties.getPathsToExclude();
 		if (CollectionUtils.isEmpty(pathsToMatch)) {
-			Optional<GroupConfig> optionalGroupConfig = springDocConfigProperties.getGroupConfigs().stream().filter(groupConfig -> this.groupName.equals(groupConfig.getGroup())).findAny();
+			Optional<GroupConfig> optionalGroupConfig = springDocConfigProperties.getGroupConfigs().stream()
+			                                                                     .filter(groupConfig -> this.groupName.equals(
+					                                                                     groupConfig.getGroup()))
+			                                                                     .findAny();
 			if (optionalGroupConfig.isPresent())
 				pathsToMatch = optionalGroupConfig.get().getPathsToMatch();
 		}
 		if (CollectionUtils.isEmpty(pathsToExclude)) {
-			Optional<GroupConfig> optionalGroupConfig = springDocConfigProperties.getGroupConfigs().stream().filter(groupConfig -> this.groupName.equals(groupConfig.getGroup())).findAny();
+			Optional<GroupConfig> optionalGroupConfig = springDocConfigProperties.getGroupConfigs().stream()
+			                                                                     .filter(groupConfig -> this.groupName.equals(
+					                                                                     groupConfig.getGroup()))
+			                                                                     .findAny();
 			if (optionalGroupConfig.isPresent())
 				pathsToExclude = optionalGroupConfig.get().getPathsToExclude();
 		}
-		boolean include = CollectionUtils.isEmpty(pathsToMatch) || pathsToMatch.stream().anyMatch(pattern -> antPathMatcher.match(pattern, operationPath));
-		boolean exclude = !CollectionUtils.isEmpty(pathsToExclude) && pathsToExclude.stream().anyMatch(pattern -> antPathMatcher.match(pattern, operationPath));
+		boolean include = CollectionUtils.isEmpty(pathsToMatch) ||
+				pathsToMatch.stream().anyMatch(pattern -> antPathMatcher.match(pattern, operationPath));
+		boolean exclude = !CollectionUtils.isEmpty(pathsToExclude) &&
+				pathsToExclude.stream().anyMatch(pattern -> antPathMatcher.match(pattern, operationPath));
 		return include && !exclude;
 	}
 
@@ -964,8 +1033,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	protected String decode(String requestURI) {
 		try {
 			return URLDecoder.decode(requestURI, StandardCharsets.UTF_8.toString());
-		}
-		catch (UnsupportedEncodingException e) {
+		} catch (UnsupportedEncodingException e) {
 			return requestURI;
 		}
 	}
@@ -977,7 +1045,8 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	 * @return the boolean
 	 */
 	protected boolean isAdditionalRestController(Class<?> rawClass) {
-		return ADDITIONAL_REST_CONTROLLERS.stream().anyMatch(clazz -> ClassUtils.getUserClass(clazz).isAssignableFrom(rawClass));
+		return ADDITIONAL_REST_CONTROLLERS.stream()
+		                                  .anyMatch(clazz -> ClassUtils.getUserClass(clazz).isAssignableFrom(rawClass));
 	}
 
 	/**
@@ -989,12 +1058,16 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	 * @return the boolean
 	 */
 	protected boolean isRestController(Map<String, Object> restControllers, HandlerMethod handlerMethod,
-			String operationPath) {
-		boolean hasOperationAnnotation = AnnotatedElementUtils.hasAnnotation(handlerMethod.getMethod(), io.swagger.v3.oas.annotations.Operation.class);
+	                                   String operationPath) {
+		boolean hasOperationAnnotation = AnnotatedElementUtils.hasAnnotation(handlerMethod.getMethod(),
+		                                                                     io.swagger.v3.oas.annotations.Operation.class);
 
-		return ((containsResponseBody(handlerMethod) || hasOperationAnnotation) && restControllers.containsKey(handlerMethod.getBean().toString()) || isAdditionalRestController(handlerMethod.getBeanType()))
+		return ((containsResponseBody(handlerMethod) || hasOperationAnnotation) &&
+				restControllers.containsKey(handlerMethod.getBean().toString()) ||
+				isAdditionalRestController(handlerMethod.getBeanType()))
 				&& operationPath.startsWith(DEFAULT_PATH_SEPARATOR)
-				&& (springDocConfigProperties.isModelAndViewAllowed() || modelAndViewClass == null || !modelAndViewClass.isAssignableFrom(handlerMethod.getMethod().getReturnType()));
+				&& (springDocConfigProperties.isModelAndViewAllowed() || modelAndViewClass == null ||
+				!modelAndViewClass.isAssignableFrom(handlerMethod.getMethod().getReturnType()));
 	}
 
 	/**
@@ -1003,7 +1076,8 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	 * @return the default allowed http methods
 	 */
 	protected Set<RequestMethod> getDefaultAllowedHttpMethods() {
-		RequestMethod[] allowedRequestMethods = { RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.PATCH, RequestMethod.DELETE, RequestMethod.OPTIONS, RequestMethod.HEAD };
+		RequestMethod[] allowedRequestMethods =
+				{RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.PATCH, RequestMethod.DELETE, RequestMethod.OPTIONS, RequestMethod.HEAD};
 		return new HashSet<>(Arrays.asList(allowedRequestMethods));
 	}
 
@@ -1016,7 +1090,8 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	 * @return the operation
 	 */
 	protected Operation customizeOperation(Operation operation, Components components, HandlerMethod handlerMethod) {
-		Optional<Set<OperationCustomizer>> optionalOperationCustomizers = springDocCustomizers.getOperationCustomizers();
+		Optional<Set<OperationCustomizer>> optionalOperationCustomizers =
+				springDocCustomizers.getOperationCustomizers();
 		if (optionalOperationCustomizers.isPresent()) {
 			Set<OperationCustomizer> operationCustomizerList = optionalOperationCustomizers.get();
 			for (OperationCustomizer operationCustomizer : operationCustomizerList) {
@@ -1037,7 +1112,8 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	 * @return the router operation
 	 */
 	protected RouterOperation customizeRouterOperation(RouterOperation routerOperation, HandlerMethod handlerMethod) {
-		Optional<Set<RouterOperationCustomizer>> optionalRouterOperationCustomizers = springDocCustomizers.getRouterOperationCustomizers();
+		Optional<Set<RouterOperationCustomizer>> optionalRouterOperationCustomizers =
+				springDocCustomizers.getRouterOperationCustomizers();
 		if (optionalRouterOperationCustomizers.isPresent()) {
 			Set<RouterOperationCustomizer> routerOperationCustomizerList = optionalRouterOperationCustomizers.get();
 			for (RouterOperationCustomizer routerOperationCustomizer : routerOperationCustomizerList) {
@@ -1053,81 +1129,124 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	 * @param routerFunctionDatas the router function datas
 	 * @param routerOperationList the router operation list
 	 */
-	protected void mergeRouters(List<RouterFunctionData> routerFunctionDatas, List<RouterOperation> routerOperationList) {
+	protected void mergeRouters(List<RouterFunctionData> routerFunctionDatas,
+	                            List<RouterOperation> routerOperationList) {
 		for (RouterOperation routerOperation : routerOperationList) {
 			if (StringUtils.isNotBlank(routerOperation.getPath())) {
 				// PATH
 				List<RouterFunctionData> routerFunctionDataList = routerFunctionDatas.stream()
-						.filter(routerFunctionData1 -> routerFunctionData1.getPath().equals(routerOperation.getPath()))
-						.toList();
+				                                                                     .filter(routerFunctionData1 -> routerFunctionData1.getPath()
+				                                                                                                                       .equals(routerOperation.getPath()))
+				                                                                     .toList();
 				if (routerFunctionDataList.size() == 1)
 					fillRouterOperation(routerFunctionDataList.get(0), routerOperation);
 				else if (routerFunctionDataList.size() > 1 && ArrayUtils.isNotEmpty(routerOperation.getMethods())) {
 					// PATH + METHOD
 					routerFunctionDataList = routerFunctionDatas.stream()
-							.filter(routerFunctionData1 -> routerFunctionData1.getPath().equals(routerOperation.getPath())
-									&& isEqualMethods(routerOperation.getMethods(), routerFunctionData1.getMethods()))
-							.toList();
+					                                            .filter(routerFunctionData1 ->
+							                                                    routerFunctionData1.getPath()
+							                                                                       .equals(routerOperation.getPath())
+									                                                    && isEqualMethods(
+									                                                    routerOperation.getMethods(),
+									                                                    routerFunctionData1.getMethods()))
+					                                            .toList();
 					if (routerFunctionDataList.size() == 1)
 						fillRouterOperation(routerFunctionDataList.get(0), routerOperation);
-					else if (routerFunctionDataList.size() > 1 && ArrayUtils.isNotEmpty(routerOperation.getProduces())) {
+					else if (routerFunctionDataList.size() > 1 &&
+							ArrayUtils.isNotEmpty(routerOperation.getProduces())) {
 						// PATH + METHOD + PRODUCES
 						routerFunctionDataList = routerFunctionDatas.stream()
-								.filter(routerFunctionData1 -> routerFunctionData1.getPath().equals(routerOperation.getPath())
-										&& isEqualMethods(routerOperation.getMethods(), routerFunctionData1.getMethods())
-										&& isEqualArrays(routerFunctionData1.getProduces(), routerOperation.getProduces()))
-								.toList();
+						                                            .filter(routerFunctionData1 ->
+								                                                    routerFunctionData1.getPath()
+								                                                                       .equals(routerOperation.getPath())
+										                                                    && isEqualMethods(
+										                                                    routerOperation.getMethods(),
+										                                                    routerFunctionData1.getMethods())
+										                                                    && isEqualArrays(
+										                                                    routerFunctionData1.getProduces(),
+										                                                    routerOperation.getProduces()))
+						                                            .toList();
 						if (routerFunctionDataList.size() == 1)
 							fillRouterOperation(routerFunctionDataList.get(0), routerOperation);
-						else if (routerFunctionDataList.size() > 1 && ArrayUtils.isNotEmpty(routerOperation.getConsumes())) {
+						else if (routerFunctionDataList.size() > 1 &&
+								ArrayUtils.isNotEmpty(routerOperation.getConsumes())) {
 							// PATH + METHOD + PRODUCES + CONSUMES
 							routerFunctionDataList = routerFunctionDatas.stream()
-									.filter(routerFunctionData1 -> routerFunctionData1.getPath().equals(routerOperation.getPath())
-											&& isEqualMethods(routerOperation.getMethods(), routerFunctionData1.getMethods())
-											&& isEqualArrays(routerFunctionData1.getProduces(), routerOperation.getProduces())
-											&& isEqualArrays(routerFunctionData1.getConsumes(), routerOperation.getConsumes()))
-									.toList();
+							                                            .filter(routerFunctionData1 ->
+									                                                    routerFunctionData1.getPath()
+									                                                                       .equals(routerOperation.getPath())
+											                                                    && isEqualMethods(
+											                                                    routerOperation.getMethods(),
+											                                                    routerFunctionData1.getMethods())
+											                                                    && isEqualArrays(
+											                                                    routerFunctionData1.getProduces(),
+											                                                    routerOperation.getProduces())
+											                                                    && isEqualArrays(
+											                                                    routerFunctionData1.getConsumes(),
+											                                                    routerOperation.getConsumes()))
+							                                            .toList();
 							if (routerFunctionDataList.size() == 1)
 								fillRouterOperation(routerFunctionDataList.get(0), routerOperation);
 						}
-					}
-					else if (routerFunctionDataList.size() > 1 && ArrayUtils.isNotEmpty(routerOperation.getConsumes())) {
+					} else if (routerFunctionDataList.size() > 1 &&
+							ArrayUtils.isNotEmpty(routerOperation.getConsumes())) {
 						// PATH + METHOD + CONSUMES
 						routerFunctionDataList = routerFunctionDatas.stream()
-								.filter(routerFunctionData1 -> routerFunctionData1.getPath().equals(routerOperation.getPath())
-										&& isEqualMethods(routerOperation.getMethods(), routerFunctionData1.getMethods())
-										&& isEqualArrays(routerFunctionData1.getConsumes(), routerOperation.getConsumes()))
-								.toList();
+						                                            .filter(routerFunctionData1 ->
+								                                                    routerFunctionData1.getPath()
+								                                                                       .equals(routerOperation.getPath())
+										                                                    && isEqualMethods(
+										                                                    routerOperation.getMethods(),
+										                                                    routerFunctionData1.getMethods())
+										                                                    && isEqualArrays(
+										                                                    routerFunctionData1.getConsumes(),
+										                                                    routerOperation.getConsumes()))
+						                                            .toList();
 						if (routerFunctionDataList.size() == 1)
 							fillRouterOperation(routerFunctionDataList.get(0), routerOperation);
 					}
-				}
-				else if (routerFunctionDataList.size() > 1 && ArrayUtils.isNotEmpty(routerOperation.getProduces())) {
+				} else if (routerFunctionDataList.size() > 1 && ArrayUtils.isNotEmpty(routerOperation.getProduces())) {
 					// PATH + PRODUCES
 					routerFunctionDataList = routerFunctionDatas.stream()
-							.filter(routerFunctionData1 -> routerFunctionData1.getPath().equals(routerOperation.getPath())
-									&& isEqualArrays(routerFunctionData1.getProduces(), routerOperation.getProduces()))
-							.toList();
+					                                            .filter(routerFunctionData1 ->
+							                                                    routerFunctionData1.getPath()
+							                                                                       .equals(routerOperation.getPath())
+									                                                    && isEqualArrays(
+									                                                    routerFunctionData1.getProduces(),
+									                                                    routerOperation.getProduces()))
+					                                            .toList();
 					if (routerFunctionDataList.size() == 1)
 						fillRouterOperation(routerFunctionDataList.get(0), routerOperation);
-					else if (routerFunctionDataList.size() > 1 && ArrayUtils.isNotEmpty(routerOperation.getConsumes())) {
+					else if (routerFunctionDataList.size() > 1 &&
+							ArrayUtils.isNotEmpty(routerOperation.getConsumes())) {
 						// PATH + PRODUCES + CONSUMES
 						routerFunctionDataList = routerFunctionDatas.stream()
-								.filter(routerFunctionData1 -> routerFunctionData1.getPath().equals(routerOperation.getPath())
-										&& isEqualMethods(routerOperation.getMethods(), routerFunctionData1.getMethods())
-										&& isEqualArrays(routerFunctionData1.getConsumes(), routerOperation.getConsumes())
-										&& isEqualArrays(routerFunctionData1.getProduces(), routerOperation.getProduces()))
-								.toList();
+						                                            .filter(routerFunctionData1 ->
+								                                                    routerFunctionData1.getPath()
+								                                                                       .equals(routerOperation.getPath())
+										                                                    && isEqualMethods(
+										                                                    routerOperation.getMethods(),
+										                                                    routerFunctionData1.getMethods())
+										                                                    && isEqualArrays(
+										                                                    routerFunctionData1.getConsumes(),
+										                                                    routerOperation.getConsumes())
+										                                                    && isEqualArrays(
+										                                                    routerFunctionData1.getProduces(),
+										                                                    routerOperation.getProduces()))
+						                                            .toList();
 						if (routerFunctionDataList.size() == 1)
 							fillRouterOperation(routerFunctionDataList.get(0), routerOperation);
 					}
-				}
-				else if (routerFunctionDataList.size() > 1 && ArrayUtils.isNotEmpty(routerOperation.getConsumes())) {
+				} else if (routerFunctionDataList.size() > 1 && ArrayUtils.isNotEmpty(routerOperation.getConsumes())) {
 					// PATH + CONSUMES
 					routerFunctionDataList = routerFunctionDatas.stream()
-							.filter(routerFunctionData1 -> routerFunctionData1.getPath().equals(routerOperation.getPath())
-									&& isEqualArrays(routerFunctionData1.getConsumes(), routerOperation.getConsumes()))
-							.toList();
+					                                            .filter(routerFunctionData1 ->
+							                                                    routerFunctionData1.getPath()
+							                                                                       .equals(routerOperation.getPath())
+									                                                    && isEqualArrays(
+									                                                    routerFunctionData1.getConsumes(),
+									                                                    routerOperation.getConsumes()))
+					                                            .toList();
 					if (routerFunctionDataList.size() == 1)
 						fillRouterOperation(routerFunctionDataList.get(0), routerOperation);
 				}
@@ -1143,14 +1262,13 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	 * @param method           the method
 	 */
 	private void calculateJsonView(io.swagger.v3.oas.annotations.Operation apiOperation,
-			MethodAttributes methodAttributes, Method method) {
+	                               MethodAttributes methodAttributes, Method method) {
 		JsonView jsonViewAnnotation;
 		JsonView jsonViewAnnotationForRequestBody;
 		if (apiOperation != null && apiOperation.ignoreJsonView()) {
 			jsonViewAnnotation = null;
 			jsonViewAnnotationForRequestBody = null;
-		}
-		else {
+		} else {
 			jsonViewAnnotation = AnnotatedElementUtils.findMergedAnnotation(method, JsonView.class);
 			/*
 			 * If one and only one exists, use the @JsonView annotation from the method
@@ -1158,11 +1276,16 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 			 * annotation for the method itself.
 			 */
 			jsonViewAnnotationForRequestBody = (JsonView) Arrays.stream(ReflectionUtils.getParameterAnnotations(method))
-					.filter(arr -> Arrays.stream(arr)
-							.anyMatch(annotation -> (annotation.annotationType()
-									.equals(io.swagger.v3.oas.annotations.parameters.RequestBody.class) || annotation.annotationType().equals(RequestBody.class))))
-					.flatMap(Arrays::stream).filter(annotation -> annotation.annotationType().equals(JsonView.class))
-					.reduce((a, b) -> null).orElse(jsonViewAnnotation);
+			                                                    .filter(arr -> Arrays.stream(arr)
+			                                                                         .anyMatch(annotation -> (
+					                                                                         annotation.annotationType()
+					                                                                                   .equals(io.swagger.v3.oas.annotations.parameters.RequestBody.class) ||
+							                                                                         annotation.annotationType()
+							                                                                                   .equals(RequestBody.class))))
+			                                                    .flatMap(Arrays::stream)
+			                                                    .filter(annotation -> annotation.annotationType()
+			                                                                                    .equals(JsonView.class))
+			                                                    .reduce((a, b) -> null).orElse(jsonViewAnnotation);
 		}
 		methodAttributes.setJsonViewAnnotation(jsonViewAnnotation);
 		methodAttributes.setJsonViewAnnotationForRequestBody(jsonViewAnnotationForRequestBody);
@@ -1201,7 +1324,8 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	 * @param queryParams      the query params
 	 * @param methodAttributes the method attributes
 	 */
-	private void fillParametersList(Operation operation, Map<String, String> queryParams, MethodAttributes methodAttributes) {
+	private void fillParametersList(Operation operation, Map<String, String> queryParams,
+	                                MethodAttributes methodAttributes) {
 		List<Parameter> parametersList = operation.getParameters();
 		if (parametersList == null)
 			parametersList = new ArrayList<>();
@@ -1209,14 +1333,16 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 		headersMap.forEach(parameter -> {
 			Optional<Parameter> existingParam;
 			if (!CollectionUtils.isEmpty(operation.getParameters())) {
-				existingParam = operation.getParameters().stream().filter(p -> parameter.getName().equals(p.getName())).findAny();
+				existingParam = operation.getParameters().stream().filter(p -> parameter.getName().equals(p.getName()))
+				                         .findAny();
 				if (existingParam.isEmpty())
 					operation.addParametersItem(parameter);
 			}
 		});
 		if (!CollectionUtils.isEmpty(queryParams)) {
 			for (Map.Entry<String, String> entry : queryParams.entrySet()) {
-				io.swagger.v3.oas.models.parameters.Parameter parameter = new io.swagger.v3.oas.models.parameters.Parameter();
+				io.swagger.v3.oas.models.parameters.Parameter parameter =
+						new io.swagger.v3.oas.models.parameters.Parameter();
 				parameter.setName(entry.getKey());
 				parameter.setSchema(new StringSchema()._default(entry.getValue()));
 				parameter.setRequired(true);
@@ -1256,7 +1382,7 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 	 * @return the path item
 	 */
 	private PathItem buildPathItem(RequestMethod requestMethod, Operation operation, String operationPath,
-			Paths paths) {
+	                               Paths paths) {
 		PathItem pathItemObject;
 		if (operation != null && !CollectionUtils.isEmpty(operation.getParameters())) {
 			Iterator<Parameter> paramIt = operation.getParameters().iterator();
@@ -1360,14 +1486,11 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 		Operation operation;
 		if (existingOperation != null && operationModel == null) {
 			operation = existingOperation;
-		}
-		else if (existingOperation == null && operationModel != null) {
+		} else if (existingOperation == null && operationModel != null) {
 			operation = operationModel;
-		}
-		else if (existingOperation != null) {
+		} else if (existingOperation != null) {
 			operation = operationParser.mergeOperation(existingOperation, operationModel);
-		}
-		else {
+		} else {
 			operation = new Operation();
 		}
 		return operation;
@@ -1423,18 +1546,18 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 			if (ACTUATOR_DEFAULT_GROUP.equals(this.groupName)) {
 				port = actuatorProvider.getActuatorPort();
 				path = actuatorProvider.getActuatorPath();
-			}
-			else {
+			} else {
 				port = actuatorProvider.getApplicationPort();
 				path = actuatorProvider.getContextPath();
-				String mvcServletPath = this.openAPIService.getContext().getBean(Environment.class).getProperty(SPRING_MVC_SERVLET_PATH);
+				String mvcServletPath = this.openAPIService.getContext().getBean(Environment.class)
+				                                           .getProperty(SPRING_MVC_SERVLET_PATH);
 				if (SpringDocUtils.isValidPath(mvcServletPath))
 					path = path + mvcServletPath;
 			}
 			try {
-				uri = new URI(StringUtils.defaultIfEmpty(scheme, "http"), null, StringUtils.defaultIfEmpty(host, "localhost"), port, path, null, null);
-			}
-			catch (URISyntaxException e) {
+				uri = new URI(StringUtils.defaultIfEmpty(scheme, "http"), null,
+				              StringUtils.defaultIfEmpty(host, "localhost"), port, path, null, null);
+			} catch (URISyntaxException e) {
 				LOGGER.error("Unable to parse the URL: scheme {}, host {}, port {}, path {}", scheme, host, port, path);
 			}
 		}
@@ -1453,7 +1576,8 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 		boolean isActuatorRestController = false;
 		if (actuatorProviderOptional.isPresent())
 			isActuatorRestController = actuatorProviderOptional.get().isRestController(operationPath, handlerMethod);
-		return springDocConfigProperties.isShowActuator() && isActuatorRestController && (modelAndViewClass == null || !modelAndViewClass.isAssignableFrom(handlerMethod.getMethod().getReturnType()));
+		return springDocConfigProperties.isShowActuator() && isActuatorRestController && (modelAndViewClass == null ||
+				!modelAndViewClass.isAssignableFrom(handlerMethod.getMethod().getReturnType()));
 	}
 
 	/**
@@ -1489,13 +1613,16 @@ public abstract class AbstractOpenApiResource extends SpecFilter {
 			groupConfig = groupConfigs[0];
 		switch (conditionType) {
 			case HEADERS:
-				conditionsToMatch = (groupConfig != null) ? groupConfig.getHeadersToMatch() : springDocConfigProperties.getHeadersToMatch();
+				conditionsToMatch = (groupConfig !=
+						null) ? groupConfig.getHeadersToMatch() : springDocConfigProperties.getHeadersToMatch();
 				break;
 			case PRODUCES:
-				conditionsToMatch = (groupConfig != null) ? groupConfig.getProducesToMatch() : springDocConfigProperties.getProducesToMatch();
+				conditionsToMatch = (groupConfig !=
+						null) ? groupConfig.getProducesToMatch() : springDocConfigProperties.getProducesToMatch();
 				break;
 			case CONSUMES:
-				conditionsToMatch = (groupConfig != null) ? groupConfig.getConsumesToMatch() : springDocConfigProperties.getConsumesToMatch();
+				conditionsToMatch = (groupConfig !=
+						null) ? groupConfig.getConsumesToMatch() : springDocConfigProperties.getConsumesToMatch();
 				break;
 			default:
 				break;

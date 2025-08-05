@@ -26,13 +26,13 @@
 
 package test.org.springdoc.api.v31.app5;
 
-import test.org.springdoc.api.v31.AbstractSpringDocTest;
-
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import test.org.springdoc.api.v31.AbstractSpringDocTest;
 
 public class SpringDocApp5Test extends AbstractSpringDocTest {
 
-	@SpringBootApplication(scanBasePackages = { "test.org.springdoc.api.v31.configuration", "test.org.springdoc.api.v31.app5" })
-	static class SpringDocTestApp {}
+	@SpringBootApplication(scanBasePackages = {"test.org.springdoc.api.v31.configuration", "test.org.springdoc.api.v31.app5"})
+	static class SpringDocTestApp {
+	}
 
 }

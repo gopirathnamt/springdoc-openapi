@@ -41,12 +41,12 @@ class HelloRouter {
 	@Bean
 	RouterFunction<?> routes() {
 		return route().GET("/foo", HANDLER_FUNCTION, ops -> ops
-				.operationId("hello")
-				.parameter(parameterBuilder().name("key1").description("My key1 description"))
-				.parameter(parameterBuilder().name("key2").description("My key2 description"))
-				.response(responseBuilder().responseCode("200").description("This is normal response description"))
-				.response(responseBuilder().responseCode("404").description("This is another response description"))
-		).build();
+				                   .operationId("hello")
+				                   .parameter(parameterBuilder().name("key1").description("My key1 description"))
+				                   .parameter(parameterBuilder().name("key2").description("My key2 description"))
+				                   .response(responseBuilder().responseCode("200").description("This is normal response description"))
+				                   .response(responseBuilder().responseCode("404").description("This is another response description"))
+		                  ).build();
 	}
 
 }

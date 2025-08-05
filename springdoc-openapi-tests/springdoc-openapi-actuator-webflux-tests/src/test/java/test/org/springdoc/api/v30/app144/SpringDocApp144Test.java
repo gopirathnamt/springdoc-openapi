@@ -20,39 +20,39 @@ package test.org.springdoc.api.v30.app144;
 
 import org.junit.jupiter.api.Test;
 import org.springdoc.core.utils.Constants;
-import test.org.springdoc.api.v30.AbstractSpringDocActuatorTest;
-
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
+import test.org.springdoc.api.v30.AbstractSpringDocActuatorTest;
 
 import static org.skyscreamer.jsonassert.JSONAssert.assertEquals;
 
 
 @SpringBootTest(webEnvironment = WebEnvironment.DEFINED_PORT,
-		properties = { "management.endpoints.web.exposure.include=*",
+		properties = {"management.endpoints.web.exposure.include=*",
 				"server.port=52555",
 				"springdoc.use-management-port=true",
 				"management.server.port=9289",
-				"management.endpoints.web.base-path=/application" })
+				"management.endpoints.web.base-path=/application"})
 public class SpringDocApp144Test extends AbstractSpringDocActuatorTest {
 
 	@Test
 	void testApp() {
 		webTestClient.get().uri(Constants.DEFAULT_API_DOCS_URL).exchange()
-				.expectStatus().isNotFound();
+		             .expectStatus().isNotFound();
 	}
 
 	@Test
 	void testApp1() throws Exception {
 		String result = webClient.get().uri("/application/openapi").retrieve()
-				.bodyToMono(String.class)
-				.block();
+		                         .bodyToMono(String.class)
+		                         .block();
 		String expected = getContent("results/3.0.1/app144.json");
 		assertEquals(expected, result, true);
 	}
 
 	@SpringBootApplication
-	static class SpringDocTestApp {}
+	static class SpringDocTestApp {
+	}
 
 }

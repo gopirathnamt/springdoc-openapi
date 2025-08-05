@@ -19,34 +19,34 @@
 package test.org.springdoc.ui.app17;
 
 import org.junit.jupiter.api.Test;
-import test.org.springdoc.ui.AbstractSpringDocActuatorTest;
-
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.reactive.server.EntityExchangeResult;
+import test.org.springdoc.ui.AbstractSpringDocActuatorTest;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
-		properties = { "management.endpoints.web.exposure.include=*",
+		properties = {"management.endpoints.web.exposure.include=*",
 				"springdoc.show-actuator=true",
 				"management.server.port=9396",
 				"management.server.base-path=/test",
-				"management.endpoints.web.base-path=/application" })
+				"management.endpoints.web.base-path=/application"})
 class SpringDocApp17Test extends AbstractSpringDocActuatorTest {
 
 	@Test
 	void testIndex() {
 		EntityExchangeResult<byte[]> getResult = webTestClient.get().uri("/swagger-ui/index.html")
-				.exchange()
-				.expectStatus().isOk()
-				.expectBody().returnResult();
+		                                                      .exchange()
+		                                                      .expectStatus().isOk()
+		                                                      .expectBody().returnResult();
 		String contentAsString = new String(getResult.getResponseBody());
 		assertTrue(contentAsString.contains("Swagger UI"));
 	}
 
 	@SpringBootApplication
-	static class SpringDocTestApp {}
+	static class SpringDocTestApp {
+	}
 
 }

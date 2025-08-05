@@ -27,12 +27,12 @@
 package test.org.springdoc.api.v31.app12;
 
 
+import com.nimbusds.jose.jwk.RSAKey;
+
 import java.security.KeyPair;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
 import java.util.UUID;
-
-import com.nimbusds.jose.jwk.RSAKey;
 
 
 /**

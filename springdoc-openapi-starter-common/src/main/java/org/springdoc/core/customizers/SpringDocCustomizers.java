@@ -25,19 +25,18 @@
  */
 package org.springdoc.core.customizers;
 
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Set;
-
 import org.springdoc.core.filters.GlobalOpenApiMethodFilter;
 import org.springdoc.core.filters.OpenApiMethodFilter;
-
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.util.CollectionUtils;
+
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
 
 import static org.springdoc.core.utils.Constants.LINKS_SCHEMA_CUSTOMIZER;
 
@@ -108,12 +107,13 @@ public class SpringDocCustomizers implements ApplicationContextAware, Initializi
 	 * @param globalOpenApiMethodFilters         the global open api method filters
 	 */
 	public SpringDocCustomizers(Optional<Set<OpenApiCustomizer>> openApiCustomizers,
-			Optional<Set<OperationCustomizer>> operationCustomizers,
-			Optional<Set<RouterOperationCustomizer>> routerOperationCustomizers,
-			Optional<Set<DataRestRouterOperationCustomizer>> dataRestRouterOperationCustomizers,
-			Optional<Set<OpenApiMethodFilter>> methodFilters,
-			Optional<Set<GlobalOpenApiCustomizer>> globalOpenApiCustomizers, Optional<Set<GlobalOperationCustomizer>> globalOperationCustomizers,
-			Optional<Set<GlobalOpenApiMethodFilter>> globalOpenApiMethodFilters) {
+	                            Optional<Set<OperationCustomizer>> operationCustomizers,
+	                            Optional<Set<RouterOperationCustomizer>> routerOperationCustomizers,
+	                            Optional<Set<DataRestRouterOperationCustomizer>> dataRestRouterOperationCustomizers,
+	                            Optional<Set<OpenApiMethodFilter>> methodFilters,
+	                            Optional<Set<GlobalOpenApiCustomizer>> globalOpenApiCustomizers,
+	                            Optional<Set<GlobalOperationCustomizer>> globalOperationCustomizers,
+	                            Optional<Set<GlobalOpenApiMethodFilter>> globalOpenApiMethodFilters) {
 		this.openApiCustomizers = openApiCustomizers;
 		this.operationCustomizers = operationCustomizers;
 		this.globalOpenApiCustomizers = globalOpenApiCustomizers;
@@ -133,8 +133,10 @@ public class SpringDocCustomizers implements ApplicationContextAware, Initializi
 	 * @param routerOperationCustomizers the router operation customizers
 	 * @param openApiMethodFilters       the open api method filters
 	 */
-	public SpringDocCustomizers(Optional<Set<OpenApiCustomizer>> openApiCustomizers, Optional<Set<OperationCustomizer>> operationCustomizers,
-			Optional<Set<RouterOperationCustomizer>> routerOperationCustomizers, Optional<Set<OpenApiMethodFilter>> openApiMethodFilters) {
+	public SpringDocCustomizers(Optional<Set<OpenApiCustomizer>> openApiCustomizers,
+	                            Optional<Set<OperationCustomizer>> operationCustomizers,
+	                            Optional<Set<RouterOperationCustomizer>> routerOperationCustomizers,
+	                            Optional<Set<OpenApiMethodFilter>> openApiMethodFilters) {
 		this.openApiCustomizers = openApiCustomizers;
 		this.operationCustomizers = operationCustomizers;
 		this.routerOperationCustomizers = routerOperationCustomizers;
@@ -223,7 +225,9 @@ public class SpringDocCustomizers implements ApplicationContextAware, Initializi
 	public void afterPropertiesSet() {
 		//add the default customizers
 		Map<String, OpenApiCustomizer> existingOpenApiCustomizers = context.getBeansOfType(OpenApiCustomizer.class);
-		if (!CollectionUtils.isEmpty(existingOpenApiCustomizers) && existingOpenApiCustomizers.containsKey(LINKS_SCHEMA_CUSTOMIZER))
-			this.openApiCustomizers.ifPresent(openApiCustomizersList -> openApiCustomizersList.add(existingOpenApiCustomizers.get(LINKS_SCHEMA_CUSTOMIZER)));
+		if (!CollectionUtils.isEmpty(existingOpenApiCustomizers) &&
+				existingOpenApiCustomizers.containsKey(LINKS_SCHEMA_CUSTOMIZER))
+			this.openApiCustomizers.ifPresent(openApiCustomizersList -> openApiCustomizersList.add(
+					existingOpenApiCustomizers.get(LINKS_SCHEMA_CUSTOMIZER)));
 	}
 }

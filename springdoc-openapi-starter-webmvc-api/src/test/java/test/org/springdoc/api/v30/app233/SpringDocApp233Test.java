@@ -26,6 +26,19 @@
 
 package test.org.springdoc.api.v30.app233;
 
+import com.jayway.jsonpath.JsonPath;
+import net.minidev.json.JSONArray;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
+import org.springdoc.core.utils.Constants;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import test.org.springdoc.api.v30.AbstractSpringDocV30Test;
+
 import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -33,20 +46,6 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import com.jayway.jsonpath.JsonPath;
-import net.minidev.json.JSONArray;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.CsvSource;
-import org.springdoc.core.utils.Constants;
-import test.org.springdoc.api.v30.AbstractSpringDocV30Test;
-
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -57,7 +56,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 class SpringDocApp233Test extends AbstractSpringDocV30Test {
 
-	@CsvSource({ "requiredNotNullParameterObject.requiredNotNullField, true",
+	@CsvSource({"requiredNotNullParameterObject.requiredNotNullField, true",
 			"requiredNotNullParameterObject.requiredNoValidationField, true",
 			"requiredNotNullParameterObject.notRequiredNotNullField, false",
 			"requiredNotNullParameterObject.notRequiredNoValidationField, false",
@@ -92,89 +91,98 @@ class SpringDocApp233Test extends AbstractSpringDocV30Test {
 			"noSchemaNoValidationParameterObject.notRequiredNotNullField, false",
 			"noSchemaNoValidationParameterObject.notRequiredNoValidationField, false",
 			"noSchemaNoValidationParameterObject.noSchemaNotNullField, false",
-			"noSchemaNoValidationParameterObject.noSchemaNoValidationField, false" })
+			"noSchemaNoValidationParameterObject.noSchemaNoValidationField, false"})
 	@ParameterizedTest
 	void shouldHaveCorrectRequireStatus(String field, String required) throws Exception {
-		MvcResult mockMvcResult = mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL)).andExpect(status().isOk()).andReturn();
+		MvcResult mockMvcResult =
+				mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL)).andExpect(status().isOk()).andReturn();
 		String result = mockMvcResult.getResponse().getContentAsString();
 
-		String requiredMode = ((JSONArray) JsonPath.parse(result).read("$.paths.['/optional-parent'].get.parameters[?(@.name == '" + field + "')].required")).get(0).toString();
+		String requiredMode = ((JSONArray) JsonPath.parse(result)
+		                                           .read("$.paths.['/optional-parent'].get.parameters[?(@.name == '" +
+				                                                 field + "')].required")).get(0).toString();
 		assertThat(requiredMode).isEqualTo(required);
 	}
 
 	@Test
 	void shouldMatchSwaggerFieldRequirementsMatchJavaValidation() throws Exception {
-		MvcResult mockMvcResult = mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL)).andExpect(status().isOk()).andReturn();
+		MvcResult mockMvcResult =
+				mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL)).andExpect(status().isOk()).andReturn();
 		String result = mockMvcResult.getResponse().getContentAsString();
 
-		JSONArray allFieldsJsonArray = JsonPath.parse(result).read("$.paths.['/optional-parent'].get.parameters[*].name");
+		JSONArray allFieldsJsonArray =
+				JsonPath.parse(result).read("$.paths.['/optional-parent'].get.parameters[*].name");
 		List<String> allFields = allFieldsJsonArray.stream().map(Object::toString).toList();
 
 		// check we get no validation failures when all mandatory fields are present
 		verifySwaggerFieldRequirementsMatchJavaValidation(allFields, List.of());
 
-		JSONArray mandatoryFieldsJsonArray = JsonPath.parse(result).read("$.paths.['/optional-parent'].get.parameters[?(@.required == true)].name");
+		JSONArray mandatoryFieldsJsonArray =
+				JsonPath.parse(result).read("$.paths.['/optional-parent'].get.parameters[?(@.required == true)].name");
 		List<String> mandatoryFields = mandatoryFieldsJsonArray.stream().map(Object::toString).toList();
 
 		// check validation failures when each individual mandatory field is missing
 		for (String mandatoryField : mandatoryFields) {
 			List<String> filteredFields = allFields.stream()
-					.filter(field -> !field.equals(mandatoryField))
-					.toList();
+			                                       .filter(field -> !field.equals(mandatoryField))
+			                                       .toList();
 
 			List<String> expectedErrors = Stream.of(mandatoryField)
-					// Fields using Swagger annotations to drive required status but not using Java validation to enforce it so don't cause validation errors
-					.filter(field -> !field.endsWith("requiredNullableField"))
-					.filter(field -> !field.endsWith("requiredNoValidationField"))
-					// the error is returned prefixed with the query parameter name, so add it to the expected error message
-					.map(field -> "multiFieldParameterObject." + field)
-					.toList();
+			                                    // Fields using Swagger annotations to drive required status but not using Java validation to enforce it so don't cause validation errors
+			                                    .filter(field -> !field.endsWith("requiredNullableField"))
+			                                    .filter(field -> !field.endsWith("requiredNoValidationField"))
+			                                    // the error is returned prefixed with the query parameter name, so add it to the expected error message
+			                                    .map(field -> "multiFieldParameterObject." + field)
+			                                    .toList();
 			verifySwaggerFieldRequirementsMatchJavaValidation(filteredFields, expectedErrors);
 		}
 
 
-		JSONArray nonMandatoryFieldsJsonArray = JsonPath.parse(result).read("$.paths.['/optional-parent'].get.parameters[?(@.required == false)].name");
+		JSONArray nonMandatoryFieldsJsonArray =
+				JsonPath.parse(result).read("$.paths.['/optional-parent'].get.parameters[?(@.required == false)].name");
 		List<String> nonMandatoryFields = nonMandatoryFieldsJsonArray.stream().map(Object::toString).toList();
 
 		// check validation failures for any individual non-mandatory fields being missed
 		for (String nonMandatoryField : nonMandatoryFields) {
 			List<String> filteredFields = allFields.stream()
-					.filter(field -> !field.equals(nonMandatoryField))
-					.toList();
+			                                       .filter(field -> !field.equals(nonMandatoryField))
+			                                       .toList();
 
 			List<String> expectedErrors = Stream.of(nonMandatoryField)
-					// Fields that are mandatory but either have nullable parent fields so are excluded in swagger or are marked as not required so do cause validation errors
-					.filter(field -> field.endsWith("NotNullField"))
-					// the error is returned prefixed with the query parameter name, so add it to the expected error message
-					.map(field -> "multiFieldParameterObject." + field)
-					.toList();
+			                                    // Fields that are mandatory but either have nullable parent fields so are excluded in swagger or are marked as not required so do cause validation errors
+			                                    .filter(field -> field.endsWith("NotNullField"))
+			                                    // the error is returned prefixed with the query parameter name, so add it to the expected error message
+			                                    .map(field -> "multiFieldParameterObject." + field)
+			                                    .toList();
 			verifySwaggerFieldRequirementsMatchJavaValidation(filteredFields, expectedErrors);
 		}
 	}
 
-	private void verifySwaggerFieldRequirementsMatchJavaValidation(Collection<String> requestFields, Collection<String> expectedErrorFields) throws Exception {
+	private void verifySwaggerFieldRequirementsMatchJavaValidation(Collection<String> requestFields,
+	                                                               Collection<String> expectedErrorFields) throws
+			Exception {
 		MockHttpServletRequestBuilder request = get("/optional-parent");
 		for (String mandatoryField : requestFields) {
 			request.queryParam(mandatoryField, mandatoryField + ".value");
 		}
 
 		mockMvc.perform(request)
-				.andExpect(result -> {
+		       .andExpect(result -> {
 
-					Set<String> errorFields = Optional.ofNullable(result.getResolvedException())
-							.map(MethodArgumentNotValidException.class::cast)
-							.map(MethodArgumentNotValidException::getBindingResult)
-							.map(BindingResult::getFieldErrors)
-							.stream()
-							.flatMap(Collection::stream)
-							.map(field -> field.getObjectName() + "." + field.getField())
-							.collect(Collectors.toCollection(LinkedHashSet::new));
+			       Set<String> errorFields = Optional.ofNullable(result.getResolvedException())
+			                                         .map(MethodArgumentNotValidException.class::cast)
+			                                         .map(MethodArgumentNotValidException::getBindingResult)
+			                                         .map(BindingResult::getFieldErrors)
+			                                         .stream()
+			                                         .flatMap(Collection::stream)
+			                                         .map(field -> field.getObjectName() + "." + field.getField())
+			                                         .collect(Collectors.toCollection(LinkedHashSet::new));
 
 
-					assertThat(errorFields).containsExactlyElementsOf(expectedErrorFields);
+			       assertThat(errorFields).containsExactlyElementsOf(expectedErrorFields);
 
-					assertThat(result.getResponse().getStatus()).isEqualTo(expectedErrorFields.isEmpty() ? 200 : 400);
-				});
+			       assertThat(result.getResponse().getStatus()).isEqualTo(expectedErrorFields.isEmpty() ? 200 : 400);
+		       });
 	}
 
 

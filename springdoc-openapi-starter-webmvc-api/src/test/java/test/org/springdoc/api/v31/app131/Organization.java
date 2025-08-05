@@ -25,17 +25,17 @@
 package test.org.springdoc.api.v31.app131;
 
 
-import java.util.UUID;
-
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import io.swagger.v3.oas.annotations.media.Schema;
 
+import java.util.UUID;
+
 @Schema(description =
 		"This is the description being overwritten")
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({ "id", "name" })
+@JsonPropertyOrder({"id", "name"})
 public class Organization {
 
 	@Schema(

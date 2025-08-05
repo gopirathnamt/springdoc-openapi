@@ -26,11 +26,11 @@
 
 package org.springdoc.core.fn.builders.externaldocumentation;
 
-import java.lang.annotation.Annotation;
-
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.extensions.Extension;
 import org.apache.commons.lang3.ArrayUtils;
+
+import java.lang.annotation.Annotation;
 
 /**
  * The type External documentation builder.

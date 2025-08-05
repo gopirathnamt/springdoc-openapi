@@ -28,7 +28,6 @@ package test.org.springdoc.api.v31;
 
 import org.junit.jupiter.api.Test;
 import org.springdoc.core.utils.Constants;
-
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
 import org.springframework.test.web.reactive.server.EntityExchangeResult;
@@ -51,16 +50,16 @@ public abstract class AbstractSpringDocTest extends AbstractCommonTest {
 	void testApp() throws Exception {
 		String result = null;
 		try {
-			EntityExchangeResult<byte[]> getResult = webTestClient.get().uri(Constants.DEFAULT_API_DOCS_URL + groupName).exchange()
-					.expectStatus().isOk().expectBody().returnResult();
+			EntityExchangeResult<byte[]> getResult =
+					webTestClient.get().uri(Constants.DEFAULT_API_DOCS_URL + groupName).exchange()
+					             .expectStatus().isOk().expectBody().returnResult();
 
 			result = new String(getResult.getResponseBody());
 			String className = getClass().getSimpleName();
 			String testNumber = className.replaceAll("[^0-9]", "");
 			String expected = getContent("results/3.1.0/app" + testNumber + ".json");
 			assertEquals(expected, result, true);
-		}
-		catch (AssertionError e) {
+		} catch (AssertionError e) {
 			LOGGER.error(result);
 			throw e;
 		}

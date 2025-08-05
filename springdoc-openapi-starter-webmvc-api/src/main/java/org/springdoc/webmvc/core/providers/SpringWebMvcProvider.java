@@ -25,17 +25,9 @@
  */
 package org.springdoc.webmvc.core.providers;
 
-import java.util.Collection;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
-import java.util.stream.Collectors;
-
 import org.apache.commons.lang3.StringUtils;
 import org.springdoc.core.properties.SpringDocConfigProperties;
 import org.springdoc.core.providers.SpringWebProvider;
-
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.handler.AbstractHandlerMethodMapping;
@@ -43,6 +35,13 @@ import org.springframework.web.servlet.mvc.condition.PathPatternsRequestConditio
 import org.springframework.web.servlet.mvc.condition.PatternsRequestCondition;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
+
+import java.util.Collection;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * The type Spring web mvc provider.
@@ -66,7 +65,8 @@ public class SpringWebMvcProvider extends SpringWebProvider {
 			if (!CollectionUtils.isEmpty(patterns)) {
 				for (String operationPath : patterns) {
 					if (operationPath.endsWith(springDocConfigProperties.getApiDocs().getPath()))
-						return operationPath.replace(springDocConfigProperties.getApiDocs().getPath(), StringUtils.EMPTY);
+						return operationPath.replace(springDocConfigProperties.getApiDocs().getPath(),
+						                             StringUtils.EMPTY);
 				}
 			}
 		}
@@ -102,12 +102,16 @@ public class SpringWebMvcProvider extends SpringWebProvider {
 	@Override
 	public Map getHandlerMethods() {
 		if (this.handlerMethods == null) {
-			Map<String, RequestMappingHandlerMapping> beansOfTypeRequestMappingHandlerMapping = applicationContext.getBeansOfType(RequestMappingHandlerMapping.class);
+			Map<String, RequestMappingHandlerMapping> beansOfTypeRequestMappingHandlerMapping =
+					applicationContext.getBeansOfType(RequestMappingHandlerMapping.class);
 			this.handlerMethods = beansOfTypeRequestMappingHandlerMapping.values().stream()
-					.map(AbstractHandlerMethodMapping::getHandlerMethods)
-					.map(Map::entrySet)
-					.flatMap(Collection::stream)
-					.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (a1, a2) -> a1, LinkedHashMap::new));
+			                                                             .map(AbstractHandlerMethodMapping::getHandlerMethods)
+			                                                             .map(Map::entrySet)
+			                                                             .flatMap(Collection::stream)
+			                                                             .collect(Collectors.toMap(Map.Entry::getKey,
+			                                                                                       Map.Entry::getValue,
+			                                                                                       (a1, a2) -> a1,
+			                                                                                       LinkedHashMap::new));
 		}
 		return this.handlerMethods;
 	}

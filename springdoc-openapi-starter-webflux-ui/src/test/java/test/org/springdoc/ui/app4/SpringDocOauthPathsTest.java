@@ -19,20 +19,20 @@
 package test.org.springdoc.ui.app4;
 
 import org.junit.jupiter.api.Test;
-import test.org.springdoc.ui.AbstractSpringDocTest;
-
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import test.org.springdoc.ui.AbstractSpringDocTest;
 
 public class SpringDocOauthPathsTest extends AbstractSpringDocTest {
 
 	@Test
 	void oauth2_redirect_url_calculated() throws Exception {
 		webTestClient.get().uri("/v3/api-docs/swagger-config").exchange()
-				.expectStatus().isOk().expectBody()
-				.jsonPath("$.oauth2RedirectUrl").isEqualTo("/swagger-ui/oauth2-redirect.html");
+		             .expectStatus().isOk().expectBody()
+		             .jsonPath("$.oauth2RedirectUrl").isEqualTo("/swagger-ui/oauth2-redirect.html");
 	}
 
 	@SpringBootApplication
-	static class SpringDocTestApp {}
+	static class SpringDocTestApp {
+	}
 
 }

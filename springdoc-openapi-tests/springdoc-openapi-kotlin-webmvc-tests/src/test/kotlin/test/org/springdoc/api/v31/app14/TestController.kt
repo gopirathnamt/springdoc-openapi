@@ -26,28 +26,28 @@ import org.springframework.web.bind.annotation.RestController
 
 @Schema(description = "Generic description")
 data class KeyValue(
-	val key: String,
-	val value: String,
+    val key: String,
+    val value: String,
 )
 
 @Schema
 data class SomeDTO(
-	@Schema(
-		description = "Description A",
-		allOf = [KeyValue::class]
-	) val field_a: KeyValue,
-	@Schema(
-		description = "Description B",
-		allOf = [KeyValue::class]
-	) val field_b: KeyValue,
+    @Schema(
+        description = "Description A",
+        allOf = [KeyValue::class]
+    ) val field_a: KeyValue,
+    @Schema(
+        description = "Description B",
+        allOf = [KeyValue::class]
+    ) val field_b: KeyValue,
 )
 
 @RestController
 @RequestMapping("/test")
 class TestController {
 
-	@PostMapping("/test")
-	fun create(@RequestBody some: SomeDTO) {
+    @PostMapping("/test")
+    fun create(@RequestBody some: SomeDTO) {
 
-	}
+    }
 }

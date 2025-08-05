@@ -27,6 +27,9 @@
 package test.org.springdoc.api.v31.app86;
 
 
+import org.springframework.stereotype.Component;
+import reactor.core.publisher.Flux;
+
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.time.Duration;
@@ -34,10 +37,6 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-
-import reactor.core.publisher.Flux;
-
-import org.springframework.stereotype.Component;
 
 @Component
 public class QuoteGenerator {
@@ -67,13 +66,13 @@ public class QuoteGenerator {
 		// We want to emit quotes with a specific period;
 		// to do so, we create a Flux.interval
 		return Flux.interval(period)
-				// In case of back-pressure, drop events
-				.onBackpressureDrop()
-				// For each tick, generate a list of quotes
-				.map(this::generateQuotes)
-				// "flatten" that List<Quote> into a Flux<Quote>
-				.flatMapIterable(quotes -> quotes)
-				.log("io.spring.workshop.stockquotes");
+		           // In case of back-pressure, drop events
+		           .onBackpressureDrop()
+		           // For each tick, generate a list of quotes
+		           .map(this::generateQuotes)
+		           // "flatten" that List<Quote> into a Flux<Quote>
+		           .flatMapIterable(quotes -> quotes)
+		           .log("io.spring.workshop.stockquotes");
 	}
 
 	/*
@@ -82,14 +81,15 @@ public class QuoteGenerator {
 	private List<Quote> generateQuotes(long interval) {
 		final Instant instant = Instant.now();
 		return prices.stream()
-				.map(baseQuote -> {
-					BigDecimal priceChange = baseQuote.getPrice()
-							.multiply(new BigDecimal(0.05 * this.random.nextDouble()), this.mathContext);
-					Quote result = new Quote(baseQuote.getTicker(), baseQuote.getPrice().add(priceChange));
-					result.setInstant(instant);
-					return result;
-				})
-				.toList();
+		             .map(baseQuote -> {
+			             BigDecimal priceChange = baseQuote.getPrice()
+			                                               .multiply(new BigDecimal(0.05 * this.random.nextDouble()),
+			                                                         this.mathContext);
+			             Quote result = new Quote(baseQuote.getTicker(), baseQuote.getPrice().add(priceChange));
+			             result.setInstant(instant);
+			             return result;
+		             })
+		             .toList();
 	}
 
 }

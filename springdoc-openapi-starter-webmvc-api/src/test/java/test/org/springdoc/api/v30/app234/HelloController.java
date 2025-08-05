@@ -24,10 +24,9 @@
 
 package test.org.springdoc.api.v30.app234;
 
-import test.org.springdoc.api.v30.app179.MyObj;
-
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+import test.org.springdoc.api.v30.app179.MyObj;
 
 
 @RestController

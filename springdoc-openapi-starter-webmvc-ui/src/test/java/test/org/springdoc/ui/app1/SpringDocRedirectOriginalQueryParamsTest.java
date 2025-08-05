@@ -19,9 +19,8 @@
 package test.org.springdoc.ui.app1;
 
 import org.junit.jupiter.api.Test;
-import test.org.springdoc.ui.AbstractSpringDocTest;
-
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import test.org.springdoc.ui.AbstractSpringDocTest;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
@@ -32,17 +31,17 @@ public class SpringDocRedirectOriginalQueryParamsTest extends AbstractSpringDocT
 	@Test
 	void shouldRedirectWithOriginalQueryParams() throws Exception {
 		mockMvc.perform(get("/swagger-ui.html").queryParam("paramA", "123").queryParam("paramB", "e n c o d e d ! % &"))
-				.andExpect(status().isFound())
-				.andExpect(header().string("Location",
-						"/swagger-ui/index.html?paramA=123&paramB=e%20n%20c%20o%20d%20e%20d%20!%20%25%20%26"));
+		       .andExpect(status().isFound())
+		       .andExpect(header().string("Location",
+		                                  "/swagger-ui/index.html?paramA=123&paramB=e%20n%20c%20o%20d%20e%20d%20!%20%25%20%26"));
 	}
 
 	@Test
 	void shouldRedirectWithOriginalQueryParamsHavingMultipleValues() throws Exception {
 		mockMvc.perform(get("/swagger-ui.html").queryParam("paramA", "1", "2", "3"))
-				.andExpect(status().isFound())
-				.andExpect(header().string("Location",
-						"/swagger-ui/index.html?paramA=1&paramA=2&paramA=3"));
+		       .andExpect(status().isFound())
+		       .andExpect(header().string("Location",
+		                                  "/swagger-ui/index.html?paramA=1&paramA=2&paramA=3"));
 	}
 
 	@SpringBootApplication

@@ -27,11 +27,10 @@
 package test.org.springdoc.api.v31.app2.hateoas;
 
 
-import test.org.springdoc.api.v31.app2.entities.Post;
-
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.RepresentationModelAssembler;
 import org.springframework.stereotype.Component;
+import test.org.springdoc.api.v31.app2.entities.Post;
 
 /**
  * @author Davide Pedone

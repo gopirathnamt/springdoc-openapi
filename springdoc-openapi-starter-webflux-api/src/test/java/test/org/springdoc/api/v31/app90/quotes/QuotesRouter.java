@@ -26,16 +26,15 @@
 
 package test.org.springdoc.api.v31.app90.quotes;
 
-import java.math.BigDecimal;
-import java.math.MathContext;
-import java.time.Instant;
-
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.function.server.ServerResponse;
+
+import java.math.BigDecimal;
+import java.math.MathContext;
+import java.time.Instant;
 
 import static org.springdoc.core.fn.builders.apiresponse.Builder.responseBuilder;
 import static org.springdoc.core.fn.builders.parameter.Builder.parameterBuilder;
@@ -54,26 +53,47 @@ class QuotesRouter {
 	@Bean
 	RouterFunction<ServerResponse> myroute() {
 		return route().GET("/hello", accept(TEXT_PLAIN), HANDLER_FUNCTION, ops -> ops.tag("quotes")
-						.operationId("hello").response(responseBuilder().responseCode("200"))).build()
+		                                                                             .operationId("hello").response(
+						              responseBuilder().responseCode("200"))).build()
 
-				.and(route().POST("/echo", accept(TEXT_PLAIN).and(contentType(TEXT_PLAIN)), HANDLER_FUNCTION, ops -> ops.tag("quotes")
-						.operationId("echo")
-						.requestBody(requestBodyBuilder().implementation(String.class))
-						.response(responseBuilder().responseCode("200").implementation(String.class))).build())
+		              .and(route().POST("/echo", accept(TEXT_PLAIN).and(contentType(TEXT_PLAIN)), HANDLER_FUNCTION,
+		                                ops -> ops.tag("quotes")
+		                                          .operationId("echo")
+		                                          .requestBody(requestBodyBuilder().implementation(String.class))
+		                                          .response(responseBuilder().responseCode("200")
+		                                                                     .implementation(String.class))).build())
 
-				.and(route().POST("/echo", accept(APPLICATION_JSON).and(contentType(APPLICATION_JSON)), HANDLER_FUNCTION, ops -> ops.tag("quotes")
-						.operationId("echo")
-						.requestBody(requestBodyBuilder().implementation(String.class))
-						.response(responseBuilder().responseCode("200").implementation(String.class))).build())
+		              .and(route().POST("/echo", accept(APPLICATION_JSON).and(contentType(APPLICATION_JSON)),
+		                                HANDLER_FUNCTION, ops -> ops.tag("quotes")
+		                                                            .operationId("echo")
+		                                                            .requestBody(requestBodyBuilder().implementation(
+				                                                            String.class))
+		                                                            .response(responseBuilder().responseCode("200")
+		                                                                                       .implementation(
+				                                                                                       String.class)))
+		                          .build())
 
-				.and(route().GET("/quotes", accept(APPLICATION_JSON), HANDLER_FUNCTION, ops -> ops.tag("quotes")
-						.operationId("fetchQuotes")
-						.parameter(parameterBuilder().in(ParameterIn.QUERY).name("size").implementation(String.class))
-						.response(responseBuilder().responseCode("200").implementationArray(Quote.class))).build())
+		              .and(route().GET("/quotes", accept(APPLICATION_JSON), HANDLER_FUNCTION, ops -> ops.tag("quotes")
+		                                                                                                .operationId(
+				                                                                                                "fetchQuotes")
+		                                                                                                .parameter(
+				                                                                                                parameterBuilder().in(
+						                                                                                                                  ParameterIn.QUERY)
+				                                                                                                                  .name("size")
+				                                                                                                                  .implementation(
+						                                                                                                                  String.class))
+		                                                                                                .response(
+				                                                                                                responseBuilder().responseCode(
+						                                                                                                                 "200")
+				                                                                                                                 .implementationArray(
+						                                                                                                                 Quote.class)))
+		                          .build())
 
-				.and(route().GET("/quotes", accept(APPLICATION_STREAM_JSON), HANDLER_FUNCTION, ops -> ops.tag("quotes")
-						.operationId("fetchQuotes")
-						.response(responseBuilder().responseCode("200").implementation(Quote.class))).build());
+		              .and(route().GET("/quotes", accept(APPLICATION_STREAM_JSON), HANDLER_FUNCTION,
+		                               ops -> ops.tag("quotes")
+		                                         .operationId("fetchQuotes")
+		                                         .response(responseBuilder().responseCode("200")
+		                                                                    .implementation(Quote.class))).build());
 	}
 
 

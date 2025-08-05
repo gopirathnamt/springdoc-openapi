@@ -26,11 +26,6 @@
 
 package org.springdoc.webflux.api;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
 import org.springdoc.api.OpenApiResourceNotFoundException;
 import org.springdoc.core.customizers.SpringDocCustomizers;
 import org.springdoc.core.models.GroupedOpenApi;
@@ -41,9 +36,13 @@ import org.springdoc.core.service.AbstractRequestService;
 import org.springdoc.core.service.GenericResponseService;
 import org.springdoc.core.service.OpenAPIService;
 import org.springdoc.core.service.OperationService;
-
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.ObjectFactory;
+
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static org.springdoc.core.utils.Constants.ACTUATOR_DEFAULT_GROUP;
 
@@ -112,9 +111,12 @@ public abstract class MultipleOpenApiResource implements InitializingBean {
 	 * @param springDocCustomizers      the spring doc customizers
 	 */
 	protected MultipleOpenApiResource(List<GroupedOpenApi> groupedOpenApis,
-			ObjectFactory<OpenAPIService> defaultOpenAPIBuilder, AbstractRequestService requestBuilder,
-			GenericResponseService responseBuilder, OperationService operationParser,
-			SpringDocConfigProperties springDocConfigProperties, SpringDocProviders springDocProviders, SpringDocCustomizers springDocCustomizers) {
+	                                  ObjectFactory<OpenAPIService> defaultOpenAPIBuilder,
+	                                  AbstractRequestService requestBuilder,
+	                                  GenericResponseService responseBuilder, OperationService operationParser,
+	                                  SpringDocConfigProperties springDocConfigProperties,
+	                                  SpringDocProviders springDocProviders,
+	                                  SpringDocCustomizers springDocCustomizers) {
 
 		this.groupedOpenApis = groupedOpenApis;
 		this.defaultOpenAPIBuilder = defaultOpenAPIBuilder;
@@ -129,21 +131,30 @@ public abstract class MultipleOpenApiResource implements InitializingBean {
 	@Override
 	public void afterPropertiesSet() {
 		this.groupedOpenApis.forEach(groupedOpenApi -> {
-					springDocCustomizers.getGlobalOpenApiCustomizers().ifPresent(groupedOpenApi::addAllOpenApiCustomizer);
-					springDocCustomizers.getGlobalOperationCustomizers().ifPresent(groupedOpenApi::addAllOperationCustomizer);
-					springDocCustomizers.getGlobalOpenApiMethodFilters().ifPresent(groupedOpenApi::addAllOpenApiMethodFilter);
-				}
-		);
+			                             springDocCustomizers.getGlobalOpenApiCustomizers().ifPresent(groupedOpenApi::addAllOpenApiCustomizer);
+			                             springDocCustomizers.getGlobalOperationCustomizers().ifPresent(groupedOpenApi::addAllOperationCustomizer);
+			                             springDocCustomizers.getGlobalOpenApiMethodFilters().ifPresent(groupedOpenApi::addAllOpenApiMethodFilter);
+		                             }
+		                            );
 
 		this.groupedOpenApiResources = groupedOpenApis.stream()
-				.collect(Collectors.toMap(GroupedOpenApi::getGroup, item ->
-						{
-							GroupConfig groupConfig = new GroupConfig(item.getGroup(), item.getPathsToMatch(), item.getPackagesToScan(), item.getPackagesToExclude(), item.getPathsToExclude(), item.getProducesToMatch(), item.getConsumesToMatch(), item.getHeadersToMatch(), item.getDisplayName());
-							springDocConfigProperties.addGroupConfig(groupConfig);
-							return buildWebFluxOpenApiResource(item);
-						},
-						(existingValue, newValue) -> existingValue // choice to keep the existing value
-				));
+		                                              .collect(Collectors.toMap(GroupedOpenApi::getGroup, item ->
+		                                                                        {
+			                                                                        GroupConfig groupConfig = new GroupConfig(item.getGroup(),
+			                                                                                                                  item.getPathsToMatch(),
+			                                                                                                                  item.getPackagesToScan(),
+			                                                                                                                  item.getPackagesToExclude(),
+			                                                                                                                  item.getPathsToExclude(),
+			                                                                                                                  item.getProducesToMatch(),
+			                                                                                                                  item.getConsumesToMatch(),
+			                                                                                                                  item.getHeadersToMatch(),
+			                                                                                                                  item.getDisplayName());
+			                                                                        springDocConfigProperties.addGroupConfig(groupConfig);
+			                                                                        return buildWebFluxOpenApiResource(item);
+		                                                                        },
+		                                                                        (existingValue, newValue) -> existingValue
+		                                                                        // choice to keep the existing value
+		                                                                       ));
 	}
 
 	/**
@@ -155,23 +166,31 @@ public abstract class MultipleOpenApiResource implements InitializingBean {
 	private OpenApiResource buildWebFluxOpenApiResource(GroupedOpenApi item) {
 		if (!springDocConfigProperties.isUseManagementPort() && !ACTUATOR_DEFAULT_GROUP.equals(item.getGroup()))
 			return new OpenApiWebfluxResource(item.getGroup(),
-					defaultOpenAPIBuilder,
-					requestBuilder,
-					responseBuilder,
-					operationParser,
-					springDocConfigProperties,
-					springDocProviders, new SpringDocCustomizers(Optional.of(item.getOpenApiCustomizers()), Optional.of(item.getOperationCustomizers()),
-					Optional.of(item.getRouterOperationCustomizers()), Optional.of(item.getOpenApiMethodFilters()))
+			                                  defaultOpenAPIBuilder,
+			                                  requestBuilder,
+			                                  responseBuilder,
+			                                  operationParser,
+			                                  springDocConfigProperties,
+			                                  springDocProviders,
+			                                  new SpringDocCustomizers(Optional.of(item.getOpenApiCustomizers()),
+			                                                           Optional.of(item.getOperationCustomizers()),
+			                                                           Optional.of(
+					                                                           item.getRouterOperationCustomizers()),
+			                                                           Optional.of(item.getOpenApiMethodFilters()))
 			);
 		else
 			return new OpenApiActuatorResource(item.getGroup(),
-					defaultOpenAPIBuilder,
-					requestBuilder,
-					responseBuilder,
-					operationParser,
-					springDocConfigProperties,
-					springDocProviders, new SpringDocCustomizers(Optional.of(item.getOpenApiCustomizers()), Optional.of(item.getOperationCustomizers()),
-					Optional.of(item.getRouterOperationCustomizers()), Optional.of(item.getOpenApiMethodFilters())));
+			                                   defaultOpenAPIBuilder,
+			                                   requestBuilder,
+			                                   responseBuilder,
+			                                   operationParser,
+			                                   springDocConfigProperties,
+			                                   springDocProviders,
+			                                   new SpringDocCustomizers(Optional.of(item.getOpenApiCustomizers()),
+			                                                            Optional.of(item.getOperationCustomizers()),
+			                                                            Optional.of(
+					                                                            item.getRouterOperationCustomizers()),
+			                                                            Optional.of(item.getOpenApiMethodFilters())));
 	}
 
 	/**

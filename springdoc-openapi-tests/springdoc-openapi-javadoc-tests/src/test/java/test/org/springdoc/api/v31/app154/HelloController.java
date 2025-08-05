@@ -26,14 +26,13 @@
 
 package test.org.springdoc.api.v31.app154;
 
-import java.time.Instant;
-
 import org.springdoc.core.annotations.ParameterObject;
-
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.time.Instant;
 
 /**
  * The type Hello controller.

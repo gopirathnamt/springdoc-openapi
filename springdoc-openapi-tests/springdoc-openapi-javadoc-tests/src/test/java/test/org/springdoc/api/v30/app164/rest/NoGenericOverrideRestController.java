@@ -26,9 +26,6 @@
 
 package test.org.springdoc.api.v30.app164.rest;
 
-import test.org.springdoc.api.v30.app164.exception.NoResultException;
-import test.org.springdoc.api.v30.app164.exception.NonUniqueResultException;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -39,6 +36,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import test.org.springdoc.api.v30.app164.exception.NoResultException;
+import test.org.springdoc.api.v30.app164.exception.NonUniqueResultException;
 
 /**
  * This is the {@code JavadocOnlyRestController} class javadoc.
@@ -69,7 +68,8 @@ class NoGenericOverrideRestController {
 	 * @throws NonUniqueResultException the {@code @throws NonUniqueResultException} javadoc for the {@code #findStartsBy(String)} method
 	 */
 	@GetMapping(path = "startsBy/{prefix}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<String> findStartsBy(@PathVariable String prefix) throws NoResultException, NonUniqueResultException {
+	public ResponseEntity<String> findStartsBy(@PathVariable String prefix) throws NoResultException,
+			NonUniqueResultException {
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 }

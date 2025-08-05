@@ -24,14 +24,13 @@
 
 package test.org.springdoc.api.v31.app102;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.swagger.v3.oas.annotations.Parameter;
+import org.springframework.lang.Nullable;
+
 import java.math.BigInteger;
 import java.util.List;
 import java.util.Optional;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import io.swagger.v3.oas.annotations.Parameter;
-
-import org.springframework.lang.Nullable;
 
 public class RequestParams {
 

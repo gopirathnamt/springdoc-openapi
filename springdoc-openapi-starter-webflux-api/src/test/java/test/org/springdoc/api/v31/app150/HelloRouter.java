@@ -26,18 +26,17 @@
 
 package test.org.springdoc.api.v31.app150;
 
-import java.util.function.Consumer;
-import java.util.function.Supplier;
-
 import org.springdoc.core.fn.builders.operation.Builder;
 import org.springdoc.webflux.core.fn.SpringdocRouteBuilder;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.reactive.function.server.RequestPredicates;
 import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.function.server.RouterFunctions;
 import org.springframework.web.reactive.function.server.ServerResponse;
+
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 import static org.springframework.web.reactive.function.server.RequestPredicates.path;
 import static org.springframework.web.reactive.function.server.RouterFunctions.nest;
@@ -50,21 +49,38 @@ public class HelloRouter {
 	RouterFunction<?> routeSample() {
 		Supplier<RouterFunction<ServerResponse>> routerFunctionSupplier =
 				() -> SpringdocRouteBuilder.route()
-						.GET("toto", HANDLER_FUNCTION, builder -> builder.operationId("get-user-groups"))
+				                           .GET("toto", HANDLER_FUNCTION,
+				                                builder -> builder.operationId("get-user-groups"))
 
-						.POST("/titi", HANDLER_FUNCTION, builder -> builder.operationId("create-user-group-special")).build();
+				                           .POST("/titi", HANDLER_FUNCTION,
+				                                 builder -> builder.operationId("create-user-group-special")).build();
 
 		Consumer<Builder> operationsConsumer = builder -> {
 		};
 
 		return RouterFunctions.nest(RequestPredicates.path("/users"), nest(path("/test"), nest(path("/greeter"),
-				SpringdocRouteBuilder.route()
-						.GET(HANDLER_FUNCTION, builder -> builder.operationId("get-users"))
-						.POST("/special", HANDLER_FUNCTION, builder -> builder.operationId("create-user-special"))
-						.nest(path("/groups"), routerFunctionSupplier, operationsConsumer)
-						.nest(path("/groups2"), routerFunctionSupplier, operationsConsumer)
-						.nest(path("/greeter3").or(path("/greeter4")), routerFunctionSupplier, operationsConsumer)
-						.build())));
+		                                                                                       SpringdocRouteBuilder.route()
+		                                                                                                            .GET(HANDLER_FUNCTION,
+		                                                                                                                 builder -> builder.operationId(
+				                                                                                                                 "get-users"))
+		                                                                                                            .POST("/special",
+		                                                                                                                  HANDLER_FUNCTION,
+		                                                                                                                  builder -> builder.operationId(
+				                                                                                                                  "create-user-special"))
+		                                                                                                            .nest(path(
+				                                                                                                                  "/groups"),
+		                                                                                                                  routerFunctionSupplier,
+		                                                                                                                  operationsConsumer)
+		                                                                                                            .nest(path(
+				                                                                                                                  "/groups2"),
+		                                                                                                                  routerFunctionSupplier,
+		                                                                                                                  operationsConsumer)
+		                                                                                                            .nest(path(
+				                                                                                                                  "/greeter3").or(
+				                                                                                                                  path("/greeter4")),
+		                                                                                                                  routerFunctionSupplier,
+		                                                                                                                  operationsConsumer)
+		                                                                                                            .build())));
 
 	}
 

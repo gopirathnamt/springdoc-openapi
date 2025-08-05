@@ -26,15 +26,10 @@
 
 package test.org.springdoc.api.v30.app110;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -42,6 +37,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 /**
  * The type Person controller.
@@ -78,8 +77,8 @@ class PersonController {
 	 */
 	@RequestMapping(path = "/personByLastName", method = RequestMethod.GET)
 	public List<Person> findByLastName(@RequestParam(name = "lastName", required = true) @NotNull
-	@NotBlank
-	@Size(max = 10) String lastName) throws HttpMediaTypeNotSupportedException {
+	                                   @NotBlank
+	                                   @Size(max = 10) String lastName) throws HttpMediaTypeNotSupportedException {
 		List<Person> hardCoded = new ArrayList<>();
 		Person person = new Person();
 		person.setAge(20);

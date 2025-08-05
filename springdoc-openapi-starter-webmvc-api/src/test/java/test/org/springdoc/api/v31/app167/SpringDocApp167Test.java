@@ -24,10 +24,9 @@
 
 package test.org.springdoc.api.v31.app167;
 
-import test.org.springdoc.api.v31.AbstractSpringDocTest;
-
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.test.context.TestPropertySource;
+import test.org.springdoc.api.v31.AbstractSpringDocTest;
 
 
 @TestPropertySource(properties = "springdoc.disable-i18n=true")

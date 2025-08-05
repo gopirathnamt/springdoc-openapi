@@ -31,7 +31,6 @@ import groovy.lang.MetaClass;
 import org.springdoc.core.converters.JavaTypeToIgnoreConverter;
 import org.springdoc.core.providers.ObjectMapperProvider;
 import org.springdoc.core.utils.SpringDocUtils;
-
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;

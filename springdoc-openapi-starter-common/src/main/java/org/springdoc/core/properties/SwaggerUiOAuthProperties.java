@@ -27,19 +27,18 @@
 package org.springdoc.core.properties;
 
 
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
-
 import org.springdoc.core.configuration.SpringDocConfiguration;
 import org.springdoc.core.utils.SpringDocPropertiesUtils;
-
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.util.CollectionUtils;
+
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 import static org.springdoc.core.utils.Constants.SPRINGDOC_SWAGGER_UI_ENABLED;
 
@@ -117,7 +116,8 @@ public class SwaggerUiOAuthProperties {
 		if (!CollectionUtils.isEmpty(scopes)) {
 			SpringDocPropertiesUtils.put("scopes", String.join(" ", scopes), params);
 		}
-		SpringDocPropertiesUtils.put("useBasicAuthenticationWithAccessCodeGrant", useBasicAuthenticationWithAccessCodeGrant, params);
+		SpringDocPropertiesUtils.put("useBasicAuthenticationWithAccessCodeGrant",
+		                             useBasicAuthenticationWithAccessCodeGrant, params);
 		SpringDocPropertiesUtils.put("usePkceWithAuthorizationCodeGrant", usePkceWithAuthorizationCodeGrant, params);
 		SpringDocPropertiesUtils.put("additionalQueryStringParams", additionalQueryStringParams, params);
 		return params;

@@ -24,14 +24,13 @@
 
 package test.org.springdoc.api.v31.app163;
 
-import java.util.List;
-import java.util.Map;
-
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.examples.Example;
 import org.springdoc.core.customizers.OpenApiCustomizer;
-
 import org.springframework.stereotype.Component;
+
+import java.util.List;
+import java.util.Map;
 
 @Component
 public class ExampleRegistrationCustomizer implements OpenApiCustomizer {

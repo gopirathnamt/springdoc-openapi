@@ -24,11 +24,11 @@
 
 package test.org.springdoc.api.v31.app180;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
-
-import io.swagger.v3.oas.annotations.media.Schema;
 
 
 @Schema(name = "Body", description = "Body", example = "{\"key\":\"value\"}")

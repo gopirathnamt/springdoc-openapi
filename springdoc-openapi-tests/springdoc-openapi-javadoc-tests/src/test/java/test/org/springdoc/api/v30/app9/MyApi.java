@@ -29,7 +29,6 @@ package test.org.springdoc.api.v30.app9;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
-
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -50,5 +49,6 @@ public interface MyApi {
 	@Operation(description = "Annotations from interfaces test")
 	@GetMapping
 	String get(
-			@Parameter(hidden = true, in = ParameterIn.HEADER, name = HttpHeaders.ACCEPT_LANGUAGE) @RequestHeader(value = HttpHeaders.ACCEPT_LANGUAGE, required = false) String language);
+			@Parameter(hidden = true, in = ParameterIn.HEADER, name = HttpHeaders.ACCEPT_LANGUAGE)
+			@RequestHeader(value = HttpHeaders.ACCEPT_LANGUAGE, required = false) String language);
 }

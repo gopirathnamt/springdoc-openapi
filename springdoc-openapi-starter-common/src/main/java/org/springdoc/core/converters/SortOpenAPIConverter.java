@@ -26,8 +26,6 @@
 
 package org.springdoc.core.converters;
 
-import java.util.Iterator;
-
 import com.fasterxml.jackson.databind.JavaType;
 import io.swagger.v3.core.converter.AnnotatedType;
 import io.swagger.v3.core.converter.ModelConverter;
@@ -35,6 +33,8 @@ import io.swagger.v3.core.converter.ModelConverterContext;
 import io.swagger.v3.oas.models.media.Schema;
 import org.springdoc.core.converters.models.Sort;
 import org.springdoc.core.providers.ObjectMapperProvider;
+
+import java.util.Iterator;
 
 import static org.springdoc.core.utils.SpringDocUtils.getParentTypeName;
 

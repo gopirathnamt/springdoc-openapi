@@ -25,9 +25,8 @@ package test.org.springdoc.api.v30.app76;
 
 import org.junit.jupiter.api.Test;
 import org.springdoc.core.utils.Constants;
-import test.org.springdoc.api.v30.AbstractSpringDocTest;
-
 import org.springframework.test.context.TestPropertySource;
+import test.org.springdoc.api.v30.AbstractSpringDocTest;
 
 @TestPropertySource(properties = {
 		"springdoc.show-actuator=true",
@@ -37,9 +36,10 @@ public class SpringDocApp76Test extends AbstractSpringDocTest {
 
 	@Test
 	protected void testApp() {
-		webTestClient.get().uri(Constants.DEFAULT_API_DOCS_URL + "/actuator").exchange().expectStatus().isOk().expectBody()
-				.jsonPath("$.openapi").isEqualTo("3.0.1")
-				.jsonPath("$.paths./actuator/health.get.operationId").exists();
+		webTestClient.get().uri(Constants.DEFAULT_API_DOCS_URL + "/actuator").exchange().expectStatus().isOk()
+		             .expectBody()
+		             .jsonPath("$.openapi").isEqualTo("3.0.1")
+		             .jsonPath("$.paths./actuator/health.get.operationId").exists();
 	}
 
 }

@@ -20,27 +20,26 @@ package test.org.springdoc.api.v30.app148;
 
 import org.junit.jupiter.api.Test;
 import org.springdoc.core.utils.Constants;
-import test.org.springdoc.api.v30.AbstractSpringDocActuatorTest;
-
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
+import test.org.springdoc.api.v30.AbstractSpringDocActuatorTest;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 
 @SpringBootTest(webEnvironment = WebEnvironment.DEFINED_PORT,
-		properties = { "management.endpoints.web.exposure.include=*",
+		properties = {"management.endpoints.web.exposure.include=*",
 				"springdoc.show-actuator=true",
 				"management.endpoints.web.exposure.exclude=functions, shutdown",
 				"management.server.port=9288",
 				"server.port=6266",
 				"springdoc.use-management-port=true",
 				"management.server.base-path=/test",
-				"management.endpoints.web.base-path=/application" })
+				"management.endpoints.web.base-path=/application"})
 public class SpringDocApp148Test extends AbstractSpringDocActuatorTest {
 
 	@Test
@@ -57,10 +56,9 @@ public class SpringDocApp148Test extends AbstractSpringDocActuatorTest {
 	void testApp3() throws Exception {
 		try {
 			webClient.get().uri("/test/application/openapi" + "/" + Constants.DEFAULT_GROUP_NAME).retrieve()
-					.bodyToMono(String.class).block();
+			         .bodyToMono(String.class).block();
 			fail();
-		}
-		catch (WebClientResponseException ex) {
+		} catch (WebClientResponseException ex) {
 			if (ex.getStatusCode() == HttpStatus.NOT_FOUND)
 				assertTrue(true);
 			else
@@ -69,5 +67,6 @@ public class SpringDocApp148Test extends AbstractSpringDocActuatorTest {
 	}
 
 	@SpringBootApplication
-	static class SpringDocTestApp {}
+	static class SpringDocTestApp {
+	}
 }

@@ -26,15 +26,14 @@
 
 package test.org.springdoc.api.v31.app49;
 
-import java.util.List;
-
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 /**
  * The type Hello controller.
@@ -48,7 +47,7 @@ class HelloController {
 	 * @return the list
 	 */
 	@Operation(description = "Obtain the list of services available in the system")
-	@ApiResponses({ @ApiResponse(responseCode = "401", ref = "Unauthorized") })
+	@ApiResponses({@ApiResponse(responseCode = "401", ref = "Unauthorized")})
 	@GetMapping(value = "/hello", produces = MediaType.APPLICATION_JSON_VALUE)
 	List<String> list() {
 		return null;

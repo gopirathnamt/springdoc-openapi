@@ -31,7 +31,6 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -49,11 +48,11 @@ class HelloController {
 	 */
 	@Operation(summary = "Get Something by key", responses = {
 			@ApiResponse(description = "Successful Operation", responseCode = "200", content = @Content(mediaType = "application/json", schema = @Schema(oneOf = {
-					String.class, Integer.class }), examples = {
+					String.class, Integer.class}), examples = {
 					@ExampleObject(name = "The String example", value = "urgheiurgheirghieurg"),
-					@ExampleObject(name = "The Integer example", value = "311414") })),
+					@ExampleObject(name = "The Integer example", value = "311414")})),
 			@ApiResponse(responseCode = "404", description = "Thing not found"),
-			@ApiResponse(responseCode = "401", description = "Authentication Failure") })
+			@ApiResponse(responseCode = "401", description = "Authentication Failure")})
 	@GetMapping(value = "/hello")
 	ResponseEntity<Void> sayHello() {
 		return null;

@@ -26,11 +26,11 @@
 
 package test.org.springdoc.api.v30.app2.api;
 
-import java.util.Optional;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.Optional;
 
 /**
  * The type User api controller.
@@ -52,7 +52,8 @@ class UserApiController implements UserApi {
 	 *
 	 * @param delegate the delegate
 	 */
-	public UserApiController(@org.springframework.beans.factory.annotation.Autowired(required = false) UserApiDelegate delegate) {
+	public UserApiController(
+			@org.springframework.beans.factory.annotation.Autowired(required = false) UserApiDelegate delegate) {
 		this.delegate = Optional.ofNullable(delegate).orElse(new UserApiDelegate() {
 		});
 	}

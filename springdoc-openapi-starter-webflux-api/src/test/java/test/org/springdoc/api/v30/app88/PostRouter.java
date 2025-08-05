@@ -27,7 +27,6 @@
 package test.org.springdoc.api.v30.app88;
 
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.reactive.function.server.RouterFunction;
@@ -51,27 +50,34 @@ class PostRouter {
 	public RouterFunction<ServerResponse> routes(PostHandler postController) {
 		return route(GET("/posts").and(queryParam("key", "value")), postController::all)
 				.withAttribute(OPERATION_ATTRIBUTE,
-						operationBuilder().operationId("all")
-								.parameter(parameterBuilder().name("key").description("sample description"))
-								.parameter(parameterBuilder().name("test").description("sample desc"))
-								.response(responseBuilder().responseCode("200").implementationArray(Post.class)))
+				               operationBuilder().operationId("all")
+				                                 .parameter(parameterBuilder().name("key")
+				                                                              .description("sample description"))
+				                                 .parameter(parameterBuilder().name("test").description("sample desc"))
+				                                 .response(responseBuilder().responseCode("200")
+				                                                            .implementationArray(Post.class)))
 
 				.and(route(POST("/posts"), postController::create)
-						.withAttribute(OPERATION_ATTRIBUTE,
-								operationBuilder().operationId("create")
-										.requestBody(requestBodyBuilder().implementation(Post.class))
-										.response(responseBuilder().responseCode("201"))))
+						     .withAttribute(OPERATION_ATTRIBUTE,
+						                    operationBuilder().operationId("create")
+						                                      .requestBody(
+								                                      requestBodyBuilder().implementation(Post.class))
+						                                      .response(responseBuilder().responseCode("201"))))
 
 				.and(route(GET("/posts/{id}"), postController::get)
-						.withAttribute(OPERATION_ATTRIBUTE,
-								operationBuilder().operationId("get")
-										.parameter(parameterBuilder().in(ParameterIn.PATH).name("id"))
-										.response(responseBuilder().responseCode("200").implementation(Post.class))))
+						     .withAttribute(OPERATION_ATTRIBUTE,
+						                    operationBuilder().operationId("get")
+						                                      .parameter(parameterBuilder().in(ParameterIn.PATH)
+						                                                                   .name("id"))
+						                                      .response(responseBuilder().responseCode("200")
+						                                                                 .implementation(Post.class))))
 
 				.and(route(PUT("/posts/{id}"), postController::update)
-						.withAttribute(OPERATION_ATTRIBUTE,
-								operationBuilder().operationId("update")
-										.parameter(parameterBuilder().in(ParameterIn.PATH).name("id"))
-										.response(responseBuilder().responseCode("202").implementation(Post.class))));
+						     .withAttribute(OPERATION_ATTRIBUTE,
+						                    operationBuilder().operationId("update")
+						                                      .parameter(parameterBuilder().in(ParameterIn.PATH)
+						                                                                   .name("id"))
+						                                      .response(responseBuilder().responseCode("202")
+						                                                                 .implementation(Post.class))));
 	}
 }

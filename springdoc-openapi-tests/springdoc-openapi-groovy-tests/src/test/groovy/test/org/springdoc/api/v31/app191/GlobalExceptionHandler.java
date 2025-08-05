@@ -40,6 +40,6 @@ class GlobalExceptionHandler {
 	@ExceptionHandler(MyException.class)
 	public ResponseEntity<String> handleException(MyException myException) {
 		return ResponseEntity.status(HttpStatus.FORBIDDEN)
-				.body(myException.getMessage());
+		                     .body(myException.getMessage());
 	}
 }

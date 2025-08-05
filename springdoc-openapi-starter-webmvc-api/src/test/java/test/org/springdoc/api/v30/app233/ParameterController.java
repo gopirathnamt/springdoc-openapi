@@ -31,7 +31,6 @@ import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import org.springdoc.core.annotations.ParameterObject;
-
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -44,12 +43,14 @@ public class ParameterController {
 	}
 
 	@GetMapping("/renamed-parent")
-	public void nestedParameterObjectWithRenamedParentField(@ParameterObject ParameterObjectWithRenamedField parameters) {
+	public void nestedParameterObjectWithRenamedParentField(
+			@ParameterObject ParameterObjectWithRenamedField parameters) {
 
 	}
 
 	@GetMapping("/optional-parent")
-	public void nestedParameterObjectWithOptionalParentField(@Valid @ParameterObject MultiFieldParameterObject parameters) {
+	public void nestedParameterObjectWithOptionalParentField(
+			@Valid @ParameterObject MultiFieldParameterObject parameters) {
 
 	}
 

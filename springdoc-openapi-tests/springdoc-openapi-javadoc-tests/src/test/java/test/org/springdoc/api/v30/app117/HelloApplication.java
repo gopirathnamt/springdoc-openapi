@@ -26,14 +26,6 @@
 
 package test.org.springdoc.api.v30.app117;
 
-import java.io.IOException;
-import java.net.URI;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.concurrent.atomic.AtomicLong;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import jakarta.servlet.FilterChain;
@@ -43,7 +35,6 @@ import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
 import org.springdoc.core.annotations.RouterOperation;
 import org.springdoc.core.annotations.RouterOperations;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
@@ -55,6 +46,14 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.function.RouterFunction;
 import org.springframework.web.servlet.function.ServerRequest;
 import org.springframework.web.servlet.function.ServerResponse;
+
+import java.io.IOException;
+import java.net.URI;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.concurrent.atomic.AtomicLong;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static org.springframework.web.servlet.function.RouterFunctions.route;
 import static org.springframework.web.servlet.function.ServerResponse.ok;
@@ -72,9 +71,9 @@ class HelloApplication {
 	 * @return the router function
 	 */
 	@Bean
-	@RouterOperations({ @RouterOperation(path = "/people", method = RequestMethod.GET, beanClass = PersonService.class, beanMethod = "all"),
+	@RouterOperations({@RouterOperation(path = "/people", method = RequestMethod.GET, beanClass = PersonService.class, beanMethod = "all"),
 			@RouterOperation(path = "/people/{id}", beanClass = PersonService.class, beanMethod = "byId"),
-			@RouterOperation(path = "/people", method = RequestMethod.POST, beanClass = PersonService.class, beanMethod = "save") })
+			@RouterOperation(path = "/people", method = RequestMethod.POST, beanClass = PersonService.class, beanMethod = "save")})
 	RouterFunction<ServerResponse> routes(PersonHandler ph) {
 		String root = "";
 		return route()
@@ -105,7 +104,7 @@ class SimpleFilter extends GenericFilter {
 	 */
 	@Override
 	public void doFilter(ServletRequest req, ServletResponse res,
-			FilterChain filterChain) throws IOException, ServletException {
+	                     FilterChain filterChain) throws IOException, ServletException {
 		filterChain.doFilter(req, res);
 	}
 }
@@ -198,10 +197,10 @@ class PersonService {
 	 * The People.
 	 */
 	private final Set<Person> people = Stream.of(
-					new Person(counter.incrementAndGet(), "Jane"),
-					new Person(counter.incrementAndGet(), "Josh"),
-					new Person(counter.incrementAndGet(), "Gordon"))
-			.collect(Collectors.toCollection(HashSet::new));
+			                                         new Person(counter.incrementAndGet(), "Jane"),
+			                                         new Person(counter.incrementAndGet(), "Josh"),
+			                                         new Person(counter.incrementAndGet(), "Gordon"))
+	                                         .collect(Collectors.toCollection(HashSet::new));
 
 
 	/**
@@ -233,9 +232,10 @@ class PersonService {
 	 */
 	Person byId(@Parameter(in = ParameterIn.PATH) Long id) {
 		return this.people.stream()
-				.filter(p -> p.getId().equals(id))
-				.findFirst()
-				.orElseThrow(() -> new IllegalArgumentException("no " + Person.class.getName() + " with that ID found!"));
+		                  .filter(p -> p.getId().equals(id))
+		                  .findFirst()
+		                  .orElseThrow(() -> new IllegalArgumentException(
+				                  "no " + Person.class.getName() + " with that ID found!"));
 	}
 
 }

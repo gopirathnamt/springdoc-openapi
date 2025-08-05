@@ -24,16 +24,15 @@
 
 package test.org.springdoc.api.v30.app76;
 
-import java.util.Arrays;
-
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
-import test.org.springdoc.api.v30.AbstractSpringDocV30Test;
-
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import test.org.springdoc.api.v30.AbstractSpringDocV30Test;
+
+import java.util.Arrays;
 
 public class SpringDocApp76Test extends AbstractSpringDocV30Test {
 
@@ -43,11 +42,11 @@ public class SpringDocApp76Test extends AbstractSpringDocV30Test {
 		public OpenAPI openAPI() {
 			return new OpenAPI()
 					.components(new Components().addSecuritySchemes("bearer-jwt",
-							new SecurityScheme()
-									.type(SecurityScheme.Type.HTTP)
-									.scheme("bearer")
-									.bearerFormat("JWT"))
-					)
+					                                                new SecurityScheme()
+							                                                .type(SecurityScheme.Type.HTTP)
+							                                                .scheme("bearer")
+							                                                .bearerFormat("JWT"))
+					           )
 					.addSecurityItem(
 							new SecurityRequirement().addList("bearer-jwt", Arrays.asList("read", "write")));
 		}

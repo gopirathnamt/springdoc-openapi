@@ -17,6 +17,7 @@ public class CustomExceptionHandler {
 		return new ErrorDto(ex.getMessage());
 	}
 
-	static public class MyInternalException extends Exception {}
+	static public class MyInternalException extends Exception {
+	}
 
 }

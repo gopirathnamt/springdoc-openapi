@@ -36,7 +36,6 @@ import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springdoc.core.annotations.RouterOperation;
 import org.springdoc.core.annotations.RouterOperations;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -52,8 +51,8 @@ import static org.springframework.web.reactive.function.server.RouterFunctions.r
 @Configuration
 class PostRouter {
 
-	@RouterOperations({ @RouterOperation(path = "/posts", method = RequestMethod.GET, headers = { "x-header1=test1", "x-header2=test2" }, operation = @Operation(operationId = "all",
-			parameters = { @Parameter(name = "key", description = "sample description"), @Parameter(name = "test", description = "sample desc") },
+	@RouterOperations({@RouterOperation(path = "/posts", method = RequestMethod.GET, headers = {"x-header1=test1", "x-header2=test2"}, operation = @Operation(operationId = "all",
+			parameters = {@Parameter(name = "key", description = "sample description"), @Parameter(name = "test", description = "sample desc")},
 			responses = @ApiResponse(responseCode = "200", content = @Content(array = @ArraySchema(schema = @Schema(implementation = Post.class)))))),
 			@RouterOperation(path = "/posts", method = RequestMethod.POST, operation = @Operation(operationId = "create",
 					requestBody = @RequestBody(content = @Content(schema = @Schema(implementation = Post.class))), responses = @ApiResponse(responseCode = "201"))),
@@ -62,7 +61,7 @@ class PostRouter {
 					responses = @ApiResponse(responseCode = "200", content = @Content(schema = @Schema(implementation = Post.class))))),
 			@RouterOperation(path = "/posts/{id}", method = RequestMethod.PUT, operation = @Operation(operationId = "update",
 					parameters = @Parameter(name = "id", in = ParameterIn.PATH),
-					responses = @ApiResponse(responseCode = "202", content = @Content(schema = @Schema(implementation = Post.class))))) })
+					responses = @ApiResponse(responseCode = "202", content = @Content(schema = @Schema(implementation = Post.class)))))})
 	@Bean
 	public RouterFunction<ServerResponse> routes(PostHandler postController) {
 		return route(GET("/posts").and(queryParam("key", "value")), postController::all)

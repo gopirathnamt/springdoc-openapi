@@ -26,15 +26,14 @@
 
 package test.org.springdoc.api.v30.app189;
 
-import java.time.Duration;
-
 import org.json.JSONException;
 import org.junit.jupiter.api.Test;
 import org.springdoc.core.utils.Constants;
-import test.org.springdoc.api.v30.AbstractCommonTest;
-
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
 import org.springframework.test.web.reactive.server.EntityExchangeResult;
+import test.org.springdoc.api.v30.AbstractCommonTest;
+
+import java.time.Duration;
 
 import static org.skyscreamer.jsonassert.JSONAssert.assertEquals;
 
@@ -48,11 +47,12 @@ public class SpringDocApp189Test extends AbstractCommonTest {
 	}
 
 	private void runTestWithLocale(String locale) throws JSONException {
-		EntityExchangeResult<byte[]> getResult = webTestClient.mutate().responseTimeout(Duration.ofMinutes(1000)).build()
-				.get().uri(Constants.DEFAULT_API_DOCS_URL)
-				.header("Accept-Language", locale)
-				.exchange()
-				.expectStatus().isOk().expectBody().returnResult();
+		EntityExchangeResult<byte[]> getResult =
+				webTestClient.mutate().responseTimeout(Duration.ofMinutes(1000)).build()
+				             .get().uri(Constants.DEFAULT_API_DOCS_URL)
+				             .header("Accept-Language", locale)
+				             .exchange()
+				             .expectStatus().isOk().expectBody().returnResult();
 
 		String result = new String(getResult.getResponseBody());
 		String className = getClass().getSimpleName();

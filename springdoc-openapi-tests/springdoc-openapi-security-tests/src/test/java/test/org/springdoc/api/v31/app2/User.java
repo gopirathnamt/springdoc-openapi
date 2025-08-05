@@ -26,10 +26,10 @@
 
 package test.org.springdoc.api.v31.app2;
 
-import java.util.Collection;
-
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+
+import java.util.Collection;
 
 public class User implements Authentication {
 	@Override

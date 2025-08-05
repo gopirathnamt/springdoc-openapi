@@ -24,23 +24,22 @@
 
 package test.org.springdoc.api.v30.app1;
 
-import java.util.UUID;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import java.util.UUID;
+
 @ControllerAdvice
 public class ExceptionTranslator {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ExceptionTranslator.class);
 
-	@ExceptionHandler({ RuntimeException.class })
+	@ExceptionHandler({RuntimeException.class})
 	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
 	public ResponseEntity<ErrorMessage> handleRunTimeException(RuntimeException e) {
 		return error(HttpStatus.INTERNAL_SERVER_ERROR, e);

@@ -26,8 +26,6 @@
 
 package org.springdoc.core.converters;
 
-import java.util.Iterator;
-
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.type.ArrayType;
 import io.swagger.v3.core.converter.AnnotatedType;
@@ -38,6 +36,8 @@ import io.swagger.v3.oas.models.media.StringSchema;
 import org.reactivestreams.Publisher;
 import org.springdoc.core.providers.ObjectMapperProvider;
 import reactor.core.publisher.Flux;
+
+import java.util.Iterator;
 
 import static org.springdoc.core.converters.ConverterUtils.isFluxTypeWrapper;
 import static org.springdoc.core.converters.ConverterUtils.isResponseTypeWrapper;
@@ -64,7 +64,7 @@ public class WebFluxSupportConverter implements ModelConverter {
 	public WebFluxSupportConverter(ObjectMapperProvider objectMapperProvider) {
 		this.objectMapperProvider = objectMapperProvider;
 		getConfig().addResponseWrapperToIgnore(Publisher.class)
-				.addFluxWrapperToIgnore(Flux.class);
+		           .addFluxWrapperToIgnore(Flux.class);
 	}
 
 	@Override
@@ -77,12 +77,13 @@ public class WebFluxSupportConverter implements ModelConverter {
 				if (innerType == null)
 					return new StringSchema();
 				else if (innerType.getBindings() != null && isResponseTypeWrapper(innerType.getRawClass())) {
-					type = new AnnotatedType(innerType).jsonViewAnnotation(type.getJsonViewAnnotation()).resolveAsRef(true);
+					type = new AnnotatedType(innerType).jsonViewAnnotation(type.getJsonViewAnnotation())
+					                                   .resolveAsRef(true);
 					return this.resolve(type, context, chain);
-				}
-				else {
+				} else {
 					ArrayType arrayType = ArrayType.construct(innerType, null);
-					type = new AnnotatedType(arrayType).jsonViewAnnotation(type.getJsonViewAnnotation()).resolveAsRef(true);
+					type = new AnnotatedType(arrayType).jsonViewAnnotation(type.getJsonViewAnnotation())
+					                                   .resolveAsRef(true);
 				}
 			}
 		}

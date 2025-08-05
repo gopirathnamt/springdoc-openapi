@@ -27,15 +27,6 @@
 
 package org.springdoc.core.configuration;
 
-import java.nio.charset.Charset;
-import java.util.Collections;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
-import java.util.concurrent.Future;
-
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.querydsl.core.types.Predicate;
 import io.swagger.v3.core.converter.ModelConverter;
@@ -97,8 +88,6 @@ import org.springdoc.core.service.OperationService;
 import org.springdoc.core.service.RequestBodyService;
 import org.springdoc.core.service.SecurityService;
 import org.springdoc.core.utils.PropertyResolverUtils;
-import reactor.core.publisher.Flux;
-
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.boot.actuate.autoconfigure.endpoint.web.WebEndpointProperties;
@@ -126,6 +115,16 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.async.DeferredResult;
+import reactor.core.publisher.Flux;
+
+import java.nio.charset.Charset;
+import java.util.Collections;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
+import java.util.concurrent.Future;
 
 import static org.springdoc.core.utils.Constants.GLOBAL_OPEN_API_CUSTOMIZER;
 import static org.springdoc.core.utils.Constants.SPRINGDOC_DEPRECATING_CONVERTER_ENABLED;
@@ -155,9 +154,9 @@ public class SpringDocConfiguration {
 
 	static {
 		getConfig().replaceWithSchema(ObjectNode.class, new ObjectSchema())
-				.replaceWithClass(Charset.class, String.class)
-				.addResponseWrapperToIgnore(DeferredResult.class)
-				.addResponseWrapperToIgnore(Future.class);
+		           .replaceWithClass(Charset.class, String.class)
+		           .addResponseWrapperToIgnore(DeferredResult.class)
+		           .addResponseWrapperToIgnore(Future.class);
 	}
 
 	/**
@@ -300,11 +299,14 @@ public class SpringDocConfiguration {
 	@ConditionalOnMissingBean
 	@Lazy(false)
 	OpenAPIService openAPIBuilder(Optional<OpenAPI> openAPI,
-			SecurityService securityParser,
-			SpringDocConfigProperties springDocConfigProperties, PropertyResolverUtils propertyResolverUtils,
-			Optional<List<OpenApiBuilderCustomizer>> openApiBuilderCustomisers,
-			Optional<List<ServerBaseUrlCustomizer>> serverBaseUrlCustomisers, Optional<JavadocProvider> javadocProvider) {
-		return new OpenAPIService(openAPI, securityParser, springDocConfigProperties, propertyResolverUtils, openApiBuilderCustomisers, serverBaseUrlCustomisers, javadocProvider);
+	                              SecurityService securityParser,
+	                              SpringDocConfigProperties springDocConfigProperties,
+	                              PropertyResolverUtils propertyResolverUtils,
+	                              Optional<List<OpenApiBuilderCustomizer>> openApiBuilderCustomisers,
+	                              Optional<List<ServerBaseUrlCustomizer>> serverBaseUrlCustomisers,
+	                              Optional<JavadocProvider> javadocProvider) {
+		return new OpenAPIService(openAPI, securityParser, springDocConfigProperties, propertyResolverUtils,
+		                          openApiBuilderCustomisers, serverBaseUrlCustomisers, javadocProvider);
 	}
 
 	/**
@@ -316,7 +318,8 @@ public class SpringDocConfiguration {
 	 */
 	@Bean
 	@Lazy(false)
-	ModelConverterRegistrar modelConverterRegistrar(Optional<List<ModelConverter>> modelConverters, SpringDocConfigProperties springDocConfigProperties) {
+	ModelConverterRegistrar modelConverterRegistrar(Optional<List<ModelConverter>> modelConverters,
+	                                                SpringDocConfigProperties springDocConfigProperties) {
 		return new ModelConverterRegistrar(modelConverters.orElse(Collections.emptyList()), springDocConfigProperties);
 	}
 
@@ -333,9 +336,9 @@ public class SpringDocConfiguration {
 	@ConditionalOnMissingBean
 	@Lazy(false)
 	OperationService operationBuilder(GenericParameterService parameterBuilder, RequestBodyService requestBodyService,
-			SecurityService securityParser, PropertyResolverUtils propertyResolverUtils) {
+	                                  SecurityService securityParser, PropertyResolverUtils propertyResolverUtils) {
 		return new OperationService(parameterBuilder, requestBodyService,
-				securityParser, propertyResolverUtils);
+		                            securityParser, propertyResolverUtils);
 	}
 
 	/**
@@ -348,7 +351,8 @@ public class SpringDocConfiguration {
 	 */
 	@Bean
 	@Lazy(false)
-	PropertyResolverUtils propertyResolverUtils(ConfigurableBeanFactory factory, MessageSource messageSource, SpringDocConfigProperties springDocConfigProperties) {
+	PropertyResolverUtils propertyResolverUtils(ConfigurableBeanFactory factory, MessageSource messageSource,
+	                                            SpringDocConfigProperties springDocConfigProperties) {
 		return new PropertyResolverUtils(factory, messageSource, springDocConfigProperties);
 	}
 
@@ -362,7 +366,8 @@ public class SpringDocConfiguration {
 	@Bean
 	@ConditionalOnMissingBean
 	@Lazy(false)
-	RequestBodyService requestBodyBuilder(GenericParameterService parameterBuilder, PropertyResolverUtils propertyResolverUtils) {
+	RequestBodyService requestBodyBuilder(GenericParameterService parameterBuilder,
+	                                      PropertyResolverUtils propertyResolverUtils) {
 		return new RequestBodyService(parameterBuilder, propertyResolverUtils);
 	}
 
@@ -393,10 +398,12 @@ public class SpringDocConfiguration {
 	@ConditionalOnMissingBean
 	@Lazy(false)
 	GenericParameterService parameterBuilder(PropertyResolverUtils propertyResolverUtils,
-			Optional<List<DelegatingMethodParameterCustomizer>> optionalDelegatingMethodParameterCustomizers,
-			Optional<WebConversionServiceProvider> optionalWebConversionServiceProvider, ObjectMapperProvider objectMapperProvider, Optional<JavadocProvider> javadocProvider) {
+	                                         Optional<List<DelegatingMethodParameterCustomizer>> optionalDelegatingMethodParameterCustomizers,
+	                                         Optional<WebConversionServiceProvider> optionalWebConversionServiceProvider,
+	                                         ObjectMapperProvider objectMapperProvider,
+	                                         Optional<JavadocProvider> javadocProvider) {
 		return new GenericParameterService(propertyResolverUtils, optionalDelegatingMethodParameterCustomizers,
-				optionalWebConversionServiceProvider, objectMapperProvider, javadocProvider);
+		                                   optionalWebConversionServiceProvider, objectMapperProvider, javadocProvider);
 	}
 
 	/**
@@ -432,12 +439,18 @@ public class SpringDocConfiguration {
 	@Bean
 	@ConditionalOnMissingBean
 	@Lazy(false)
-	SpringDocProviders springDocProviders(Optional<ActuatorProvider> actuatorProvider, Optional<CloudFunctionProvider> springCloudFunctionProvider, Optional<SecurityOAuth2Provider> springSecurityOAuth2Provider,
-			Optional<RepositoryRestResourceProvider> repositoryRestResourceProvider, Optional<RouterFunctionProvider> routerFunctionProvider,
-			Optional<SpringWebProvider> springWebProvider,
-			ObjectMapperProvider objectMapperProvider) {
-		objectMapperProvider.jsonMapper().registerModules(new SpringDocRequiredModule(), new SpringDocSealedClassModule());
-		return new SpringDocProviders(actuatorProvider, springCloudFunctionProvider, springSecurityOAuth2Provider, repositoryRestResourceProvider, routerFunctionProvider, springWebProvider, objectMapperProvider);
+	SpringDocProviders springDocProviders(Optional<ActuatorProvider> actuatorProvider,
+	                                      Optional<CloudFunctionProvider> springCloudFunctionProvider,
+	                                      Optional<SecurityOAuth2Provider> springSecurityOAuth2Provider,
+	                                      Optional<RepositoryRestResourceProvider> repositoryRestResourceProvider,
+	                                      Optional<RouterFunctionProvider> routerFunctionProvider,
+	                                      Optional<SpringWebProvider> springWebProvider,
+	                                      ObjectMapperProvider objectMapperProvider) {
+		objectMapperProvider.jsonMapper()
+		                    .registerModules(new SpringDocRequiredModule(), new SpringDocSealedClassModule());
+		return new SpringDocProviders(actuatorProvider, springCloudFunctionProvider, springSecurityOAuth2Provider,
+		                              repositoryRestResourceProvider, routerFunctionProvider, springWebProvider,
+		                              objectMapperProvider);
 	}
 
 	/**
@@ -470,17 +483,19 @@ public class SpringDocConfiguration {
 	@ConditionalOnMissingBean
 	@Lazy(false)
 	public SpringDocCustomizers springDocCustomizers(Optional<Set<OpenApiCustomizer>> openApiCustomizers,
-			Optional<Set<OperationCustomizer>> operationCustomizers,
-			Optional<Set<RouterOperationCustomizer>> routerOperationCustomizers,
-			Optional<Set<DataRestRouterOperationCustomizer>> dataRestRouterOperationCustomizers,
-			Optional<Set<OpenApiMethodFilter>> methodFilters, Optional<Set<GlobalOpenApiCustomizer>> globalOpenApiCustomizers,
-			Optional<Set<GlobalOperationCustomizer>> globalOperationCustomizers,
-			Optional<Set<GlobalOpenApiMethodFilter>> globalOpenApiMethodFilters) {
+	                                                 Optional<Set<OperationCustomizer>> operationCustomizers,
+	                                                 Optional<Set<RouterOperationCustomizer>> routerOperationCustomizers,
+	                                                 Optional<Set<DataRestRouterOperationCustomizer>> dataRestRouterOperationCustomizers,
+	                                                 Optional<Set<OpenApiMethodFilter>> methodFilters,
+	                                                 Optional<Set<GlobalOpenApiCustomizer>> globalOpenApiCustomizers,
+	                                                 Optional<Set<GlobalOperationCustomizer>> globalOperationCustomizers,
+	                                                 Optional<Set<GlobalOpenApiMethodFilter>> globalOpenApiMethodFilters) {
 		return new SpringDocCustomizers(openApiCustomizers,
-				operationCustomizers,
-				routerOperationCustomizers,
-				dataRestRouterOperationCustomizers,
-				methodFilters, globalOpenApiCustomizers, globalOperationCustomizers, globalOpenApiMethodFilters);
+		                                operationCustomizers,
+		                                routerOperationCustomizers,
+		                                dataRestRouterOperationCustomizers,
+		                                methodFilters, globalOpenApiCustomizers, globalOperationCustomizers,
+		                                globalOpenApiMethodFilters);
 	}
 
 	/**
@@ -593,7 +608,8 @@ public class SpringDocConfiguration {
 		@Bean
 		@ConditionalOnMissingBean
 		@Lazy(false)
-		SpringDataWebPropertiesProvider springDataWebPropertiesProvider(Optional<SpringDataWebProperties> optionalSpringDataWebProperties) {
+		SpringDataWebPropertiesProvider springDataWebPropertiesProvider(
+				Optional<SpringDataWebProperties> optionalSpringDataWebProperties) {
 			return new SpringDataWebPropertiesProvider(optionalSpringDataWebProperties);
 		}
 	}
@@ -612,7 +628,8 @@ public class SpringDocConfiguration {
 		@Bean
 		@ConditionalOnMissingBean
 		@Lazy(false)
-		RepositoryRestConfigurationProvider repositoryRestConfigurationProvider(Optional<RepositoryRestConfiguration> optionalRepositoryRestConfiguration) {
+		RepositoryRestConfigurationProvider repositoryRestConfigurationProvider(
+				Optional<RepositoryRestConfiguration> optionalRepositoryRestConfiguration) {
 			return new RepositoryRestConfigurationProvider(optionalRepositoryRestConfiguration);
 		}
 	}
@@ -656,11 +673,13 @@ public class SpringDocConfiguration {
 		@Bean
 		@ConditionalOnMissingBean
 		@Lazy(false)
-		QuerydslPredicateOperationCustomizer queryDslQuerydslPredicateOperationCustomizer(Optional<QuerydslBindingsFactory> querydslBindingsFactory,
+		QuerydslPredicateOperationCustomizer queryDslQuerydslPredicateOperationCustomizer(
+				Optional<QuerydslBindingsFactory> querydslBindingsFactory,
 				SpringDocConfigProperties springDocConfigProperties) {
 			if (querydslBindingsFactory.isPresent()) {
 				getConfig().addRequestWrapperToIgnore(Predicate.class);
-				return new QuerydslPredicateOperationCustomizer(querydslBindingsFactory.get(), springDocConfigProperties);
+				return new QuerydslPredicateOperationCustomizer(querydslBindingsFactory.get(),
+				                                                springDocConfigProperties);
 			}
 			return null;
 		}

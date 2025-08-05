@@ -24,16 +24,15 @@
 
 package test.org.springdoc.api.v31.app105.api.store;
 
-import java.util.Map;
-import java.util.Optional;
-
-import test.org.springdoc.api.v31.app105.api.ApiUtil;
-import test.org.springdoc.api.v31.app105.model.Order;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.context.request.NativeWebRequest;
+import test.org.springdoc.api.v31.app105.api.ApiUtil;
+import test.org.springdoc.api.v31.app105.model.Order;
+
+import java.util.Map;
+import java.util.Optional;
 
 /**
  * A delegate to be called by the {@link StoreApiController}}.
@@ -76,11 +75,13 @@ public interface StoreApiDelegate {
 		getRequest().ifPresent(request -> {
 			for (MediaType mediaType : MediaType.parseMediaTypes(request.getHeader("Accept"))) {
 				if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-					ApiUtil.setExampleResponse(request, "application/json", "{  \"petId\" : 6,  \"quantity\" : 1,  \"id\" : 0,  \"shipDate\" : \"2000-01-23T04:56:07.000+00:00\",  \"complete\" : false,  \"status\" : \"placed\"}");
+					ApiUtil.setExampleResponse(request, "application/json",
+					                           "{  \"petId\" : 6,  \"quantity\" : 1,  \"id\" : 0,  \"shipDate\" : \"2000-01-23T04:56:07.000+00:00\",  \"complete\" : false,  \"status\" : \"placed\"}");
 					break;
 				}
 				if (mediaType.isCompatibleWith(MediaType.valueOf("application/xml"))) {
-					ApiUtil.setExampleResponse(request, "application/xml", "<Order>  <id>123456789</id>  <petId>123456789</petId>  <quantity>123</quantity>  <shipDate>2000-01-23T04:56:07.000Z</shipDate>  <status>aeiou</status>  <complete>true</complete></Order>");
+					ApiUtil.setExampleResponse(request, "application/xml",
+					                           "<Order>  <id>123456789</id>  <petId>123456789</petId>  <quantity>123</quantity>  <shipDate>2000-01-23T04:56:07.000Z</shipDate>  <status>aeiou</status>  <complete>true</complete></Order>");
 					break;
 				}
 			}

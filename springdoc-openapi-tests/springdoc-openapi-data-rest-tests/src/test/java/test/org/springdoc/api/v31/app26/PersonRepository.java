@@ -26,12 +26,12 @@
 
 package test.org.springdoc.api.v31.app26;
 
-import java.util.List;
-
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
+
+import java.util.List;
 
 @RepositoryRestResource(collectionResourceRel = "people", path = "peopleme")
 public interface PersonRepository extends PagingAndSortingRepository<Person, Long> {

@@ -27,7 +27,6 @@
 package test.org.springdoc.api.v31.app19;
 
 import com.querydsl.core.types.dsl.StringExpression;
-
 import org.springframework.data.querydsl.binding.QuerydslBinderCustomizer;
 import org.springframework.data.querydsl.binding.QuerydslBindings;
 

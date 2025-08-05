@@ -39,6 +39,6 @@ public class SpringDocApp66Test extends AbstractSpringDocTest {
 	@Test
 	void testApp2() throws Exception {
 		webTestClient.get().uri(Constants.DEFAULT_API_DOCS_URL + "streams").exchange()
-				.expectStatus().isNotFound();
+		             .expectStatus().isNotFound();
 	}
 }

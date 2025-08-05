@@ -26,16 +26,6 @@
 
 package org.springdoc.core.service;
 
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
-
 import io.swagger.v3.core.util.AnnotationsUtils;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
 import io.swagger.v3.oas.annotations.security.OAuthScope;
@@ -47,10 +37,19 @@ import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
 import org.apache.commons.lang3.StringUtils;
 import org.springdoc.core.utils.PropertyResolverUtils;
-
 import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.method.HandlerMethod;
+
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 
 /**
  * The type Security parser.
@@ -83,7 +82,8 @@ public class SecurityService {
 		boolean result;
 		if (oAuthFlows == null)
 			result = true;
-		else if (!isEmpty(oAuthFlows.implicit()) || !isEmpty(oAuthFlows.authorizationCode()) || !isEmpty(oAuthFlows.clientCredentials()) || !isEmpty(oAuthFlows.password()))
+		else if (!isEmpty(oAuthFlows.implicit()) || !isEmpty(oAuthFlows.authorizationCode()) ||
+				!isEmpty(oAuthFlows.clientCredentials()) || !isEmpty(oAuthFlows.password()))
 			result = false;
 		else result = oAuthFlows.extensions().length <= 0;
 		return result;
@@ -99,7 +99,8 @@ public class SecurityService {
 		boolean result;
 		if (oAuthFlow == null)
 			result = true;
-		else if (!StringUtils.isBlank(oAuthFlow.authorizationUrl()) || !StringUtils.isBlank(oAuthFlow.refreshUrl()) || !StringUtils.isBlank(oAuthFlow.tokenUrl()) || !isEmpty(oAuthFlow.scopes()))
+		else if (!StringUtils.isBlank(oAuthFlow.authorizationUrl()) || !StringUtils.isBlank(oAuthFlow.refreshUrl()) ||
+				!StringUtils.isBlank(oAuthFlow.tokenUrl()) || !isEmpty(oAuthFlow.scopes()))
 			result = false;
 		else result = oAuthFlow.extensions().length <= 0;
 		return result;
@@ -125,13 +126,15 @@ public class SecurityService {
 			HandlerMethod handlerMethod) {
 		// class SecurityRequirements
 		Class<?> beanType = handlerMethod.getBeanType();
-		Set<io.swagger.v3.oas.annotations.security.SecurityRequirement> allSecurityTags = getSecurityRequirementsForClass(beanType);
+		Set<io.swagger.v3.oas.annotations.security.SecurityRequirement> allSecurityTags =
+				getSecurityRequirementsForClass(beanType);
 
 		// handlerMethod SecurityRequirements
 		Method method = handlerMethod.getMethod();
 		allSecurityTags = getSecurityRequirementsForMethod(method, allSecurityTags);
 
-		return (allSecurityTags != null) ? allSecurityTags.toArray(new io.swagger.v3.oas.annotations.security.SecurityRequirement[0]) : null;
+		return (allSecurityTags != null) ? allSecurityTags.toArray(
+				new io.swagger.v3.oas.annotations.security.SecurityRequirement[0]) : null;
 	}
 
 	/**
@@ -141,14 +144,19 @@ public class SecurityService {
 	 * @param allSecurityTags the all security tags
 	 * @return the security requirements for method
 	 */
-	public Set<io.swagger.v3.oas.annotations.security.SecurityRequirement> getSecurityRequirementsForMethod(Method method, Set<io.swagger.v3.oas.annotations.security.SecurityRequirement> allSecurityTags) {
-		io.swagger.v3.oas.annotations.security.SecurityRequirements methodSecurity = AnnotatedElementUtils.findMergedAnnotation(method, io.swagger.v3.oas.annotations.security.SecurityRequirements.class);
+	public Set<io.swagger.v3.oas.annotations.security.SecurityRequirement> getSecurityRequirementsForMethod(
+			Method method, Set<io.swagger.v3.oas.annotations.security.SecurityRequirement> allSecurityTags) {
+		io.swagger.v3.oas.annotations.security.SecurityRequirements methodSecurity =
+				AnnotatedElementUtils.findMergedAnnotation(method,
+				                                           io.swagger.v3.oas.annotations.security.SecurityRequirements.class);
 		if (methodSecurity != null)
-			allSecurityTags = addSecurityRequirements(allSecurityTags, new HashSet<>(Arrays.asList(methodSecurity.value())));
+			allSecurityTags =
+					addSecurityRequirements(allSecurityTags, new HashSet<>(Arrays.asList(methodSecurity.value())));
 		if (CollectionUtils.isEmpty(allSecurityTags)) {
 			// handlerMethod SecurityRequirement
-			Set<io.swagger.v3.oas.annotations.security.SecurityRequirement> securityRequirementsMethodList = AnnotatedElementUtils.findMergedRepeatableAnnotations(method,
-					io.swagger.v3.oas.annotations.security.SecurityRequirement.class);
+			Set<io.swagger.v3.oas.annotations.security.SecurityRequirement> securityRequirementsMethodList =
+					AnnotatedElementUtils.findMergedRepeatableAnnotations(method,
+					                                                      io.swagger.v3.oas.annotations.security.SecurityRequirement.class);
 			if (!CollectionUtils.isEmpty(securityRequirementsMethodList))
 				allSecurityTags = addSecurityRequirements(allSecurityTags, securityRequirementsMethodList);
 		}
@@ -161,16 +169,20 @@ public class SecurityService {
 	 * @param beanType the bean type
 	 * @return the security requirements for class
 	 */
-	public Set<io.swagger.v3.oas.annotations.security.SecurityRequirement> getSecurityRequirementsForClass(Class<?> beanType) {
+	public Set<io.swagger.v3.oas.annotations.security.SecurityRequirement> getSecurityRequirementsForClass(
+			Class<?> beanType) {
 		Set<io.swagger.v3.oas.annotations.security.SecurityRequirement> allSecurityTags = null;
-		io.swagger.v3.oas.annotations.security.SecurityRequirements classSecurity = AnnotatedElementUtils.findMergedAnnotation(beanType, io.swagger.v3.oas.annotations.security.SecurityRequirements.class);
+		io.swagger.v3.oas.annotations.security.SecurityRequirements classSecurity =
+				AnnotatedElementUtils.findMergedAnnotation(beanType,
+				                                           io.swagger.v3.oas.annotations.security.SecurityRequirements.class);
 		if (classSecurity != null)
 			allSecurityTags = new HashSet<>(Arrays.asList(classSecurity.value()));
 		if (CollectionUtils.isEmpty(allSecurityTags)) {
 			// class SecurityRequirement
-			Set<io.swagger.v3.oas.annotations.security.SecurityRequirement> securityRequirementsClassList = AnnotatedElementUtils.findMergedRepeatableAnnotations(
-					beanType,
-					io.swagger.v3.oas.annotations.security.SecurityRequirement.class);
+			Set<io.swagger.v3.oas.annotations.security.SecurityRequirement> securityRequirementsClassList =
+					AnnotatedElementUtils.findMergedRepeatableAnnotations(
+							beanType,
+							io.swagger.v3.oas.annotations.security.SecurityRequirement.class);
 			if (!CollectionUtils.isEmpty(securityRequirementsClassList))
 				allSecurityTags = addSecurityRequirements(allSecurityTags, securityRequirementsClassList);
 		}
@@ -184,7 +196,9 @@ public class SecurityService {
 	 * @param securityRequirementsClassList the security requirements class list
 	 * @return the set
 	 */
-	private Set<io.swagger.v3.oas.annotations.security.SecurityRequirement> addSecurityRequirements(Set<io.swagger.v3.oas.annotations.security.SecurityRequirement> allSecurityTags, Set<io.swagger.v3.oas.annotations.security.SecurityRequirement> securityRequirementsClassList) {
+	private Set<io.swagger.v3.oas.annotations.security.SecurityRequirement> addSecurityRequirements(
+			Set<io.swagger.v3.oas.annotations.security.SecurityRequirement> allSecurityTags,
+			Set<io.swagger.v3.oas.annotations.security.SecurityRequirement> securityRequirementsClassList) {
 		if (allSecurityTags == null)
 			allSecurityTags = new HashSet<>();
 		allSecurityTags.addAll(securityRequirementsClassList);
@@ -207,7 +221,8 @@ public class SecurityService {
 				continue;
 			SecurityRequirement securityRequirement = new SecurityRequirement();
 			if (securityRequirementApi.scopes().length > 0)
-				securityRequirement.addList(securityRequirementApi.name(), Arrays.asList(securityRequirementApi.scopes()));
+				securityRequirement.addList(securityRequirementApi.name(),
+				                            Arrays.asList(securityRequirementApi.scopes()));
 			else
 				securityRequirement.addList(securityRequirementApi.name());
 			securityRequirements.add(securityRequirement);
@@ -238,7 +253,8 @@ public class SecurityService {
 			securitySchemeObject.setType(getType(securityScheme.type().toString()));
 
 		if (StringUtils.isNotBlank(securityScheme.openIdConnectUrl()))
-			securitySchemeObject.setOpenIdConnectUrl(propertyResolverUtils.resolve(securityScheme.openIdConnectUrl(), locale));
+			securitySchemeObject.setOpenIdConnectUrl(
+					propertyResolverUtils.resolve(securityScheme.openIdConnectUrl(), locale));
 
 		if (StringUtils.isNotBlank(securityScheme.scheme()))
 			securitySchemeObject.setScheme(securityScheme.scheme());
@@ -261,12 +277,12 @@ public class SecurityService {
 			securitySchemeObject.setName(securityScheme.paramName());
 
 		if (securityScheme.extensions().length > 0) {
-			Map<String, Object> extensions = AnnotationsUtils.getExtensions(propertyResolverUtils.isOpenapi31(), securityScheme.extensions());
+			Map<String, Object> extensions =
+					AnnotationsUtils.getExtensions(propertyResolverUtils.isOpenapi31(), securityScheme.extensions());
 			if (propertyResolverUtils.isResolveExtensionsProperties()) {
 				Map<String, Object> extensionsResolved = propertyResolverUtils.resolveExtensions(locale, extensions);
 				extensionsResolved.forEach(securitySchemeObject::addExtension);
-			}
-			else {
+			} else {
 				extensions.forEach(securitySchemeObject::addExtension);
 			}
 		}
@@ -287,8 +303,9 @@ public class SecurityService {
 			io.swagger.v3.oas.annotations.security.SecurityRequirement[] securityRequirements, Operation operation) {
 		Optional<List<SecurityRequirement>> requirementsObject = this.getSecurityRequirements(securityRequirements);
 		requirementsObject.ifPresent(requirements -> requirements.stream()
-				.filter(r -> operation.getSecurity() == null || !operation.getSecurity().contains(r))
-				.forEach(operation::addSecurityItem));
+		                                                         .filter(r -> operation.getSecurity() == null ||
+				                                                         !operation.getSecurity().contains(r))
+		                                                         .forEach(operation::addSecurityItem));
 	}
 
 	/**
@@ -298,18 +315,19 @@ public class SecurityService {
 	 * @param locale     the locale
 	 * @return the o auth flows
 	 */
-	private Optional<OAuthFlows> getOAuthFlows(io.swagger.v3.oas.annotations.security.OAuthFlows oAuthFlows, Locale locale) {
+	private Optional<OAuthFlows> getOAuthFlows(io.swagger.v3.oas.annotations.security.OAuthFlows oAuthFlows,
+	                                           Locale locale) {
 		if (isEmpty(oAuthFlows))
 			return Optional.empty();
 
 		OAuthFlows oAuthFlowsObject = new OAuthFlows();
 		if (oAuthFlows.extensions().length > 0) {
-			Map<String, Object> extensions = AnnotationsUtils.getExtensions(propertyResolverUtils.isOpenapi31(), oAuthFlows.extensions());
+			Map<String, Object> extensions =
+					AnnotationsUtils.getExtensions(propertyResolverUtils.isOpenapi31(), oAuthFlows.extensions());
 			if (propertyResolverUtils.isResolveExtensionsProperties()) {
 				Map<String, Object> extensionsResolved = propertyResolverUtils.resolveExtensions(locale, extensions);
 				extensionsResolved.forEach(oAuthFlowsObject::addExtension);
-			}
-			else {
+			} else {
 				extensions.forEach(oAuthFlowsObject::addExtension);
 			}
 		}
@@ -327,7 +345,8 @@ public class SecurityService {
 	 * @param locale    the locale
 	 * @return the o auth flow
 	 */
-	private Optional<OAuthFlow> getOAuthFlow(io.swagger.v3.oas.annotations.security.OAuthFlow oAuthFlow, Locale locale) {
+	private Optional<OAuthFlow> getOAuthFlow(io.swagger.v3.oas.annotations.security.OAuthFlow oAuthFlow,
+	                                         Locale locale) {
 		if (isEmpty(oAuthFlow)) {
 			return Optional.empty();
 		}
@@ -342,12 +361,12 @@ public class SecurityService {
 			oAuthFlowObject.setTokenUrl(propertyResolverUtils.resolve(oAuthFlow.tokenUrl(), locale));
 
 		if (oAuthFlow.extensions().length > 0) {
-			Map<String, Object> extensions = AnnotationsUtils.getExtensions(propertyResolverUtils.isOpenapi31(), oAuthFlow.extensions());
+			Map<String, Object> extensions =
+					AnnotationsUtils.getExtensions(propertyResolverUtils.isOpenapi31(), oAuthFlow.extensions());
 			if (propertyResolverUtils.isResolveExtensionsProperties()) {
 				Map<String, Object> extensionsResolved = propertyResolverUtils.resolveExtensions(locale, extensions);
 				extensionsResolved.forEach(oAuthFlowObject::addExtension);
-			}
-			else {
+			} else {
 				extensions.forEach(oAuthFlowObject::addExtension);
 			}
 		}
@@ -375,7 +394,7 @@ public class SecurityService {
 	 */
 	private SecurityScheme.In getIn(String value) {
 		return Arrays.stream(SecurityScheme.In.values()).filter(i -> i.toString().equals(value)).findFirst()
-				.orElse(null);
+		             .orElse(null);
 	}
 
 	/**
@@ -386,7 +405,7 @@ public class SecurityService {
 	 */
 	private SecurityScheme.Type getType(String value) {
 		return Arrays.stream(SecurityScheme.Type.values()).filter(i -> i.toString().equals(value)).findFirst()
-				.orElse(null);
+		             .orElse(null);
 	}
 
 }

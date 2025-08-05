@@ -20,14 +20,13 @@ package test.org.springdoc.api.v31.app145;
 
 import org.junit.jupiter.api.Test;
 import org.springdoc.core.utils.Constants;
-import test.org.springdoc.api.v31.AbstractSpringDocActuatorTest;
-
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpStatusCodeException;
+import test.org.springdoc.api.v31.AbstractSpringDocActuatorTest;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -37,19 +36,19 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 
 @SpringBootTest(webEnvironment = WebEnvironment.DEFINED_PORT,
-		properties = { "management.endpoints.web.exposure.include=*",
+		properties = {"management.endpoints.web.exposure.include=*",
 				"server.port=52556",
 				"springdoc.use-management-port=true",
 				"springdoc.group-configs[0].group=users",
 				"springdoc.group-configs[0].packages-to-scan=test.org.springdoc.api.v31.app145",
 				"management.server.port=9291",
-				"management.endpoints.web.base-path=/application" })
+				"management.endpoints.web.base-path=/application"})
 public class SpringDocApp145Test extends AbstractSpringDocActuatorTest {
 
 	@Test
 	void testApp() throws Exception {
 		mockMvc.perform(get(Constants.DEFAULT_API_DOCS_URL + "/users"))
-				.andExpect(status().isNotFound());
+		       .andExpect(status().isNotFound());
 	}
 
 	@Test
@@ -57,8 +56,7 @@ public class SpringDocApp145Test extends AbstractSpringDocActuatorTest {
 		try {
 			actuatorRestTemplate.getForObject("/application/openapi", String.class);
 			fail();
-		}
-		catch (HttpClientErrorException ex) {
+		} catch (HttpClientErrorException ex) {
 			if (ex.getStatusCode() == HttpStatus.NOT_FOUND)
 				assertTrue(true);
 			else
@@ -76,15 +74,16 @@ public class SpringDocApp145Test extends AbstractSpringDocActuatorTest {
 	@Test
 	void testApp3() throws Exception {
 		try {
-			actuatorRestTemplate.getForObject("/application/openapi" + "/" + Constants.DEFAULT_GROUP_NAME, String.class);
+			actuatorRestTemplate.getForObject("/application/openapi" + "/" + Constants.DEFAULT_GROUP_NAME,
+			                                  String.class);
 			fail();
-		}
-		catch (HttpStatusCodeException ex) {
+		} catch (HttpStatusCodeException ex) {
 			if (ex.getStatusCode() == HttpStatus.NOT_FOUND)
 				assertTrue(true);
 		}
 	}
 
 	@SpringBootApplication
-	static class SpringDocTestApp {}
+	static class SpringDocTestApp {
+	}
 }

@@ -27,8 +27,6 @@
 package test.org.springdoc.api.v31.app9.component.controller;
 
 
-import java.util.Optional;
-
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -36,12 +34,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springdoc.core.converters.models.PageableAsQueryParam;
-import test.org.springdoc.api.v31.app9.component.controller.hateoas.ComponentDtoModelAssembler;
-import test.org.springdoc.api.v31.app9.component.dto.DemoComponentDto;
-import test.org.springdoc.api.v31.app9.component.dto.converter.DemoComponentConverter;
-import test.org.springdoc.api.v31.app9.component.model.DemoComponent;
-import test.org.springdoc.api.v31.app9.component.service.ComponentsService;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -54,6 +46,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import test.org.springdoc.api.v31.app9.component.controller.hateoas.ComponentDtoModelAssembler;
+import test.org.springdoc.api.v31.app9.component.dto.DemoComponentDto;
+import test.org.springdoc.api.v31.app9.component.dto.converter.DemoComponentConverter;
+import test.org.springdoc.api.v31.app9.component.model.DemoComponent;
+import test.org.springdoc.api.v31.app9.component.service.ComponentsService;
+
+import java.util.Optional;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
@@ -78,7 +77,8 @@ public class ComponentsController {
 	@Operation(summary = "List the components")
 	@PageableAsQueryParam
 	@GetMapping
-	public ResponseEntity<PagedModel<RepresentationModel<EntityModel<DemoComponentDto>>>> findAll(@Parameter(hidden = true) Pageable pageable) {
+	public ResponseEntity<PagedModel<RepresentationModel<EntityModel<DemoComponentDto>>>> findAll(
+			@Parameter(hidden = true) Pageable pageable) {
 		Page<DemoComponent> results = componentsService.findAll(pageable);
 
 		return ResponseEntity.ok(pagedResourcesAssembler.toModel(results, componentDtoModelAssembler));
@@ -87,7 +87,7 @@ public class ComponentsController {
 	@Operation(summary = "Get one component by its ID", description = "Returns a single component", //
 			responses = { //
 					@ApiResponse(responseCode = "200", description = "Component found"), //
-					@ApiResponse(responseCode = "404", description = "Component not found", content = { @Content(schema = @Schema(implementation = Void.class)) }) //
+					@ApiResponse(responseCode = "404", description = "Component not found", content = {@Content(schema = @Schema(implementation = Void.class))}) //
 			})
 	@GetMapping("/{componentId}")
 	public ResponseEntity<EntityModel<DemoComponentDto>> findById(@PathVariable String componentId) {
@@ -95,10 +95,12 @@ public class ComponentsController {
 
 		if (foundComponent.isPresent()) {
 			return ResponseEntity.ok(EntityModel.of(toDtoConverter.convert(foundComponent.get()), //
-					linkTo(methodOn(ComponentsController.class).findAll(null)).withRel("components")));
+			                                        linkTo(methodOn(ComponentsController.class).findAll(null)).withRel(
+					                                        "components")));
 		}
 
-		return ResponseEntity.notFound().location(linkTo(methodOn(ComponentsController.class).findAll(null)).toUri()).build();
+		return ResponseEntity.notFound().location(linkTo(methodOn(ComponentsController.class).findAll(null)).toUri())
+		                     .build();
 	}
 
 }

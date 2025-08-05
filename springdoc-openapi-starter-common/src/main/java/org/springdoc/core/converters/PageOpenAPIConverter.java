@@ -26,18 +26,17 @@
 
 package org.springdoc.core.converters;
 
-import java.lang.reflect.Type;
-import java.util.Iterator;
-
 import com.fasterxml.jackson.databind.JavaType;
 import io.swagger.v3.core.converter.AnnotatedType;
 import io.swagger.v3.core.converter.ModelConverter;
 import io.swagger.v3.core.converter.ModelConverterContext;
 import io.swagger.v3.oas.models.media.Schema;
 import org.springdoc.core.providers.ObjectMapperProvider;
-
 import org.springframework.core.ResolvableType;
 import org.springframework.data.web.PagedModel;
+
+import java.lang.reflect.Type;
+import java.util.Iterator;
 
 import static org.springdoc.core.utils.SpringDocUtils.getParentTypeName;
 
@@ -115,8 +114,7 @@ public class PageOpenAPIConverter implements ModelConverter {
 					.forClassWithGenerics(PagedModel.class, ResolvableType.forType(innerType))
 					.getType();
 			return new AnnotatedType(pagedModelType).resolveAsRef(true);
-		}
-		else {
+		} else {
 			return PAGED_MODEL;
 		}
 	}

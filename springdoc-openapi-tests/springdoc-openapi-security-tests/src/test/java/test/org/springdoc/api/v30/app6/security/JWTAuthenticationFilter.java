@@ -26,11 +26,6 @@
 
 package test.org.springdoc.api.v30.app6.security;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -38,7 +33,6 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -46,6 +40,11 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 
 
 public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
@@ -61,7 +60,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
 
 	public JWTAuthenticationFilter(AuthenticationManager authenticationManager, long lifetime,
-			String key) {
+	                               String key) {
 		this.authenticationManager = authenticationManager;
 		this.lifetime = lifetime;
 		this.key = key;
@@ -78,10 +77,9 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
 			return authenticationManager.authenticate(
 					new UsernamePasswordAuthenticationToken(credentials.getUsername(),
-							credentials.getPassword(), new ArrayList<>()));
+					                                        credentials.getPassword(), new ArrayList<>()));
 
-		}
-		catch (IOException e) {
+		} catch (IOException e) {
 			throw new InternalAuthenticationServiceException("Error processing credentials", e);
 		}
 	}
@@ -89,18 +87,18 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
 	@Override
 	protected void successfulAuthentication(HttpServletRequest req, HttpServletResponse res,
-			FilterChain chain, Authentication auth)
+	                                        FilterChain chain, Authentication auth)
 			throws IOException, ServletException {
 		Date notBefore = new Date();
 		Date expirationDate = new Date(notBefore.getTime() + lifetime);
 
 		String token = Jwts.builder()
-				.setClaims(new HashMap<>())
-				.setSubject(((User) auth.getPrincipal()).getUsername())
-				.setNotBefore(notBefore)
-				.setExpiration(expirationDate)
-				.signWith(SignatureAlgorithm.HS512, key)
-				.compact();
+		                   .setClaims(new HashMap<>())
+		                   .setSubject(((User) auth.getPrincipal()).getUsername())
+		                   .setNotBefore(notBefore)
+		                   .setExpiration(expirationDate)
+		                   .signWith(SignatureAlgorithm.HS512, key)
+		                   .compact();
 		res.addHeader(WebSecurity.HeaderString, WebSecurity.TokenPrefix + token);
 
 	}

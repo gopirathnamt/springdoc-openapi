@@ -20,9 +20,6 @@ package test.org.springdoc.ui.app33;
 
 import jakarta.annotation.PostConstruct;
 import org.junit.jupiter.api.Test;
-import reactor.core.publisher.Mono;
-import test.org.springdoc.ui.AbstractCommonTest;
-
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
@@ -31,18 +28,20 @@ import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
+import test.org.springdoc.ui.AbstractCommonTest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.skyscreamer.jsonassert.JSONAssert.assertEquals;
 
 
 @SpringBootTest(webEnvironment = WebEnvironment.DEFINED_PORT,
-		properties = { "spring.webflux.base-path=/test",
+		properties = {"spring.webflux.base-path=/test",
 				"server.forward-headers-strategy=framework",
 				"server.port=9318",
 				"springdoc.swagger-ui.path=/documentation/swagger-ui.html",
 				"springdoc.api-docs.path=/documentation/v3/api-docs",
-				"springdoc.webjars.prefix= /webjars-pref" })
+				"springdoc.webjars.prefix= /webjars-pref"})
 
 @Import(SpringDocConfig.class)
 public class SpringDocBehindProxyBasePathTest extends AbstractCommonTest {
@@ -59,25 +58,27 @@ public class SpringDocBehindProxyBasePathTest extends AbstractCommonTest {
 	@PostConstruct
 	void init() {
 		webClient = WebClient.builder().baseUrl("http://localhost:" + port)
-				.build();
+		                     .build();
 	}
 
 	@Test
 	void testIndex() throws Exception {
 		HttpStatusCode httpStatusMono = webClient.get().uri(WEBFLUX_BASE_PATH + "/documentation/swagger-ui.html")
-				.header("X-Forwarded-Prefix", X_FORWARD_PREFIX)
-				.exchangeToMono(clientResponse -> Mono.just(clientResponse.statusCode())).block();
+		                                         .header("X-Forwarded-Prefix", X_FORWARD_PREFIX)
+		                                         .exchangeToMono(
+				                                         clientResponse -> Mono.just(clientResponse.statusCode()))
+		                                         .block();
 		assertThat(httpStatusMono).isEqualTo(HttpStatus.FOUND);
 
 		httpStatusMono = webClient.get().uri(WEBFLUX_BASE_PATH + "/documentation/webjars-pref/swagger-ui/index.html")
-				.header("X-Forwarded-Prefix", X_FORWARD_PREFIX)
-				.exchangeToMono(clientResponse -> Mono.just(clientResponse.statusCode())).block();
+		                          .header("X-Forwarded-Prefix", X_FORWARD_PREFIX)
+		                          .exchangeToMono(clientResponse -> Mono.just(clientResponse.statusCode())).block();
 		assertThat(httpStatusMono).isEqualTo(HttpStatus.OK);
 
 		String contentAsString = webClient.get().uri(WEBFLUX_BASE_PATH + "/documentation/v3/api-docs/swagger-config")
-				.header("X-Forwarded-Prefix", X_FORWARD_PREFIX)
-				.retrieve()
-				.bodyToMono(String.class).block();
+		                                  .header("X-Forwarded-Prefix", X_FORWARD_PREFIX)
+		                                  .retrieve()
+		                                  .bodyToMono(String.class).block();
 
 		String expected = getContent("results/app33.json");
 		assertEquals(expected, contentAsString, true);
@@ -85,5 +86,6 @@ public class SpringDocBehindProxyBasePathTest extends AbstractCommonTest {
 
 
 	@SpringBootApplication
-	static class SpringDocTestApp {}
+	static class SpringDocTestApp {
+	}
 }
